@@ -1,0 +1,52 @@
+Instalación de Symfony 2.5.*
+
+1-Descargar e instalar XAMPP (https://www.apachefriends.org/es/index.html)
+2-Descargar e instalar Composer (https://getcomposer.org/download/)
+3-Ejecutar consola. (Windows = cmd).
+4-Cambiar directorio hasta la ruta donde estará el proyecto.
+5-Ejecutar el siguiente comando:
+
+    composer create-project symfony/framework-standard-edition RutaDelCodigo/ "2.5.*"
+	
+5.1-Continuar con los pasos del instalador
+//
+ERRORES COMUNES
+ERROR 1 = No se reconoce el comando composer. -> Se debe verificar que las
+	variables de entorno del sistema estén bien.
+//
+//
+Configurar un virtualhost al proyecto.
+
+1-Instalar el Notepad++ o de texto similar.
+2-Ejecutar el editor como administrador.
+3-Abrir el archivo: 
+	C:\Windows\System32\drivers\etc\host
+4-Agregar en la última linea:
+	127.0.0.1		NombreDeProyecto.localhost
+5-Guardar el archivo.
+6-Abrir el archivo:
+	C:\xampp\apache\conf\extra\httpd-vhosts.conf
+7-Agregar una opción como la siguiente con nuestros datos (ajustar rutas al proyecto):
+
+#<VirtualHost *:8080>	
+#    DocumentRoot "D:\Users\Joaquin-Dev\Desktop\tavros\whitepowder\trunk\Codigo\Web\src\web"
+#    ServerName tavros.localhost
+#    ErrorLog "D:\Users\Joaquin-Dev\Desktop\tavros\whitepowder\trunk\Codigo\Web\src\error_log.txt"
+#	DirectoryIndex app.php
+#	AccessFileName .htaccess
+#	<Directory "D:\Users\Joaquin-Dev\Desktop\tavros\whitepowder\trunk\Codigo\Web\src\web">
+#		AllowOverride All
+#		Allow from All
+#		Require all granted
+#	</Directory>
+#</VirtualHost>
+8-Probar en un browser ingresar al host que pusimos con el puerto que cambiamos, el entorno de prueba app_dev.php
+//
+ERRORES COMUNES
+ERROR 1 = No se encuentra la carpeta etc -> está, por lo general oculta.
+ERROR 2 = Puerto 80 usado (Skype lo utiliza)-> modificar el puerto 80 por otro, en el archivo
+	C:\xampp\apache\conf\httpd.conf
+ERROR 3 = Server error 403 -> Require all granted no esta seteado en el directory.
+ERROR 4 = Server error 404 -> Se esta accediendo a producción en vez de a productivo. Entrar a app_dev.php
+//
+//
