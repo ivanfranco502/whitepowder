@@ -12,9 +12,19 @@
 namespace Symfony\Bridge\Twig\Tests\Extension;
 
 use Symfony\Bridge\Twig\Extension\RoutingExtension;
+use Symfony\Bridge\Twig\Tests\TestCase;
 
-class RoutingExtensionTest extends \PHPUnit_Framework_TestCase
+class RoutingExtensionTest extends TestCase
 {
+    protected function setUp()
+    {
+        parent::setUp();
+
+        if (!class_exists('Symfony\Component\Routing\Route')) {
+            $this->markTestSkipped('The "Routing" component is not available');
+        }
+    }
+
     /**
      * @dataProvider getEscapingTemplates
      */

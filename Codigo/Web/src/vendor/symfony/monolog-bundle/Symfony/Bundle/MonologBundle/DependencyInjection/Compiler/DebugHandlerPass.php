@@ -38,6 +38,19 @@ class DebugHandlerPass implements CompilerPassInterface
             return;
         }
 
+        // detect if the profiler is present but will be disabled
+        $enabled = true;
+        foreach ($container->getDefinition('profiler')->getMethodCalls() as $call) {
+            if ($call[0] === 'disable') {
+                $enabled = false;
+            } elseif ($call[0] === 'enable') {
+                $enabled = true;
+            }
+        }
+        if (!$enabled) {
+            return;
+        }
+
         $debugHandler = new Definition('%monolog.handler.debug.class%', array(Logger::DEBUG, true));
         $container->setDefinition('monolog.handler.debug', $debugHandler);
 

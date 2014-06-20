@@ -84,13 +84,7 @@ class FormFactory implements FormFactoryInterface
             throw new UnexpectedTypeException($type, 'string, Symfony\Component\Form\ResolvedFormTypeInterface or Symfony\Component\Form\FormTypeInterface');
         }
 
-        $builder = $type->createBuilder($this, $name, $options);
-
-        // Explicitly call buildForm() in order to be able to override either
-        // createBuilder() or buildForm() in the resolved form type
-        $type->buildForm($builder, $builder->getOptions());
-
-        return $builder;
+        return $type->createBuilder($this, $name, $options);
     }
 
     /**
@@ -113,11 +107,11 @@ class FormFactory implements FormFactoryInterface
         $pattern   = $patternGuess ? $patternGuess->getValue() : null;
 
         if (null !== $pattern) {
-            $options = array_merge(array('attr' => array('pattern' => $pattern)), $options);
+            $options = array_merge(array('pattern' => $pattern), $options);
         }
 
         if (null !== $maxLength) {
-            $options = array_merge(array('attr' => array('maxlength' => $maxLength)), $options);
+            $options = array_merge(array('max_length' => $maxLength), $options);
         }
 
         if ($requiredGuess) {

@@ -17,51 +17,75 @@ class ProcessBuilderTest extends \PHPUnit_Framework_TestCase
 {
     public function testInheritEnvironmentVars()
     {
-        $_ENV['MY_VAR_1'] = 'foo';
+        $snapshot = $_ENV;
+        $_ENV = $expected = array('foo' => 'bar');
 
-        $proc = ProcessBuilder::create()
-            ->add('foo')
-            ->getProcess();
-
-        unset($_ENV['MY_VAR_1']);
-
-        $env = $proc->getEnv();
-        $this->assertArrayHasKey('MY_VAR_1', $env);
-        $this->assertEquals('foo', $env['MY_VAR_1']);
-    }
-
-    public function testAddEnvironmentVariables()
-    {
         $pb = new ProcessBuilder();
-        $env = array(
-            'foo' => 'bar',
-            'foo2' => 'bar2',
-        );
-        $proc = $pb
-            ->add('command')
-            ->setEnv('foo', 'bar2')
-            ->addEnvironmentVariables($env)
-            ->inheritEnvironmentVariables(false)
-            ->getProcess()
-        ;
+        $pb->add('foo')->inheritEnvironmentVariables();
+        $proc = $pb->getProcess();
 
-        $this->assertSame($env, $proc->getEnv());
+        $this->assertNull($proc->getEnv(), '->inheritEnvironmentVariables() copies $_ENV');
+
+        $_ENV = $snapshot;
     }
 
     public function testProcessShouldInheritAndOverrideEnvironmentVars()
     {
-        $_ENV['MY_VAR_1'] = 'foo';
+        $snapshot = $_ENV;
+        $_ENV = array('foo' => 'bar', 'bar' => 'baz');
+        $expected = array('foo' => 'foo', 'bar' => 'baz');
 
-        $proc = ProcessBuilder::create()
-            ->setEnv('MY_VAR_1', 'bar')
+        $pb = new ProcessBuilder();
+        $pb->add('foo')->inheritEnvironmentVariables()
+            ->setEnv('foo', 'foo');
+        $proc = $pb->getProcess();
+
+        $this->assertEquals($expected, $proc->getEnv(), '->inheritEnvironmentVariables() copies $_ENV');
+
+        $_ENV = $snapshot;
+    }
+
+    public function testProcessBuilderShouldNotPassEnvArrays()
+    {
+        $snapshot = $_ENV;
+        $_ENV = array('a' => array('b', 'c'), 'd' => 'e', 'f' => 'g');
+        $expected = array('d' => 'e', 'f' => 'g');
+
+        $pb = new ProcessBuilder();
+        $pb->add('a')->inheritEnvironmentVariables()
+            ->setEnv('d', 'e');
+        $proc = $pb->getProcess();
+
+        $this->assertEquals($expected, $proc->getEnv(), '->inheritEnvironmentVariables() removes array values from $_ENV');
+
+        $_ENV = $snapshot;
+    }
+
+    public function testInheritEnvironmentVarsByDefault()
+    {
+        $pb = new ProcessBuilder();
+        $proc = $pb->add('foo')->getProcess();
+
+        $this->assertNull($proc->getEnv());
+    }
+
+    public function testNotReplaceExplicitlySetVars()
+    {
+        $snapshot = $_ENV;
+        $_ENV = array('foo' => 'bar');
+        $expected = array('foo' => 'baz');
+
+        $pb = new ProcessBuilder();
+        $pb
+            ->setEnv('foo', 'baz')
+            ->inheritEnvironmentVariables()
             ->add('foo')
-            ->getProcess();
+        ;
+        $proc = $pb->getProcess();
 
-        unset($_ENV['MY_VAR_1']);
+        $this->assertEquals($expected, $proc->getEnv(), '->inheritEnvironmentVariables() copies $_ENV');
 
-        $env = $proc->getEnv();
-        $this->assertArrayHasKey('MY_VAR_1', $env);
-        $this->assertEquals('bar', $env['MY_VAR_1']);
+        $_ENV = $snapshot;
     }
 
     /**
@@ -113,26 +137,6 @@ class ProcessBuilderTest extends \PHPUnit_Framework_TestCase
             $this->assertEquals('"/usr/bin/php" "-i"', $proc->getCommandLine());
         } else {
             $this->assertEquals("'/usr/bin/php' '-i'", $proc->getCommandLine());
-        }
-    }
-
-    public function testArrayPrefixesArePrependedToAllGeneratedProcess()
-    {
-        $pb = new ProcessBuilder();
-        $pb->setPrefix(array('/usr/bin/php', 'composer.phar'));
-
-        $proc = $pb->setArguments(array('-v'))->getProcess();
-        if (defined('PHP_WINDOWS_VERSION_BUILD')) {
-            $this->assertEquals('"/usr/bin/php" "composer.phar" "-v"', $proc->getCommandLine());
-        } else {
-            $this->assertEquals("'/usr/bin/php' 'composer.phar' '-v'", $proc->getCommandLine());
-        }
-
-        $proc = $pb->setArguments(array('-i'))->getProcess();
-        if (defined('PHP_WINDOWS_VERSION_BUILD')) {
-            $this->assertEquals('"/usr/bin/php" "composer.phar" "-i"', $proc->getCommandLine());
-        } else {
-            $this->assertEquals("'/usr/bin/php' 'composer.phar' '-i'", $proc->getCommandLine());
         }
     }
 
@@ -192,25 +196,6 @@ class ProcessBuilderTest extends \PHPUnit_Framework_TestCase
         } else {
             $this->assertEquals("'/usr/bin/php'", $process->getCommandLine());
         }
-    }
-
-    public function testShouldReturnProcessWithDisabledOutput()
-    {
-        $process = ProcessBuilder::create(array('/usr/bin/php'))
-            ->disableOutput()
-            ->getProcess();
-
-        $this->assertTrue($process->isOutputDisabled());
-    }
-
-    public function testShouldReturnProcessWithEnabledOutput()
-    {
-        $process = ProcessBuilder::create(array('/usr/bin/php'))
-            ->disableOutput()
-            ->enableOutput()
-            ->getProcess();
-
-        $this->assertFalse($process->isOutputDisabled());
     }
 
     /**

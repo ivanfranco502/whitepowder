@@ -21,7 +21,7 @@ use Symfony\Component\Templating\TemplateReferenceInterface;
  */
 class ChainLoader extends Loader
 {
-    protected $loaders = array();
+    protected $loaders;
 
     /**
      * Constructor.
@@ -30,6 +30,7 @@ class ChainLoader extends Loader
      */
     public function __construct(array $loaders = array())
     {
+        $this->loaders = array();
         foreach ($loaders as $loader) {
             $this->addLoader($loader);
         }

@@ -19,7 +19,6 @@ use Symfony\Component\DependencyInjection\Parameter;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\DependencyInjection\Exception\RuntimeException;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\ExpressionLanguage\Expression;
 
 /**
  * YamlDumper dumps a service container as a YAML string.
@@ -139,14 +138,6 @@ class YamlDumper extends Dumper
             $code .= sprintf("        scope: %s\n", $scope);
         }
 
-        if (null !== $decorated = $definition->getDecoratedService()) {
-            list ($decorated, $renamedId) = $decorated;
-            $code .= sprintf("        decorates: %s\n", $decorated);
-            if (null !== $renamedId) {
-                $code .= sprintf("        decoration_inner_name: %s\n", $renamedId);
-            }
-        }
-
         if ($callable = $definition->getConfigurator()) {
             if (is_array($callable)) {
                 if ($callable[0] instanceof Reference) {
@@ -244,8 +235,6 @@ class YamlDumper extends Dumper
             return $this->getServiceCall((string) $value, $value);
         } elseif ($value instanceof Parameter) {
             return $this->getParameterCall((string) $value);
-        } elseif ($value instanceof Expression) {
-            return $this->getExpressionCall((string) $value);
         } elseif (is_object($value) || is_resource($value)) {
             throw new RuntimeException('Unable to dump a service container if a parameter is an object or a resource.');
         }
@@ -280,11 +269,6 @@ class YamlDumper extends Dumper
     private function getParameterCall($id)
     {
         return sprintf('%%%s%%', $id);
-    }
-
-    private function getExpressionCall($expression)
-    {
-        return sprintf('@=%s', $expression);
     }
 
     /**

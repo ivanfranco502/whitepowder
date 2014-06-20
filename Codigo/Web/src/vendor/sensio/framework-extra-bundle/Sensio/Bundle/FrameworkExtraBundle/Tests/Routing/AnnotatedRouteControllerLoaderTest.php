@@ -1,22 +1,8 @@
 <?php
 
-/*
- * This file is part of the Symfony package.
- *
- * (c) Fabien Potencier <fabien@symfony.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Sensio\Bundle\FrameworkExtraBundle\Tests\Routing;
 
-use Doctrine\Common\Annotations\AnnotationReader;
-use Doctrine\Common\Annotations\AnnotationRegistry;
-use Doctrine\Common\Annotations\SimpleAnnotationReader;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Routing\AnnotatedRouteControllerLoader;
-use Symfony\Component\Routing\Route as SymfonyRoute;
+use \Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 class AnnotatedRouteControllerLoaderTest extends \PHPUnit_Framework_TestCase
 {
@@ -119,22 +105,5 @@ class AnnotatedRouteControllerLoaderTest extends \PHPUnit_Framework_TestCase
             new \ReflectionMethod($this, 'testServiceOptionIsNotAllowedOnMethod'),
             null
         );
-    }
-
-    public function testLoad()
-    {
-        $loader = new AnnotatedRouteControllerLoader(new AnnotationReader());
-        AnnotationRegistry::registerLoader('class_exists');
-
-        $rc = $loader->load('Sensio\Bundle\FrameworkExtraBundle\Tests\Routing\Fixtures\FoobarController');
-
-        $this->assertInstanceOf('Symfony\Component\Routing\RouteCollection', $rc);
-        $this->assertCount(2, $rc);
-
-        $this->assertInstanceOf('Symfony\Component\Routing\Route', $rc->get('index'));
-        $this->assertEquals(array('GET'), $rc->get('index')->getMethods());
-
-        $this->assertInstanceOf('Symfony\Component\Routing\Route', $rc->get('new'));
-        $this->assertEquals(array('POST'), $rc->get('new')->getMethods());
     }
 }

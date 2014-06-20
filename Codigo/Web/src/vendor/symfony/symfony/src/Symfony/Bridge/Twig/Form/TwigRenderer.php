@@ -11,11 +11,8 @@
 
 namespace Symfony\Bridge\Twig\Form;
 
-use Symfony\Component\Form\Exception\UnexpectedTypeException;
-use Symfony\Component\Form\Extension\Csrf\CsrfProvider\CsrfProviderAdapter;
-use Symfony\Component\Form\Extension\Csrf\CsrfProvider\CsrfProviderInterface;
 use Symfony\Component\Form\FormRenderer;
-use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
+use Symfony\Component\Form\Extension\Csrf\CsrfProvider\CsrfProviderInterface;
 
 /**
  * @author Bernhard Schussek <bschussek@gmail.com>
@@ -27,15 +24,9 @@ class TwigRenderer extends FormRenderer implements TwigRendererInterface
      */
     private $engine;
 
-    public function __construct(TwigRendererEngineInterface $engine, $csrfTokenManager = null)
+    public function __construct(TwigRendererEngineInterface $engine, CsrfProviderInterface $csrfProvider = null)
     {
-        if ($csrfTokenManager instanceof CsrfProviderInterface) {
-            $csrfTokenManager = new CsrfProviderAdapter($csrfTokenManager);
-        } elseif (null !== $csrfTokenManager && !$csrfTokenManager instanceof CsrfTokenManagerInterface) {
-            throw new UnexpectedTypeException($csrfTokenManager, 'CsrfProviderInterface or CsrfTokenManagerInterface');
-        }
-
-        parent::__construct($engine, $csrfTokenManager);
+        parent::__construct($engine, $csrfProvider);
 
         $this->engine = $engine;
     }

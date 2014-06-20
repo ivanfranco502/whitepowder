@@ -658,7 +658,7 @@ class SimpleFormTest extends AbstractFormTest
         $this->form->addError(new FormError('Error!'));
         $this->form->submit('foobar');
 
-        $this->assertCount(0, $this->form->getErrors());
+        $this->assertSame(array(), $this->form->getErrors());
     }
 
     public function testCreateView()

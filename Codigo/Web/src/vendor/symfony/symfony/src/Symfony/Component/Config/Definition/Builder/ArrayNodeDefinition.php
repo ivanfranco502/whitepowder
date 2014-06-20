@@ -22,18 +22,18 @@ use Symfony\Component\Config\Definition\Exception\InvalidDefinitionException;
  */
 class ArrayNodeDefinition extends NodeDefinition implements ParentNodeDefinitionInterface
 {
-    protected $performDeepMerging = true;
-    protected $ignoreExtraKeys = false;
-    protected $children = array();
+    protected $performDeepMerging;
+    protected $ignoreExtraKeys;
+    protected $children;
     protected $prototype;
-    protected $atLeastOne = false;
-    protected $allowNewKeys = true;
+    protected $atLeastOne;
+    protected $allowNewKeys;
     protected $key;
     protected $removeKeyItem;
-    protected $addDefaults = false;
-    protected $addDefaultChildren = false;
+    protected $addDefaults;
+    protected $addDefaultChildren;
     protected $nodeBuilder;
-    protected $normalizeKeys = true;
+    protected $normalizeKeys;
 
     /**
      * {@inheritdoc}
@@ -42,8 +42,16 @@ class ArrayNodeDefinition extends NodeDefinition implements ParentNodeDefinition
     {
         parent::__construct($name, $parent);
 
+        $this->children = array();
+        $this->addDefaults = false;
+        $this->addDefaultChildren = false;
+        $this->allowNewKeys = true;
+        $this->atLeastOne = false;
+        $this->allowEmptyValue = true;
+        $this->performDeepMerging = true;
         $this->nullEquivalent = array();
         $this->trueEquivalent = array();
+        $this->normalizeKeys = true;
     }
 
     /**

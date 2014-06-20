@@ -29,12 +29,12 @@ class Scope
     /**
      * @var array
      */
-    private $data = array();
+    private $data;
 
     /**
      * @var bool
      */
-    private $left = false;
+    private $left;
 
     /**
      * @param Scope $parent
@@ -42,6 +42,8 @@ class Scope
     public function __construct(Scope $parent = null)
     {
         $this->parent = $parent;
+        $this->left = false;
+        $this->data = array();
     }
 
     /**

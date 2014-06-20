@@ -25,7 +25,7 @@ use Symfony\Component\HttpKernel\KernelInterface;
 class TemplateNameParser implements TemplateNameParserInterface
 {
     protected $kernel;
-    protected $cache = array();
+    protected $cache;
 
     /**
      * Constructor.
@@ -35,6 +35,7 @@ class TemplateNameParser implements TemplateNameParserInterface
     public function __construct(KernelInterface $kernel)
     {
         $this->kernel = $kernel;
+        $this->cache = array();
     }
 
     /**

@@ -81,17 +81,15 @@ class TableHelperTest extends \PHPUnit_Framework_TestCase
 
     public function testRenderProvider()
     {
-        $books = array(
-            array('99921-58-10-7', 'Divine Comedy', 'Dante Alighieri'),
-            array('9971-5-0210-0', 'A Tale of Two Cities', 'Charles Dickens'),
-            array('960-425-059-0', 'The Lord of the Rings', 'J. R. R. Tolkien'),
-            array('80-902734-1-6', 'And Then There Were None', 'Agatha Christie'),
-        );
-
         return array(
             array(
                 array('ISBN', 'Title', 'Author'),
-                $books,
+                array(
+                    array('99921-58-10-7', 'Divine Comedy', 'Dante Alighieri'),
+                    array('9971-5-0210-0', 'A Tale of Two Cities', 'Charles Dickens'),
+                    array('960-425-059-0', 'The Lord of the Rings', 'J. R. R. Tolkien'),
+                    array('80-902734-1-6', 'And Then There Were None', 'Agatha Christie'),
+                ),
                 TableHelper::LAYOUT_DEFAULT,
 <<<TABLE
 +---------------+--------------------------+------------------+
@@ -107,32 +105,14 @@ TABLE
             ),
             array(
                 array('ISBN', 'Title', 'Author'),
-                $books,
-                TableHelper::LAYOUT_COMPACT,
-<<<TABLE
- ISBN          Title                    Author           
- 99921-58-10-7 Divine Comedy            Dante Alighieri  
- 9971-5-0210-0 A Tale of Two Cities     Charles Dickens  
- 960-425-059-0 The Lord of the Rings    J. R. R. Tolkien 
- 80-902734-1-6 And Then There Were None Agatha Christie  
-
-TABLE
-            ),
-            array(
-                array('ISBN', 'Title', 'Author'),
-                $books,
+                array(
+                    array('99921-58-10-7', 'Divine Comedy', 'Dante Alighieri'),
+                    array('9971-5-0210-0', 'A Tale of Two Cities', 'Charles Dickens'),
+                    array('960-425-059-0', 'The Lord of the Rings', 'J. R. R. Tolkien'),
+                    array('80-902734-1-6', 'And Then There Were None', 'Agatha Christie'),
+                ),
                 TableHelper::LAYOUT_BORDERLESS,
-<<<TABLE
- =============== ========================== ================== 
-  ISBN            Title                      Author            
- =============== ========================== ================== 
-  99921-58-10-7   Divine Comedy              Dante Alighieri   
-  9971-5-0210-0   A Tale of Two Cities       Charles Dickens   
-  960-425-059-0   The Lord of the Rings      J. R. R. Tolkien  
-  80-902734-1-6   And Then There Were None   Agatha Christie   
- =============== ========================== ================== 
-
-TABLE
+                " =============== ========================== ================== \n  ISBN            Title                      Author            \n =============== ========================== ================== \n  99921-58-10-7   Divine Comedy              Dante Alighieri   \n  9971-5-0210-0   A Tale of Two Cities       Charles Dickens   \n  960-425-059-0   The Lord of the Rings      J. R. R. Tolkien  \n  80-902734-1-6   And Then There Were None   Agatha Christie   \n =============== ========================== ================== \n"
             ),
             array(
                 array('ISBN', 'Title'),

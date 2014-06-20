@@ -16,55 +16,28 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * @author Jean-François Simon <jeanfrancois.simon@sensiolabs.com>
  */
 abstract class Descriptor implements DescriptorInterface
 {
-    /**
-     * @var OutputInterface
-     */
-    private $output;
-
-    /**
-     * {@inheritdoc}
-     */
-    public function describe(OutputInterface $output, $object, array $options = array())
+    public function describe($object, array $options = array())
     {
-        $this->output = $output;
-
         switch (true) {
             case $object instanceof InputArgument:
-                $this->describeInputArgument($object, $options);
-                break;
+                return $this->describeInputArgument($object, $options);
             case $object instanceof InputOption:
-                $this->describeInputOption($object, $options);
-                break;
+                return $this->describeInputOption($object, $options);
             case $object instanceof InputDefinition:
-                $this->describeInputDefinition($object, $options);
-                break;
+                return $this->describeInputDefinition($object, $options);
             case $object instanceof Command:
-                $this->describeCommand($object, $options);
-                break;
+                return $this->describeCommand($object, $options);
             case $object instanceof Application:
-                $this->describeApplication($object, $options);
-                break;
-            default:
-                throw new \InvalidArgumentException(sprintf('Object of type "%s" is not describable.', get_class($object)));
+                return $this->describeApplication($object, $options);
         }
-    }
 
-    /**
-     * Writes content to output.
-     *
-     * @param string  $content
-     * @param bool    $decorated
-     */
-    protected function write($content, $decorated = false)
-    {
-        $this->output->write($content, false, $decorated ? OutputInterface::OUTPUT_NORMAL : OutputInterface::OUTPUT_RAW);
+        throw new \InvalidArgumentException(sprintf('Object of type "%s" is not describable.', get_class($object)));
     }
 
     /**

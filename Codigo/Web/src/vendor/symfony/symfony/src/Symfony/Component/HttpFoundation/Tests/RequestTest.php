@@ -594,7 +594,6 @@ class RequestTest extends \PHPUnit_Framework_TestCase
     {
         $request = new Request();
 
-        $server = array();
         $server['SERVER_NAME'] = 'servername';
         $server['SERVER_PORT'] = '90';
         $request->initialize(array(), array(), array(), array(), array(), $server);
@@ -1002,12 +1001,6 @@ class RequestTest extends \PHPUnit_Framework_TestCase
 
         $this->assertArrayHasKey('HTTP_X_FORWARDED_PROTO', $_SERVER);
 
-        $request->headers->set('CONTENT_TYPE', 'multipart/form-data');
-        $request->headers->set('CONTENT_LENGTH', 12345);
-        $request->overrideGlobals();
-        $this->assertArrayHasKey('CONTENT_TYPE', $_SERVER);
-        $this->assertArrayHasKey('CONTENT_LENGTH', $_SERVER);
-
         // restore initial $_SERVER array
         $_SERVER = $server;
     }
@@ -1162,22 +1155,6 @@ class RequestTest extends \PHPUnit_Framework_TestCase
         $request = new Request();
         $request->headers->set('Accept-Charset', 'ISO-8859-1,utf-8;q=0.7,*;q=0.7');
         $this->assertEquals(array('ISO-8859-1', 'utf-8', '*'), $request->getCharsets());
-    }
-
-    public function testGetEncodings()
-    {
-        $request = new Request();
-        $this->assertEquals(array(), $request->getEncodings());
-        $request->headers->set('Accept-Encoding', 'gzip,deflate,sdch');
-        $this->assertEquals(array(), $request->getEncodings()); // testing caching
-
-        $request = new Request();
-        $request->headers->set('Accept-Encoding', 'gzip,deflate,sdch');
-        $this->assertEquals(array('gzip', 'deflate', 'sdch'), $request->getEncodings());
-
-        $request = new Request();
-        $request->headers->set('Accept-Encoding', 'gzip;q=0.4,deflate;q=0.9,compress;q=0.7');
-        $this->assertEquals(array('deflate', 'compress', 'gzip'), $request->getEncodings());
     }
 
     public function testGetAcceptableContentTypes()
@@ -1479,24 +1456,6 @@ class RequestTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \InvalidArgumentException
-     */
-    public function testSetTrustedProxiesInvalidHeaderName()
-    {
-        Request::create('http://example.com/');
-        Request::setTrustedHeaderName('bogus name', 'X_MY_FOR');
-    }
-
-    /**
-     * @expectedException \InvalidArgumentException
-     */
-    public function testGetTrustedProxiesInvalidHeaderName()
-    {
-        Request::create('http://example.com/');
-        Request::getTrustedHeaderName('bogus name');
-    }
-
-    /**
      * @dataProvider iisRequestUriProvider
      */
     public function testIISRequestUri($headers, $server, $expectedRequestUri)
@@ -1508,7 +1467,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedRequestUri, $request->getRequestUri(), '->getRequestUri() is correct');
 
         $subRequestUri = '/bar/foo';
-        $subRequest = Request::create($subRequestUri, 'get', array(), array(), array(), $request->server->all());
+        $subRequest = $request::create($subRequestUri, 'get', array(), array(), array(), $request->server->all());
         $this->assertEquals($subRequestUri, $subRequest->getRequestUri(), '->getRequestUri() is correct in sub request');
     }
 
@@ -1627,17 +1586,6 @@ class RequestTest extends \PHPUnit_Framework_TestCase
         // reset request for following tests
         Request::setTrustedHosts(array());
     }
-
-    public function testFactory()
-    {
-        Request::setFactory(function (array $query = array(), array $request = array(), array $attributes = array(), array $cookies = array(), array $files = array(), array $server = array(), $content = null) {
-            return new NewRequest();
-        });
-
-        $this->assertEquals('foo', Request::create('/')->getFoo());
-
-        Request::setFactory(null);
-    }
 }
 
 class RequestContentProxy extends Request
@@ -1645,13 +1593,5 @@ class RequestContentProxy extends Request
     public function getContent($asResource = false)
     {
         return http_build_query(array('_method' => 'PUT', 'content' => 'mycontent'));
-    }
-}
-
-class NewRequest extends Request
-{
-    public function getFoo()
-    {
-        return 'foo';
     }
 }

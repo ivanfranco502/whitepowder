@@ -24,12 +24,7 @@ class PropertyAccessorBuilder
     private $magicCall = false;
 
     /**
-     * @var bool
-     */
-    private $throwExceptionOnInvalidIndex = false;
-
-    /**
-     * Enables the use of "__call" by the PropertyAccessor.
+     * Enables the use of "__call" by the ProperyAccessor.
      *
      * @return PropertyAccessorBuilder The builder object
      */
@@ -41,7 +36,7 @@ class PropertyAccessorBuilder
     }
 
     /**
-     * Disables the use of "__call" by the PropertyAccessor.
+     * Disables the use of "__call" by the ProperyAccessor.
      *
      * @return PropertyAccessorBuilder The builder object
      */
@@ -53,43 +48,11 @@ class PropertyAccessorBuilder
     }
 
     /**
-     * @return bool true if the use of "__call" by the PropertyAccessor is enabled
+     * @return bool    true if the use of "__call" by the ProperyAccessor is enabled
      */
     public function isMagicCallEnabled()
     {
         return $this->magicCall;
-    }
-
-    /**
-     * Enables exceptions in read context for array by PropertyAccessor
-     *
-     * @return PropertyAccessorBuilder The builder object
-     */
-    public function enableExceptionOnInvalidIndex()
-    {
-        $this->throwExceptionOnInvalidIndex = true;
-
-        return $this;
-    }
-
-    /**
-     * Disables exceptions in read context for array by PropertyAccessor
-     *
-     * @return PropertyAccessorBuilder The builder object
-     */
-    public function disableExceptionOnInvalidIndex()
-    {
-        $this->throwExceptionOnInvalidIndex = false;
-
-        return $this;
-    }
-
-    /**
-     * @return bool    true is exceptions in read context for array is enabled
-     */
-    public function isExceptionOnInvalidIndexEnabled()
-    {
-        return $this->throwExceptionOnInvalidIndex;
     }
 
     /**
@@ -99,6 +62,6 @@ class PropertyAccessorBuilder
      */
     public function getPropertyAccessor()
     {
-        return new PropertyAccessor($this->magicCall, $this->throwExceptionOnInvalidIndex);
+        return new PropertyAccessor($this->magicCall);
     }
 }

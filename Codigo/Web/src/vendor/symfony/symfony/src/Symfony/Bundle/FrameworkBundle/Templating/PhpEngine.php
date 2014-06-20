@@ -46,7 +46,7 @@ class PhpEngine extends BasePhpEngine implements EngineInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @throws \InvalidArgumentException When the helper is not defined
      */
     public function get($name)
     {
@@ -71,7 +71,13 @@ class PhpEngine extends BasePhpEngine implements EngineInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Renders a view and returns a Response.
+     *
+     * @param string   $view       The view name
+     * @param array    $parameters An array of parameters to pass to the view
+     * @param Response $response   A Response instance
+     *
+     * @return Response A Response instance
      */
     public function renderResponse($view, array $parameters = array(), Response $response = null)
     {

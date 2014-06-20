@@ -17,6 +17,13 @@ use Symfony\Component\Routing\Tests\Fixtures\CustomXmlFileLoader;
 
 class XmlFileLoaderTest extends \PHPUnit_Framework_TestCase
 {
+    protected function setUp()
+    {
+        if (!class_exists('Symfony\Component\Config\FileLocator')) {
+            $this->markTestSkipped('The "Config" component is not available');
+        }
+    }
+
     public function testSupports()
     {
         $loader = new XmlFileLoader($this->getMock('Symfony\Component\Config\FileLocator'));
@@ -34,12 +41,10 @@ class XmlFileLoaderTest extends \PHPUnit_Framework_TestCase
         $routeCollection = $loader->load('validpattern.xml');
         $routes = $routeCollection->all();
 
-        $this->assertCount(3, $routes, 'Three routes are loaded');
+        $this->assertCount(2, $routes, 'Two routes are loaded');
         $this->assertContainsOnly('Symfony\Component\Routing\Route', $routes);
 
-        $identicalRoutes = array_slice($routes, 0, 2);
-
-        foreach ($identicalRoutes as $route) {
+        foreach ($routes as $route) {
             $this->assertSame('/blog/{slug}', $route->getPath());
             $this->assertSame('{locale}.example.com', $route->getHost());
             $this->assertSame('MyBundle:Blog:show', $route->getDefault('_controller'));
@@ -47,7 +52,6 @@ class XmlFileLoaderTest extends \PHPUnit_Framework_TestCase
             $this->assertSame('RouteCompiler', $route->getOption('compiler_class'));
             $this->assertEquals(array('GET', 'POST', 'PUT', 'OPTIONS'), $route->getMethods());
             $this->assertEquals(array('https'), $route->getSchemes());
-            $this->assertEquals('context.getMethod() == "GET"', $route->getCondition());
         }
     }
 
@@ -74,7 +78,7 @@ class XmlFileLoaderTest extends \PHPUnit_Framework_TestCase
         $routeCollection = $loader->load('validresource.xml');
         $routes = $routeCollection->all();
 
-        $this->assertCount(3, $routes, 'Three routes are loaded');
+        $this->assertCount(2, $routes, 'Two routes are loaded');
         $this->assertContainsOnly('Symfony\Component\Routing\Route', $routes);
 
         foreach ($routes as $route) {
@@ -83,7 +87,6 @@ class XmlFileLoaderTest extends \PHPUnit_Framework_TestCase
             $this->assertSame('\d+', $route->getRequirement('foo'));
             $this->assertSame('bar', $route->getOption('foo'));
             $this->assertSame('', $route->getHost());
-            $this->assertSame('context.getMethod() == "POST"', $route->getCondition());
         }
     }
 

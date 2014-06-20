@@ -24,16 +24,11 @@
     },
     "require-dev": {
         "symfony/validator": "~2.2",
-        "symfony/http-foundation": "~2.2",
-        "symfony/http-kernel": "~2.4",
-        "symfony/security-csrf": "~2.4",
-        "doctrine/collections": "~1.0"
+        "symfony/http-foundation": "~2.2"
     },
     "suggest": {
-        "symfony/validator": "For form validation.",
-        "symfony/security-csrf": "For protecting forms against CSRF attacks.",
-        "symfony/twig-bridge": "For templating with Twig.",
-        "symfony/framework-bundle": "For templating with PHP."
+        "symfony/validator": "",
+        "symfony/http-foundation": ""
     },
     "autoload": {
         "psr-0": { "Symfony\\Component\\Form\\": "" }
@@ -42,7 +37,7 @@
     "minimum-stability": "dev",
     "extra": {
         "branch-alias": {
-            "dev-master": "2.5-dev"
+            "dev-master": "2.3-dev"
         }
     }
 }

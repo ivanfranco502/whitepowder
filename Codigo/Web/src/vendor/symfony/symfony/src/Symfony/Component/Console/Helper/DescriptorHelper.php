@@ -46,29 +46,24 @@ class DescriptorHelper extends Helper
     /**
      * Describes an object if supported.
      *
-     * Available options are:
-     * * format: string, the output format name
-     * * raw_text: boolean, sets output type as raw
-     *
      * @param OutputInterface $output
      * @param object          $object
-     * @param array           $options
-     *
-     * @throws \InvalidArgumentException
+     * @param string          $format
+     * @param bool            $raw
+     * @param string          $namespace
      */
-    public function describe(OutputInterface $output, $object, array $options = array())
+    public function describe(OutputInterface $output, $object, $format = null, $raw = false, $namespace = null)
     {
-        $options = array_merge(array(
-            'raw_text'  => false,
-            'format'    => 'txt',
-        ), $options);
+        $options = array('raw_text' => $raw, 'format' => $format ?: 'txt', 'namespace' => $namespace);
+        $type = !$raw && 'txt' === $options['format'] ? OutputInterface::OUTPUT_NORMAL : OutputInterface::OUTPUT_RAW;
 
         if (!isset($this->descriptors[$options['format']])) {
             throw new \InvalidArgumentException(sprintf('Unsupported format "%s".', $options['format']));
         }
 
         $descriptor = $this->descriptors[$options['format']];
-        $descriptor->describe($output, $object, $options);
+
+        $output->writeln($descriptor->describe($object, $options), $type);
     }
 
     /**

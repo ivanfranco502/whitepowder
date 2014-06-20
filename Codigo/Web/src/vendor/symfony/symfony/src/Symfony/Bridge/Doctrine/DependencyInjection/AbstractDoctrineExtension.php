@@ -304,30 +304,14 @@ abstract class AbstractDoctrineExtension extends Extension
      */
     protected function loadObjectManagerCacheDriver(array $objectManager, ContainerBuilder $container, $cacheName)
     {
-        $this->loadCacheDriver($cacheName, $objectManager['name'], $objectManager[$cacheName.'_driver'], $container);
-    }
-
-    /**
-     * Loads a cache driver.
-     *
-     * @param string                                                    $cacheDriverServiceId   The cache driver name.
-     * @param string                                                    $objectManagerName      The object manager name.
-     * @param array                                                     $cacheDriver            The cache driver mapping.
-     * @param \Symfony\Component\DependencyInjection\ContainerBuilder   $container              The ContainerBuilder instance.
-     *
-     * @return string
-     *
-     * @throws \InvalidArgumentException
-     */
-    protected function loadCacheDriver($cacheName, $objectManagerName, array $cacheDriver, ContainerBuilder $container)
-    {
-        $cacheDriverServiceId = $this->getObjectManagerElementName($objectManagerName . '_' . $cacheName);
+        $cacheDriver = $objectManager[$cacheName.'_driver'];
+        $cacheDriverService = $this->getObjectManagerElementName($objectManager['name'].'_'.$cacheName);
 
         switch ($cacheDriver['type']) {
             case 'service':
-                $container->setAlias($cacheDriverServiceId, new Alias($cacheDriver['id'], false));
+                $container->setAlias($cacheDriverService, new Alias($cacheDriver['id'], false));
 
-                return $cacheDriverServiceId;
+                return;
             case 'memcache':
                 $memcacheClass = !empty($cacheDriver['class']) ? $cacheDriver['class'] : '%'.$this->getObjectManagerElementName('cache.memcache.class').'%';
                 $memcacheInstanceClass = !empty($cacheDriver['instance_class']) ? $cacheDriver['instance_class'] : '%'.$this->getObjectManagerElementName('cache.memcache_instance.class').'%';
@@ -338,8 +322,8 @@ abstract class AbstractDoctrineExtension extends Extension
                 $memcacheInstance->addMethodCall('connect', array(
                     $memcacheHost, $memcachePort
                 ));
-                $container->setDefinition($this->getObjectManagerElementName(sprintf('%s_memcache_instance', $objectManagerName)), $memcacheInstance);
-                $cacheDef->addMethodCall('setMemcache', array(new Reference($this->getObjectManagerElementName(sprintf('%s_memcache_instance', $objectManagerName)))));
+                $container->setDefinition($this->getObjectManagerElementName(sprintf('%s_memcache_instance', $objectManager['name'])), $memcacheInstance);
+                $cacheDef->addMethodCall('setMemcache', array(new Reference($this->getObjectManagerElementName(sprintf('%s_memcache_instance', $objectManager['name'])))));
                 break;
             case 'memcached':
                 $memcachedClass = !empty($cacheDriver['class']) ? $cacheDriver['class'] : '%'.$this->getObjectManagerElementName('cache.memcached.class').'%';
@@ -351,8 +335,8 @@ abstract class AbstractDoctrineExtension extends Extension
                 $memcachedInstance->addMethodCall('addServer', array(
                     $memcachedHost, $memcachedPort
                 ));
-                $container->setDefinition($this->getObjectManagerElementName(sprintf('%s_memcached_instance', $objectManagerName)), $memcachedInstance);
-                $cacheDef->addMethodCall('setMemcached', array(new Reference($this->getObjectManagerElementName(sprintf('%s_memcached_instance', $objectManagerName)))));
+                $container->setDefinition($this->getObjectManagerElementName(sprintf('%s_memcached_instance', $objectManager['name'])), $memcachedInstance);
+                $cacheDef->addMethodCall('setMemcached', array(new Reference($this->getObjectManagerElementName(sprintf('%s_memcached_instance', $objectManager['name'])))));
                 break;
              case 'redis':
                 $redisClass = !empty($cacheDriver['class']) ? $cacheDriver['class'] : '%'.$this->getObjectManagerElementName('cache.redis.class').'%';
@@ -364,8 +348,8 @@ abstract class AbstractDoctrineExtension extends Extension
                 $redisInstance->addMethodCall('connect', array(
                     $redisHost, $redisPort
                 ));
-                $container->setDefinition($this->getObjectManagerElementName(sprintf('%s_redis_instance', $objectManagerName)), $redisInstance);
-                $cacheDef->addMethodCall('setRedis', array(new Reference($this->getObjectManagerElementName(sprintf('%s_redis_instance', $objectManagerName)))));
+                $container->setDefinition($this->getObjectManagerElementName(sprintf('%s_redis_instance', $objectManager['name'])), $redisInstance);
+                $cacheDef->addMethodCall('setRedis', array(new Reference($this->getObjectManagerElementName(sprintf('%s_redis_instance', $objectManager['name'])))));
                 break;
             case 'apc':
             case 'array':
@@ -379,21 +363,11 @@ abstract class AbstractDoctrineExtension extends Extension
         }
 
         $cacheDef->setPublic(false);
+        // generate a unique namespace for the given application
+        $namespace = 'sf2'.$this->getMappingResourceExtension().'_'.$objectManager['name'].'_'.md5($container->getParameter('kernel.root_dir').$container->getParameter('kernel.environment'));
+        $cacheDef->addMethodCall('setNamespace', array($namespace));
 
-        if (!isset($cacheDriver['namespace'])) {
-            // generate a unique namespace for the given application
-            $env        = $container->getParameter('kernel.root_dir').$container->getParameter('kernel.environment');
-            $hash       = hash('sha256', $env);
-            $namespace  = 'sf2'.$this->getMappingResourceExtension().'_'.$objectManagerName.'_'.$hash;
-
-            $cacheDriver['namespace'] = $namespace;
-        }
-
-        $cacheDef->addMethodCall('setNamespace', array($cacheDriver['namespace']));
-
-        $container->setDefinition($cacheDriverServiceId, $cacheDef);
-
-        return $cacheDriverServiceId;
+        $container->setDefinition($cacheDriverService, $cacheDef);
     }
 
     /**

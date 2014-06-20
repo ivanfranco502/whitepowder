@@ -15,8 +15,6 @@ use Symfony\Component\Validator\Tests\Fixtures\ClassConstraint;
 use Symfony\Component\Validator\Tests\Fixtures\ConstraintA;
 use Symfony\Component\Validator\Tests\Fixtures\ConstraintB;
 use Symfony\Component\Validator\Tests\Fixtures\ConstraintC;
-use Symfony\Component\Validator\Tests\Fixtures\ConstraintWithValue;
-use Symfony\Component\Validator\Tests\Fixtures\ConstraintWithValueAsDefault;
 
 class ConstraintTest extends \PHPUnit_Framework_TestCase
 {
@@ -71,30 +69,6 @@ class ConstraintTest extends \PHPUnit_Framework_TestCase
         $constraint = new ConstraintA(array('value' => 'foo'));
 
         $this->assertEquals('foo', $constraint->property2);
-    }
-
-    public function testSetDefaultPropertyDoctrineStylePlusOtherProperty()
-    {
-        $constraint = new ConstraintA(array('value' => 'foo', 'property1' => 'bar'));
-
-        $this->assertEquals('foo', $constraint->property2);
-        $this->assertEquals('bar', $constraint->property1);
-    }
-
-    public function testSetDefaultPropertyDoctrineStyleWhenDefaultPropertyIsNamedValue()
-    {
-        $constraint = new ConstraintWithValueAsDefault(array('value' => 'foo'));
-
-        $this->assertEquals('foo', $constraint->value);
-        $this->assertNull($constraint->property);
-    }
-
-    public function testDontSetDefaultPropertyIfValuePropertyExists()
-    {
-        $constraint = new ConstraintWithValue(array('value' => 'foo'));
-
-        $this->assertEquals('foo', $constraint->value);
-        $this->assertNull($constraint->property);
     }
 
     public function testSetUndefinedDefaultProperty()

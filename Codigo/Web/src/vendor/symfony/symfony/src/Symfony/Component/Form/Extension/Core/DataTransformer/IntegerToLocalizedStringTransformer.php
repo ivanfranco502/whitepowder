@@ -11,6 +11,8 @@
 
 namespace Symfony\Component\Form\Extension\Core\DataTransformer;
 
+use Symfony\Component\Form\Exception\TransformationFailedException;
+
 /**
  * Transforms between an integer and a localized number with grouping
  * (each thousand) and comma separators.
@@ -20,28 +22,32 @@ namespace Symfony\Component\Form\Extension\Core\DataTransformer;
 class IntegerToLocalizedStringTransformer extends NumberToLocalizedStringTransformer
 {
     /**
-     * Constructs a transformer.
-     *
-     * @param int  $precision    Unused.
-     * @param bool $grouping     Whether thousands should be grouped.
-     * @param int  $roundingMode One of the ROUND_ constants in this class.
-     */
-    public function __construct($precision = 0, $grouping = false, $roundingMode = self::ROUND_DOWN)
-    {
-        if (null === $roundingMode) {
-            $roundingMode = self::ROUND_DOWN;
-        }
-
-        parent::__construct(0, $grouping, $roundingMode);
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function reverseTransform($value)
     {
-        $result = parent::reverseTransform($value);
+        if (!is_string($value)) {
+            throw new TransformationFailedException('Expected a string.');
+        }
 
-        return null !== $result ? (int) $result : null;
+        if ('' === $value) {
+            return;
+        }
+
+        if ('NaN' === $value) {
+            throw new TransformationFailedException('"NaN" is not a valid integer');
+        }
+
+        $formatter = $this->getNumberFormatter();
+        $value = $formatter->parse(
+            $value,
+            PHP_INT_SIZE == 8 ? $formatter::TYPE_INT64 : $formatter::TYPE_INT32
+        );
+
+        if (intl_is_failure($formatter->getErrorCode())) {
+            throw new TransformationFailedException($formatter->getErrorMessage());
+        }
+
+        return $value;
     }
 }

@@ -13,7 +13,6 @@ namespace Symfony\Bundle\FrameworkBundle\Templating\Helper;
 
 use Symfony\Component\Templating\Helper\Helper;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * RequestHelper provides access to the current request parameters.
@@ -23,24 +22,15 @@ use Symfony\Component\HttpFoundation\RequestStack;
 class RequestHelper extends Helper
 {
     protected $request;
-    protected $requestStack;
 
     /**
      * Constructor.
      *
-     * @param Request|RequestStack $requestStack A RequestStack instance or a Request instance
-     *
-     * @deprecated since 2.5, passing a Request instance is deprecated and support for it will be removed in 3.0
+     * @param Request $request A Request instance
      */
-    public function __construct($requestStack)
+    public function __construct(Request $request)
     {
-        if ($requestStack instanceof Request) {
-            $this->request = $requestStack;
-        } elseif ($requestStack instanceof RequestStack) {
-            $this->requestStack = $requestStack;
-        } else {
-            throw new \InvalidArgumentException('RequestHelper only accepts a Request or a RequestStack instance.');
-        }
+        $this->request = $request;
     }
 
     /**
@@ -55,7 +45,7 @@ class RequestHelper extends Helper
      */
     public function getParameter($key, $default = null)
     {
-        return $this->getRequest()->get($key, $default);
+        return $this->request->get($key, $default);
     }
 
     /**
@@ -65,20 +55,7 @@ class RequestHelper extends Helper
      */
     public function getLocale()
     {
-        return $this->getRequest()->getLocale();
-    }
-
-    private function getRequest()
-    {
-        if ($this->requestStack) {
-            if (!$this->requestStack->getCurrentRequest()) {
-                throw new \LogicException('A Request must be available.');
-            }
-
-            return $this->requestStack->getCurrentRequest();
-        }
-
-        return $this->request;
+        return $this->request->getLocale();
     }
 
     /**

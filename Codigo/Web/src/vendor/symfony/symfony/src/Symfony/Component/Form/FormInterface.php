@@ -92,19 +92,11 @@ interface FormInterface extends \ArrayAccess, \Traversable, \Countable
     public function all();
 
     /**
-     * Returns the errors of this form.
+     * Returns all errors.
      *
-     * @param bool    $deep    Whether to include errors of child forms as well
-     * @param bool    $flatten Whether to flatten the list of errors in case
-     *                         $deep is set to true
-     *
-     * @return FormErrorIterator An iterator over the {@link FormError}
-     *                           instances that where added to this form
-     *
-     * @since 2.5 Since version 2.5 this method returns a
-     *            {@link FormErrorIterator} instance instead of an array
+     * @return FormError[] An array of FormError instances that occurred during validation
      */
-    public function getErrors($deep = false, $flatten = true);
+    public function getErrors();
 
     /**
      * Updates the form with default data.

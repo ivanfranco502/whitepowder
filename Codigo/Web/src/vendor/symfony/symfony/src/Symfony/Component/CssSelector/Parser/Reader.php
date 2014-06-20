@@ -34,7 +34,7 @@ class Reader
     /**
      * @var int
      */
-    private $position = 0;
+    private $position;
 
     /**
      * @param string $source
@@ -43,6 +43,7 @@ class Reader
     {
         $this->source = $source;
         $this->length = strlen($source);
+        $this->position = 0;
     }
 
     /**

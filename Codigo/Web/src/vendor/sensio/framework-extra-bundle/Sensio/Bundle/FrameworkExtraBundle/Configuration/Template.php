@@ -1,5 +1,9 @@
 <?php
 
+namespace Sensio\Bundle\FrameworkExtraBundle\Configuration;
+
+use Symfony\Bundle\FrameworkBundle\Templating\TemplateReference;
+
 /*
  * This file is part of the Symfony package.
  *
@@ -9,12 +13,8 @@
  * file that was distributed with this source code.
  */
 
-namespace Sensio\Bundle\FrameworkExtraBundle\Configuration;
-
-use Symfony\Bundle\FrameworkBundle\Templating\TemplateReference;
-
 /**
- * The Template class handles the Template annotation parts.
+ * The Template class handles the @Template annotation parts.
  *
  * @author Fabien Potencier <fabien@symfony.com>
  * @Annotation
@@ -45,7 +45,7 @@ class Template extends ConfigurationAnnotation
     /**
      * Should the template be streamed?
      *
-     * @var bool
+     * @var Boolean
      */
     protected $streamable = false;
 
@@ -60,7 +60,7 @@ class Template extends ConfigurationAnnotation
     }
 
     /**
-     * @param bool    $streamable
+     * @param Boolean $streamable
      */
     public function setIsStreamable($streamable)
     {
@@ -68,11 +68,11 @@ class Template extends ConfigurationAnnotation
     }
 
     /**
-     * @return bool
+     * @return Boolean
      */
     public function isStreamable()
     {
-        return (bool) $this->streamable;
+        return (Boolean) $this->streamable;
     }
 
     /**
@@ -149,7 +149,7 @@ class Template extends ConfigurationAnnotation
     /**
      * Only one template directive is allowed
      *
-     * @return bool
+     * @return Boolean
      * @see ConfigurationInterface
      */
     public function allowArray()
