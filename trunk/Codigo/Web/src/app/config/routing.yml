@@ -1,0 +1,8 @@
+tavros_web:
+    resource: "@TavrosWebBundle/Resources/config/routing.yml"
+    prefix:   /
+
+tavros_internal_api:
+    resource: "@TavrosInternalApiBundle/Resources/config/routing.yml"
+    prefix:   /
+

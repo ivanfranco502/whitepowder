@@ -13,10 +13,7 @@ namespace Symfony\Component\Form;
 
 use Symfony\Component\Form\Exception\LogicException;
 use Symfony\Component\Form\Exception\BadMethodCallException;
-use Symfony\Component\Form\Exception\UnexpectedTypeException;
-use Symfony\Component\Form\Extension\Csrf\CsrfProvider\CsrfProviderAdapter;
 use Symfony\Component\Form\Extension\Csrf\CsrfProvider\CsrfProviderInterface;
-use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
 /**
  * Renders a form into HTML using a rendering engine.
@@ -33,9 +30,9 @@ class FormRenderer implements FormRendererInterface
     private $engine;
 
     /**
-     * @var CsrfTokenManagerInterface
+     * @var CsrfProviderInterface
      */
-    private $csrfTokenManager;
+    private $csrfProvider;
 
     /**
      * @var array
@@ -52,24 +49,10 @@ class FormRenderer implements FormRendererInterface
      */
     private $variableStack = array();
 
-    /**
-     * Constructor.
-     *
-     * @param FormRendererEngineInterface    $engine
-     * @param CsrfTokenManagerInterface|null $csrfTokenManager
-     *
-     * @throws UnexpectedTypeException
-     */
-    public function __construct(FormRendererEngineInterface $engine, $csrfTokenManager = null)
+    public function __construct(FormRendererEngineInterface $engine, CsrfProviderInterface $csrfProvider = null)
     {
-        if ($csrfTokenManager instanceof CsrfProviderInterface) {
-            $csrfTokenManager = new CsrfProviderAdapter($csrfTokenManager);
-        } elseif (null !== $csrfTokenManager && !$csrfTokenManager instanceof CsrfTokenManagerInterface) {
-            throw new UnexpectedTypeException($csrfTokenManager, 'CsrfProviderInterface or CsrfTokenManagerInterface or null');
-        }
-
         $this->engine = $engine;
-        $this->csrfTokenManager = $csrfTokenManager;
+        $this->csrfProvider = $csrfProvider;
     }
 
     /**
@@ -91,13 +74,13 @@ class FormRenderer implements FormRendererInterface
     /**
      * {@inheritdoc}
      */
-    public function renderCsrfToken($tokenId)
+    public function renderCsrfToken($intention)
     {
-        if (null === $this->csrfTokenManager) {
-            throw new BadMethodCallException('CSRF tokens can only be generated if a CsrfTokenManagerInterface is injected in FormRenderer::__construct().');
+        if (null === $this->csrfProvider) {
+            throw new BadMethodCallException('CSRF token can only be generated if a CsrfProviderInterface is injected in the constructor.');
         }
 
-        return $this->csrfTokenManager->getToken($tokenId)->getValue();
+        return $this->csrfProvider->generateCsrfToken($intention);
     }
 
     /**

@@ -14,7 +14,6 @@ namespace Symfony\Bridge\Twig;
 use Symfony\Component\Templating\EngineInterface;
 use Symfony\Component\Templating\StreamingEngineInterface;
 use Symfony\Component\Templating\TemplateNameParserInterface;
-use Symfony\Component\Templating\TemplateReferenceInterface;
 
 /**
  * This engine knows how to render Twig templates.
@@ -39,11 +38,15 @@ class TwigEngine implements EngineInterface, StreamingEngineInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Renders a template.
      *
-     * It also supports \Twig_Template as name parameter.
+     * @param mixed $name       A template name
+     * @param array $parameters An array of parameters to pass to the template
      *
-     * @throws \Twig_Error if something went wrong like a thrown exception while rendering the template
+     * @return string The evaluated template as a string
+     *
+     * @throws \InvalidArgumentException if the template does not exist
+     * @throws \RuntimeException         if the template cannot be rendered
      */
     public function render($name, array $parameters = array())
     {
@@ -51,11 +54,12 @@ class TwigEngine implements EngineInterface, StreamingEngineInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Streams a template.
      *
-     * It also supports \Twig_Template as name parameter.
+     * @param mixed $name       A template name or a TemplateReferenceInterface instance
+     * @param array $parameters An array of parameters to pass to the template
      *
-     * @throws \Twig_Error if something went wrong like a thrown exception while rendering the template
+     * @throws \RuntimeException if the template cannot be rendered
      */
     public function stream($name, array $parameters = array())
     {
@@ -63,9 +67,11 @@ class TwigEngine implements EngineInterface, StreamingEngineInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Returns true if the template exists.
      *
-     * It also supports \Twig_Template as name parameter.
+     * @param mixed $name A template name
+     *
+     * @return bool    true if the template exists, false otherwise
      */
     public function exists($name)
     {
@@ -76,13 +82,11 @@ class TwigEngine implements EngineInterface, StreamingEngineInterface
         $loader = $this->environment->getLoader();
 
         if ($loader instanceof \Twig_ExistsLoaderInterface) {
-            return $loader->exists((string) $name);
+            return $loader->exists($name);
         }
 
         try {
-            // cast possible TemplateReferenceInterface to string because the
-            // EngineInterface supports them but Twig_LoaderInterface does not
-            $loader->getSource((string) $name);
+            $loader->getSource($name);
         } catch (\Twig_Error_Loader $e) {
             return false;
         }
@@ -91,9 +95,11 @@ class TwigEngine implements EngineInterface, StreamingEngineInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Returns true if this class is able to render the given template.
      *
-     * It also supports \Twig_Template as name parameter.
+     * @param string $name A template name
+     *
+     * @return bool    True if this class supports the given resource, false otherwise
      */
     public function supports($name)
     {
@@ -109,8 +115,7 @@ class TwigEngine implements EngineInterface, StreamingEngineInterface
     /**
      * Loads the given template.
      *
-     * @param string|TemplateReferenceInterface|\Twig_Template $name A template name or an instance of
-     *                                                               TemplateReferenceInterface or \Twig_Template
+     * @param mixed $name A template name or an instance of Twig_Template
      *
      * @return \Twig_TemplateInterface A \Twig_TemplateInterface instance
      *
@@ -123,7 +128,7 @@ class TwigEngine implements EngineInterface, StreamingEngineInterface
         }
 
         try {
-            return $this->environment->loadTemplate((string) $name);
+            return $this->environment->loadTemplate($name);
         } catch (\Twig_Error_Loader $e) {
             throw new \InvalidArgumentException($e->getMessage(), $e->getCode(), $e);
         }

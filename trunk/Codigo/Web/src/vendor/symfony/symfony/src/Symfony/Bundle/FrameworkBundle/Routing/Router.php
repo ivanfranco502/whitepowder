@@ -41,7 +41,7 @@ class Router extends BaseRouter implements WarmableInterface
         $this->container = $container;
 
         $this->resource = $resource;
-        $this->context = $context ?: new RequestContext();
+        $this->context = null === $context ? new RequestContext() : $context;
         $this->setOptions($options);
     }
 

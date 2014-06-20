@@ -67,13 +67,13 @@ class Container implements IntrospectableContainerInterface
      */
     protected $parameterBag;
 
-    protected $services = array();
-    protected $methodMap = array();
-    protected $aliases = array();
-    protected $scopes = array();
-    protected $scopeChildren = array();
-    protected $scopedServices = array();
-    protected $scopeStacks = array();
+    protected $services;
+    protected $methodMap;
+    protected $aliases;
+    protected $scopes;
+    protected $scopeChildren;
+    protected $scopedServices;
+    protected $scopeStacks;
     protected $loading = array();
 
     /**
@@ -85,7 +85,14 @@ class Container implements IntrospectableContainerInterface
      */
     public function __construct(ParameterBagInterface $parameterBag = null)
     {
-        $this->parameterBag = $parameterBag ?: new ParameterBag();
+        $this->parameterBag = null === $parameterBag ? new ParameterBag() : $parameterBag;
+
+        $this->services       = array();
+        $this->aliases        = array();
+        $this->scopes         = array();
+        $this->scopeChildren  = array();
+        $this->scopedServices = array();
+        $this->scopeStacks    = array();
 
         $this->set('service_container', $this);
     }

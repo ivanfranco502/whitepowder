@@ -176,13 +176,13 @@ class AclProvider implements AclProviderInterface
             if ((self::MAX_BATCH_SIZE === count($currentBatch) || ($i + 1) === $c) && count($currentBatch) > 0) {
                 try {
                     $loadedBatch = $this->lookupObjectIdentities($currentBatch, $sids, $oidLookup);
-                } catch (AclNotFoundException $aclNotFoundException) {
+                } catch (AclNotFoundException $aclNotFoundexception) {
                     if ($result->count()) {
                         $partialResultException = new NotAllAclsFoundException('The provider could not find ACLs for all object identities.');
                         $partialResultException->setPartialResult($result);
                         throw $partialResultException;
                     } else {
-                        throw $aclNotFoundException;
+                        throw $aclNotFoundexception;
                     }
                 }
                 foreach ($loadedBatch as $loadedOid) {
@@ -205,8 +205,7 @@ class AclProvider implements AclProviderInterface
         foreach ($oids as $oid) {
             if (!$result->contains($oid)) {
                 if (1 === count($oids)) {
-                    $objectName = method_exists($oid, '__toString') ? $oid : get_class($oid);
-                    throw new AclNotFoundException(sprintf('No ACL found for %s.', $objectName));
+                    throw new AclNotFoundException(sprintf('No ACL found for %s.', $oid));
                 }
 
                 $partialResultException = new NotAllAclsFoundException('The provider could not find ACLs for all object identities.');
@@ -295,8 +294,7 @@ SELECTCLAUSE;
         if (1 === count($types)) {
             $ids = array();
             for ($i = 0; $i < $count; $i++) {
-                $identifier = (string) $batch[$i]->getIdentifier();
-                $ids[] = $this->connection->quote($identifier);
+                $ids[] = $this->connection->quote($batch[$i]->getIdentifier());
             }
 
             $sql .= sprintf(
@@ -338,17 +336,17 @@ SELECTCLAUSE;
             $query = <<<FINDCHILDREN
                 SELECT o.object_identifier, c.class_type
                 FROM
-                    {$this->options['oid_table_name']} o
-                INNER JOIN {$this->options['class_table_name']} c ON c.id = o.class_id
-                INNER JOIN {$this->options['oid_ancestors_table_name']} a ON a.object_identity_id = o.id
+                    {$this->options['oid_table_name']} as o
+                INNER JOIN {$this->options['class_table_name']} as c ON c.id = o.class_id
+                INNER JOIN {$this->options['oid_ancestors_table_name']} as a ON a.object_identity_id = o.id
                 WHERE
                     a.ancestor_id = %d AND a.object_identity_id != a.ancestor_id
 FINDCHILDREN;
         } else {
             $query = <<<FINDCHILDREN
                 SELECT o.object_identifier, c.class_type
-                FROM {$this->options['oid_table_name']} o
-                INNER JOIN {$this->options['class_table_name']} c ON c.id = o.class_id
+                FROM {$this->options['oid_table_name']} as o
+                INNER JOIN {$this->options['class_table_name']} as c ON c.id = o.class_id
                 WHERE o.parent_object_identity_id = %d
 FINDCHILDREN;
         }
@@ -376,8 +374,8 @@ QUERY;
             $query,
             $this->options['oid_table_name'],
             $this->options['class_table_name'],
-            $this->connection->quote((string) $oid->getIdentifier()),
-            $this->connection->quote((string) $oid->getType())
+            $this->connection->quote($oid->getIdentifier()),
+            $this->connection->quote($oid->getType())
         );
     }
 
@@ -432,8 +430,8 @@ QUERY;
         $ancestorIds = array();
         foreach ($this->connection->executeQuery($sql)->fetchAll() as $data) {
             // FIXME: skip ancestors which are cached
-            // Fix: Oracle returns keys in uppercase
-            $ancestorIds[] = reset($data);
+
+            $ancestorIds[] = $data['ancestor_id'];
         }
 
         return $ancestorIds;
@@ -537,7 +535,7 @@ QUERY;
                  $auditSuccess,
                  $auditFailure,
                  $username,
-                 $securityIdentifier) = array_values($data);
+                 $securityIdentifier) = $data;
 
             // has the ACL been hydrated during this hydration cycle?
             if (isset($acls[$aclId])) {

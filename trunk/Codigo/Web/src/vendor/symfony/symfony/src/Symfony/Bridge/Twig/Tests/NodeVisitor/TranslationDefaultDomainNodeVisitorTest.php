@@ -13,8 +13,9 @@ namespace Symfony\Bridge\Twig\Tests\NodeVisitor;
 
 use Symfony\Bridge\Twig\NodeVisitor\TranslationDefaultDomainNodeVisitor;
 use Symfony\Bridge\Twig\NodeVisitor\TranslationNodeVisitor;
+use Symfony\Bridge\Twig\Tests\TestCase;
 
-class TranslationDefaultDomainNodeVisitorTest extends \PHPUnit_Framework_TestCase
+class TranslationDefaultDomainNodeVisitorTest extends TestCase
 {
     private static $message = 'message';
     private static $domain = 'domain';

@@ -12,7 +12,6 @@
 namespace Symfony\Component\Form\Tests;
 
 use Symfony\Component\Form\FormError;
-use Symfony\Component\Security\Csrf\CsrfToken;
 
 abstract class AbstractTableLayoutTest extends AbstractLayoutTest
 {
@@ -337,9 +336,9 @@ abstract class AbstractTableLayoutTest extends AbstractLayoutTest
 
     public function testCsrf()
     {
-        $this->csrfTokenManager->expects($this->any())
-            ->method('getToken')
-            ->will($this->returnValue(new CsrfToken('token_id', 'foo&bar')));
+        $this->csrfProvider->expects($this->any())
+            ->method('generateCsrfToken')
+            ->will($this->returnValue('foo&bar'));
 
         $form = $this->factory->createNamedBuilder('name', 'form')
             ->add($this->factory
@@ -506,43 +505,5 @@ abstract class AbstractTableLayoutTest extends AbstractLayoutTest
         $html = $this->renderEnd($view, array('render_rest' => false));
 
         $this->assertEquals('</form>', $html);
-    }
-
-    public function testWidgetContainerAttributes()
-    {
-        $form = $this->factory->createNamed('form', 'form', null, array(
-            'attr' => array('class' => 'foobar', 'data-foo' => 'bar'),
-        ));
-
-        $form->add('text', 'text');
-
-        $html = $this->renderWidget($form->createView());
-
-        // compare plain HTML to check the whitespace
-        $this->assertContains('<table id="form" class="foobar" data-foo="bar">', $html);
-    }
-
-    public function testWidgetContainerAttributeNameRepeatedIfTrue()
-    {
-        $form = $this->factory->createNamed('form', 'form', null, array(
-            'attr' => array('foo' => true),
-        ));
-
-        $html = $this->renderWidget($form->createView());
-
-        // foo="foo"
-        $this->assertContains('<table id="form" foo="foo">', $html);
-    }
-
-    public function testWidgetContainerAttributeHiddenIfFalse()
-    {
-        $form = $this->factory->createNamed('form', 'form', null, array(
-            'attr' => array('foo' => false),
-        ));
-
-        $html = $this->renderWidget($form->createView());
-
-        // no foo
-        $this->assertContains('<table id="form">', $html);
     }
 }

@@ -247,7 +247,7 @@ class FormHelper extends Helper
      * Check the token in your action using the same intention.
      *
      * <code>
-     * $csrfProvider = $this->get('security.csrf.token_generator');
+     * $csrfProvider = $this->get('form.csrf_provider');
      * if (!$csrfProvider->isCsrfTokenValid('rm_user_'.$user->getId(), $token)) {
      *     throw new \RuntimeException('CSRF attack detected.');
      * }

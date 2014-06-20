@@ -70,13 +70,17 @@ class ExceptionController
      */
     protected function getAndCleanOutputBuffering($startObLevel)
     {
-        if (ob_get_level() <= $startObLevel) {
-            return '';
+        // ob_get_level() never returns 0 on some Windows configurations, so if
+        // the level is the same two times in a row, the loop should be stopped.
+        $previousObLevel = null;
+        $currentContent = '';
+
+        while (($obLevel = ob_get_level()) > $startObLevel && $obLevel !== $previousObLevel) {
+            $previousObLevel = $obLevel;
+            $currentContent .= ob_get_clean();
         }
 
-        Response::closeOutputBuffers($startObLevel + 1, true);
-
-        return ob_get_clean();
+        return $currentContent;
     }
 
     /**

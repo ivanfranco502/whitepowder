@@ -11,20 +11,11 @@
 
 namespace Symfony\Component\Form\Extension\Validator\Util;
 
-use Symfony\Component\HttpFoundation\RequestStack;
-
 /**
  * @author Bernhard Schussek <bschussek@gmail.com>
  */
 class ServerParams
 {
-    private $requestStack;
-
-    public function __construct(RequestStack $requestStack = null)
-    {
-        $this->requestStack = $requestStack;
-    }
-
     /**
      * Returns maximum post size in bytes.
      *
@@ -74,10 +65,6 @@ class ServerParams
      */
     public function getContentLength()
     {
-        if (null !== $this->requestStack && null !== $request = $this->requestStack->getCurrentRequest()) {
-            return $request->server->get('CONTENT_LENGTH');
-        }
-
         return isset($_SERVER['CONTENT_LENGTH'])
             ? (int) $_SERVER['CONTENT_LENGTH']
             : null;

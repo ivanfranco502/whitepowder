@@ -36,12 +36,10 @@ class TextDescriptor extends Descriptor
         }
 
         $nameWidth = isset($options['name_width']) ? $options['name_width'] : strlen($argument->getName());
+        $output = str_replace("\n", "\n".str_repeat(' ', $nameWidth + 2), $argument->getDescription());
+        $output = sprintf(" <info>%-${nameWidth}s</info> %s%s", $argument->getName(), $output, $default);
 
-        $this->writeText(sprintf(" <info>%-${nameWidth}s</info> %s%s",
-            $argument->getName(),
-            str_replace("\n", "\n".str_repeat(' ', $nameWidth + 2), $argument->getDescription()),
-            $default
-        ), $options);
+        return isset($options['raw_text']) && $options['raw_text'] ? strip_tags($output) : $output;
     }
 
     /**
@@ -58,13 +56,15 @@ class TextDescriptor extends Descriptor
         $nameWidth = isset($options['name_width']) ? $options['name_width'] : strlen($option->getName());
         $nameWithShortcutWidth = $nameWidth - strlen($option->getName()) - 2;
 
-        $this->writeText(sprintf(" <info>%s</info> %-${nameWithShortcutWidth}s%s%s%s",
+        $output = sprintf(" <info>%s</info> %-${nameWithShortcutWidth}s%s%s%s",
             '--'.$option->getName(),
             $option->getShortcut() ? sprintf('(-%s) ', $option->getShortcut()) : '',
             str_replace("\n", "\n".str_repeat(' ', $nameWidth + 2), $option->getDescription()),
             $default,
             $option->isArray() ? '<comment> (multiple values allowed)</comment>' : ''
-        ), $options);
+        );
+
+        return isset($options['raw_text']) && $options['raw_text'] ? strip_tags($output) : $output;
     }
 
     /**
@@ -85,27 +85,27 @@ class TextDescriptor extends Descriptor
         }
         ++$nameWidth;
 
-        if ($definition->getArguments()) {
-            $this->writeText('<comment>Arguments:</comment>', $options);
-            $this->writeText("\n");
-            foreach ($definition->getArguments() as $argument) {
-                $this->describeInputArgument($argument, array_merge($options, array('name_width' => $nameWidth)));
-                $this->writeText("\n");
-            }
-        }
+        $messages = array();
 
-        if ($definition->getArguments() && $definition->getOptions()) {
-            $this->writeText("\n");
+        if ($definition->getArguments()) {
+            $messages[] = '<comment>Arguments:</comment>';
+            foreach ($definition->getArguments() as $argument) {
+                $messages[] = $this->describeInputArgument($argument, array('name_width' => $nameWidth));
+            }
+            $messages[] = '';
         }
 
         if ($definition->getOptions()) {
-            $this->writeText('<comment>Options:</comment>', $options);
-            $this->writeText("\n");
+            $messages[] = '<comment>Options:</comment>';
             foreach ($definition->getOptions() as $option) {
-                $this->describeInputOption($option, array_merge($options, array('name_width' => $nameWidth)));
-                $this->writeText("\n");
+                $messages[] = $this->describeInputOption($option, array('name_width' => $nameWidth));
             }
+            $messages[] = '';
         }
+
+        $output = implode("\n", $messages);
+
+        return isset($options['raw_text']) && $options['raw_text'] ? strip_tags($output) : $output;
     }
 
     /**
@@ -115,30 +115,22 @@ class TextDescriptor extends Descriptor
     {
         $command->getSynopsis();
         $command->mergeApplicationDefinition(false);
+        $messages = array('<comment>Usage:</comment>', ' '.$command->getSynopsis(), '');
 
-        $this->writeText('<comment>Usage:</comment>', $options);
-        $this->writeText("\n");
-        $this->writeText(' '.$command->getSynopsis(), $options);
-        $this->writeText("\n");
-
-        if (count($command->getAliases()) > 0) {
-            $this->writeText("\n");
-            $this->writeText('<comment>Aliases:</comment> <info>'.implode(', ', $command->getAliases()).'</info>', $options);
+        if ($command->getAliases()) {
+            $messages[] = '<comment>Aliases:</comment> <info>'.implode(', ', $command->getAliases()).'</info>';
         }
 
-        if ($definition = $command->getNativeDefinition()) {
-            $this->writeText("\n");
-            $this->describeInputDefinition($definition, $options);
-        }
-
-        $this->writeText("\n");
+        $messages[] = $this->describeInputDefinition($command->getNativeDefinition());
 
         if ($help = $command->getProcessedHelp()) {
-            $this->writeText('<comment>Help:</comment>', $options);
-            $this->writeText("\n");
-            $this->writeText(' '.str_replace("\n", "\n ", $help), $options);
-            $this->writeText("\n");
+            $messages[] = '<comment>Help:</comment>';
+            $messages[] = ' '.str_replace("\n", "\n ", $help)."\n";
         }
+
+        $output = implode("\n", $messages);
+
+        return isset($options['raw_text']) && $options['raw_text'] ? strip_tags($output) : $output;
     }
 
     /**
@@ -148,52 +140,41 @@ class TextDescriptor extends Descriptor
     {
         $describedNamespace = isset($options['namespace']) ? $options['namespace'] : null;
         $description = new ApplicationDescription($application, $describedNamespace);
+        $messages = array();
 
         if (isset($options['raw_text']) && $options['raw_text']) {
             $width = $this->getColumnWidth($description->getCommands());
 
             foreach ($description->getCommands() as $command) {
-                $this->writeText(sprintf("%-${width}s %s", $command->getName(), $command->getDescription()), $options);
-                $this->writeText("\n");
+                $messages[] = sprintf("%-${width}s %s", $command->getName(), $command->getDescription());
             }
         } else {
             $width = $this->getColumnWidth($description->getCommands());
 
-            $this->writeText($application->getHelp(), $options);
-            $this->writeText("\n\n");
+            $messages[] = $application->getHelp();
+            $messages[] = '';
 
             if ($describedNamespace) {
-                $this->writeText(sprintf("<comment>Available commands for the \"%s\" namespace:</comment>", $describedNamespace), $options);
+                $messages[] = sprintf("<comment>Available commands for the \"%s\" namespace:</comment>", $describedNamespace);
             } else {
-                $this->writeText('<comment>Available commands:</comment>', $options);
+                $messages[] = '<comment>Available commands:</comment>';
             }
 
             // add commands by namespace
             foreach ($description->getNamespaces() as $namespace) {
                 if (!$describedNamespace && ApplicationDescription::GLOBAL_NAMESPACE !== $namespace['id']) {
-                    $this->writeText("\n");
-                    $this->writeText('<comment>'.$namespace['id'].'</comment>', $options);
+                    $messages[] = '<comment>'.$namespace['id'].'</comment>';
                 }
 
                 foreach ($namespace['commands'] as $name) {
-                    $this->writeText("\n");
-                    $this->writeText(sprintf("  <info>%-${width}s</info> %s", $name, $description->getCommand($name)->getDescription()), $options);
+                    $messages[] = sprintf("  <info>%-${width}s</info> %s", $name, $description->getCommand($name)->getDescription());
                 }
             }
-
-            $this->writeText("\n");
         }
-    }
 
-    /**
-     * {@inheritdoc}
-     */
-    private function writeText($content, array $options = array())
-    {
-        $this->write(
-            isset($options['raw_text']) && $options['raw_text'] ? strip_tags($content) : $content,
-            isset($options['raw_output']) ? !$options['raw_output'] : true
-        );
+        $output = implode("\n", $messages);
+
+        return isset($options['raw_text']) && $options['raw_text'] ? strip_tags($output) : $output;
     }
 
     /**

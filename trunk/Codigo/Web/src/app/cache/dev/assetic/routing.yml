@@ -1,0 +1,5 @@
+_assetic:
+    resource: .
+    type: assetic
+_app:
+    resource: 'D:/Users/Joaquin-Dev/Desktop/tavros/whitepowder/trunk/Codigo/Web/src/app/config/routing_dev.yml'

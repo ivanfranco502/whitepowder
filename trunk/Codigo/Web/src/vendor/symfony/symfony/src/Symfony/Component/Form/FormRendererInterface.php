@@ -73,20 +73,20 @@ interface FormRendererInterface
      * <input type="hidden" name="token" value="<?php $renderer->renderCsrfToken('rm_user_'.$user->getId()) ?>">
      * </code>
      *
-     * Check the token in your action using the same token ID.
+     * Check the token in your action using the same intention.
      *
      * <code>
-     * $csrfProvider = $this->get('security.csrf.token_generator');
+     * $csrfProvider = $this->get('form.csrf_provider');
      * if (!$csrfProvider->isCsrfTokenValid('rm_user_'.$user->getId(), $token)) {
      *     throw new \RuntimeException('CSRF attack detected.');
      * }
      * </code>
      *
-     * @param string $tokenId The ID of the CSRF token
+     * @param string $intention The intention of the protected action
      *
      * @return string A CSRF token
      */
-    public function renderCsrfToken($tokenId);
+    public function renderCsrfToken($intention);
 
     /**
      * Makes a technical name human readable.

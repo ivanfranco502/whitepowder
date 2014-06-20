@@ -28,10 +28,9 @@ abstract class FixtureMonologExtensionTest extends DependencyInjectionTest
         $this->assertTrue($container->hasDefinition('monolog.handler.nested'));
 
         $logger = $container->getDefinition('monolog.logger');
-        $this->assertCount(3, $logger->getMethodCalls());
-        $this->assertDICDefinitionMethodCallAt(2, $logger, 'pushHandler', array(new Reference('monolog.handler.custom')));
-        $this->assertDICDefinitionMethodCallAt(1, $logger, 'pushHandler', array(new Reference('monolog.handler.main')));
-        $this->assertDICDefinitionMethodCallAt(0, $logger, 'pushHandler', array(new Reference('monolog.handler.filtered')));
+        $this->assertCount(2, $logger->getMethodCalls());
+        $this->assertDICDefinitionMethodCallAt(1, $logger, 'pushHandler', array(new Reference('monolog.handler.custom')));
+        $this->assertDICDefinitionMethodCallAt(0, $logger, 'pushHandler', array(new Reference('monolog.handler.main')));
 
         $handler = $container->getDefinition('monolog.handler.custom');
         $this->assertDICDefinitionClass($handler, '%monolog.handler.stream.class%');
@@ -39,11 +38,7 @@ abstract class FixtureMonologExtensionTest extends DependencyInjectionTest
 
         $handler = $container->getDefinition('monolog.handler.main');
         $this->assertDICDefinitionClass($handler, '%monolog.handler.fingers_crossed.class%');
-        $this->assertDICConstructorArguments($handler, array(new Reference('monolog.handler.nested'), \Monolog\Logger::ERROR, 0, true, true, \Monolog\Logger::NOTICE));
-
-        $handler = $container->getDefinition('monolog.handler.filtered');
-        $this->assertDICDefinitionClass($handler, '%monolog.handler.filter.class%');
-        $this->assertDICConstructorArguments($handler, array(new Reference('monolog.handler.nested2'), array(\Monolog\Logger::WARNING, \Monolog\Logger::ERROR), \Monolog\Logger::EMERGENCY, true));
+        $this->assertDICConstructorArguments($handler, array(new Reference('monolog.handler.nested'), \Monolog\Logger::ERROR, 0, true, true));
     }
 
     public function testLoadWithOverwriting()
@@ -66,7 +61,7 @@ abstract class FixtureMonologExtensionTest extends DependencyInjectionTest
 
         $handler = $container->getDefinition('monolog.handler.main');
         $this->assertDICDefinitionClass($handler, '%monolog.handler.fingers_crossed.class%');
-        $this->assertDICConstructorArguments($handler, array(new Reference('monolog.handler.nested'), \Monolog\Logger::ERROR, 0, true, true, null));
+        $this->assertDICConstructorArguments($handler, array(new Reference('monolog.handler.nested'), \Monolog\Logger::ERROR, 0, true, true));
     }
 
     public function testLoadWithNewAtEnd()

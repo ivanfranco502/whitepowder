@@ -12,9 +12,8 @@
 namespace Symfony\Bridge\Twig\Tests;
 
 use Symfony\Bridge\Twig\TwigEngine;
-use Symfony\Component\Templating\TemplateReference;
 
-class TwigEngineTest extends \PHPUnit_Framework_TestCase
+class TwigEngineTest extends TestCase
 {
     public function testExistsWithTemplateInstances()
     {
@@ -28,7 +27,6 @@ class TwigEngineTest extends \PHPUnit_Framework_TestCase
         $engine = $this->getTwig();
 
         $this->assertFalse($engine->exists('foobar'));
-        $this->assertFalse($engine->exists(new TemplateReference('foorbar')));
     }
 
     public function testExistsWithTemplateWithSyntaxErrors()
@@ -36,7 +34,6 @@ class TwigEngineTest extends \PHPUnit_Framework_TestCase
         $engine = $this->getTwig();
 
         $this->assertTrue($engine->exists('error'));
-        $this->assertTrue($engine->exists(new TemplateReference('error')));
     }
 
     public function testExists()
@@ -44,25 +41,6 @@ class TwigEngineTest extends \PHPUnit_Framework_TestCase
         $engine = $this->getTwig();
 
         $this->assertTrue($engine->exists('index'));
-        $this->assertTrue($engine->exists(new TemplateReference('index')));
-    }
-
-    public function testRender()
-    {
-        $engine = $this->getTwig();
-
-        $this->assertSame('foo', $engine->render('index'));
-        $this->assertSame('foo', $engine->render(new TemplateReference('index')));
-    }
-
-    /**
-     * @expectedException \Twig_Error_Syntax
-     */
-    public function testRenderWithError()
-    {
-        $engine = $this->getTwig();
-
-        $engine->render(new TemplateReference('error'));
     }
 
     protected function getTwig()

@@ -37,7 +37,7 @@ interface TemplateReferenceInterface
      *
      * @return TemplateReferenceInterface The TemplateReferenceInterface instance
      *
-     * @throws  \InvalidArgumentException if the parameter name is not supported
+     * @throws  \InvalidArgumentException if the parameter is not defined
      *
      * @api
      */
@@ -50,7 +50,7 @@ interface TemplateReferenceInterface
      *
      * @return string The parameter value
      *
-     * @throws  \InvalidArgumentException if the parameter name is not supported
+     * @throws  \InvalidArgumentException if the parameter is not defined
      *
      * @api
      */
@@ -77,15 +77,4 @@ interface TemplateReferenceInterface
      * @api
      */
     public function getLogicalName();
-
-    /**
-     * Returns the string representation as shortcut for getLogicalName().
-     *
-     * Alias of getLogicalName().
-     *
-     * @return string The template name
-     *
-     * @api
-     */
-    public function __toString();
 }

@@ -82,6 +82,10 @@ class MessageCatalogueTest extends \PHPUnit_Framework_TestCase
 
     public function testAddCatalogue()
     {
+        if (!class_exists('Symfony\Component\Config\Loader\Loader')) {
+            $this->markTestSkipped('The "Config" component is not available');
+        }
+
         $r = $this->getMock('Symfony\Component\Config\Resource\ResourceInterface');
         $r->expects($this->any())->method('__toString')->will($this->returnValue('r'));
 
@@ -104,6 +108,10 @@ class MessageCatalogueTest extends \PHPUnit_Framework_TestCase
 
     public function testAddFallbackCatalogue()
     {
+        if (!class_exists('Symfony\Component\Config\Loader\Loader')) {
+            $this->markTestSkipped('The "Config" component is not available');
+        }
+
         $r = $this->getMock('Symfony\Component\Config\Resource\ResourceInterface');
         $r->expects($this->any())->method('__toString')->will($this->returnValue('r'));
 
@@ -147,6 +155,10 @@ class MessageCatalogueTest extends \PHPUnit_Framework_TestCase
 
     public function testGetAddResource()
     {
+        if (!class_exists('Symfony\Component\Config\Loader\Loader')) {
+            $this->markTestSkipped('The "Config" component is not available');
+        }
+
         $catalogue = new MessageCatalogue('en');
         $r = $this->getMock('Symfony\Component\Config\Resource\ResourceInterface');
         $r->expects($this->any())->method('__toString')->will($this->returnValue('r'));

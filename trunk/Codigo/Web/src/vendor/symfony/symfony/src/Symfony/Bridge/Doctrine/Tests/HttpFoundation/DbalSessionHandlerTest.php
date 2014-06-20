@@ -20,6 +20,13 @@ use Symfony\Bridge\Doctrine\HttpFoundation\DbalSessionHandler;
  */
 class DbalSessionHandlerTest extends \PHPUnit_Framework_TestCase
 {
+    protected function setUp()
+    {
+        if (!class_exists('Symfony\Component\HttpFoundation\Request')) {
+            $this->markTestSkipped('The "HttpFoundation" component is not available');
+        }
+    }
+
     public function testConstruct()
     {
         $connection = $this->getMockBuilder('Doctrine\DBAL\Connection')->disableOriginalConstructor()->getMock();

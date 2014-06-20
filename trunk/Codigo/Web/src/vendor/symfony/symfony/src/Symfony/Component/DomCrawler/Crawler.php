@@ -14,7 +14,7 @@ namespace Symfony\Component\DomCrawler;
 use Symfony\Component\CssSelector\CssSelector;
 
 /**
- * Crawler eases navigation of a list of \DOMElement objects.
+ * Crawler eases navigation of a list of \DOMNode objects.
  *
  * @author Fabien Potencier <fabien@symfony.com>
  *
@@ -26,16 +26,6 @@ class Crawler extends \SplObjectStorage
      * @var string The current URI or the base href value
      */
     protected $uri;
-
-    /**
-     * @var string The default namespace prefix to be used with XPath and CSS expressions
-     */
-    private $defaultNamespacePrefix = 'default';
-
-    /**
-     * @var array A map of manually registered namespaces
-     */
-    private $namespaces = array();
 
     /**
      * Constructor.
@@ -102,7 +92,7 @@ class Crawler extends \SplObjectStorage
     public function addContent($content, $type = null)
     {
         if (empty($type)) {
-            $type = 0 === strpos($content, '<?xml') ? 'application/xml' : 'text/html';
+            $type = 'text/html';
         }
 
         // DOM only for HTML/XML content
@@ -214,11 +204,6 @@ class Crawler extends \SplObjectStorage
      */
     public function addXmlContent($content, $charset = 'UTF-8')
     {
-        // remove the default namespace if it's the only namespace to make XPath expressions simpler
-        if (!preg_match('/xmlns:/', $content)) {
-            $content = str_replace('xmlns', 'ns', $content);
-        }
-
         $internalErrors = libxml_use_internal_errors(true);
         $disableEntities = libxml_disable_entity_loader(true);
 
@@ -226,7 +211,8 @@ class Crawler extends \SplObjectStorage
         $dom->validateOnParse = true;
 
         if ('' !== trim($content)) {
-            @$dom->loadXML($content, LIBXML_NONET);
+            // remove the default namespace to make XPath expressions simpler
+            @$dom->loadXML(str_replace('xmlns', 'ns', $content), LIBXML_NONET);
         }
 
         libxml_use_internal_errors($internalErrors);
@@ -494,7 +480,7 @@ class Crawler extends \SplObjectStorage
      *
      * @param string $attribute The attribute name
      *
-     * @return string|null The attribute value or null if the attribute does not exist
+     * @return string The attribute value
      *
      * @throws \InvalidArgumentException When current node is empty
      *
@@ -506,9 +492,7 @@ class Crawler extends \SplObjectStorage
             throw new \InvalidArgumentException('The current node list is empty.');
         }
 
-        $node = $this->getNode(0);
-
-        return $node->hasAttribute($attribute) ? $node->getAttribute($attribute) : null;
+        return $this->getNode(0)->getAttribute($attribute);
     }
 
     /**
@@ -637,7 +621,9 @@ class Crawler extends \SplObjectStorage
     public function filter($selector)
     {
         if (!class_exists('Symfony\\Component\\CssSelector\\CssSelector')) {
+            // @codeCoverageIgnoreStart
             throw new \RuntimeException('Unable to filter with a CSS selector as the Symfony CssSelector is not installed (you can use filterXPath instead).');
+            // @codeCoverageIgnoreEnd
         }
 
         // The CssSelector already prefixes the selector with descendant-or-self::
@@ -747,25 +733,6 @@ class Crawler extends \SplObjectStorage
     }
 
     /**
-     * Overloads a default namespace prefix to be used with XPath and CSS expressions.
-     *
-     * @param string $prefix
-     */
-    public function setDefaultNamespacePrefix($prefix)
-    {
-        $this->defaultNamespacePrefix = $prefix;
-    }
-
-    /**
-     * @param string $prefix
-     * @param string $namespace
-     */
-    public function registerNamespace($prefix, $namespace)
-    {
-        $this->namespaces[$prefix] = $namespace;
-    }
-
-    /**
      * Converts string for XPath expressions.
      *
      * Escaped characters are: quotes (") and apostrophe (').
@@ -823,12 +790,10 @@ class Crawler extends \SplObjectStorage
      */
     private function filterRelativeXPath($xpath)
     {
-        $prefixes = $this->findNamespacePrefixes($xpath);
-
         $crawler = new static(null, $this->uri);
 
         foreach ($this as $node) {
-            $domxpath = $this->createDOMXPath($node->ownerDocument, $prefixes);
+            $domxpath = new \DOMXPath($node->ownerDocument);
             $crawler->add($domxpath->query($xpath, $node));
         }
 
@@ -903,13 +868,15 @@ class Crawler extends \SplObjectStorage
      *
      * @return \DOMElement|null
      */
-    public function getNode($position)
+    protected function getNode($position)
     {
         foreach ($this as $i => $node) {
             if ($i == $position) {
                 return $node;
             }
+        // @codeCoverageIgnoreStart
         }
+        // @codeCoverageIgnoreEnd
     }
 
     /**
@@ -929,63 +896,5 @@ class Crawler extends \SplObjectStorage
         } while ($node = $node->$siblingDir);
 
         return $nodes;
-    }
-
-    /**
-     * @param \DOMDocument $document
-     * @param array        $prefixes
-     *
-     * @return \DOMXPath
-     *
-     * @throws \InvalidArgumentException
-     */
-    private function createDOMXPath(\DOMDocument $document, array $prefixes = array())
-    {
-        $domxpath = new \DOMXPath($document);
-
-        foreach ($prefixes as $prefix) {
-            $namespace = $this->discoverNamespace($domxpath, $prefix);
-            if (null !== $namespace) {
-                $domxpath->registerNamespace($prefix, $namespace);
-            }
-        }
-
-        return $domxpath;
-    }
-
-    /**
-     * @param \DOMXPath $domxpath
-     * @param string    $prefix
-     *
-     * @return string
-     *
-     * @throws \InvalidArgumentException
-     */
-    private function discoverNamespace(\DOMXPath $domxpath, $prefix)
-    {
-        if (isset($this->namespaces[$prefix])) {
-            return $this->namespaces[$prefix];
-        }
-
-        // ask for one namespace, otherwise we'd get a collection with an item for each node
-        $namespaces = $domxpath->query(sprintf('(//namespace::*[name()="%s"])[last()]', $this->defaultNamespacePrefix === $prefix ? '' : $prefix));
-
-        if ($node = $namespaces->item(0)) {
-            return $node->nodeValue;
-        }
-    }
-
-    /**
-     * @param $xpath
-     *
-     * @return array
-     */
-    private function findNamespacePrefixes($xpath)
-    {
-        if (preg_match_all('/(?P<prefix>[a-z_][a-z_0-9\-\.]*):[^"\/]/i', $xpath, $matches)) {
-            return array_unique($matches['prefix']);
-        }
-
-        return array();
     }
 }

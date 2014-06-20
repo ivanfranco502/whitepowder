@@ -83,9 +83,9 @@ class SecurityExtensionTest extends \PHPUnit_Framework_TestCase
 
     protected function getContainer()
     {
-        $container = $this->getRawContainer();
-        $container->compile();
+        $containter = $this->getRawContainer();
+        $containter->compile();
 
-        return $container;
+        return $containter;
     }
 }

@@ -36,71 +36,20 @@ class ResolvedFormTypeTest extends \PHPUnit_Framework_TestCase
      * @var \PHPUnit_Framework_MockObject_MockObject
      */
     private $dataMapper;
-    private $parentType;
-    private $type;
-    private $extension1;
-    private $extension2;
-    private $parentResolvedType;
-    private $resolvedType;
 
     protected function setUp()
     {
+        if (!class_exists('Symfony\Component\OptionsResolver\OptionsResolver')) {
+            $this->markTestSkipped('The "OptionsResolver" component is not available');
+        }
+
+        if (!class_exists('Symfony\Component\EventDispatcher\EventDispatcher')) {
+            $this->markTestSkipped('The "EventDispatcher" component is not available');
+        }
+
         $this->dispatcher = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
         $this->factory = $this->getMock('Symfony\Component\Form\FormFactoryInterface');
         $this->dataMapper = $this->getMock('Symfony\Component\Form\DataMapperInterface');
-        $this->parentType = $this->getMockFormType();
-        $this->type = $this->getMockFormType();
-        $this->extension1 = $this->getMockFormTypeExtension();
-        $this->extension2 = $this->getMockFormTypeExtension();
-        $this->parentResolvedType = new ResolvedFormType($this->parentType);
-        $this->resolvedType = new ResolvedFormType($this->type, array($this->extension1, $this->extension2), $this->parentResolvedType);
-    }
-
-    public function testGetOptionsResolver()
-    {
-        if (version_compare(\PHPUnit_Runner_Version::id(), '3.7', '<')) {
-            $this->markTestSkipped('This test requires PHPUnit 3.7.');
-        }
-
-        $test = $this;
-        $i = 0;
-
-        $assertIndexAndAddOption = function ($index, $option, $default) use (&$i, $test) {
-            return function (OptionsResolverInterface $resolver) use (&$i, $test, $index, $option, $default) {
-                /* @var \PHPUnit_Framework_TestCase $test */
-                $test->assertEquals($index, $i, 'Executed at index '.$index);
-
-                ++$i;
-
-                $resolver->setDefaults(array($option => $default));
-            };
-        };
-
-        // First the default options are generated for the super type
-        $this->parentType->expects($this->once())
-            ->method('setDefaultOptions')
-            ->will($this->returnCallback($assertIndexAndAddOption(0, 'a', 'a_default')));
-
-        // The form type itself
-        $this->type->expects($this->once())
-            ->method('setDefaultOptions')
-            ->will($this->returnCallback($assertIndexAndAddOption(1, 'b', 'b_default')));
-
-        // And its extensions
-        $this->extension1->expects($this->once())
-            ->method('setDefaultOptions')
-            ->will($this->returnCallback($assertIndexAndAddOption(2, 'c', 'c_default')));
-
-        $this->extension2->expects($this->once())
-            ->method('setDefaultOptions')
-            ->will($this->returnCallback($assertIndexAndAddOption(3, 'd', 'd_default')));
-
-        $givenOptions = array('a' => 'a_custom', 'c' => 'c_custom');
-        $resolvedOptions = array('a' => 'a_custom', 'b' => 'b_default', 'c' => 'c_custom', 'd' => 'd_default');
-
-        $resolver = $this->resolvedType->getOptionsResolver();
-
-        $this->assertEquals($resolvedOptions, $resolver->resolve($givenOptions));
     }
 
     public function testCreateBuilder()
@@ -109,69 +58,13 @@ class ResolvedFormTypeTest extends \PHPUnit_Framework_TestCase
             $this->markTestSkipped('This test requires PHPUnit 3.7.');
         }
 
-        $givenOptions = array('a' => 'a_custom', 'c' => 'c_custom');
-        $resolvedOptions = array('a' => 'a_custom', 'b' => 'b_default', 'c' => 'c_custom', 'd' => 'd_default');
-        $optionsResolver = $this->getMock('Symfony\Component\OptionsResolver\OptionsResolverInterface');
+        $parentType = $this->getMockFormType();
+        $type = $this->getMockFormType();
+        $extension1 = $this->getMockFormTypeExtension();
+        $extension2 = $this->getMockFormTypeExtension();
 
-        $this->resolvedType = $this->getMockBuilder('Symfony\Component\Form\ResolvedFormType')
-            ->setConstructorArgs(array($this->type, array($this->extension1, $this->extension2), $this->parentResolvedType))
-            ->setMethods(array('getOptionsResolver'))
-            ->getMock();
-
-        $this->resolvedType->expects($this->once())
-            ->method('getOptionsResolver')
-            ->will($this->returnValue($optionsResolver));
-
-        $optionsResolver->expects($this->once())
-            ->method('resolve')
-            ->with($givenOptions)
-            ->will($this->returnValue($resolvedOptions));
-
-        $factory = $this->getMockFormFactory();
-        $builder = $this->resolvedType->createBuilder($factory, 'name', $givenOptions);
-
-        $this->assertSame($this->resolvedType, $builder->getType());
-        $this->assertSame($resolvedOptions, $builder->getOptions());
-        $this->assertNull($builder->getDataClass());
-    }
-
-    public function testCreateBuilderWithDataClassOption()
-    {
-        if (version_compare(\PHPUnit_Runner_Version::id(), '3.7', '<')) {
-            $this->markTestSkipped('This test requires PHPUnit 3.7.');
-        }
-
-        $givenOptions = array('data_class' => 'Foo');
-        $resolvedOptions = array('data_class' => '\stdClass');
-        $optionsResolver = $this->getMock('Symfony\Component\OptionsResolver\OptionsResolverInterface');
-
-        $this->resolvedType = $this->getMockBuilder('Symfony\Component\Form\ResolvedFormType')
-            ->setConstructorArgs(array($this->type, array($this->extension1, $this->extension2), $this->parentResolvedType))
-            ->setMethods(array('getOptionsResolver'))
-            ->getMock();
-
-        $this->resolvedType->expects($this->once())
-            ->method('getOptionsResolver')
-            ->will($this->returnValue($optionsResolver));
-
-        $optionsResolver->expects($this->once())
-            ->method('resolve')
-            ->with($givenOptions)
-            ->will($this->returnValue($resolvedOptions));
-
-        $factory = $this->getMockFormFactory();
-        $builder = $this->resolvedType->createBuilder($factory, 'name', $givenOptions);
-
-        $this->assertSame($this->resolvedType, $builder->getType());
-        $this->assertSame($resolvedOptions, $builder->getOptions());
-        $this->assertSame('\stdClass', $builder->getDataClass());
-    }
-
-    public function testBuildForm()
-    {
-        if (version_compare(\PHPUnit_Runner_Version::id(), '3.7', '<')) {
-            $this->markTestSkipped('This test requires PHPUnit 3.7.');
-        }
+        $parentResolvedType = new ResolvedFormType($parentType);
+        $resolvedType = new ResolvedFormType($type, array($extension1, $extension2), $parentResolvedType);
 
         $test = $this;
         $i = 0;
@@ -185,142 +78,169 @@ class ResolvedFormTypeTest extends \PHPUnit_Framework_TestCase
             };
         };
 
-        $options = array('a' => 'Foo', 'b' => 'Bar');
-        $builder = $this->getMock('Symfony\Component\Form\Test\FormBuilderInterface');
+        $assertIndexAndAddOption = function ($index, $option, $default) use ($assertIndex) {
+            $assertIndex = $assertIndex($index);
 
-        // First the form is built for the super type
-        $this->parentType->expects($this->once())
+            return function (OptionsResolverInterface $resolver) use ($assertIndex, $index, $option, $default) {
+                $assertIndex();
+
+                $resolver->setDefaults(array($option => $default));
+            };
+        };
+
+        // First the default options are generated for the super type
+        $parentType->expects($this->once())
+            ->method('setDefaultOptions')
+            ->will($this->returnCallback($assertIndexAndAddOption(0, 'a', 'a_default')));
+
+        // The form type itself
+        $type->expects($this->once())
+            ->method('setDefaultOptions')
+            ->will($this->returnCallback($assertIndexAndAddOption(1, 'b', 'b_default')));
+
+        // And its extensions
+        $extension1->expects($this->once())
+            ->method('setDefaultOptions')
+            ->will($this->returnCallback($assertIndexAndAddOption(2, 'c', 'c_default')));
+
+        $extension2->expects($this->once())
+            ->method('setDefaultOptions')
+            ->will($this->returnCallback($assertIndexAndAddOption(3, 'd', 'd_default')));
+
+        $givenOptions = array('a' => 'a_custom', 'c' => 'c_custom');
+        $resolvedOptions = array('a' => 'a_custom', 'b' => 'b_default', 'c' => 'c_custom', 'd' => 'd_default');
+
+        // Then the form is built for the super type
+        $parentType->expects($this->once())
             ->method('buildForm')
-            ->with($builder, $options)
-            ->will($this->returnCallback($assertIndex(0)));
+            ->with($this->anything(), $resolvedOptions)
+            ->will($this->returnCallback($assertIndex(4)));
 
         // Then the type itself
-        $this->type->expects($this->once())
+        $type->expects($this->once())
             ->method('buildForm')
-            ->with($builder, $options)
-            ->will($this->returnCallback($assertIndex(1)));
+            ->with($this->anything(), $resolvedOptions)
+            ->will($this->returnCallback($assertIndex(5)));
 
         // Then its extensions
-        $this->extension1->expects($this->once())
+        $extension1->expects($this->once())
             ->method('buildForm')
-            ->with($builder, $options)
-            ->will($this->returnCallback($assertIndex(2)));
+            ->with($this->anything(), $resolvedOptions)
+            ->will($this->returnCallback($assertIndex(6)));
 
-        $this->extension2->expects($this->once())
+        $extension2->expects($this->once())
             ->method('buildForm')
-            ->with($builder, $options)
-            ->will($this->returnCallback($assertIndex(3)));
+            ->with($this->anything(), $resolvedOptions)
+            ->will($this->returnCallback($assertIndex(7)));
 
-        $this->resolvedType->buildForm($builder, $options);
+        $factory = $this->getMockFormFactory();
+        $builder = $resolvedType->createBuilder($factory, 'name', $givenOptions);
+
+        $this->assertSame($resolvedType, $builder->getType());
     }
 
     public function testCreateView()
     {
-        $form = $this->getMock('Symfony\Component\Form\Test\FormInterface');
+        $parentType = $this->getMockFormType();
+        $type = $this->getMockFormType();
+        $field1Type = $this->getMockFormType();
+        $field2Type = $this->getMockFormType();
+        $extension1 = $this->getMockFormTypeExtension();
+        $extension2 = $this->getMockFormTypeExtension();
 
-        $view = $this->resolvedType->createView($form);
+        $parentResolvedType = new ResolvedFormType($parentType);
+        $resolvedType = new ResolvedFormType($type, array($extension1, $extension2), $parentResolvedType);
+        $field1ResolvedType = new ResolvedFormType($field1Type);
+        $field2ResolvedType = new ResolvedFormType($field2Type);
 
-        $this->assertInstanceOf('Symfony\Component\Form\FormView', $view);
-        $this->assertNull($view->parent);
-    }
+        $options = array('a' => '1', 'b' => '2');
+        $form = $this->getBuilder('name', $options)
+            ->setCompound(true)
+            ->setDataMapper($this->dataMapper)
+            ->setType($resolvedType)
+            ->add($this->getBuilder('foo')->setType($field1ResolvedType))
+            ->add($this->getBuilder('bar')->setType($field2ResolvedType))
+            ->getForm();
 
-    public function testCreateViewWithParent()
-    {
-        $form = $this->getMock('Symfony\Component\Form\Test\FormInterface');
-        $parentView = $this->getMock('Symfony\Component\Form\FormView');
+        $test = $this;
+        $i = 0;
 
-        $view = $this->resolvedType->createView($form, $parentView);
+        $assertIndexAndNbOfChildViews = function ($index, $nbOfChildViews) use (&$i, $test) {
+            return function (FormView $view) use (&$i, $test, $index, $nbOfChildViews) {
+                /* @var \PHPUnit_Framework_TestCase $test */
+                $test->assertEquals($index, $i, 'Executed at index '.$index);
+                $test->assertCount($nbOfChildViews, $view);
 
-        $this->assertInstanceOf('Symfony\Component\Form\FormView', $view);
+                ++$i;
+            };
+        };
+
+        // First the super type
+        $parentType->expects($this->once())
+            ->method('buildView')
+            ->with($this->anything(), $form, $options)
+            ->will($this->returnCallback($assertIndexAndNbOfChildViews(0, 0)));
+
+        // Then the type itself
+        $type->expects($this->once())
+            ->method('buildView')
+            ->with($this->anything(), $form, $options)
+            ->will($this->returnCallback($assertIndexAndNbOfChildViews(1, 0)));
+
+        // Then its extensions
+        $extension1->expects($this->once())
+            ->method('buildView')
+            ->with($this->anything(), $form, $options)
+            ->will($this->returnCallback($assertIndexAndNbOfChildViews(2, 0)));
+
+        $extension2->expects($this->once())
+            ->method('buildView')
+            ->with($this->anything(), $form, $options)
+            ->will($this->returnCallback($assertIndexAndNbOfChildViews(3, 0)));
+
+        // Now the first child form
+        $field1Type->expects($this->once())
+            ->method('buildView')
+            ->will($this->returnCallback($assertIndexAndNbOfChildViews(4, 0)));
+        $field1Type->expects($this->once())
+            ->method('finishView')
+            ->will($this->returnCallback($assertIndexAndNbOfChildViews(5, 0)));
+
+        // And the second child form
+        $field2Type->expects($this->once())
+            ->method('buildView')
+            ->will($this->returnCallback($assertIndexAndNbOfChildViews(6, 0)));
+        $field2Type->expects($this->once())
+            ->method('finishView')
+            ->will($this->returnCallback($assertIndexAndNbOfChildViews(7, 0)));
+
+        // Again first the parent
+        $parentType->expects($this->once())
+            ->method('finishView')
+            ->with($this->anything(), $form, $options)
+            ->will($this->returnCallback($assertIndexAndNbOfChildViews(8, 2)));
+
+        // Then the type itself
+        $type->expects($this->once())
+            ->method('finishView')
+            ->with($this->anything(), $form, $options)
+            ->will($this->returnCallback($assertIndexAndNbOfChildViews(9, 2)));
+
+        // Then its extensions
+        $extension1->expects($this->once())
+            ->method('finishView')
+            ->with($this->anything(), $form, $options)
+            ->will($this->returnCallback($assertIndexAndNbOfChildViews(10, 2)));
+
+        $extension2->expects($this->once())
+            ->method('finishView')
+            ->with($this->anything(), $form, $options)
+            ->will($this->returnCallback($assertIndexAndNbOfChildViews(11, 2)));
+
+        $parentView = new FormView();
+        $view = $resolvedType->createView($form, $parentView);
+
         $this->assertSame($parentView, $view->parent);
-    }
-
-    public function testBuildView()
-    {
-        $options = array('a' => '1', 'b' => '2');
-        $form = $this->getMock('Symfony\Component\Form\Test\FormInterface');
-        $view = $this->getMock('Symfony\Component\Form\FormView');
-
-        $test = $this;
-        $i = 0;
-
-        $assertIndex = function ($index) use (&$i, $test) {
-            return function () use (&$i, $test, $index) {
-                /* @var \PHPUnit_Framework_TestCase $test */
-                $test->assertEquals($index, $i, 'Executed at index '.$index);
-
-                ++$i;
-            };
-        };
-
-        // First the super type
-        $this->parentType->expects($this->once())
-            ->method('buildView')
-            ->with($view, $form, $options)
-            ->will($this->returnCallback($assertIndex(0)));
-
-        // Then the type itself
-        $this->type->expects($this->once())
-            ->method('buildView')
-            ->with($view, $form, $options)
-            ->will($this->returnCallback($assertIndex(1)));
-
-        // Then its extensions
-        $this->extension1->expects($this->once())
-            ->method('buildView')
-            ->with($view, $form, $options)
-            ->will($this->returnCallback($assertIndex(2)));
-
-        $this->extension2->expects($this->once())
-            ->method('buildView')
-            ->with($view, $form, $options)
-            ->will($this->returnCallback($assertIndex(3)));
-
-        $this->resolvedType->buildView($view, $form, $options);
-    }
-
-    public function testFinishView()
-    {
-        $options = array('a' => '1', 'b' => '2');
-        $form = $this->getMock('Symfony\Component\Form\Test\FormInterface');
-        $view = $this->getMock('Symfony\Component\Form\FormView');
-
-        $test = $this;
-        $i = 0;
-
-        $assertIndex = function ($index) use (&$i, $test) {
-            return function () use (&$i, $test, $index) {
-                /* @var \PHPUnit_Framework_TestCase $test */
-                $test->assertEquals($index, $i, 'Executed at index '.$index);
-
-                ++$i;
-            };
-        };
-
-        // First the super type
-        $this->parentType->expects($this->once())
-            ->method('finishView')
-            ->with($view, $form, $options)
-            ->will($this->returnCallback($assertIndex(0)));
-
-        // Then the type itself
-        $this->type->expects($this->once())
-            ->method('finishView')
-            ->with($view, $form, $options)
-            ->will($this->returnCallback($assertIndex(1)));
-
-        // Then its extensions
-        $this->extension1->expects($this->once())
-            ->method('finishView')
-            ->with($view, $form, $options)
-            ->will($this->returnCallback($assertIndex(2)));
-
-        $this->extension2->expects($this->once())
-            ->method('finishView')
-            ->with($view, $form, $options)
-            ->will($this->returnCallback($assertIndex(3)));
-
-        $this->resolvedType->finishView($view, $form, $options);
     }
 
     /**

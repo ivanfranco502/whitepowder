@@ -1,21 +1,21 @@
 <?php
 
-/*
- * This file is part of the Symfony package.
- *
- * (c) Fabien Potencier <fabien@symfony.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Sensio\Bundle\FrameworkExtraBundle\Request\ParamConverter;
 
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ConfigurationInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\ORM\NoResultException;
+
+/*
+ * This file is part of the Symfony framework.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
 
 /**
  * DoctrineParamConverter.
@@ -35,12 +35,12 @@ class DoctrineParamConverter implements ParamConverterInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @{inheritdoc}
      *
      * @throws \LogicException       When unable to guess how to get a Doctrine instance from the request information
      * @throws NotFoundHttpException When object not found
      */
-    public function apply(Request $request, ParamConverter $configuration)
+    public function apply(Request $request, ConfigurationInterface $configuration)
     {
         $name    = $configuration->getName();
         $class   = $configuration->getClass();
@@ -89,11 +89,7 @@ class DoctrineParamConverter implements ParamConverterInterface
             $method = 'find';
         }
 
-        try {
-            return $this->getManager($options['entity_manager'], $class)->getRepository($class)->$method($id);
-        } catch (NoResultException $e) {
-            return null;
-        }
+        return $this->getManager($options['entity_manager'], $class)->getRepository($class)->$method($id);
     }
 
     protected function getIdentifier(Request $request, $options, $name)
@@ -161,18 +157,18 @@ class DoctrineParamConverter implements ParamConverterInterface
             $method = 'findOneBy';
         }
 
-        try {
-            return $em->getRepository($class)->$method($criteria);
-        } catch (NoResultException $e) {
-            return null;
-        }
+        return $em->getRepository($class)->$method($criteria);
     }
 
     /**
-     * {@inheritdoc}
+     * @{inheritdoc}
      */
-    public function supports(ParamConverter $configuration)
+    public function supports(ConfigurationInterface $configuration)
     {
+        if (!$configuration instanceof ParamConverter) {
+            return false;
+        }
+
         // if there is no manager, this means that only Doctrine DBAL is configured
         if (null === $this->registry || !count($this->registry->getManagers())) {
             return false;
@@ -193,7 +189,7 @@ class DoctrineParamConverter implements ParamConverterInterface
         return ! $em->getMetadataFactory()->isTransient($configuration->getClass());
     }
 
-    protected function getOptions(ParamConverter $configuration)
+    protected function getOptions(ConfigurationInterface $configuration)
     {
         return array_replace(array(
             'entity_manager' => null,

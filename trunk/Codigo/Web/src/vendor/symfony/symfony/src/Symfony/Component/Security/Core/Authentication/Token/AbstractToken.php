@@ -26,9 +26,9 @@ use Symfony\Component\Security\Core\User\EquatableInterface;
 abstract class AbstractToken implements TokenInterface
 {
     private $user;
-    private $roles = array();
-    private $authenticated = false;
-    private $attributes = array();
+    private $roles;
+    private $authenticated;
+    private $attributes;
 
     /**
      * Constructor.
@@ -39,6 +39,10 @@ abstract class AbstractToken implements TokenInterface
      */
     public function __construct(array $roles = array())
     {
+        $this->authenticated = false;
+        $this->attributes = array();
+
+        $this->roles = array();
         foreach ($roles as $role) {
             if (is_string($role)) {
                 $role = new Role($role);
@@ -214,7 +218,7 @@ abstract class AbstractToken implements TokenInterface
     }
 
     /**
-     * Sets an attribute.
+     * Sets a attribute.
      *
      * @param string $name  The attribute name
      * @param mixed  $value The attribute value

@@ -1,0 +1,7 @@
+parameters:
+#    tavros_web.example.class: Tavros\WebBundle\Example
+
+services:
+#    tavros_web.example:
+#        class: %tavros_web.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]

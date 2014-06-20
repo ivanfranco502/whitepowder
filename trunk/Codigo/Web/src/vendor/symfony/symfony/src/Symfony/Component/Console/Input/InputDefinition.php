@@ -18,7 +18,6 @@ if (!defined('JSON_UNESCAPED_UNICODE')) {
 
 use Symfony\Component\Console\Descriptor\TextDescriptor;
 use Symfony\Component\Console\Descriptor\XmlDescriptor;
-use Symfony\Component\Console\Output\BufferedOutput;
 
 /**
  * A InputDefinition represents a set of valid command line arguments and options.
@@ -427,10 +426,8 @@ class InputDefinition
     public function asText()
     {
         $descriptor = new TextDescriptor();
-        $output = new BufferedOutput(BufferedOutput::VERBOSITY_NORMAL, true);
-        $descriptor->describe($output, $this, array('raw_output' => true));
 
-        return $output->fetch();
+        return $descriptor->describe($this);
     }
 
     /**
@@ -446,13 +443,6 @@ class InputDefinition
     {
         $descriptor = new XmlDescriptor();
 
-        if ($asDom) {
-            return $descriptor->getInputDefinitionDocument($this);
-        }
-
-        $output = new BufferedOutput();
-        $descriptor->describe($output, $this);
-
-        return $output->fetch();
+        return $descriptor->describe($this, array('as_dom' => $asDom));
     }
 }

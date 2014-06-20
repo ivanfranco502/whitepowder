@@ -35,18 +35,15 @@ class PhpEngine implements EngineInterface, \ArrayAccess
     /**
      * @var HelperInterface[]
      */
-    protected $helpers = array();
-    protected $parents = array();
-    protected $stack = array();
-    protected $charset = 'UTF-8';
-    protected $cache = array();
-    protected $escapers = array();
-    protected static $escaperCache = array();
-    protected $globals = array();
+    protected $helpers;
+    protected $parents;
+    protected $stack;
+    protected $charset;
+    protected $cache;
+    protected $escapers;
+    protected static $escaperCache;
+    protected $globals;
     protected $parser;
-
-    private $evalTemplate;
-    private $evalParameters;
 
     /**
      * Constructor.
@@ -59,8 +56,13 @@ class PhpEngine implements EngineInterface, \ArrayAccess
     {
         $this->parser  = $parser;
         $this->loader  = $loader;
+        $this->parents = array();
+        $this->stack   = array();
+        $this->charset = 'UTF-8';
+        $this->cache   = array();
+        $this->globals = array();
 
-        $this->addHelpers($helpers);
+        $this->setHelpers($helpers);
 
         $this->initializeEscapers();
         foreach ($this->escapers as $context => $escaper) {
@@ -69,16 +71,22 @@ class PhpEngine implements EngineInterface, \ArrayAccess
     }
 
     /**
-     * {@inheritdoc}
+     * Renders a template.
+     *
+     * @param mixed $name       A template name or a TemplateReferenceInterface instance
+     * @param array $parameters An array of parameters to pass to the template
+     *
+     * @return string The evaluated template as a string
      *
      * @throws \InvalidArgumentException if the template does not exist
+     * @throws \RuntimeException         if the template cannot be rendered
      *
      * @api
      */
     public function render($name, array $parameters = array())
     {
         $storage = $this->load($name);
-        $key = hash('sha256', serialize($storage));
+        $key = md5(serialize($storage));
         $this->current = $key;
         $this->parents[$key] = null;
 
@@ -104,7 +112,11 @@ class PhpEngine implements EngineInterface, \ArrayAccess
     }
 
     /**
-     * {@inheritdoc}
+     * Returns true if the template exists.
+     *
+     * @param mixed $name A template name or a TemplateReferenceInterface instance
+     *
+     * @return bool    true if the template exists, false otherwise
      *
      * @api
      */
@@ -120,7 +132,11 @@ class PhpEngine implements EngineInterface, \ArrayAccess
     }
 
     /**
-     * {@inheritdoc}
+     * Returns true if this class is able to render the given template.
+     *
+     * @param mixed $name A template name or a TemplateReferenceInterface instance
+     *
+     * @return bool    true if this class supports the given resource, false otherwise
      *
      * @api
      */
@@ -143,36 +159,24 @@ class PhpEngine implements EngineInterface, \ArrayAccess
      */
     protected function evaluate(Storage $template, array $parameters = array())
     {
-        $this->evalTemplate = $template;
-        $this->evalParameters = $parameters;
-        unset($template, $parameters);
+        $__template__ = $template;
 
-        if (isset($this->evalParameters['this'])) {
-            throw new \InvalidArgumentException('Invalid parameter (this)');
-        }
-        if (isset($this->evalParameters['view'])) {
-            throw new \InvalidArgumentException('Invalid parameter (view)');
+        if (isset($parameters['__template__'])) {
+            throw new \InvalidArgumentException('Invalid parameter (__template__)');
         }
 
-        $view = $this;
-        if ($this->evalTemplate instanceof FileStorage) {
-            extract($this->evalParameters, EXTR_SKIP);
-            $this->evalParameters = null;
-
+        if ($__template__ instanceof FileStorage) {
+            extract($parameters, EXTR_SKIP);
+            $view = $this;
             ob_start();
-            require $this->evalTemplate;
-
-            $this->evalTemplate = null;
+            require $__template__;
 
             return ob_get_clean();
-        } elseif ($this->evalTemplate instanceof StringStorage) {
-            extract($this->evalParameters, EXTR_SKIP);
-            $this->evalParameters = null;
-
+        } elseif ($__template__ instanceof StringStorage) {
+            extract($parameters, EXTR_SKIP);
+            $view = $this;
             ob_start();
-            eval('; ?>'.$this->evalTemplate.'<?php ;');
-
-            $this->evalTemplate = null;
+            eval('; ?>'.$__template__.'<?php ;');
 
             return ob_get_clean();
         }
@@ -555,7 +559,7 @@ class PhpEngine implements EngineInterface, \ArrayAccess
     /**
      * Loads the given template.
      *
-     * @param string|TemplateReferenceInterface $name A template name or a TemplateReferenceInterface instance
+     * @param mixed $name A template name or a TemplateReferenceInterface instance
      *
      * @return Storage A Storage instance
      *

@@ -21,7 +21,7 @@ class StopwatchEvent
     /**
      * @var StopwatchPeriod[]
      */
-    private $periods = array();
+    private $periods;
 
     /**
      * @var float
@@ -36,13 +36,13 @@ class StopwatchEvent
     /**
      * @var float[]
      */
-    private $started = array();
+    private $started;
 
     /**
      * Constructor.
      *
-     * @param float       $origin   The origin time in milliseconds
-     * @param string|null $category The event category or null to use the default
+     * @param float  $origin   The origin time in milliseconds
+     * @param string $category The event category
      *
      * @throws \InvalidArgumentException When the raw time is not valid
      */
@@ -50,6 +50,8 @@ class StopwatchEvent
     {
         $this->origin = $this->formatTime($origin);
         $this->category = is_string($category) ? $category : 'default';
+        $this->started = array();
+        $this->periods = array();
     }
 
     /**
@@ -65,7 +67,7 @@ class StopwatchEvent
     /**
      * Gets the origin.
      *
-     * @return float The origin in milliseconds
+     * @return int     The origin in milliseconds
      */
     public function getOrigin()
     {
@@ -173,21 +175,12 @@ class StopwatchEvent
      */
     public function getDuration()
     {
-        $periods = $this->periods;
-        $stopped = count($periods);
-        $left = count($this->started) - $stopped;
-
-        for ($i = 0; $i < $left; $i++) {
-            $index = $stopped + $i;
-            $periods[] = new StopwatchPeriod($this->started[$index], $this->getNow());
-        }
-
         $total = 0;
-        foreach ($periods as $period) {
+        foreach ($this->periods as $period) {
             $total += $period->getDuration();
         }
 
-        return $total;
+        return $this->formatTime($total);
     }
 
     /**

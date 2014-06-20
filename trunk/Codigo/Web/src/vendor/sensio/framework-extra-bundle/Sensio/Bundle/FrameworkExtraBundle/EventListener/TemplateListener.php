@@ -1,14 +1,5 @@
 <?php
 
-/*
- * This file is part of the Symfony framework.
- *
- * (c) Fabien Potencier <fabien@symfony.com>
- *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Sensio\Bundle\FrameworkExtraBundle\EventListener;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -19,10 +10,19 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
-/**
- * The TemplateListener class handles the Template annotation.
+/*
+ * This file is part of the Symfony framework.
  *
- * @author Fabien Potencier <fabien@symfony.com>
+ * (c) Fabien Potencier <fabien@symfony.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
+/**
+ * The TemplateListener class handles the @Template annotation.
+ *
+ * @author     Fabien Potencier <fabien@symfony.com>
  */
 class TemplateListener implements EventSubscriberInterface
 {

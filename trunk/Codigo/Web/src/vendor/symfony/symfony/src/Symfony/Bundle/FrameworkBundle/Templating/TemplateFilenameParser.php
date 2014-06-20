@@ -12,7 +12,6 @@
 namespace Symfony\Bundle\FrameworkBundle\Templating;
 
 use Symfony\Component\Templating\TemplateNameParserInterface;
-use Symfony\Component\Templating\TemplateReferenceInterface;
 
 /**
  * TemplateFilenameParser converts template filenames to
@@ -25,13 +24,9 @@ class TemplateFilenameParser implements TemplateNameParserInterface
     /**
      * {@inheritdoc}
      */
-    public function parse($name)
+    public function parse($file)
     {
-        if ($name instanceof TemplateReferenceInterface) {
-            return $name;
-        }
-
-        $parts = explode('/', strtr($name, '\\', '/'));
+        $parts = explode('/', strtr($file, '\\', '/'));
 
         $elements = explode('.', array_pop($parts));
         if (3 > count($elements)) {

@@ -41,16 +41,13 @@ class UrlPackage extends Package
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getUrl($path, $version = null)
+    public function getUrl($path)
     {
         if (false !== strpos($path, '://') || 0 === strpos($path, '//')) {
             return $path;
         }
 
-        $url = $this->applyVersion($path, $version);
+        $url = $this->applyVersion($path);
 
         if ($url && '/' != $url[0]) {
             $url = '/'.$url;
@@ -76,7 +73,7 @@ class UrlPackage extends Package
                 return $this->baseUrls[0];
 
             default:
-                return $this->baseUrls[fmod(hexdec(substr(hash('sha256', $path), 0, 10)), $count)];
+                return $this->baseUrls[fmod(hexdec(substr(md5($path), 0, 10)), $count)];
         }
     }
 }

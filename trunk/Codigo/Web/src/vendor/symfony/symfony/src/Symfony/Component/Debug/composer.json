@@ -24,7 +24,8 @@
     },
     "suggest": {
         "symfony/http-foundation": "",
-        "symfony/http-kernel": ""
+        "symfony/http-kernel": "",
+        "symfony/class-loader": ""
     },
     "autoload": {
         "psr-0": { "Symfony\\Component\\Debug\\": "" }
@@ -33,7 +34,7 @@
     "minimum-stability": "dev",
     "extra": {
         "branch-alias": {
-            "dev-master": "2.5-dev"
+            "dev-master": "2.3-dev"
         }
     }
 }

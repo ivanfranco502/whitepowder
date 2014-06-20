@@ -24,7 +24,11 @@ namespace Symfony\Component\Templating;
 class TemplateNameParser implements TemplateNameParserInterface
 {
     /**
-     * {@inheritdoc}
+     * Parses a template to an array of parameters.
+     *
+     * @param string $name A template name
+     *
+     * @return TemplateReferenceInterface A template
      *
      * @api
      */

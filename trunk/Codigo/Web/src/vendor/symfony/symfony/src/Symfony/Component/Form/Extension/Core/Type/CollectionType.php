@@ -37,8 +37,7 @@ class CollectionType extends AbstractType
             $options['type'],
             $options['options'],
             $options['allow_add'],
-            $options['allow_delete'],
-            $options['delete_empty']
+            $options['allow_delete']
         );
 
         $builder->addEventSubscriber($resizeListener);
@@ -87,7 +86,6 @@ class CollectionType extends AbstractType
             'prototype_name' => '__name__',
             'type'           => 'text',
             'options'        => array(),
-            'delete_empty'   => false,
         ));
 
         $resolver->setNormalizers(array(

@@ -24,7 +24,7 @@ interface TemplateNameParserInterface
     /**
      * Convert a template name to a TemplateReferenceInterface instance.
      *
-     * @param string|TemplateReferenceInterface $name A template name or a TemplateReferenceInterface instance
+     * @param string $name A template name
      *
      * @return TemplateReferenceInterface A template
      *

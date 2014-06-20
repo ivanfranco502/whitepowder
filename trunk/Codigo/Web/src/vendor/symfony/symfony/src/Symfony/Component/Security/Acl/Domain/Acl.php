@@ -37,14 +37,14 @@ class Acl implements AuditableAclInterface, NotifyPropertyChanged
     private $parentAcl;
     private $permissionGrantingStrategy;
     private $objectIdentity;
-    private $classAces = array();
-    private $classFieldAces = array();
-    private $objectAces = array();
-    private $objectFieldAces = array();
+    private $classAces;
+    private $classFieldAces;
+    private $objectAces;
+    private $objectFieldAces;
     private $id;
     private $loadedSids;
     private $entriesInheriting;
-    private $listeners = array();
+    private $listeners;
 
     /**
      * Constructor
@@ -62,6 +62,12 @@ class Acl implements AuditableAclInterface, NotifyPropertyChanged
         $this->permissionGrantingStrategy = $permissionGrantingStrategy;
         $this->loadedSids = $loadedSids;
         $this->entriesInheriting = $entriesInheriting;
+        $this->parentAcl = null;
+        $this->classAces = array();
+        $this->classFieldAces = array();
+        $this->objectAces = array();
+        $this->objectFieldAces = array();
+        $this->listeners = array();
     }
 
     /**

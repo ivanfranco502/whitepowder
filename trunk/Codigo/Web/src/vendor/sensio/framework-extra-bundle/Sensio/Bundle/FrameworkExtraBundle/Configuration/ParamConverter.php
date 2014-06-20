@@ -1,5 +1,7 @@
 <?php
 
+namespace Sensio\Bundle\FrameworkExtraBundle\Configuration;
+
 /*
  * This file is part of the Symfony package.
  *
@@ -9,10 +11,8 @@
  * file that was distributed with this source code.
  */
 
-namespace Sensio\Bundle\FrameworkExtraBundle\Configuration;
-
 /**
- * The ParamConverter class handles the ParamConverter annotation parts.
+ * The ParamConverter class handles the @ParamConverter annotation parts.
  *
  * @ParamConverter("post", class="BlogBundle:Post")
  *
@@ -45,7 +45,7 @@ class ParamConverter extends ConfigurationAnnotation
     /**
      * Whether or not the parameter is optional.
      *
-     * @var bool
+     * @var Boolean
      */
     protected $optional = false;
 
@@ -129,17 +129,17 @@ class ParamConverter extends ConfigurationAnnotation
     /**
      * Sets whether or not the parameter is optional.
      *
-     * @param bool    $optional Wether the parameter is optional
+     * @param Boolean $optional Wether the parameter is optional
      */
     public function setIsOptional($optional)
     {
-        $this->optional = (bool) $optional;
+        $this->optional = (Boolean) $optional;
     }
 
     /**
      * Returns whether or not the parameter is optional.
      *
-     * @return bool
+     * @return Boolean
      */
     public function isOptional()
     {
@@ -180,7 +180,7 @@ class ParamConverter extends ConfigurationAnnotation
     /**
      * Multiple ParamConverters are allowed
      *
-     * @return bool
+     * @return Boolean
      * @see ConfigurationInterface
      */
     public function allowArray()

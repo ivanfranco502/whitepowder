@@ -29,6 +29,19 @@ class FormHelperTableLayoutTest extends AbstractTableLayoutTest
      */
     protected $engine;
 
+    protected function setUp()
+    {
+        if (!class_exists('Symfony\Bundle\FrameworkBundle\Templating\Helper\TranslatorHelper')) {
+            $this->markTestSkipped('The "FrameworkBundle" is not available');
+        }
+
+        if (!class_exists('Symfony\Component\Templating\PhpEngine')) {
+            $this->markTestSkipped('The "Templating" component is not available');
+        }
+
+        parent::setUp();
+    }
+
     protected function getExtensions()
     {
         // should be moved to the Form component once absolute file paths are supported
@@ -46,7 +59,7 @@ class FormHelperTableLayoutTest extends AbstractTableLayoutTest
         ));
 
         return array_merge(parent::getExtensions(), array(
-            new TemplatingExtension($this->engine, $this->csrfTokenManager, array(
+            new TemplatingExtension($this->engine, $this->csrfProvider, array(
                 'FrameworkBundle:Form',
                 'FrameworkBundle:FormTable',
             )),

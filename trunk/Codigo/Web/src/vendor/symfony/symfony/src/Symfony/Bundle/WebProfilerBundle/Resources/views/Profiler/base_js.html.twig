@@ -36,19 +36,15 @@
             },
 
             hasClass = function(el, klass) {
-                return el.className && el.className.match(new RegExp('\\b' + klass + '\\b'));
+                return el.className.match(new RegExp('\\b' + klass + '\\b'));
             },
 
             removeClass = function(el, klass) {
-                if (el.className) {
-                    el.className = el.className.replace(new RegExp('\\b' + klass + '\\b'), ' ');
-                }
+                el.className = el.className.replace(new RegExp('\\b' + klass + '\\b'), ' ');
             },
 
             addClass = function(el, klass) {
-                if (!hasClass(el, klass)) {
-                    el.className += " " + klass;
-                }
+                if (!hasClass(el, klass)) { el.className += " " + klass; }
             },
 
             getPreference = function(name) {

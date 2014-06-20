@@ -34,6 +34,14 @@ class PropertyPathMapperTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
+        if (!class_exists('Symfony\Component\EventDispatcher\Event')) {
+            $this->markTestSkipped('The "EventDispatcher" component is not available');
+        }
+
+        if (!class_exists('Symfony\Component\PropertyAccess\PropertyAccess')) {
+            $this->markTestSkipped('The "PropertyAccess" component is not available');
+        }
+
         $this->dispatcher = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
         $this->propertyAccessor = $this->getMock('Symfony\Component\PropertyAccess\PropertyAccessorInterface');
         $this->mapper = new PropertyPathMapper($this->propertyAccessor);
@@ -53,9 +61,7 @@ class PropertyPathMapperTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param FormConfigInterface $config
-     * @param bool                $synchronized
-     * @param bool                $submitted
-     *
+     * @param bool    $synchronized
      * @return \PHPUnit_Framework_MockObject_MockObject
      */
     private function getForm(FormConfigInterface $config, $synchronized = true, $submitted = true)

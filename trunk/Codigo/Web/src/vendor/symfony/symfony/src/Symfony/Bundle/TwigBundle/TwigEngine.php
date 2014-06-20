@@ -66,7 +66,16 @@ class TwigEngine extends BaseEngine implements EngineInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Renders a template.
+     *
+     * @param mixed $name       A template name
+     * @param array $parameters An array of parameters to pass to the template
+     *
+     * @return string The evaluated template as a string
+     *
+     * @throws \InvalidArgumentException if the template does not exist
+     * @throws \RuntimeException         if the template cannot be rendered
+     * @throws \Twig_Error
      */
     public function render($name, array $parameters = array())
     {
@@ -86,9 +95,13 @@ class TwigEngine extends BaseEngine implements EngineInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Renders a view and returns a Response.
      *
-     * @throws \Twig_Error if something went wrong like a thrown exception while rendering the template
+     * @param string   $view       The view name
+     * @param array    $parameters An array of parameters to pass to the view
+     * @param Response $response   A Response instance
+     *
+     * @return Response A Response instance
      */
     public function renderResponse($view, array $parameters = array(), Response $response = null)
     {

@@ -14,6 +14,7 @@ namespace Symfony\Bridge\Monolog\Handler;
 use Monolog\Handler\ChromePHPHandler as BaseChromePhpHandler;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
+use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 /**
  * ChromePhpHandler.
@@ -37,7 +38,7 @@ class ChromePhpHandler extends BaseChromePhpHandler
      */
     public function onKernelResponse(FilterResponseEvent $event)
     {
-        if (!$event->isMasterRequest()) {
+        if (HttpKernelInterface::MASTER_REQUEST !== $event->getRequestType()) {
             return;
         }
 
