@@ -1,0 +1,55 @@
+Tavros\DomainBundle\Entity\HourDay:
+    type: entity
+    table: hour_day
+    indexes:
+        FK_hour_day_general_information_idx:
+            columns:
+                - hoda_general_information_id
+    id:
+        hodaId:
+            type: integer
+            nullable: false
+            unsigned: false
+            comment: ''
+            id: true
+            column: hoda_id
+            generator:
+                strategy: IDENTITY
+    fields:
+        hodaDay:
+            type: string
+            nullable: false
+            length: 9
+            fixed: false
+            comment: ''
+            column: hoda_day
+        hodaStartHour:
+            type: string
+            nullable: false
+            length: 5
+            fixed: false
+            comment: ''
+            column: hoda_start_hour
+        hodaEndHour:
+            type: string
+            nullable: false
+            length: 5
+            fixed: false
+            comment: ''
+            column: hoda_end_hour
+        hodaClose:
+            type: boolean
+            nullable: true
+            comment: ''
+            column: hoda_close
+    manyToOne:
+        hodaGeneralInformation:
+            targetEntity: GeneralInformation
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                hoda_general_information_id:
+                    referencedColumnName: gein_id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

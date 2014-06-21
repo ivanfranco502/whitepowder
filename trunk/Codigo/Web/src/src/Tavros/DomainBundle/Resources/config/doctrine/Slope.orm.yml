@@ -1,0 +1,54 @@
+Tavros\DomainBundle\Entity\Slope:
+    type: entity
+    table: slope
+    indexes:
+        FK_slope_slope_dificulty_idx:
+            columns:
+                - slop_dificulty_id
+        FK_slope_general_information_idx:
+            columns:
+                - slop_general_information_id
+    id:
+        slopId:
+            type: integer
+            nullable: false
+            unsigned: false
+            comment: ''
+            id: true
+            column: slop_id
+            generator:
+                strategy: IDENTITY
+    fields:
+        slopDescription:
+            type: string
+            nullable: false
+            length: 50
+            fixed: false
+            comment: ''
+            column: slop_description
+        slopLength:
+            type: integer
+            nullable: true
+            unsigned: false
+            comment: ''
+            column: slop_length
+    manyToOne:
+        slopGeneralInformation:
+            targetEntity: GeneralInformation
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                slop_general_information_id:
+                    referencedColumnName: gein_id
+            orphanRemoval: false
+        slopDificulty:
+            targetEntity: SlopeDificulty
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                slop_dificulty_id:
+                    referencedColumnName: sldi_id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

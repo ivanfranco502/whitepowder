@@ -1,0 +1,50 @@
+Tavros\DomainBundle\Entity\GeneralInformation:
+    type: entity
+    table: general_information
+    id:
+        geinId:
+            type: integer
+            nullable: false
+            unsigned: false
+            comment: ''
+            id: true
+            column: gein_id
+            generator:
+                strategy: IDENTITY
+    fields:
+        geinAmenities:
+            type: text
+            nullable: true
+            length: null
+            fixed: false
+            comment: ''
+            column: gein_amenities
+        geinMaximumHeight:
+            type: float
+            nullable: true
+            precision: 10
+            scale: 0
+            comment: ''
+            column: gein_maximum_height
+        geinMinimumHeight:
+            type: float
+            nullable: true
+            precision: 10
+            scale: 0
+            comment: ''
+            column: gein_minimum_height
+        geinSeasonSince:
+            type: string
+            nullable: true
+            length: 10
+            fixed: false
+            comment: ''
+            column: gein_season_since
+        geinSeasonTil:
+            type: string
+            nullable: true
+            length: 10
+            fixed: false
+            comment: ''
+            column: gein_season_til
+    lifecycleCallbacks: {  }

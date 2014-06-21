@@ -1,0 +1,53 @@
+Tavros\DomainBundle\Entity\Notification:
+    type: entity
+    table: notification
+    indexes:
+        FK_notification_message_idx:
+            columns:
+                - noti_message_id
+    id:
+        notiId:
+            type: integer
+            nullable: false
+            unsigned: false
+            comment: ''
+            id: true
+            column: noti_id
+            generator:
+                strategy: IDENTITY
+    fields:
+        notiDescription:
+            type: string
+            nullable: false
+            length: 100
+            fixed: false
+            comment: ''
+            column: noti_description
+    manyToOne:
+        notiMessage:
+            targetEntity: Message
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                noti_message_id:
+                    referencedColumnName: mess_id
+            orphanRemoval: false
+    manyToMany:
+        nousUser:
+            targetEntity: Users
+            cascade: {  }
+            mappedBy: null
+            inversedBy: nousNotification
+            joinTable:
+                name: notification_user
+                joinColumns:
+                    -
+                        name: nous_notification_id
+                        referencedColumnName: noti_id
+                inverseJoinColumns:
+                    -
+                        name: nous_user_id
+                        referencedColumnName: id
+            orderBy: null
+    lifecycleCallbacks: {  }

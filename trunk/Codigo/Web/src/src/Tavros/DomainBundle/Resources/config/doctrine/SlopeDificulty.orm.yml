@@ -1,0 +1,29 @@
+Tavros\DomainBundle\Entity\SlopeDificulty:
+    type: entity
+    table: slope_dificulty
+    id:
+        sldiId:
+            type: integer
+            nullable: false
+            unsigned: false
+            comment: ''
+            id: true
+            column: sldi_id
+            generator:
+                strategy: IDENTITY
+    fields:
+        sldiDescription:
+            type: string
+            nullable: false
+            length: 50
+            fixed: false
+            comment: ''
+            column: sldi_description
+        sldiColor:
+            type: string
+            nullable: false
+            length: 45
+            fixed: false
+            comment: ''
+            column: sldi_color
+    lifecycleCallbacks: {  }
