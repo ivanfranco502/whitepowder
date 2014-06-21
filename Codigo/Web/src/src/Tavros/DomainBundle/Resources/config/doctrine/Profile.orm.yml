@@ -1,0 +1,70 @@
+Tavros\DomainBundle\Entity\Profile:
+    type: entity
+    table: profile
+    indexes:
+        FK_profile_users_idx:
+            columns:
+                - prof_user_id
+    id:
+        profId:
+            type: integer
+            nullable: false
+            unsigned: false
+            comment: ''
+            id: true
+            column: prof_id
+            generator:
+                strategy: IDENTITY
+    fields:
+        profMaximumSpeed:
+            type: float
+            nullable: true
+            precision: 10
+            scale: 0
+            comment: ''
+            column: prof_maximum_speed
+        profAverageSpeed:
+            type: float
+            nullable: true
+            precision: 10
+            scale: 0
+            comment: ''
+            column: prof_average_speed
+        profSpeedAcumulator:
+            type: float
+            nullable: true
+            precision: 10
+            scale: 0
+            comment: ''
+            column: prof_speed_acumulator
+        profSpeedTimes:
+            type: integer
+            nullable: true
+            unsigned: false
+            comment: ''
+            column: prof_speed_times
+        profMaximumHeight:
+            type: float
+            nullable: true
+            precision: 10
+            scale: 0
+            comment: ''
+            column: prof_maximum_height
+        profTotalLength:
+            type: float
+            nullable: true
+            precision: 10
+            scale: 0
+            comment: ''
+            column: prof_total_length
+    manyToOne:
+        profUser:
+            targetEntity: Users
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                prof_user_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

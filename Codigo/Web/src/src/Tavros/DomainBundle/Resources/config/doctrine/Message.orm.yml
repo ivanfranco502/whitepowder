@@ -1,0 +1,46 @@
+Tavros\DomainBundle\Entity\Message:
+    type: entity
+    table: message
+    indexes:
+        FK_message_message_type_idx:
+            columns:
+                - mess_message_type_id
+        FK_message_users_idx:
+            columns:
+                - mess_user_id
+    id:
+        messId:
+            type: integer
+            nullable: false
+            unsigned: false
+            comment: ''
+            id: true
+            column: mess_id
+            generator:
+                strategy: IDENTITY
+    fields:
+        messCreateddate:
+            type: datetime
+            nullable: false
+            comment: ''
+            column: mess_createdDate
+    manyToOne:
+        messMessageType:
+            targetEntity: MessageType
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                mess_message_type_id:
+                    referencedColumnName: mety_id
+            orphanRemoval: false
+        messUser:
+            targetEntity: Users
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                mess_user_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

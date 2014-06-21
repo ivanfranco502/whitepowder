@@ -1,0 +1,43 @@
+Tavros\DomainBundle\Entity\Alert:
+    type: entity
+    table: alert
+    indexes:
+        FK_alert_message_idx:
+            columns:
+                - aler_message_id
+    id:
+        alerId:
+            type: integer
+            nullable: false
+            unsigned: false
+            comment: ''
+            id: true
+            column: aler_id
+            generator:
+                strategy: IDENTITY
+    fields:
+        alerXPosition:
+            type: float
+            nullable: false
+            precision: 10
+            scale: 0
+            comment: ''
+            column: aler_x_position
+        alerYPosition:
+            type: string
+            nullable: false
+            length: 45
+            fixed: false
+            comment: ''
+            column: aler_y_position
+    manyToOne:
+        alerMessage:
+            targetEntity: Message
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                aler_message_id:
+                    referencedColumnName: mess_id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

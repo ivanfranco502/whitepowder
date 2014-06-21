@@ -531,7 +531,7 @@ class appDevDebugProjectContainer extends Container
         $b = new \Doctrine\DBAL\Configuration();
         $b->setSQLLogger($a);
 
-        return $this->services['doctrine.dbal.default_connection'] = $this->get('doctrine.dbal.connection_factory')->createConnection(array('driver' => 'pdo_mysql', 'host' => '127.0.0.1', 'port' => NULL, 'dbname' => 'symfony', 'user' => 'root', 'password' => NULL, 'charset' => 'UTF8', 'driverOptions' => array()), $b, new \Symfony\Bridge\Doctrine\ContainerAwareEventManager($this), array());
+        return $this->services['doctrine.dbal.default_connection'] = $this->get('doctrine.dbal.connection_factory')->createConnection(array('driver' => 'pdo_mysql', 'host' => '127.0.0.1', 'port' => NULL, 'dbname' => 'whitepowder', 'user' => 'root', 'password' => NULL, 'charset' => 'UTF8', 'driverOptions' => array()), $b, new \Symfony\Bridge\Doctrine\ContainerAwareEventManager($this), array());
     }
 
     /**
@@ -553,20 +553,26 @@ class appDevDebugProjectContainer extends Container
         $c = new \Doctrine\Common\Cache\ArrayCache();
         $c->setNamespace('sf2orm_default_3728db2a560ca7d20db70928dc1bfe7e');
 
-        $d = new \Doctrine\ORM\Configuration();
-        $d->setEntityNamespaces(array());
-        $d->setMetadataCacheImpl($a);
-        $d->setQueryCacheImpl($b);
-        $d->setResultCacheImpl($c);
-        $d->setMetadataDriverImpl(new \Doctrine\ORM\Mapping\Driver\DriverChain());
-        $d->setProxyDir('D:/Users/Joaquin-Dev/Desktop/tavros/whitepowder/trunk/Codigo/Web/src/app/cache/dev/doctrine/orm/Proxies');
-        $d->setProxyNamespace('Proxies');
-        $d->setAutoGenerateProxyClasses(true);
-        $d->setClassMetadataFactoryName('Doctrine\\ORM\\Mapping\\ClassMetadataFactory');
-        $d->setDefaultRepositoryClassName('Doctrine\\ORM\\EntityRepository');
-        $d->setNamingStrategy(new \Doctrine\ORM\Mapping\DefaultNamingStrategy());
+        $d = new \Doctrine\ORM\Mapping\Driver\SimplifiedYamlDriver(array('D:\\Users\\Joaquin-Dev\\Desktop\\tavros\\whitepowder\\trunk\\Codigo\\Web\\src\\src\\Tavros\\DomainBundle\\Resources\\config\\doctrine' => 'Tavros\\DomainBundle\\Entity'));
+        $d->setGlobalBasename('mapping');
 
-        $this->services['doctrine.orm.default_entity_manager'] = $instance = call_user_func(array('Doctrine\\ORM\\EntityManager', 'create'), $this->get('doctrine.dbal.default_connection'), $d);
+        $e = new \Doctrine\ORM\Mapping\Driver\DriverChain();
+        $e->addDriver($d, 'Tavros\\DomainBundle\\Entity');
+
+        $f = new \Doctrine\ORM\Configuration();
+        $f->setEntityNamespaces(array('TavrosDomainBundle' => 'Tavros\\DomainBundle\\Entity'));
+        $f->setMetadataCacheImpl($a);
+        $f->setQueryCacheImpl($b);
+        $f->setResultCacheImpl($c);
+        $f->setMetadataDriverImpl($e);
+        $f->setProxyDir('D:/Users/Joaquin-Dev/Desktop/tavros/whitepowder/trunk/Codigo/Web/src/app/cache/dev/doctrine/orm/Proxies');
+        $f->setProxyNamespace('Proxies');
+        $f->setAutoGenerateProxyClasses(true);
+        $f->setClassMetadataFactoryName('Doctrine\\ORM\\Mapping\\ClassMetadataFactory');
+        $f->setDefaultRepositoryClassName('Doctrine\\ORM\\EntityRepository');
+        $f->setNamingStrategy(new \Doctrine\ORM\Mapping\DefaultNamingStrategy());
+
+        $this->services['doctrine.orm.default_entity_manager'] = $instance = call_user_func(array('Doctrine\\ORM\\EntityManager', 'create'), $this->get('doctrine.dbal.default_connection'), $f);
 
         $this->get('doctrine.orm.default_manager_configurator')->configure($instance);
 
@@ -2862,6 +2868,7 @@ class appDevDebugProjectContainer extends Container
         $instance->addPath('D:\\Users\\Joaquin-Dev\\Desktop\\tavros\\whitepowder\\trunk\\Codigo\\Web\\src\\vendor\\symfony\\symfony\\src\\Symfony\\Bundle\\TwigBundle/Resources/views', 'Twig');
         $instance->addPath('D:\\Users\\Joaquin-Dev\\Desktop\\tavros\\whitepowder\\trunk\\Codigo\\Web\\src\\vendor\\symfony\\swiftmailer-bundle\\Symfony\\Bundle\\SwiftmailerBundle/Resources/views', 'Swiftmailer');
         $instance->addPath('D:\\Users\\Joaquin-Dev\\Desktop\\tavros\\whitepowder\\trunk\\Codigo\\Web\\src\\vendor\\doctrine\\doctrine-bundle\\Doctrine\\Bundle\\DoctrineBundle/Resources/views', 'Doctrine');
+        $instance->addPath('D:\\Users\\Joaquin-Dev\\Desktop\\tavros\\whitepowder\\trunk\\Codigo\\Web\\src\\src\\Tavros\\DomainBundle/Resources/views', 'TavrosDomain');
         $instance->addPath('D:\\Users\\Joaquin-Dev\\Desktop\\tavros\\whitepowder\\trunk\\Codigo\\Web\\src\\src\\Tavros\\InternalApiBundle/Resources/views', 'TavrosInternalApi');
         $instance->addPath('D:\\Users\\Joaquin-Dev\\Desktop\\tavros\\whitepowder\\trunk\\Codigo\\Web\\src\\src\\Tavros\\WebBundle/Resources/views', 'TavrosWeb');
         $instance->addPath('D:\\Users\\Joaquin-Dev\\Desktop\\tavros\\whitepowder\\trunk\\Codigo\\Web\\src\\src\\Acme\\DemoBundle/Resources/views', 'AcmeDemo');
@@ -3314,6 +3321,7 @@ class appDevDebugProjectContainer extends Container
                 'AsseticBundle' => 'Symfony\\Bundle\\AsseticBundle\\AsseticBundle',
                 'DoctrineBundle' => 'Doctrine\\Bundle\\DoctrineBundle\\DoctrineBundle',
                 'SensioFrameworkExtraBundle' => 'Sensio\\Bundle\\FrameworkExtraBundle\\SensioFrameworkExtraBundle',
+                'TavrosDomainBundle' => 'Tavros\\DomainBundle\\TavrosDomainBundle',
                 'TavrosInternalApiBundle' => 'Tavros\\InternalApiBundle\\TavrosInternalApiBundle',
                 'TavrosWebBundle' => 'Tavros\\WebBundle\\TavrosWebBundle',
                 'AcmeDemoBundle' => 'Acme\\DemoBundle\\AcmeDemoBundle',
@@ -3326,7 +3334,7 @@ class appDevDebugProjectContainer extends Container
             'database_driver' => 'pdo_mysql',
             'database_host' => '127.0.0.1',
             'database_port' => NULL,
-            'database_name' => 'symfony',
+            'database_name' => 'whitepowder',
             'database_user' => 'root',
             'database_password' => NULL,
             'mailer_transport' => 'smtp',

@@ -1,0 +1,58 @@
+Tavros\DomainBundle\Entity\SlopeCoordinate:
+    type: entity
+    table: slope_coordinate
+    indexes:
+        FK_slope_coordinate_slope_idx:
+            columns:
+                - slco_slope_id
+        FK_slope_coordinate_users_idx:
+            columns:
+                - slco_user_id
+        FK_slope_coordinate_coordinate_idx:
+            columns:
+                - slco_coordinate_id
+    id:
+        slcoId:
+            type: integer
+            nullable: false
+            unsigned: false
+            comment: ''
+            id: true
+            column: slco_id
+            generator:
+                strategy: IDENTITY
+    fields:
+        slcoUpdateDate:
+            type: datetime
+            nullable: true
+            comment: ''
+            column: slco_update_date
+    manyToOne:
+        slcoCoordinate:
+            targetEntity: Coordinate
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                slco_coordinate_id:
+                    referencedColumnName: coor_id
+            orphanRemoval: false
+        slcoSlope:
+            targetEntity: Slope
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                slco_slope_id:
+                    referencedColumnName: slop_id
+            orphanRemoval: false
+        slcoUser:
+            targetEntity: Users
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                slco_user_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }
