@@ -19,6 +19,7 @@ class AppKernel extends Kernel
             new Tavros\DomainBundle\TavrosDomainBundle(),
             new Tavros\InternalApiBundle\TavrosInternalApiBundle(),
             new Tavros\WebBundle\TavrosWebBundle(),
+            new FOS\UserBundle\FOSUserBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
