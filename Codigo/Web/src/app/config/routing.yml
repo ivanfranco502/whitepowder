@@ -23,7 +23,7 @@ tavros_web:
 
 tavros_internal_api:
     resource: "@TavrosInternalApiBundle/Resources/config/routing.yml"
-    prefix:   /
+    prefix:   /internalApi
 
 tavros_domain:
     resource: "@TavrosDomainBundle/Resources/config/routing.yml"

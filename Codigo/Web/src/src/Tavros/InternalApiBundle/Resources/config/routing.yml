@@ -1,3 +1,3 @@
-tavros_internal_api_homepage:
-    pattern:  /hello/{name}
-    defaults: { _controller: TavrosInternalApiBundle:Default:index }
+tavros_internal_api_login:
+    pattern:  /login
+    defaults: { _controller: TavrosInternalApiBundle:Session:login }
