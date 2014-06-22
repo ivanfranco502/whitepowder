@@ -1,6 +1,4 @@
-INDEX VERSION 1.126+C:\Users\Lucas\Desktop\whitePowderApp\.metadata\.plugins\org.eclipse.jdt.core
+INDEX VERSION 1.126+C:\Users\Lucas\Desktop\Tavros\trunk\Codigo\whitePowderApp\.metadata\.plugins\org.eclipse.jdt.core
 1585612161.index
-2013760261.index
-4132212700.index
-2485891378.index
-2563681693.index
+1932746962.index
+95944473.index

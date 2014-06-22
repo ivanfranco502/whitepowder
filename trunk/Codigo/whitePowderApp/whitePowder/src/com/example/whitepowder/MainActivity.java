@@ -4,6 +4,10 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 public class MainActivity extends Activity {
 
@@ -11,7 +15,25 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.login);
-
+		
+		RelativeLayout butLogin = (RelativeLayout)findViewById(R.id.ingresarButton);	
+		
+		//Botón ingresar on click method				
+		butLogin.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				TextView inputUser = (TextView)findViewById(R.id.userInput);
+				TextView inputPassword = (TextView)findViewById(R.id.passwordInput);
+				
+				//TODO validate input
+				
+				LoginThread lt = new LoginThread();
+				lt.execute(inputUser.getText().toString(),inputPassword.getText().toString());
+				
+				
+			}
+		});
+		
 	}
 
 	@Override
@@ -34,9 +56,5 @@ public class MainActivity extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 
-	/**
-	 * A placeholder fragment containing a simple view.
-	 */
-	
 
 }
