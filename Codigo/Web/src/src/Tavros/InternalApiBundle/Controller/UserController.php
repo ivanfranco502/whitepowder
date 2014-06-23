@@ -7,9 +7,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-class SessionController extends Controller {
+class UserController extends Controller {
 
-    public function loginAction(Request $request) {
+    public function pruebaAction(Request $request) {
 
         $username = $request->get('username');
         $password = $request->get('password');
