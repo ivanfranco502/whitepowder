@@ -25,9 +25,7 @@ public class MainActivity extends Activity {
 				TextView inputUser = (TextView)findViewById(R.id.userInput);
 				TextView inputPassword = (TextView)findViewById(R.id.passwordInput);
 				
-				//TODO validate input
-				
-				LoginThread lt = new LoginThread();
+				LoginThread lt = new LoginThread(getApplicationContext());
 				lt.execute(inputUser.getText().toString(),inputPassword.getText().toString());
 				
 				

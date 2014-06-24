@@ -1,0 +1,5 @@
+package com.example.whitepowder;
+
+public class ApplicationError {
+
+}
