@@ -1,6 +1,8 @@
 package com.example.whitepowder;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -11,23 +13,34 @@ import android.widget.TextView;
 
 public class MainActivity extends Activity {
 
+	Context mContext;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.login);
+		mContext = getApplicationContext();
+		RelativeLayout butLogin = (RelativeLayout)findViewById(R.id.login_login_button);	
+		TextView butRegister = (TextView)findViewById(R.id.login_register_button);
+		TextView butResetPassword = (TextView)findViewById(R.id.login_reset_button);
 		
-		RelativeLayout butLogin = (RelativeLayout)findViewById(R.id.ingresarButton);	
 		
-		//Botón ingresar on click method				
+		//On login pressed method				
 		butLogin.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				TextView inputUser = (TextView)findViewById(R.id.userInput);
-				TextView inputPassword = (TextView)findViewById(R.id.passwordInput);
-				
+				TextView inputUser = (TextView)findViewById(R.id.login_username_input);
+				TextView inputPassword = (TextView)findViewById(R.id.login_password_input);				
 				LoginThread lt = new LoginThread(getApplicationContext());
-				lt.execute(inputUser.getText().toString(),inputPassword.getText().toString());
-				
+				lt.execute(inputUser.getText().toString(),inputPassword.getText().toString());	
+			}
+		});
+		
+		butRegister.setOnClickListener(new OnClickListener() {			
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(mContext,RegisterActivity.class);
+				startActivity(intent);
 				
 			}
 		});
