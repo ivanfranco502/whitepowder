@@ -15,4 +15,6 @@
     <string name="register_hint_repeat_password">Repetir contraseña</string>
     <string name="register_hint_email">Email</string>
     <string name="register_register_btn">ENVIAR</string>
+    <string name="login_error_unexpected_response">Los servidores de WhitePowder no estan funcionando correctamente en este momento, intente nuevamente más tarde</string>
+    <string name="login_error_user_password_incorrect">El usuario o la contraseña indicados son incorrectos</string>
 </resources>
