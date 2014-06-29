@@ -8,6 +8,9 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Date;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -35,7 +38,11 @@ public class LoginThread extends AsyncTask<String, Void, Void> {
 	protected Void doInBackground(String... loginInput) {
 		
 		if((loginInput[0].length()> 0)&& (loginInput[1].length()>0)){
-		
+			
+        	User user = User.getUserInstance();
+        	user.setUsername(loginInput[0]);
+        	user.setPassword(loginInput[1]);
+			
 			try {
 				String params = "username="+loginInput[0]+"&password="+loginInput[1];
 				URL url = new URL(LoginURL);
@@ -58,7 +65,7 @@ public class LoginThread extends AsyncTask<String, Void, Void> {
 					InputStream is = connection.getInputStream();
 					BufferedReader reader = new BufferedReader(new InputStreamReader(is));		
 					String response = reader.readLine();
-					//TODO parse response
+					parseLoginResponse(response);
 			    }
 			    
 			    else{
@@ -72,7 +79,7 @@ public class LoginThread extends AsyncTask<String, Void, Void> {
 				mError = new ApplicationError(101,"Malformed URL in login module");
 			} 
 			catch (IOException e) {
-				Log.i("Error","EC 102 IO exception in login module");
+				Log.i("Error","EC: 102 IO exception in login module");
 				mError = new ApplicationError(102,"IO exception in login module");
 			}
 			
@@ -91,19 +98,59 @@ public class LoginThread extends AsyncTask<String, Void, Void> {
     	if(mError==null){
     		//TODO display UI
     	}
-    	
+    	//Error handling
     	else{
     		switch(mError.getErrorCode()){
 	    		
 	    		case 103: 
 		    		Toast.makeText(mContext,R.string.login_error_incomplete_data,Toast.LENGTH_SHORT).show();
 		    		break;
+	    		case 104:
+		    		Toast.makeText(mContext,R.string.login_error_unexpected_response,Toast.LENGTH_SHORT).show();
+		    		break;
+	    		case 105:
+	    			Toast.makeText(mContext,R.string.login_error_user_password_incorrect,Toast.LENGTH_SHORT).show();
+		    		break;
 		    	default:
 		    		Toast.makeText(mContext,R.string.login_error_server_unreachable,Toast.LENGTH_SHORT).show();
-		    		break;
-    			
+		    		break;  			
     		}
-    	}
-   }
+    	};
+    }	
+	
+	private void parseLoginResponse(String response){
+		
+		User user;
+    	user = User.getUserInstance();
+    	
+		try {
+			JSONObject jsonObject = new JSONObject(response);
+			
+			//Gets data from json
+	        int errorCode  = jsonObject.getInt("errorCode");
+	        String errorDescription = jsonObject.getString("errorDescription");
+	        String token = jsonObject.getString("token");
+	        char userType = jsonObject.getString("userType").charAt(0);
+	        
+	        if(errorCode==0){	        	
+	        	user.setToken(token);
+	        	user.setUserType(userType);
+	        	user.setLogedAt(new Date(System.currentTimeMillis()));
+	        	
+	        }
+	        else {
+				user.setUsername(null);
+				user.setPassword(null);
+	        	Log.i("Error","EC: 105 Server error. "+Integer.toString(errorCode)+" "+errorDescription); 
+				mError = new ApplicationError(105,"Server error. "+Integer.toString(errorCode)+" "+errorDescription);
+	        };
+			
+		} 
+		
+		catch (JSONException e) {
+			Log.i("Error","EC: 104 Unexpected response in login module");
+			mError = new ApplicationError(104,"Unexpected response in login module");
+		}	
+	}
 
 }
