@@ -20,10 +20,11 @@ class AppKernel extends Kernel
             new Tavros\InternalApiBundle\TavrosInternalApiBundle(),
             new Tavros\WebBundle\TavrosWebBundle(),
             new FOS\UserBundle\FOSUserBundle(),
+            new Tavros\HelpUserBundle\TavrosHelpUserBundle(),
+            new JMS\SerializerBundle\JMSSerializerBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
-            $bundles[] = new Acme\DemoBundle\AcmeDemoBundle();
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
             $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
             $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
