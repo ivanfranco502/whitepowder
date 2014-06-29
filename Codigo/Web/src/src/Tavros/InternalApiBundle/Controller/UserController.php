@@ -28,4 +28,14 @@ class UserController extends Controller {
         return $response;
     }
 
+    public function registerAction(Request $resquest) {
+
+        $userManager = $this->get('fos_user.user_manager');
+
+        $newUser = $userManager->createUser();
+
+        $response = new JsonResponse(array($newUser->getId()));
+        return $response;
+    }
+
 }
