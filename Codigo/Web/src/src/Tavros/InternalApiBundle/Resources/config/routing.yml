@@ -1,7 +1,6 @@
 tavros_internal_api_prueba:
     pattern:  /prueba
     defaults: { _controller: TavrosInternalApiBundle:User:prueba }
-    methods:   [POST]
 
 tavros_help_user:
     resource: "@TavrosHelpUserBundle/Resources/config/routing.yml"
