@@ -8,13 +8,16 @@
     <string name="login_hint_password">Contraseña</string>
     <string name="whitePowder_logo_description">Logo White Powder</string>
     <string name="login_error_incomplete_data">Tanto el usuario como la contraseña deben ser completados</string>
-    <string name="login_error_server_unreachable">White Powder no está disponible en este momento, por favor intente más tarde</string>
+    <string name="error_server_unreachable">White Powder no está disponible en este momento, por favor intente más tarde</string>
     <string name="login_text_regiser">Registrarme!</string>
     <string name="login_text_reset_password">Resetear contraseña</string>
     <string name="register_registry_text">REGISTRO</string>
     <string name="register_hint_repeat_password">Repetir contraseña</string>
     <string name="register_hint_email">Email</string>
     <string name="register_register_btn">ENVIAR</string>
-    <string name="login_error_unexpected_response">Los servidores de WhitePowder no estan funcionando correctamente en este momento, intente nuevamente más tarde</string>
+    <string name="error_unexpected_response">Los servidores de WhitePowder no estan funcionando correctamente en este momento, intente nuevamente más tarde</string>
     <string name="login_error_user_password_incorrect">El usuario o la contraseña indicados son incorrectos</string>
+    <string name="register_error_incomplete_data">Por favor, para poder registrarte completá todos los campos</string>
+    <string name="register_error_passwords_not_matching">La contraseña no coincide</string>
+    <string name="register_error_email_not_valid">El email ingresado no es válido</string>
 </resources>

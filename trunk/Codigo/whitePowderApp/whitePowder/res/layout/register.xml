@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#6DCAEC"
-    tools:context="com.example.whitepowder.MainActivity"
+    tools:context="com.whitepowder.LoginActivity"
     tools:ignore="MergeRootFrame">
 
 	<TextView
