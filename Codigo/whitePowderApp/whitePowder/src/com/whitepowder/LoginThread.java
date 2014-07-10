@@ -1,4 +1,4 @@
-package com.example.whitepowder;
+package com.whitepowder;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -11,6 +11,8 @@ import java.net.URL;
 import java.util.Date;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import com.example.whitepowder.R;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -106,13 +108,13 @@ public class LoginThread extends AsyncTask<String, Void, Void> {
 		    		Toast.makeText(mContext,R.string.login_error_incomplete_data,Toast.LENGTH_SHORT).show();
 		    		break;
 	    		case 104:
-		    		Toast.makeText(mContext,R.string.login_error_unexpected_response,Toast.LENGTH_SHORT).show();
+		    		Toast.makeText(mContext,R.string.error_unexpected_response,Toast.LENGTH_SHORT).show();
 		    		break;
 	    		case 105:
 	    			Toast.makeText(mContext,R.string.login_error_user_password_incorrect,Toast.LENGTH_SHORT).show();
 		    		break;
 		    	default:
-		    		Toast.makeText(mContext,R.string.login_error_server_unreachable,Toast.LENGTH_SHORT).show();
+		    		Toast.makeText(mContext,R.string.error_server_unreachable,Toast.LENGTH_SHORT).show();
 		    		break;  			
     		}
     	};

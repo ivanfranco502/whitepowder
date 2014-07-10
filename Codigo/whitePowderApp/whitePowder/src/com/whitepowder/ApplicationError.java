@@ -1,4 +1,4 @@
-package com.example.whitepowder;
+package com.whitepowder;
 
 public class ApplicationError{
 	

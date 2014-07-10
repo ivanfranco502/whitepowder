@@ -1,4 +1,6 @@
-package com.example.whitepowder;
+package com.whitepowder;
+
+import com.example.whitepowder.R;
 
 import android.app.Activity;
 import android.content.Context;
@@ -10,10 +12,12 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
-public class MainActivity extends Activity {
+public class LoginActivity extends Activity {
 
 	Context mContext;
+	final int REGISTER_REQUEST_CODE = 1;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -22,7 +26,7 @@ public class MainActivity extends Activity {
 		mContext = getApplicationContext();
 		RelativeLayout butLogin = (RelativeLayout)findViewById(R.id.login_login_button);	
 		TextView butRegister = (TextView)findViewById(R.id.login_register_button);
-		TextView butResetPassword = (TextView)findViewById(R.id.login_reset_button);
+		//TextView butResetPassword = (TextView)findViewById(R.id.login_reset_button);
 		
 		
 		//On login pressed method				
@@ -40,11 +44,20 @@ public class MainActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(mContext,RegisterActivity.class);
-				startActivity(intent);
+				startActivityForResult(intent, REGISTER_REQUEST_CODE);
 				
 			}
 		});
 		
+	}
+	
+	public void onActivityResult(int requestCode, int resultCode, Intent data){
+		if(requestCode == REGISTER_REQUEST_CODE){
+			if(resultCode==0){
+				//TODO deshardcode
+				Toast.makeText(this, "OK!", Toast.LENGTH_SHORT).show();
+			}
+		}
 	}
 
 	@Override
