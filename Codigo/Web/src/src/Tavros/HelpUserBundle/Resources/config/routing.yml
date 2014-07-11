@@ -2,6 +2,6 @@ tavros_help_user_register:
     pattern:  /register
     defaults: { _controller: TavrosHelpUserBundle:Registration:register }
     
-tavros_help_user_csrf_token:
-    pattern:  /csrf/{intention}
-    defaults: { _controller: TavrosHelpUserBundle:Registration:getCsrf }
+tavros_help_user_login:
+    pattern:  /login
+    defaults: { _controller: TavrosHelpUserBundle:Security:login }
