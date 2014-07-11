@@ -12,7 +12,7 @@ public class User {
 	String password;
 	String token;
 	Date logedAt;
-	char userType;
+	String role;
 
 	private User() {};
 	
@@ -47,11 +47,11 @@ public class User {
 	public void setLogedAt(Date logedAt) {
 		this.logedAt = logedAt;
 	}
-	public char getUserType() {
-		return userType;
+	public String getRole() {
+		return role;
 	}
-	public void setUserType(char userType) {
-		this.userType = userType;
+	public void setRole(String role) {
+		this.role = role;
 	}
 	
 }

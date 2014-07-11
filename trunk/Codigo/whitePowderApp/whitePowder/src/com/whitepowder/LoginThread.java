@@ -8,20 +8,18 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import com.example.whitepowder.R;
-
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.widget.Toast;
 
 public class LoginThread extends AsyncTask<String, Void, Void> {
 	
-	private final String LoginURL = "http://whitetavros.com/Symfony/web/internalApi/prueba";
+	private final String LoginURL = "http://whitetavros.com/Sandbox/web/internalApi/user/login";
 	private ApplicationError mError = null;
 	private Context mContext;
 	
@@ -42,11 +40,11 @@ public class LoginThread extends AsyncTask<String, Void, Void> {
 		if((loginInput[0].length()> 0)&& (loginInput[1].length()>0)){
 			
         	User user = User.getUserInstance();
-        	user.setUsername(loginInput[0]);
-        	user.setPassword(loginInput[1]);
 			
 			try {
-				String params = "username="+loginInput[0]+"&password="+loginInput[1];
+				user.setUsername(loginInput[0]);
+				user.setPassword(SHA1Manager.SHA1(loginInput[1]));
+				String params = "username="+user.getUsername()+"&password="+user.getPassword();
 				URL url = new URL(LoginURL);
 				HttpURLConnection connection = (HttpURLConnection)url.openConnection();
 			    connection.setRequestMethod("POST");
@@ -71,24 +69,24 @@ public class LoginThread extends AsyncTask<String, Void, Void> {
 			    }
 			    
 			    else{
-			    	Log.i("Error","EC:100 Error reaching server");
-			    	mError = new ApplicationError(100,"Error reaching Server");
+			    	mError = new ApplicationError(100,"Error","Error en la conexión con el Servidor");
 			    };
 			}
 		    
 			catch (MalformedURLException e) {
-				Log.i("Error","EC:101 Malformed URL in login module");
-				mError = new ApplicationError(101,"Malformed URL in login module");
+				mError = new ApplicationError(101,"Error","MalformedURLException en módulo de login");
 			} 
 			catch (IOException e) {
-				Log.i("Error","EC: 102 IO exception in login module");
-				mError = new ApplicationError(102,"IO exception in login module");
+				mError = new ApplicationError(102,"Error","IOException en módulo de login");
 			}
+			catch (NoSuchAlgorithmException e) {
+				mError = new ApplicationError(106,"Error","NoSuchAlgorithmException en módulo de login");
+			};
 			
 		}
 		
 		else{
-			mError = new ApplicationError(103,"Username or password have not been completed");
+			mError = new ApplicationError(103,"Warning","Usuario o contraseña no completado en módulo de login");
 		};
 		
 		return null;
@@ -122,36 +120,35 @@ public class LoginThread extends AsyncTask<String, Void, Void> {
 	
 	private void parseLoginResponse(String response){
 		
-		User user;
-    	user = User.getUserInstance();
+		User user = User.getUserInstance();
     	
 		try {
 			JSONObject jsonObject = new JSONObject(response);
 			
 			//Gets data from json
-	        int errorCode  = jsonObject.getInt("errorCode");
-	        String errorDescription = jsonObject.getString("errorDescription");
-	        String token = jsonObject.getString("token");
-	        char userType = jsonObject.getString("userType").charAt(0);
+	        int code = jsonObject.getInt("code");	        
+	        JSONObject payload = jsonObject.getJSONObject("payload");
+	        String token = payload.getString("token");
+	        String role = payload.getString("role");
 	        
-	        if(errorCode==0){	        	
+	        
+	        if(code==200){	        	
 	        	user.setToken(token);
-	        	user.setUserType(userType);
-	        	user.setLogedAt(new Date(System.currentTimeMillis()));
-	        	
+	        	user.setRole(role);
+	        	user.setLogedAt(new Date(System.currentTimeMillis()));	        	
 	        }
 	        else {
 				user.setUsername(null);
 				user.setPassword(null);
-	        	Log.i("Error","EC: 105 Server error. "+Integer.toString(errorCode)+" "+errorDescription); 
-				mError = new ApplicationError(105,"Server error. "+Integer.toString(errorCode)+" "+errorDescription);
+				
+				//TODO Handle errors
+				
 	        };
 			
 		} 
 		
 		catch (JSONException e) {
-			Log.i("Error","EC: 104 Unexpected response in login module");
-			mError = new ApplicationError(104,"Unexpected response in login module");
+			mError = new ApplicationError(104,"Error","Respuesta inesperada en response en módulo de login");
 		}	
 	}
 
