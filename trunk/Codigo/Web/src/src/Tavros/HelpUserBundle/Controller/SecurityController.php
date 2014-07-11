@@ -1,76 +1,110 @@
 <?php
 
-/*
- * This file is part of the FOSUserBundle package.
- *
- * (c) FriendsOfSymfony <http://friendsofsymfony.github.com/>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+namespace Tavros\HelpUserBundle\Controller;
 
-namespace FOS\UserBundle\Controller;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use Symfony\Component\Security\Core\Authentication\Token\AnonymousToken;
+use FOS\UserBundle\Controller\SecurityController as BaseController;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Tavros\InternalApiBundle\Entity\ApiResponse;
+use \FOS\UserBundle\Entity\User as User;
 
-use Symfony\Component\DependencyInjection\ContainerAware;
-use Symfony\Component\Security\Core\SecurityContext;
+class SecurityController extends BaseController {
 
-class SecurityController extends ContainerAware
-{
-    public function loginAction()
-    {
+    protected function getUserManager() {
+        return $this->container->get('fos_user.user_manager');
+    }
+
+    protected function loginUser(User $user) {
+        $security = $this->container->get('security.context');
+        $providerKey = $this->container->getParameter('fos_user.firewall_name');
+        $roles = $user->getRoles();
+        $token = new UsernamePasswordToken($user, null, $providerKey, $roles);
+        $security->setToken($token);
+
+        $this->container->get('session')->set('_security_main', serialize($token));
+
+        $csrf_token = $this->container->get('form.csrf_provider')->generateCsrfToken('authenticate');
+
+        return $csrf_token;
+    }
+
+    protected function logoutUser() {
+        $security = $this->container->get('security.context');
+        $token = new AnonymousToken(null, new User());
+        $security->setToken($token);
+        $this->container->get('session')->invalidate();
+    }
+
+    protected function checkUserPassword(User $user, $password) {
+        $factory = $this->container->get('security.encoder_factory');
+        $encoder = $factory->getEncoder($user);
+        if (!$encoder) {
+            return false;
+        }
+        return $encoder->isPasswordValid($user->getPassword(), $password, $user->getSalt());
+    }
+
+    public function loginAction() {
+
+        $logger = $this->container->get('logger');
+        $serializer = $this->container->get('jms_serializer');
+        $apiResponse = new ApiResponse();
+        $response = new JsonResponse();
+
         $request = $this->container->get('request');
-        /* @var $request \Symfony\Component\HttpFoundation\Request */
-        $session = $request->getSession();
-        /* @var $session \Symfony\Component\HttpFoundation\Session\Session */
 
-        // get the error if any (works with forward and redirect -- see below)
-        if ($request->attributes->has(SecurityContext::AUTHENTICATION_ERROR)) {
-            $error = $request->attributes->get(SecurityContext::AUTHENTICATION_ERROR);
-        } elseif (null !== $session && $session->has(SecurityContext::AUTHENTICATION_ERROR)) {
-            $error = $session->get(SecurityContext::AUTHENTICATION_ERROR);
-            $session->remove(SecurityContext::AUTHENTICATION_ERROR);
+        if ($request->getMethod() == 'POST') {
+            $params = $_POST;
         } else {
-            $error = '';
+            $apiResponse->setCode(404);
+            $response->setData($serializer->serialize($apiResponse, 'json'));
+            return $response;
         }
 
-        if ($error) {
-            // TODO: this is a potential security risk (see http://trac.symfony-project.org/ticket/9523)
-            $error = $error->getMessage();
+        $username = $params['username'];
+        $password = $params['password'];
+
+        $userManager = $this->getUserManager();
+        $user = $userManager->findUserByUsername($username);
+        if (!$user) {
+            $user = $userManager->findUserByEmail($username);
         }
-        // last username entered by the user
-        $lastUsername = (null === $session) ? '' : $session->get(SecurityContext::LAST_USERNAME);
 
-        $csrfToken = $this->container->get('form.csrf_provider')->generateCsrfToken('authenticate');
+        if (!$user instanceof User) {
+            $apiResponse->setCode(104);
+            $response->setData($serializer->serialize($apiResponse, 'json'));
+            return $response;
+        }
+        if (!$this->checkUserPassword($user, $password)) {
+            $apiResponse->setCode(105);
+            $response->setData($serializer->serialize($apiResponse, 'json'));
+            return $response;
+        }
 
-        return $this->renderLogin(array(
-            'last_username' => $lastUsername,
-            'error'         => $error,
-            'csrf_token' => $csrfToken,
-        ));
+        try {
+            $token = $this->loginUser($user);
+
+            $apiResponse->setCode(200);
+            $payload = array(
+                "_token" => $token,
+                "role" => $user->getRoles()
+            );
+            $apiResponse->setPayload($payload);
+            $response->setData($serializer->serialize($apiResponse, 'json'));
+        } catch (Exception $ex) {
+
+            $apiResponse->setCode(106);
+            $response->setData($serializer->serialize($apiResponse, 'json'));
+            $logger->error('[TAVROS - ERROR]' . $ex);
+        }
+
+        return $response;
     }
 
-    /**
-     * Renders the login template with the given parameters. Overwrite this function in
-     * an extended controller to provide additional data for the login template.
-     *
-     * @param array $data
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    protected function renderLogin(array $data)
-    {
-        $template = sprintf('FOSUserBundle:Security:login.html.%s', $this->container->getParameter('fos_user.template.engine'));
-
-        return $this->container->get('templating')->renderResponse($template, $data);
+    public function logoutAction() {
+        $this->logoutUser();
+        return array('success' => true);
     }
 
-    public function checkAction()
-    {
-        throw new \RuntimeException('You must configure the check path to be handled by the firewall using form_login in your security firewall configuration.');
-    }
-
-    public function logoutAction()
-    {
-        throw new \RuntimeException('You must activate the logout in your security firewall configuration.');
-    }
 }
