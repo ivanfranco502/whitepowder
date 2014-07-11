@@ -20,4 +20,6 @@
     <string name="register_error_incomplete_data">Por favor, para poder registrarte completá todos los campos</string>
     <string name="register_error_passwords_not_matching">La contraseña no coincide</string>
     <string name="register_error_email_not_valid">El email ingresado no es válido</string>
+    <string name="register_error_existing_username">El nombre de usuario ingresado ya ha sido registrado</string>
+    <string name="register_error_existing_email">El email ingresado ya ha sido registrado</string>
 </resources>

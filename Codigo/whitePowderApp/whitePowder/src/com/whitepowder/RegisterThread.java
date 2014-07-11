@@ -8,11 +8,12 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.security.NoSuchAlgorithmException;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 import com.example.whitepowder.R;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.widget.Toast;
 
 public class RegisterThread extends AsyncTask<String, Void, Void> {
@@ -38,9 +39,10 @@ public class RegisterThread extends AsyncTask<String, Void, Void> {
 		String superAdmin = "0";
 		String role = "ROLE_SKIER";				
 		
-		if(validateInput(username,password,repeatedPassword,email)==0){		
+		if(validateInput(username,password,repeatedPassword,email)){		
 			try {		
 				//Generates request
+				password = SHA1Manager.SHA1(password);
 				String params = "username="+username+"&password="+password+"&email="+email+"&inactive="+inactive+"&superadmin="+superAdmin+"&role="+role;
 				URL url = new URL(RegisterURL);
 				HttpURLConnection connection = (HttpURLConnection)url.openConnection();
@@ -66,48 +68,44 @@ public class RegisterThread extends AsyncTask<String, Void, Void> {
 			    }
 			    
 			    else{
-			    	Log.i("Error","EC:100 Error reaching server");
-			    	mError = new ApplicationError(100,"Error reaching Server");
+			    	mError = new ApplicationError(100,"Error","Error en la conexión con el Servidor");
 			    };
 			}
 		    
 			catch (MalformedURLException e) {
-				Log.i("Error","EC:201 Malformed URL in register module");
-				mError = new ApplicationError(201,"Malformed URL in register module");
+				mError = new ApplicationError(201,"Error","MalformedURLException en módulo de registro");
 			}
 			catch (IOException e) {
-				Log.i("Error","EC: 202 IO exception in register module");
-				mError = new ApplicationError(202,"IO exception in register module");
+				mError = new ApplicationError(202,"Error","IOException en módulo de registro");
+			}
+			catch (NoSuchAlgorithmException e) {
+				mError = new ApplicationError(209,"Error","NoSuchAlgorithmException en módulo de registro");
 			};
+
 		}
 			
 		return null;
 	}
 	
-	private int validateInput(String username, String password, String repeatedPassword, String email) {
+	private boolean validateInput(String username, String password, String repeatedPassword, String email) {
 		
 		if(!(username.length()>0&&password.length()>0&&repeatedPassword.length()>0&&email.length()>0)){
-			mError = new ApplicationError(203, "EC 203 Incomplete data in register module");
-			Log.i("Warning", mError.getErrorDescription());
-			return 1;
-		}
-		else {		
-			if(!password.equals(repeatedPassword)){
-				mError = new ApplicationError(204, "EC 204 Password and repeated password must match");
-				Log.i("Warning", mError.getErrorDescription());
-				return 2;
-			}
-			else{
-				if(!email.contains("@") || !email.contains(".")){
-					mError = new ApplicationError(205, "EC 205 Invalid email address");
-					Log.i("Warning", mError.getErrorDescription());
-					return 3;
-				}
-				else{
-					return 0;
-				}
-			}
-		}		
+			mError = new ApplicationError(203,"Warning", "Campos incompletos en el módulo de registro");
+			return false;
+		};
+			
+		if(!password.equals(repeatedPassword)){
+			mError = new ApplicationError(204,"Warning", "Password y repetición de password no coinciden en módulo de registro");
+			return false;
+		};
+		
+		if(!email.contains("@") || !email.contains(".")){
+			mError = new ApplicationError(205,"Warning", "Dirección de email invalida en módulo de registro");
+			return false;
+		};
+		
+		return true;
+	
 	}
 	
 	private void parseRegisterResponse(String response){
@@ -116,35 +114,25 @@ public class RegisterThread extends AsyncTask<String, Void, Void> {
 			JSONObject jsonObject = new JSONObject(response);
 			
 			//Gets data from json
-	        String status  = jsonObject.getString("status");
 	        int code = jsonObject.getInt("code");
 	        
-	        if(status.equals("SUCCESS")){
+	        if(code==200){
 	        	mContext.setResult(0);
 	        	mContext.finish();
 	        }
-	        else {
+	        else{
 	        	if(code==101){
-					Log.i("Error","EC: 207 Username is already registered");
-					mError = new ApplicationError(207,"Username or password is already registered");
+					mError = new ApplicationError(207,"Warning","Usuario ya existente en módulo de login");
 	        	}
-	        	else{
-		        	if(code==102){
-						Log.i("Error","EC: 208 Email is already registered");
-						mError = new ApplicationError(207,"Username or password is already registered");
-		        	}
-		        	else{
-						Log.i("Error","EC: 206 Unexpected response in register module");
-						mError = new ApplicationError(206,"Unexpected response in register module");
-		        	};
-	        	};
+	        	if(code==102){
+					mError = new ApplicationError(208,"Warning","Email ya registrado en módulo de login");
+	        	}
 	        };
 			
 		} 
 		
 		catch (JSONException e) {
-			Log.i("Error","EC: 206 Unexpected response in register module");
-			mError = new ApplicationError(204,"Unexpected response in register module");
+			mError = new ApplicationError(204,"Error","Respuesta inesperada en response en módulo de registro");
 		}
 		
 	}
@@ -157,8 +145,6 @@ public class RegisterThread extends AsyncTask<String, Void, Void> {
     	//Error handling
     	else{
     		switch(mError.getErrorCode()){
-	    	
-    			//100,201 y 202 van al default
     		
 	    		case 203: 
 		    		Toast.makeText(mContext,R.string.register_error_incomplete_data,Toast.LENGTH_SHORT).show();
@@ -175,14 +161,13 @@ public class RegisterThread extends AsyncTask<String, Void, Void> {
 	    		case 206:
 	    			Toast.makeText(mContext,R.string.error_unexpected_response,Toast.LENGTH_SHORT).show();
 		    		break;
-		    	//TODO descardcodear	
+		    		
 	    		case 207:
-	    			Toast.makeText(mContext,"Usuario ya registrados anteriormente",Toast.LENGTH_SHORT).show();
+	    			Toast.makeText(mContext,R.string.register_error_existing_username,Toast.LENGTH_SHORT).show();
 		    		break;
 		    		
-		    	//TODO descardcodear
 	    		case 208:
-	    			Toast.makeText(mContext,"Email ya registrados anteriormente",Toast.LENGTH_SHORT).show();
+	    			Toast.makeText(mContext,R.string.register_error_existing_email,Toast.LENGTH_SHORT).show();
 		    		break;	
 		    	default:
 		    		Toast.makeText(mContext,R.string.error_server_unreachable,Toast.LENGTH_SHORT).show();
@@ -191,4 +176,8 @@ public class RegisterThread extends AsyncTask<String, Void, Void> {
     	};
 
     }
+    
+    
+    
+    
 }
