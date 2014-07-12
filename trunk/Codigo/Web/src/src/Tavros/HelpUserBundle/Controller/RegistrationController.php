@@ -3,7 +3,7 @@
 namespace Tavros\HelpUserBundle\Controller;
 
 use FOS\UserBundle\Controller\RegistrationController as BaseController;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Tavros\InternalApiBundle\Entity\ApiResponse;
 
 class RegistrationController extends BaseController {
@@ -13,13 +13,13 @@ class RegistrationController extends BaseController {
         $logger = $this->container->get('logger');
         $serializer = $this->container->get('jms_serializer');
         $apiResponse = new ApiResponse();
-        $response = new JsonResponse();
+        $response = new Response();
 
         if ($this->container->get('request')->getMethod() == 'POST') {
             $params = $_POST;
         } else {
             $apiResponse->setCode(404);
-            $response->setData($serializer->serialize($apiResponse, 'json'));
+            $response->setContent($serializer->serialize($apiResponse, 'json'));
             return $response;
         }
 
@@ -35,13 +35,13 @@ class RegistrationController extends BaseController {
 
         if ($userManager->findUserByUsername($username)) {
             $apiResponse->setCode(101);
-            $response->setData($serializer->serialize($apiResponse, 'json'));
+            $response->setContent($serializer->serialize($apiResponse, 'json'));
             return $response;
         }
 
         if ($userManager->findUserByEmail($email)) {
             $apiResponse->setCode(102);
-            $response->setData($serializer->serialize($apiResponse, 'json'));
+            $response->setContent($serializer->serialize($apiResponse, 'json'));
             return $response;
         }
 
@@ -51,10 +51,10 @@ class RegistrationController extends BaseController {
 
             $apiResponse->setCode(200);
             $apiResponse->setPayload('');
-            $response->setData($serializer->serialize($apiResponse, 'json'));
+            $response->setContent($serializer->serialize($apiResponse, 'json'));
         } catch (Exception $ex) {
             $apiResponse->setCode(103);
-            $response->setData($serializer->serialize($apiResponse, 'json'));
+            $response->setContent($serializer->serialize($apiResponse, 'json'));
             $logger->error('[TAVROS - ERROR]' . $ex);
         }
 
