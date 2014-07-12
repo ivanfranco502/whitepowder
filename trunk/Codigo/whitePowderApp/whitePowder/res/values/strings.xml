@@ -4,17 +4,17 @@
     <string name="app_name">whitePowder</string>
     <string name="action_settings">Settings</string>
     <string name="login_btn">INGRESAR</string>
-    <string name="login_hint_user">Usuario</string>
-    <string name="login_hint_password">Contraseña</string>
+    <string name="hint_user">Usuario</string>
+    <string name="hint_password">Contraseña</string>
     <string name="whitePowder_logo_description">Logo White Powder</string>
     <string name="login_error_incomplete_data">Tanto el usuario como la contraseña deben ser completados</string>
     <string name="error_server_unreachable">White Powder no está disponible en este momento, por favor intente más tarde</string>
     <string name="login_text_regiser">Registrarme!</string>
-    <string name="login_text_reset_password">Resetear contraseña</string>
+    <string name="login_text_reset_password">Olvidé mi contraseña!</string>
     <string name="register_registry_text">REGISTRO</string>
     <string name="register_hint_repeat_password">Repetir contraseña</string>
-    <string name="register_hint_email">Email</string>
-    <string name="register_register_btn">ENVIAR</string>
+    <string name="hint_email">Email</string>
+    <string name="send_btn">ENVIAR</string>
     <string name="error_unexpected_response">Los servidores de WhitePowder no estan funcionando correctamente en este momento, intente nuevamente más tarde</string>
     <string name="login_error_user_password_incorrect">El usuario o la contraseña indicados son incorrectos</string>
     <string name="register_error_incomplete_data">Por favor, para poder registrarte completá todos los campos</string>
@@ -22,4 +22,10 @@
     <string name="register_error_email_not_valid">El email ingresado no es válido</string>
     <string name="register_error_existing_username">El nombre de usuario ingresado ya ha sido registrado</string>
     <string name="register_error_existing_email">El email ingresado ya ha sido registrado</string>
+    <string name="pwd_change_text">CAMBIAR CONTRASEÑA</string>
+    <string name="pwd_change_hint_current_password">Contraseña actual</string>
+    <string name="pwd_change_hint_new_password">Nueva contraseña</string>
+    <string name="pwd_change_hint_repeat_new_password">Repetir nueva contraseña</string>
+    <string name="pwd_reset_title">RESETEO DE CONTRASEÑA</string>
+    <string name="pwd_reset_instructions">Si has olvidado tu contraseña, ingresa el e-mail con el que te has registrado y recibirás un mail con tu usuario y nueva contraseña.</string>
 </resources>

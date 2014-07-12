@@ -39,55 +39,60 @@ public class RegisterThread extends AsyncTask<String, Void, Void> {
 		String superAdmin = "0";
 		String role = "ROLE_SKIER";				
 		
-		if(validateInput(username,password,repeatedPassword,email)){		
-			try {		
-				//Generates request
-				password = SHA1Manager.SHA1(password);
-				String params = "username="+username+"&password="+password+"&email="+email+"&inactive="+inactive+"&superadmin="+superAdmin+"&role="+role;
-				URL url = new URL(RegisterURL);
-				HttpURLConnection connection = (HttpURLConnection)url.openConnection();
-			    connection.setRequestMethod("POST");
-			    
-			    connection.setUseCaches (false);
-			    connection.setDoInput(true);
-			    connection.setDoOutput(true);
-			    
-			    //Send request
-			    DataOutputStream wr = new DataOutputStream (connection.getOutputStream ());
-			    wr.writeBytes(params);
-			    wr.flush ();
-			    wr.close ();
-			        
-			    if(connection.getResponseCode()==200){
-				    
-			    	//Get Response
-					InputStream is = connection.getInputStream();
-					BufferedReader reader = new BufferedReader(new InputStreamReader(is));		
-					String response = reader.readLine();
-					parseRegisterResponse(response);
-			    }
-			    
-			    else{
-			    	mError = new ApplicationError(100,"Error","Error en la conexión con el Servidor");
-			    };
-			}
+		if(!validateInput(username, password, repeatedPassword, email)){
+			return null;
+		};
+		
+		try {		
+			//Generates request
+			password = SHA1Manager.SHA1(password);
+			String params = "username="+username+"&password="+password+"&email="+email+"&inactive="+inactive+"&superadmin="+superAdmin+"&role="+role;
+			URL url = new URL(RegisterURL);
+			HttpURLConnection connection = (HttpURLConnection)url.openConnection();
+		    connection.setRequestMethod("POST");
 		    
-			catch (MalformedURLException e) {
-				mError = new ApplicationError(201,"Error","MalformedURLException en módulo de registro");
-			}
-			catch (IOException e) {
-				mError = new ApplicationError(202,"Error","IOException en módulo de registro");
-			}
-			catch (NoSuchAlgorithmException e) {
-				mError = new ApplicationError(209,"Error","NoSuchAlgorithmException en módulo de registro");
-			};
-
+		    connection.setUseCaches (false);
+		    connection.setDoInput(true);
+		    connection.setDoOutput(true);
+		    
+		    //Send request
+		    DataOutputStream wr = new DataOutputStream (connection.getOutputStream ());
+		    wr.writeBytes(params);
+		    wr.flush ();
+		    wr.close ();
+		        
+		    if(connection.getResponseCode()==200){
+			    
+		    	//Get Response
+				InputStream is = connection.getInputStream();
+				BufferedReader reader = new BufferedReader(new InputStreamReader(is));		
+				String response = reader.readLine();
+				parseRegisterResponse(response);
+		    }
+		    
+		    else{
+		    	mError = new ApplicationError(100,"Error","Error en la conexión con el Servidor");
+		    };
 		}
+	    
+		catch (MalformedURLException e) {
+			mError = new ApplicationError(201,"Error","MalformedURLException en módulo de registro");
+		}
+		catch (IOException e) {
+			mError = new ApplicationError(202,"Error","IOException en módulo de registro");
+		}
+		catch (NoSuchAlgorithmException e) {
+			mError = new ApplicationError(209,"Error","NoSuchAlgorithmException en módulo de registro");
+		};
+
 			
 		return null;
 	}
 	
 	private boolean validateInput(String username, String password, String repeatedPassword, String email) {
+		
+		//TODO Check for special  characters
+		//TODO password >= 6 digits
 		
 		if(!(username.length()>0&&password.length()>0&&repeatedPassword.length()>0&&email.length()>0)){
 			mError = new ApplicationError(203,"Warning", "Campos incompletos en el módulo de registro");
@@ -113,34 +118,36 @@ public class RegisterThread extends AsyncTask<String, Void, Void> {
 		try {
 			JSONObject jsonObject = new JSONObject(response);
 			
-			//Gets data from json
+			//Gets code from json response
 	        int code = jsonObject.getInt("code");
-	        
-	        if(code==200){
-	        	mContext.setResult(0);
-	        	mContext.finish();
-	        }
-	        else{
+
+	        if(code!=200){ 
 	        	if(code==101){
 					mError = new ApplicationError(207,"Warning","Usuario ya existente en módulo de login");
 	        	}
-	        	if(code==102){
-					mError = new ApplicationError(208,"Warning","Email ya registrado en módulo de login");
-	        	}
+	        	else{
+	        		if(code==102){
+						mError = new ApplicationError(208,"Warning","Email ya registrado en módulo de login");
+						return;
+	        		}
+	        		else{
+	        			mError = new ApplicationError(206,"Error","Respuesta inesperada en response en módulo de registro");
+	        		};
+	        	};
 	        };
-			
 		} 
 		
 		catch (JSONException e) {
-			mError = new ApplicationError(204,"Error","Respuesta inesperada en response en módulo de registro");
-		}
+			mError = new ApplicationError(206,"Error","Respuesta inesperada en response en módulo de registro");
+		};
 		
 	}
 	
     protected void onPostExecute(Void unused) {	
 
     	if(mError==null){
-    		//TODO display UI
+        	mContext.setResult(0);
+        	mContext.finish();
     	}
     	//Error handling
     	else{
@@ -169,15 +176,12 @@ public class RegisterThread extends AsyncTask<String, Void, Void> {
 	    		case 208:
 	    			Toast.makeText(mContext,R.string.register_error_existing_email,Toast.LENGTH_SHORT).show();
 		    		break;	
-		    	default:
+		    	default: //100, 201, 202, 209
 		    		Toast.makeText(mContext,R.string.error_server_unreachable,Toast.LENGTH_SHORT).show();
 		    		break;  			
     		}
     	};
 
     }
-    
-    
-    
-    
+     
 }

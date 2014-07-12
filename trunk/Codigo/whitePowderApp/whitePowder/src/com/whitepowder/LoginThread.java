@@ -23,10 +23,8 @@ public class LoginThread extends AsyncTask<String, Void, Void> {
 	private ApplicationError mError = null;
 	private Context mContext;
 	
-	public LoginThread(Context ctxt) {
-		
-		mContext = ctxt;
-		
+	public LoginThread(Context ctxt) {		
+		mContext = ctxt;		
 	}
 	
 	@Override
@@ -111,7 +109,7 @@ public class LoginThread extends AsyncTask<String, Void, Void> {
 	    		case 105:
 	    			Toast.makeText(mContext,R.string.login_error_user_password_incorrect,Toast.LENGTH_SHORT).show();
 		    		break;
-		    	default:
+		    	default: //100,101,102,106
 		    		Toast.makeText(mContext,R.string.error_server_unreachable,Toast.LENGTH_SHORT).show();
 		    		break;  			
     		}
@@ -128,7 +126,7 @@ public class LoginThread extends AsyncTask<String, Void, Void> {
 			//Gets data from json
 	        int code = jsonObject.getInt("code");	        
 	        JSONObject payload = jsonObject.getJSONObject("payload");
-	        String token = payload.getString("token");
+	        String token = payload.getString("_token");
 	        String role = payload.getString("role");
 	        
 	        
@@ -141,15 +139,20 @@ public class LoginThread extends AsyncTask<String, Void, Void> {
 				user.setUsername(null);
 				user.setPassword(null);
 				
-				//TODO Handle errors
-				
+				if((code==104)||(code==105)){
+					mError = new ApplicationError(105,"Warning","Usuario o contraseña incorrecto en módulo de login");
+				}
+				else{
+					mError = new ApplicationError(104,"Error","Respuesta inesperada en response en módulo de login");
+				};			
 	        };
 			
 		} 
 		
 		catch (JSONException e) {
 			mError = new ApplicationError(104,"Error","Respuesta inesperada en response en módulo de login");
-		}	
+		};	
+		
 	}
 
 }

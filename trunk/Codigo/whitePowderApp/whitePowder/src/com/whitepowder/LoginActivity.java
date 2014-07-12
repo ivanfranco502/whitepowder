@@ -18,18 +18,19 @@ public class LoginActivity extends Activity {
 
 	Context mContext;
 	final int REGISTER_REQUEST_CODE = 1;
+	final int RESET_REQEST_CODE = 2;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.login);
 		mContext = getApplicationContext();
+		
 		RelativeLayout butLogin = (RelativeLayout)findViewById(R.id.login_login_button);	
 		TextView butRegister = (TextView)findViewById(R.id.login_register_button);
-		//TextView butResetPassword = (TextView)findViewById(R.id.login_reset_button);
+		TextView butResetPassword = (TextView)findViewById(R.id.login_reset_button);
 		
-		
-		//On login pressed method				
+					
 		butLogin.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -45,6 +46,13 @@ public class LoginActivity extends Activity {
 			public void onClick(View v) {
 				Intent intent = new Intent(mContext,RegisterActivity.class);
 				startActivityForResult(intent, REGISTER_REQUEST_CODE);
+				
+			}
+		});
+		
+		butResetPassword.setOnClickListener(new OnClickListener() {			
+			@Override
+			public void onClick(View v) {
 				
 			}
 		});
