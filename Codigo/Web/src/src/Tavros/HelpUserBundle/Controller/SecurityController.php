@@ -5,7 +5,7 @@ namespace Tavros\HelpUserBundle\Controller;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Authentication\Token\AnonymousToken;
 use FOS\UserBundle\Controller\SecurityController as BaseController;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Tavros\InternalApiBundle\Entity\ApiResponse;
 use \FOS\UserBundle\Entity\User as User;
 
@@ -50,7 +50,8 @@ class SecurityController extends BaseController {
         $logger = $this->container->get('logger');
         $serializer = $this->container->get('jms_serializer');
         $apiResponse = new ApiResponse();
-        $response = new JsonResponse();
+        $response = new Response();
+        $response->headers->set('Content-Type', 'application/json');
 
         $request = $this->container->get('request');
 
@@ -58,7 +59,7 @@ class SecurityController extends BaseController {
             $params = $_POST;
         } else {
             $apiResponse->setCode(404);
-            $response->setData($serializer->serialize($apiResponse, 'json'));
+            $response->setContent($serializer->serialize($apiResponse, 'json'));
             return $response;
         }
 
@@ -73,12 +74,12 @@ class SecurityController extends BaseController {
 
         if (!$user instanceof User) {
             $apiResponse->setCode(104);
-            $response->setData($serializer->serialize($apiResponse, 'json'));
+            $response->setContent($serializer->serialize($apiResponse, 'json'));
             return $response;
         }
         if (!$this->checkUserPassword($user, $password)) {
             $apiResponse->setCode(105);
-            $response->setData($serializer->serialize($apiResponse, 'json'));
+            $response->setContent($serializer->serialize($apiResponse, 'json'));
             return $response;
         }
 
@@ -86,16 +87,26 @@ class SecurityController extends BaseController {
             $token = $this->loginUser($user);
 
             $apiResponse->setCode(200);
+            $roles = $user->getRoles();
+
+            foreach ($roles as $r) {
+                if ($r == 'ROLE_SKIER') {
+                    $role = 'ROLE_SKIER';
+                    break;
+                }
+            }
+
             $payload = array(
                 "_token" => $token,
-                "role" => $user->getRoles()
+                "role" => $role
             );
             $apiResponse->setPayload($payload);
-            $response->setData($serializer->serialize($apiResponse, 'json'));
+
+            $response->setContent($serializer->serialize($apiResponse, 'json'));
         } catch (Exception $ex) {
 
             $apiResponse->setCode(106);
-            $response->setData($serializer->serialize($apiResponse, 'json'));
+            $response->setContent($serializer->serialize($apiResponse, 'json'));
             $logger->error('[TAVROS - ERROR]' . $ex);
         }
 
