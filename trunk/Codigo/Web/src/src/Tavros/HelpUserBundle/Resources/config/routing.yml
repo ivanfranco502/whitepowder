@@ -5,3 +5,7 @@ tavros_help_user_register:
 tavros_help_user_login:
     pattern:  /login
     defaults: { _controller: TavrosHelpUserBundle:Security:login }
+    
+tavros_help_user_reset:
+    pattern:  /reset
+    defaults: { _controller: TavrosHelpUserBundle:Resetting:reset }
