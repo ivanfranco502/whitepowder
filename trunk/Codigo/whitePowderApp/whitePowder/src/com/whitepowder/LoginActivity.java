@@ -53,7 +53,8 @@ public class LoginActivity extends Activity {
 		butResetPassword.setOnClickListener(new OnClickListener() {			
 			@Override
 			public void onClick(View v) {
-				
+				Intent intent = new Intent(mContext,PasswordResetActivity.class);
+				startActivityForResult(intent, RESET_REQEST_CODE);
 			}
 		});
 		
@@ -63,9 +64,14 @@ public class LoginActivity extends Activity {
 		if(requestCode == REGISTER_REQUEST_CODE){
 			if(resultCode==0){
 				//TODO deshardcode
-				Toast.makeText(this, "OK!", Toast.LENGTH_SHORT).show();
-			}
-		}
+				Toast.makeText(this, "Registro OK!", Toast.LENGTH_SHORT).show();
+			};
+		};
+		if(requestCode == RESET_REQEST_CODE){
+			if(resultCode==0){
+				Toast.makeText(this, "Reseteo OK!", Toast.LENGTH_SHORT).show();
+			};
+		};
 	}
 
 	@Override

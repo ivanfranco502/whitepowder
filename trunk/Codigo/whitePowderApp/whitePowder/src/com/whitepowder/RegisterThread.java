@@ -30,6 +30,8 @@ public class RegisterThread extends AsyncTask<String, Void, Void> {
 	@Override
 	protected Void doInBackground(String... registerInput) {
 		
+		HttpURLConnection connection=null;
+		
 		String username = registerInput[0];
 		String password = registerInput[1];
 		String repeatedPassword =  registerInput[2];
@@ -39,7 +41,7 @@ public class RegisterThread extends AsyncTask<String, Void, Void> {
 		String superAdmin = "0";
 		String role = "ROLE_SKIER";				
 		
-		if(!validateInput(username, password, repeatedPassword, email)){
+		if(!isValidInput(username, password, repeatedPassword, email)){
 			return null;
 		};
 		
@@ -48,7 +50,7 @@ public class RegisterThread extends AsyncTask<String, Void, Void> {
 			password = SHA1Manager.SHA1(password);
 			String params = "username="+username+"&password="+password+"&email="+email+"&inactive="+inactive+"&superadmin="+superAdmin+"&role="+role;
 			URL url = new URL(RegisterURL);
-			HttpURLConnection connection = (HttpURLConnection)url.openConnection();
+			connection = (HttpURLConnection)url.openConnection();
 		    connection.setRequestMethod("POST");
 		    
 		    connection.setUseCaches (false);
@@ -67,6 +69,7 @@ public class RegisterThread extends AsyncTask<String, Void, Void> {
 				InputStream is = connection.getInputStream();
 				BufferedReader reader = new BufferedReader(new InputStreamReader(is));		
 				String response = reader.readLine();
+				connection.disconnect();
 				parseRegisterResponse(response);
 		    }
 		    
@@ -83,31 +86,47 @@ public class RegisterThread extends AsyncTask<String, Void, Void> {
 		}
 		catch (NoSuchAlgorithmException e) {
 			mError = new ApplicationError(209,"Error","NoSuchAlgorithmException en módulo de registro");
+		}
+		
+		finally{
+			if(connection!=null){
+				connection.disconnect();
+			};
 		};
 
 			
 		return null;
 	}
 	
-	private boolean validateInput(String username, String password, String repeatedPassword, String email) {
-		
-		//TODO Check for special  characters
-		//TODO password >= 6 digits
+	private boolean isValidInput(String username, String password, String repeatedPassword, String email) {
+
 		
 		if(!(username.length()>0&&password.length()>0&&repeatedPassword.length()>0&&email.length()>0)){
 			mError = new ApplicationError(203,"Warning", "Campos incompletos en el módulo de registro");
 			return false;
 		};
+		
+		if(!Security.isValidPassword(password)){
+			mError = new ApplicationError(210,"Warning", "Not valid password");
+			return false;
+		}
 			
 		if(!password.equals(repeatedPassword)){
 			mError = new ApplicationError(204,"Warning", "Password y repetición de password no coinciden en módulo de registro");
 			return false;
 		};
 		
-		if(!email.contains("@") || !email.contains(".")){
+		if(!Security.isValidEmail(email)){
 			mError = new ApplicationError(205,"Warning", "Dirección de email invalida en módulo de registro");
 			return false;
 		};
+		
+		if(Security.hasInvalidCharacters(username,password,email)){
+			mError = new ApplicationError(90,"Warning","Los datos ingresados contienen caracteres inválidos");
+			return false;
+		};
+		
+
 		
 		return true;
 	
@@ -153,6 +172,10 @@ public class RegisterThread extends AsyncTask<String, Void, Void> {
     	else{
     		switch(mError.getErrorCode()){
     		
+				case 90:
+	    			Toast.makeText(mContext,R.string.error_invalid_characters,Toast.LENGTH_SHORT).show();
+		    		break;
+    		
 	    		case 203: 
 		    		Toast.makeText(mContext,R.string.register_error_incomplete_data,Toast.LENGTH_SHORT).show();
 		    		break;
@@ -175,7 +198,12 @@ public class RegisterThread extends AsyncTask<String, Void, Void> {
 		    		
 	    		case 208:
 	    			Toast.makeText(mContext,R.string.register_error_existing_email,Toast.LENGTH_SHORT).show();
+		    		break;
+		    		
+	    		case 210:
+	    			Toast.makeText(mContext,R.string.password_not_secure,Toast.LENGTH_SHORT).show();
 		    		break;	
+		    		
 		    	default: //100, 201, 202, 209
 		    		Toast.makeText(mContext,R.string.error_server_unreachable,Toast.LENGTH_SHORT).show();
 		    		break;  			

@@ -28,4 +28,7 @@
     <string name="pwd_change_hint_repeat_new_password">Repetir nueva contraseña</string>
     <string name="pwd_reset_title">RESETEO DE CONTRASEÑA</string>
     <string name="pwd_reset_instructions">Si has olvidado tu contraseña, ingresa el e-mail con el que te has registrado y recibirás un mail con tu usuario y nueva contraseña.</string>
+    <string name="password_not_secure">La contraseña debe ser de por lo menos seis caracteres</string>
+    <string name="error_invalid_characters">Los datos ingresados contienen caracteres inválidos como: &quot; { } [ ] = &amp;</string>
+    <string name="reset_invalid_email">El email ingresado no es válido</string>
 </resources>
