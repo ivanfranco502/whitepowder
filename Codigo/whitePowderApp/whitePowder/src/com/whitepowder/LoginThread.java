@@ -35,56 +35,61 @@ public class LoginThread extends AsyncTask<String, Void, Void> {
 	@Override
 	protected Void doInBackground(String... loginInput) {
 		
-		if((loginInput[0].length()> 0)&& (loginInput[1].length()>0)){
+		HttpURLConnection connection = null;
+		
+		if(!isValidInput(loginInput[0], loginInput[1])){
+			return null;
+		};
 			
-        	User user = User.getUserInstance();
-			
-			try {
-				user.setUsername(loginInput[0]);
-				user.setPassword(SHA1Manager.SHA1(loginInput[1]));
-				String params = "username="+user.getUsername()+"&password="+user.getPassword();
-				URL url = new URL(LoginURL);
-				HttpURLConnection connection = (HttpURLConnection)url.openConnection();
-			    connection.setRequestMethod("POST");
-			    
-			    connection.setUseCaches (false);
-			    connection.setDoInput(true);
-			    connection.setDoOutput(true);
-			    
-			    //Send request
-			    DataOutputStream wr = new DataOutputStream (connection.getOutputStream ());
-			    wr.writeBytes(params);
-			    wr.flush ();
-			    wr.close ();
-			        
-			    if(connection.getResponseCode()==200){
-				    
-			    	//Get Response
-					InputStream is = connection.getInputStream();
-					BufferedReader reader = new BufferedReader(new InputStreamReader(is));		
-					String response = reader.readLine();
-					parseLoginResponse(response);
-			    }
-			    
-			    else{
-			    	mError = new ApplicationError(100,"Error","Error en la conexión con el Servidor");
-			    };
-			}
+    	User user = User.getUserInstance();
+		
+		try {
+			user.setUsername(loginInput[0]);
+			user.setPassword(SHA1Manager.SHA1(loginInput[1]));
+			String params = "username="+user.getUsername()+"&password="+user.getPassword();
+			URL url = new URL(LoginURL);
+			connection = (HttpURLConnection)url.openConnection();
+		    connection.setRequestMethod("POST");
 		    
-			catch (MalformedURLException e) {
-				mError = new ApplicationError(101,"Error","MalformedURLException en módulo de login");
-			} 
-			catch (IOException e) {
-				mError = new ApplicationError(102,"Error","IOException en módulo de login");
-			}
-			catch (NoSuchAlgorithmException e) {
-				mError = new ApplicationError(106,"Error","NoSuchAlgorithmException en módulo de login");
-			};
-			
+		    connection.setUseCaches (false);
+		    connection.setDoInput(true);
+		    connection.setDoOutput(true);
+		    
+		    //Send request
+		    DataOutputStream wr = new DataOutputStream (connection.getOutputStream ());
+		    wr.writeBytes(params);
+		    wr.flush ();
+		    wr.close ();
+		        
+		    if(connection.getResponseCode()==200){
+			    
+		    	//Get Response
+				InputStream is = connection.getInputStream();
+				BufferedReader reader = new BufferedReader(new InputStreamReader(is));		
+				String response = reader.readLine();
+				connection.disconnect();
+				parseLoginResponse(response);
+		    }
+		    
+		    else{
+		    	mError = new ApplicationError(100,"Error","Error en la conexión con el Servidor");
+		    };
+		}
+	    
+		catch (MalformedURLException e) {
+			mError = new ApplicationError(101,"Error","MalformedURLException en módulo de login");
+		} 
+		catch (IOException e) {
+			mError = new ApplicationError(102,"Error","IOException en módulo de login");
+		}
+		catch (NoSuchAlgorithmException e) {
+			mError = new ApplicationError(106,"Error","NoSuchAlgorithmException en módulo de login");
 		}
 		
-		else{
-			mError = new ApplicationError(103,"Warning","Usuario o contraseña no completado en módulo de login");
+		finally{
+			if(connection!=null){
+				connection.disconnect();
+			};				
 		};
 		
 		return null;
@@ -100,6 +105,10 @@ public class LoginThread extends AsyncTask<String, Void, Void> {
     	else{
     		switch(mError.getErrorCode()){
 	    		
+    			case 90:
+	    			Toast.makeText(mContext,R.string.error_invalid_characters,Toast.LENGTH_SHORT).show();
+		    		break;
+    		
 	    		case 103: 
 		    		Toast.makeText(mContext,R.string.login_error_incomplete_data,Toast.LENGTH_SHORT).show();
 		    		break;
@@ -114,7 +123,25 @@ public class LoginThread extends AsyncTask<String, Void, Void> {
 		    		break;  			
     		}
     	};
-    }	
+    }
+	
+	private boolean isValidInput(String user, String pass){
+		
+		if(!(user.length()>0&&pass.length()>0)){
+			mError = new ApplicationError(103,"Warning","Usuario o contraseña no completado en módulo de login");
+			return false;
+		};
+		
+		
+		if(Security.hasInvalidCharacters(user,pass)){
+			mError = new ApplicationError(90,"Warning","Los datos ingresados contienen caracteres inválidos");
+			return false;
+		};
+		
+		
+		
+		return true;
+	}
 	
 	private void parseLoginResponse(String response){
 		

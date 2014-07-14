@@ -9,12 +9,9 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.NoSuchAlgorithmException;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import android.os.AsyncTask;
-import android.webkit.WebView.FindListener;
 
 public class PasswordChangeThread extends AsyncTask<String, Void, Void> {
 
@@ -29,7 +26,7 @@ public class PasswordChangeThread extends AsyncTask<String, Void, Void> {
 	
 	@Override
 	protected Void doInBackground(String... registerInput) {
-		
+		HttpURLConnection connection= null;
 		String username = registerInput[0];
 		String currentPassword = registerInput[1];
 		String newPassword = registerInput[2];
@@ -45,7 +42,7 @@ public class PasswordChangeThread extends AsyncTask<String, Void, Void> {
 			newPassword = SHA1Manager.SHA1(newPassword);
 			String params = "username="+username+"&current_password="+currentPassword+"&new_password="+newPassword;
 			URL url = new URL(PasswordChangeURL);
-			HttpURLConnection connection = (HttpURLConnection)url.openConnection();
+			connection = (HttpURLConnection)url.openConnection();
 		    connection.setRequestMethod("POST");
 		    
 		    connection.setUseCaches (false);
@@ -64,6 +61,7 @@ public class PasswordChangeThread extends AsyncTask<String, Void, Void> {
 				InputStream is = connection.getInputStream();
 				BufferedReader reader = new BufferedReader(new InputStreamReader(is));		
 				String response = reader.readLine();
+				connection.disconnect();
 				parseResponse(response);
 		    }
 		    
@@ -80,6 +78,11 @@ public class PasswordChangeThread extends AsyncTask<String, Void, Void> {
 		}
 		catch (NoSuchAlgorithmException e) {
 			mError = new ApplicationError(209,"Error","NoSuchAlgorithmException en módulo de registro");
+		}
+		finally{
+			if(connection!=null){
+				connection.disconnect();
+			};
 		};
 		
 		
