@@ -8,6 +8,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import org.json.JSONException;
@@ -46,7 +47,7 @@ public class LoginThread extends AsyncTask<String, Void, Void> {
 		try {
 			user.setUsername(loginInput[0]);
 			user.setPassword(SHA1Manager.SHA1(loginInput[1]));
-			String params = "username="+user.getUsername()+"&password="+user.getPassword();
+			String params = "username="+URLEncoder.encode(user.getUsername(),"utf-8")+"&password="+URLEncoder.encode(user.getPassword(),"utf-8");
 			URL url = new URL(LoginURL);
 			connection = (HttpURLConnection)url.openConnection();
 		    connection.setRequestMethod("POST");
@@ -104,11 +105,7 @@ public class LoginThread extends AsyncTask<String, Void, Void> {
     	//Error handling
     	else{
     		switch(mError.getErrorCode()){
-	    		
-    			case 90:
-	    			Toast.makeText(mContext,R.string.error_invalid_characters,Toast.LENGTH_SHORT).show();
-		    		break;
-    		
+	    		  		
 	    		case 103: 
 		    		Toast.makeText(mContext,R.string.login_error_incomplete_data,Toast.LENGTH_SHORT).show();
 		    		break;
@@ -131,14 +128,6 @@ public class LoginThread extends AsyncTask<String, Void, Void> {
 			mError = new ApplicationError(103,"Warning","Usuario o contraseña no completado en módulo de login");
 			return false;
 		};
-		
-		
-		if(Security.hasInvalidCharacters(user,pass)){
-			mError = new ApplicationError(90,"Warning","Los datos ingresados contienen caracteres inválidos");
-			return false;
-		};
-		
-		
 		
 		return true;
 	}

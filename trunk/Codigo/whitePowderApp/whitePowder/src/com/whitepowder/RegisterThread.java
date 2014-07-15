@@ -8,6 +8,8 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.security.NoSuchAlgorithmException;
 
 import org.json.JSONException;
@@ -48,7 +50,7 @@ public class RegisterThread extends AsyncTask<String, Void, Void> {
 		try {		
 			//Generates request
 			password = SHA1Manager.SHA1(password);
-			String params = "username="+username+"&password="+password+"&email="+email+"&inactive="+inactive+"&superadmin="+superAdmin+"&role="+role;
+			String params = "username="+URLEncoder.encode(username, "utf-8")+"&password="+URLEncoder.encode(password, "utf-8")+"&email="+URLEncoder.encode(email, "utf-8")+"&inactive="+inactive+"&superadmin="+superAdmin+"&role="+role;
 			URL url = new URL(RegisterURL);
 			connection = (HttpURLConnection)url.openConnection();
 		    connection.setRequestMethod("POST");
@@ -121,13 +123,6 @@ public class RegisterThread extends AsyncTask<String, Void, Void> {
 			return false;
 		};
 		
-		if(Security.hasInvalidCharacters(username,password,email)){
-			mError = new ApplicationError(90,"Warning","Los datos ingresados contienen caracteres inválidos");
-			return false;
-		};
-		
-
-		
 		return true;
 	
 	}
@@ -171,10 +166,6 @@ public class RegisterThread extends AsyncTask<String, Void, Void> {
     	//Error handling
     	else{
     		switch(mError.getErrorCode()){
-    		
-				case 90:
-	    			Toast.makeText(mContext,R.string.error_invalid_characters,Toast.LENGTH_SHORT).show();
-		    		break;
     		
 	    		case 203: 
 		    		Toast.makeText(mContext,R.string.register_error_incomplete_data,Toast.LENGTH_SHORT).show();
