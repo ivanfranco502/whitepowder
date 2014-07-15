@@ -3,7 +3,6 @@ package com.whitepowder;
 public class Security {
 
 	public static boolean hasInvalidCharacters(String... input){
-		//TODO fix
 		
 		for(int i=0;i<input.length;i++){
 			if(input[i].contains("\"")||(input[i].contains("&")||(input[i].contains("=")||input[i].contains("{")||input[i].contains("}")||input[i].contains("[")||input[i].contains("]")))){

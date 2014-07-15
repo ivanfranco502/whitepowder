@@ -8,6 +8,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -38,7 +39,7 @@ public class PasswordResetThread extends AsyncTask<String, Void, Void>  {
 		
 		try {		
 			//Generates request
-			String params = "email="+email;
+			String params = "email="+ URLEncoder.encode(email, "utf-8");
 			URL url = new URL(PasswordResetChangeURL);
 			connection = (HttpURLConnection)url.openConnection();
 
@@ -91,13 +92,7 @@ public class PasswordResetThread extends AsyncTask<String, Void, Void>  {
 		if(!Security.isValidEmail(email)){
 			mError = new ApplicationError(303,"Warning", "Dirección de email invalida en módulo de registro");
 			return false;
-		};
-		
-		if(Security.hasInvalidCharacters(email)){
-			mError = new ApplicationError(90,"Warning","Los datos ingresados contienen caracteres inválidos");
-			return false;
-		};
-		
+		};		
 		
 		return true;
 	}
@@ -128,11 +123,7 @@ public class PasswordResetThread extends AsyncTask<String, Void, Void>  {
     	//Error handling
     	else{
     		switch(mError.getErrorCode()){
-    		
-				case 90:
-	    			Toast.makeText(mContext,R.string.error_invalid_characters,Toast.LENGTH_SHORT).show();
-		    		break;
-		    		
+    				    		
 				case 303:
 	    			Toast.makeText(mContext,R.string.reset_invalid_email,Toast.LENGTH_SHORT).show();
 		    		break;

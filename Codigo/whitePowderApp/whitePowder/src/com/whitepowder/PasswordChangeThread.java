@@ -8,6 +8,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.security.NoSuchAlgorithmException;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -40,7 +41,7 @@ public class PasswordChangeThread extends AsyncTask<String, Void, Void> {
 			//Generates request
 			currentPassword = SHA1Manager.SHA1(currentPassword);
 			newPassword = SHA1Manager.SHA1(newPassword);
-			String params = "username="+username+"&current_password="+currentPassword+"&new_password="+newPassword;
+			String params = "username="+URLEncoder.encode(username, "utf-8")+"&current_password="+URLEncoder.encode(currentPassword, "utf-8")+"&new_password="+URLEncoder.encode(newPassword, "utf-8");
 			URL url = new URL(PasswordChangeURL);
 			connection = (HttpURLConnection)url.openConnection();
 		    connection.setRequestMethod("POST");
@@ -99,8 +100,6 @@ public class PasswordChangeThread extends AsyncTask<String, Void, Void> {
 	}
 	
 	private boolean validateInput(String user, String currentPassword, String newPassword, String repeatedNewPassword){
-		
-		//TODO VALIDAR QUE NO TENGA COMILLAS NI NADA RARO
 		
 		if(!(user.length()>0&&currentPassword.length()>0&&newPassword.length()>0&&repeatedNewPassword.length()>0)){
 			//TODO Raiserror
