@@ -53,6 +53,10 @@ class SecurityController extends BaseController {
         $response = new Response();
         $response->headers->set('Content-Type', 'application/json');
 
+        $em = $this->container->get('Doctrine')->getManager();
+
+
+
         $request = $this->container->get('request');
 
         if ($request->getMethod() == 'POST') {
@@ -68,6 +72,7 @@ class SecurityController extends BaseController {
 
         $userManager = $this->getUserManager();
         $user = $userManager->findUserByUsername($username);
+
         if (!$user) {
             $user = $userManager->findUserByEmail($username);
         }
@@ -77,14 +82,22 @@ class SecurityController extends BaseController {
             $response->setContent($serializer->serialize($apiResponse, 'json'));
             return $response;
         }
+
         if (!$this->checkUserPassword($user, $password)) {
             $apiResponse->setCode(105);
             $response->setContent($serializer->serialize($apiResponse, 'json'));
             return $response;
         }
 
+        $token = $em->getRepository('TavrosDomainBundle:Token')->findOneByTokenUser($user);
+        /* @var $token \Tavros\DomainBundle\Entity\Token */
+
+        if (!$token) {
+            $token = new \Tavros\DomainBundle\Entity\Token();
+        }
+
         try {
-            $token = $this->loginUser($user);
+            $token->setToken($this->loginUser($user));
 
             $apiResponse->setCode(200);
             $roles = $user->getRoles();
@@ -97,11 +110,13 @@ class SecurityController extends BaseController {
             }
 
             $payload = array(
-                "_token" => $token,
+                "_token" => $token->getToken(),
                 "role" => $role
             );
             $apiResponse->setPayload($payload);
-
+            $token->setTokenUser($user);
+            $em->persist($token);
+            $em->flush();
             $response->setContent($serializer->serialize($apiResponse, 'json'));
         } catch (Exception $ex) {
 
