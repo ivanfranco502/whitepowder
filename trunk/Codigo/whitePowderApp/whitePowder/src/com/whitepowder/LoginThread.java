@@ -140,13 +140,14 @@ public class LoginThread extends AsyncTask<String, Void, Void> {
 			JSONObject jsonObject = new JSONObject(response);
 			
 			//Gets data from json
-	        int code = jsonObject.getInt("code");	        
-	        JSONObject payload = jsonObject.getJSONObject("payload");
-	        String token = payload.getString("_token");
-	        String role = payload.getString("role");
+	        int code = jsonObject.getInt("code");	               
 	        
-	        
-	        if(code==200){	        	
+	        if(code==200){
+	        	
+		        JSONObject payload = jsonObject.getJSONObject("payload");
+		        String token = payload.getString("_token");
+		        String role = payload.getString("role");
+	        	
 	        	user.setToken(token);
 	        	user.setRole(role);
 	        	user.setLogedAt(new Date(System.currentTimeMillis()));	        	
