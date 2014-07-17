@@ -6,30 +6,21 @@ import java.security.NoSuchAlgorithmException;
 
 public class SHA1Manager {
 	
-	private static String convertToHex(byte[] data) { 
-	    StringBuffer buf = new StringBuffer();
-	    int length = data.length;
-	    for(int i = 0; i < length; ++i) { 
-	        int halfbyte = (data[i] >>> 4) & 0x0F;
-	        int two_halfs = 0;
-	        do { 
-	            if((0 <= halfbyte) && (halfbyte <= 9)) 
-	                buf.append((char) ('0' + halfbyte));
-	            else 
-	                buf.append((char) ('a' + (halfbyte - 10)));
-	            halfbyte = data[i] & 0x0F;
-	        }
-	        while(++two_halfs < 1);
-	    } 
-	    return buf.toString();
+	public static String byteArrayToHexString(byte[] b) {
+	  String result = "";
+	  for (int i=0; i < b.length; i++) {
+	    result +=
+	          Integer.toString( ( b[i] & 0xff ) + 0x100, 16).substring( 1 );
+	  }
+	  return result;
 	}
+	
 
 	public static String SHA1(String text) throws NoSuchAlgorithmException, UnsupportedEncodingException  { 
-	    MessageDigest md = MessageDigest.getInstance("SHA-1");
-	    byte[] sha1hash = new byte[40];
-	    md.update(text.getBytes("iso-8859-1"), 0, text.length());
-	    sha1hash = md.digest();
-	    return convertToHex(sha1hash);
+	    MessageDigest crypt = MessageDigest.getInstance("SHA-1");
+	    crypt.reset();
+	    crypt.update(text.getBytes("UTF-8"));
+	    return byteArrayToHexString(crypt.digest());
 	} 
 
 }
