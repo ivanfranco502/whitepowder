@@ -68,7 +68,6 @@ public class LoginThread extends AsyncTask<String, Void, Void> {
 				InputStream is = connection.getInputStream();
 				BufferedReader reader = new BufferedReader(new InputStreamReader(is));		
 				String response = reader.readLine();
-				connection.disconnect();
 				parseLoginResponse(response);
 		    }
 		    
