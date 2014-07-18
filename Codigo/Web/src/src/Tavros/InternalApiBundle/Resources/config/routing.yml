@@ -1,9 +1,5 @@
-tavros_internal_api_prueba:
-    pattern:  /prueba
-    defaults: { _controller: TavrosInternalApiBundle:User:prueba }
-
-tavros_help_user:
-    resource: "@TavrosHelpUserBundle/Resources/config/routing.yml"
+tavros_internalApi_user:
+    resource: "@TavrosInternalApiBundle/Resources/config/routing-user.yml"
     prefix:   /user
     
 #tavros_internal_api_register:

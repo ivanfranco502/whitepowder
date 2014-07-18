@@ -5,3 +5,7 @@ services:
 #    tavros_web.example:
 #        class: %tavros_web.example.class%
 #        arguments: [@service_id, "plain_value", %parameter%]
+
+#services:
+#    internalApi_helpUser_security:
+#        class: Tavros\HelpUserBundle\Controller\SecurityController
