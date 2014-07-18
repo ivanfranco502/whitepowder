@@ -1,0 +1,16 @@
+tavros_internalApi_user_login:
+    pattern: /login
+    defaults: { _controller: TavrosInternalApiBundle:User:login}
+
+tavros_internalApi_user_reset:
+    pattern: /reset
+    defaults: { _controller: TavrosInternalApiBundle:User:reset}
+
+tavros_internalApi_user_register:
+    pattern: /register
+    defaults: { _controller: TavrosInternalApiBundle:User:register}
+    
+tavros_internalApi_user_logout:
+    pattern: /logout
+    defaults: { _controller: TavrosInternalApiBundle:User:logout}
+

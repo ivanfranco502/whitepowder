@@ -1,3 +1,15 @@
-tavros_web_homepage:
-    pattern:  /hello/{name}
+tavros_web_admin:
+    resource: "@TavrosWebBundle/Resources/config/routing-administrator.yml"
+    prefix:   /admin
+
+tavros_web_home:
+    pattern:  /
     defaults: { _controller: TavrosWebBundle:Default:index }
+
+tavros_web_login:
+    pattern:  /weblogin
+    defaults: { _controller: TavrosWebBundle:Default:login }
+
+tavros_web_login_check:
+    pattern: /weblogin_check
+    defaults: { _controller: TavrosWebBundle:Default:loginCheck}
