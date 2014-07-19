@@ -1,7 +1,6 @@
 package com.whitepowder;
 
-import com.example.whitepowder.R;
-
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -14,6 +13,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.whitepowder.R;
+
 public class LoginActivity extends Activity {
 
 	Context mContext;
@@ -25,6 +26,11 @@ public class LoginActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.login);
 		mContext = getApplicationContext();
+		
+		//Hide the action bar
+	//	ActionBar bar = getActionBar();
+		//bar.hide();
+		
 		
 		RelativeLayout butLogin = (RelativeLayout)findViewById(R.id.login_login_button);	
 		TextView butRegister = (TextView)findViewById(R.id.login_register_button);
