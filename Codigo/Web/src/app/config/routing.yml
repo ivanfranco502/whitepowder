@@ -27,7 +27,7 @@ tavros_web:
 
 tavros_web_administrator:
     resource: "@TavrosWebBundle/Resources/config/routing-administrator.yml"
-    prefix:   /admin
+    prefix:   /administrator
 
 tavros_internalApi:
     resource: "@TavrosInternalApiBundle/Resources/config/routing.yml"

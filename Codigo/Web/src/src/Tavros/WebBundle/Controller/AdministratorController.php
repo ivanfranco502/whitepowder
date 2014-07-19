@@ -6,9 +6,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class AdministratorController extends Controller {
 
-    public function indexAction($name = "joaquin") {
+    public function indexAction() {
         
-        return $this->render('TavrosWebBundle:Default:index.html.twig', array('name' => $name));
+        return $this->render('TavrosWebBundle:Administrator:index.html.twig');
     }
 
 }
