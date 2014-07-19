@@ -257,7 +257,8 @@ class UserController extends Controller {
         $security->setToken($token);
         $this->container->get('session')->invalidate();
     }
-
+    
+    //CHECK USER PASSWORD//
     protected function checkUserPassword(User $user, $password) {
         $factory = $this->container->get('security.encoder_factory');
         $encoder = $factory->getEncoder($user);

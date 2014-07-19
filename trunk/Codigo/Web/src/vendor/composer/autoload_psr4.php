@@ -6,5 +6,10 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'Sonata\\CoreBundle\\' => array($vendorDir . '/sonata-project/core-bundle'),
+    'Sonata\\Cache\\Tests\\' => array($vendorDir . '/sonata-project/cache/test'),
+    'Sonata\\Cache\\' => array($vendorDir . '/sonata-project/cache/lib'),
+    'Sonata\\BlockBundle\\' => array($vendorDir . '/sonata-project/block-bundle'),
+    'Sonata\\AdminBundle\\' => array($vendorDir . '/sonata-project/admin-bundle'),
     'Monolog\\' => array($vendorDir . '/monolog/monolog/src/Monolog'),
 );
