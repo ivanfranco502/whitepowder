@@ -31,4 +31,8 @@
     <string name="password_not_secure">La contraseña debe ser de por lo menos seis caracteres</string>
     <string name="error_invalid_characters">Los datos ingresados contienen caracteres inválidos como: &quot; { } [ ] = &amp;</string>
     <string name="reset_invalid_email">El email ingresado no es válido</string>
+    <string name="title_section1">Info</string>
+    <string name="title_section2">Mapa</string>
+    <string name="title_section3">Emergencia</string>
+    <string name="title_section4">Perfil</string>
 </resources>
