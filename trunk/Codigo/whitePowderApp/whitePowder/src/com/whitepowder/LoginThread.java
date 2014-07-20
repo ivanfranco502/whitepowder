@@ -108,8 +108,13 @@ public class LoginThread extends AsyncTask<String, Void, Void> {
 
     	if(mError==null){
     		//TODO display UI
-    		Intent intent = new Intent(mContext, SkierActivity.class);
-    		mloginActivity.startActivity(intent);
+    		Intent intent; 
+    		switch (User.getUserInstance().getRole().toString()){
+    		case "ROLE_SKIER":
+    			intent = new Intent(mContext, SkierActivity.class);
+    			mloginActivity.startActivity(intent);
+    			break;
+    		}
     	}
     	//Error handling
     	else{
