@@ -1,6 +1,5 @@
 package com.whitepowder;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +8,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,6 +25,7 @@ public class LoginActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.login);
 		mContext = getApplicationContext();
 		
@@ -42,7 +44,7 @@ public class LoginActivity extends Activity {
 			public void onClick(View v) {
 				TextView inputUser = (TextView)findViewById(R.id.login_username_input);
 				TextView inputPassword = (TextView)findViewById(R.id.login_password_input);				
-				LoginThread lt = new LoginThread(getApplicationContext());
+				LoginThread lt = new LoginThread(LoginActivity.this, getApplicationContext());
 				lt.execute(inputUser.getText().toString(),inputPassword.getText().toString());	
 			}
 		});

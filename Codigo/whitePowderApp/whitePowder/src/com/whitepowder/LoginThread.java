@@ -11,21 +11,29 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.security.NoSuchAlgorithmException;
 import java.util.Date;
+
 import org.json.JSONException;
 import org.json.JSONObject;
-import com.example.whitepowder.R;
+
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.widget.Toast;
+
+import com.example.whitepowder.R;
 
 public class LoginThread extends AsyncTask<String, Void, Void> {
 	
 	private final String LoginURL = "http://whitetavros.com/Sandbox/web/internalApi/user/login";
 	private ApplicationError mError = null;
 	private Context mContext;
+	private LoginActivity mloginActivity;
 	
-	public LoginThread(Context ctxt) {		
-		mContext = ctxt;		
+	
+	public LoginThread(LoginActivity loginActivity, Context ctxt) {		
+		mContext = ctxt;
+		mloginActivity = loginActivity;
 	}
 	
 	@Override
@@ -100,6 +108,8 @@ public class LoginThread extends AsyncTask<String, Void, Void> {
 
     	if(mError==null){
     		//TODO display UI
+    		Intent intent = new Intent(mContext, SkierActivity.class);
+    		mloginActivity.startActivity(intent);
     	}
     	//Error handling
     	else{

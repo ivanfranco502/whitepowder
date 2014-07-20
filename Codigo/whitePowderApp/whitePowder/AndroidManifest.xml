@@ -36,6 +36,7 @@
         <activity android:name="com.whitepowder.RegisterActivity" />
         <activity android:name="com.whitepowder.PasswordResetActivity"/>
         <activity android:name="com.whitepowder.PasswordChangeActivity"/>
+        <activity android:name="com.whitepowder.SkierActivity"/>
     </application>
 
 </manifest>
