@@ -70,14 +70,13 @@ public class LoginActivity extends Activity {
 	
 	public void onActivityResult(int requestCode, int resultCode, Intent data){
 		if(requestCode == REGISTER_REQUEST_CODE){
-			if(resultCode==0){
-				//TODO deshardcode
-				Toast.makeText(this, "Registro OK!", Toast.LENGTH_SHORT).show();
+			if(resultCode==1){
+				Toast.makeText(this, R.string.login_register_successful, Toast.LENGTH_SHORT).show();
 			};
-		};
-		if(requestCode == RESET_REQEST_CODE){
-			if(resultCode==0){
-				Toast.makeText(this, "Reseteo OK!", Toast.LENGTH_SHORT).show();
+		}
+		else if(requestCode == RESET_REQEST_CODE){
+			if(resultCode==1){
+				Toast.makeText(this, R.string.login_reset_successful, Toast.LENGTH_SHORT).show();
 			};
 		};
 	}

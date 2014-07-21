@@ -107,29 +107,49 @@ public class PasswordResetThread extends AsyncTask<String, Void, Void>  {
 	        int code = jsonObject.getInt("code");
 
 	        if(code!=200){
-	        	//TODO Check errors
+	        	switch (code) {
+	        	case 107:
+					mError = new ApplicationError(107,"Error","El email no se encuentra registrado.");
+					break;
+				case 108:
+					mError = new ApplicationError(108,"Error","No se pudo cambiar la contraseña. Vuela a intentar.");
+					break;
+				case 109:
+					mError = new ApplicationError(109,"Error","No se pudo enviar el mail con la nueva contraseña. Vuelva a intentar.");
+					break;
+				}
 	        };		
 		} 
 		
 		catch (JSONException e) {
-			//TODO Raiserror
+			mError = new ApplicationError(104,"Error","Respuesta inesperada en response en módulo de login");
 		};
 	}
 	
     protected void onPostExecute(Void unused) {	
 
     	if(mError==null){
-        	mContext.setResult(0);
+        	mContext.setResult(1);
         	mContext.finish();
     	}
     	//Error handling
     	else{
     		switch(mError.getErrorCode()){
-    				    		
+	    		case 104:
+		    		Toast.makeText(mContext,R.string.error_unexpected_response,Toast.LENGTH_SHORT).show();
+		    		break;	
+	    		case 107:
+					Toast.makeText(mContext,R.string.pwd_reset_error_107,Toast.LENGTH_SHORT).show();
+		    		break;
+	    		case 108:
+					Toast.makeText(mContext,R.string.pwd_reset_error_108,Toast.LENGTH_SHORT).show();
+		    		break;
+	    		case 109:
+					Toast.makeText(mContext,R.string.pwd_reset_error_109,Toast.LENGTH_SHORT).show();
+		    		break;
 				case 303:
 	    			Toast.makeText(mContext,R.string.reset_invalid_email,Toast.LENGTH_SHORT).show();
 		    		break;
-		    		
 		    	default: //100,301,302
 		    		Toast.makeText(mContext,R.string.error_server_unreachable,Toast.LENGTH_SHORT).show();
 		    		break;  			

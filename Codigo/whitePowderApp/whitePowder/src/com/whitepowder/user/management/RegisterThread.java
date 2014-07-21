@@ -162,7 +162,7 @@ public class RegisterThread extends AsyncTask<String, Void, Void> {
     protected void onPostExecute(Void unused) {	
 
     	if(mError==null){
-        	mContext.setResult(0);
+    		mContext.setResult(1);
         	mContext.finish();
     	}
     	//Error handling
