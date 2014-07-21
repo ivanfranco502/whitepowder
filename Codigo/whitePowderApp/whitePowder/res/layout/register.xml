@@ -33,7 +33,9 @@
 	         android:layout_height="wrap_content"
 	         android:layout_centerHorizontal="true"
 	         android:layout_centerVertical="true"
-	         android:ems="15" />	
+	         android:ems="15" >
+	         <requestFocus />
+	     </EditText>
 	 </RelativeLayout>
 	 
      <RelativeLayout
@@ -53,9 +55,6 @@
 	          android:layout_centerVertical="true"
 	          android:ems="15"
 	          android:inputType="textPassword" >
-	
-	          <requestFocus android:layout_width="wrap_content" />
-	
 	      </EditText>
 	</RelativeLayout>
 	
@@ -76,10 +75,9 @@
 	          android:layout_centerVertical="true"
 	          android:ems="15"
 	          android:inputType="textPassword" >
-	          	
-	          <requestFocus android:layout_width="wrap_content" />
 	
 	      </EditText>
+	      
 	</RelativeLayout>
 	
     <RelativeLayout
