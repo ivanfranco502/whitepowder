@@ -9,8 +9,8 @@
     <string name="whitePowder_logo_description">Logo White Powder</string>
     <string name="login_error_incomplete_data">Tanto el usuario como la contraseña deben ser completados</string>
     <string name="error_server_unreachable">White Powder no está disponible en este momento, por favor intente más tarde</string>
-    <string name="login_text_regiser">Registrarme!</string>
-    <string name="login_text_reset_password">Olvidé mi contraseña!</string>
+    <string name="login_text_regiser">¡Registrarme!</string>
+    <string name="login_text_reset_password">¡Olvidé mi contraseña!</string>
     <string name="register_registry_text">REGISTRO</string>
     <string name="register_hint_repeat_password">Repetir contraseña</string>
     <string name="hint_email">Email</string>
@@ -35,4 +35,8 @@
     <string name="title_section2">Mapa</string>
     <string name="title_section3">Emergencia</string>
     <string name="title_section4">Perfil</string>
+    <string name="alert_exit_title">Salir</string>
+    <string name="alert_exit_message">¿Estás seguro que deseas salir?</string>
+    <string name="alert_exit_no">No</string>
+    <string name="alert_exit_yes">Sí</string>
 </resources>
