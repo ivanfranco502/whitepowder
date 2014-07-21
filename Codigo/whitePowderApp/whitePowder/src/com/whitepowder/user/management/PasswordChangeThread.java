@@ -1,4 +1,4 @@
-package com.whitepowder;
+package com.whitepowder.user.management;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -12,6 +12,10 @@ import java.net.URLEncoder;
 import java.security.NoSuchAlgorithmException;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import com.whitepowder.ApplicationError;
+import com.whitepowder.SHA1Manager;
+
 import android.os.AsyncTask;
 
 public class PasswordChangeThread extends AsyncTask<String, Void, Void> {

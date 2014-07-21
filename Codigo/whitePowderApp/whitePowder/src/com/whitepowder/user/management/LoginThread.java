@@ -1,4 +1,4 @@
-package com.whitepowder;
+package com.whitepowder.user.management;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -11,17 +11,17 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.security.NoSuchAlgorithmException;
 import java.util.Date;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
 import com.example.whitepowder.R;
+import com.whitepowder.ApplicationError;
+import com.whitepowder.SHA1Manager;
+import com.whitepowder.skier.SkierActivity;
 
 public class LoginThread extends AsyncTask<String, Void, Void> {
 	
@@ -109,12 +109,11 @@ public class LoginThread extends AsyncTask<String, Void, Void> {
     	if(mError==null){
     		//TODO display UI
     		Intent intent;
-    		switch (User.getUserInstance().getRole().toString()){
-    		case "ROLE_SKIER":
+    		
+    		if(User.getUserInstance().getRole().toString().equals("ROLE_SKIER")){
     			intent = new Intent(mContext, SkierActivity.class);
     			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
     			mLoginActivity.startActivity(intent);
-    			break;
     		}
     		mLoginActivity.finish();
     	}

@@ -1,6 +1,7 @@
-package com.whitepowder;
+package com.whitepowder.skier;
 
 import com.example.whitepowder.R;
+
 import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -8,16 +9,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-public class BasicInformation extends Fragment{
+public class ProfileFragmentFragment extends Fragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View rootView = inflater.inflate(R.layout.skier_fragment_basic_information, container,
+		View rootView = inflater.inflate(R.layout.skier_fragment_profile, container,
 				false);
 		TextView textView = (TextView) rootView
-				.findViewById(R.id.basic_information_label);
-		textView.setText("Acá va la información básica del centro de esquí.");
+				.findViewById(R.id.profile_label);
+		textView.setText("Acá van las opciones del perfil: cambiar contraseña y ver estadísticas.");
 		return rootView;
 	}
+
 }
