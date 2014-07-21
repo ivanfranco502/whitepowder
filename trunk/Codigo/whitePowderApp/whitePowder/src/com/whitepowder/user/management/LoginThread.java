@@ -11,8 +11,10 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.security.NoSuchAlgorithmException;
 import java.util.Date;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -22,6 +24,7 @@ import com.example.whitepowder.R;
 import com.whitepowder.ApplicationError;
 import com.whitepowder.SHA1Manager;
 import com.whitepowder.skier.SkierActivity;
+import com.whitepowder.slope.recognizer.SlopeRecognizerActivity;
 
 public class LoginThread extends AsyncTask<String, Void, Void> {
 	
@@ -110,10 +113,17 @@ public class LoginThread extends AsyncTask<String, Void, Void> {
     		Intent intent;
     		
     		if(User.getUserInstance().getRole().toString().equals("ROLE_SKIER")){
+    			//Rol esquiador
     			intent = new Intent(mContext, SkierActivity.class);
     			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
     			mLoginActivity.startActivity(intent);
     		}
+    		else if (User.getUserInstance().getRole().toString().equals("ROLE_RECON")){
+    			//Rol reconocedor de pistas
+    			intent = new Intent(mContext, SlopeRecognizerActivity.class);
+    			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+    			mLoginActivity.startActivity(intent);
+    		};
     		mLoginActivity.finish();
     	}
     	//Error handling
