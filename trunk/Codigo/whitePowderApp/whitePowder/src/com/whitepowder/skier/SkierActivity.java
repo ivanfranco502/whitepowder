@@ -1,4 +1,4 @@
-package com.whitepowder;
+package com.whitepowder.skier;
 
 import java.util.Locale;
 
@@ -151,16 +151,16 @@ public class SkierActivity extends Activity implements ActionBar.TabListener {
 			Fragment fragment;
 			switch(position){
 			case 0:
-				fragment = new BasicInformation();
+				fragment = new BasicInformationFragment();
 				return fragment;
 			case 1:
-				fragment = new Map();
+				fragment = new MapFragment();
 				return fragment;
 			case 2:
-				fragment = new Emergency();
+				fragment = new EmergencyFragment();
 				return fragment;
 			case 3:
-				fragment = new Profile();
+				fragment = new ProfileFragmentFragment();
 				return fragment;
 			}
 			return null;

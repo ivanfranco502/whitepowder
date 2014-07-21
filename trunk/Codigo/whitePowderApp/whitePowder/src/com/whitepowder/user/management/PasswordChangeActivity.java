@@ -1,4 +1,4 @@
-package com.whitepowder;
+package com.whitepowder.user.management;
 
 import com.example.whitepowder.R;
 

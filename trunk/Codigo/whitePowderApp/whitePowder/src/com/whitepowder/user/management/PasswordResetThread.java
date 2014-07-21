@@ -1,4 +1,4 @@
-package com.whitepowder;
+package com.whitepowder.user.management;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -14,6 +14,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.example.whitepowder.R;
+import com.whitepowder.ApplicationError;
+import com.whitepowder.Security;
 
 import android.os.AsyncTask;
 import android.widget.Toast;

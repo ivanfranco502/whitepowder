@@ -1,4 +1,4 @@
-package com.whitepowder;
+package com.whitepowder.skier;
 
 import com.example.whitepowder.R;
 
@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-public class Map extends Fragment {
+public class MapFragment extends Fragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
