@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.whitepowder.R;
+import com.whitepowder.slope.recognizer.SlopeRecognizerActivity;
 
 public class LoginActivity extends Activity {
 
@@ -29,7 +30,7 @@ public class LoginActivity extends Activity {
 		mContext = getApplicationContext();
 		
 		//Hide the action bar
-	//	ActionBar bar = getActionBar();
+		//	ActionBar bar = getActionBar();
 		//bar.hide();
 		
 		

@@ -30,7 +30,6 @@ public class LoginThread extends AsyncTask<String, Void, Void> {
 	private Context mContext;
 	private LoginActivity mLoginActivity;
 	
-	
 	public LoginThread(LoginActivity loginActivity, Context ctxt) {		
 		mContext = ctxt;
 		mLoginActivity = loginActivity;
