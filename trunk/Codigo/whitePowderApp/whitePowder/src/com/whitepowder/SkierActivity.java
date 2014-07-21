@@ -6,9 +6,11 @@ import com.example.whitepowder.R;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -116,7 +118,21 @@ public class SkierActivity extends Activity implements ActionBar.TabListener {
 	public void onTabReselected(ActionBar.Tab tab,
 			FragmentTransaction fragmentTransaction) {
 	}
+	
+	@Override
+	public void onBackPressed() {
+	    new AlertDialog.Builder(this)
+	        .setTitle(getString(R.string.alert_exit_title))
+	        .setMessage(getString(R.string.alert_exit_message))
+	        .setNegativeButton(getString(R.string.alert_exit_no), null)
+	        .setPositiveButton(getString(R.string.alert_exit_yes), new DialogInterface.OnClickListener() {
 
+	            public void onClick(DialogInterface arg0, int arg1) {
+	                SkierActivity.this.finish();
+	            }
+	        }).create().show();
+	}
+	
 	/**
 	 * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
 	 * one of the sections/tabs/pages.

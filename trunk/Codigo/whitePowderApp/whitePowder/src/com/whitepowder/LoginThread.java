@@ -28,12 +28,12 @@ public class LoginThread extends AsyncTask<String, Void, Void> {
 	private final String LoginURL = "http://whitetavros.com/Sandbox/web/internalApi/user/login";
 	private ApplicationError mError = null;
 	private Context mContext;
-	private LoginActivity mloginActivity;
+	private LoginActivity mLoginActivity;
 	
 	
 	public LoginThread(LoginActivity loginActivity, Context ctxt) {		
 		mContext = ctxt;
-		mloginActivity = loginActivity;
+		mLoginActivity = loginActivity;
 	}
 	
 	@Override
@@ -108,13 +108,15 @@ public class LoginThread extends AsyncTask<String, Void, Void> {
 
     	if(mError==null){
     		//TODO display UI
-    		Intent intent; 
+    		Intent intent;
     		switch (User.getUserInstance().getRole().toString()){
     		case "ROLE_SKIER":
     			intent = new Intent(mContext, SkierActivity.class);
-    			mloginActivity.startActivity(intent);
+    			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+    			mLoginActivity.startActivity(intent);
     			break;
     		}
+    		mLoginActivity.finish();
     	}
     	//Error handling
     	else{
