@@ -111,7 +111,7 @@ class UserController extends Controller {
                     ->setTo($email)
                     ->setBody(
                     $this->container->get('twig')->render(
-                            'TavrosHelpUserBundle:Emails:reset.txt.twig', array(
+                            'TavrosWebBundle:Emails:reset.txt.twig', array(
                         'name' => $user->getUsername(),
                         'password' => $newPassword)
             ));
@@ -137,8 +137,6 @@ class UserController extends Controller {
         $response->headers->set('Content-Type', 'application/json');
 
         $em = $this->container->get('Doctrine')->getManager();
-
-
 
         $request = $this->container->get('request');
 
@@ -186,8 +184,15 @@ class UserController extends Controller {
             $roles = $user->getRoles();
 
             foreach ($roles as $r) {
+
                 if ($r == 'ROLE_SKIER') {
                     $role = 'ROLE_SKIER';
+                    break;
+                } elseif ($r == 'ROLE_RECON') {
+                    $role = 'ROLE_RECON';
+                    break;
+                } else {
+                    $role = 'ROLE_RESCU';
                     break;
                 }
             }
@@ -257,7 +262,7 @@ class UserController extends Controller {
         $security->setToken($token);
         $this->container->get('session')->invalidate();
     }
-    
+
     //CHECK USER PASSWORD//
     protected function checkUserPassword(User $user, $password) {
         $factory = $this->container->get('security.encoder_factory');

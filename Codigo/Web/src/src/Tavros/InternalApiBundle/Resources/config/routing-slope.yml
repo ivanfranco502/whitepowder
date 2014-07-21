@@ -1,0 +1,4 @@
+tavros_internalApi_slope_all:
+    pattern: /all
+    defaults: { _controller: TavrosInternalApiBundle:Slope:all}
+    

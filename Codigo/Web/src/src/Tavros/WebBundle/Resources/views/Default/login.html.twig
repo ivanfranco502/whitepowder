@@ -1,7 +1,15 @@
 {% extends "TavrosWebBundle::layout.html.twig" %}
 
 {%block content %}
+    {% if error %}
 
+        <div class="alert alert-dismissable alert-danger">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            {{ error|trans({}, 'FOSUserBundle') }}
+        </div>
+
+    {% endif %}
+rrrrrrrrrrrr
     <div class="container">
 
         <form class="form-signin" role="form" action="{{ path('tavros_web_login_check') }}" method="POST">
@@ -11,11 +19,11 @@
             <input name="password" type="password" 
                    class="form-control" placeholder="Contraseña" required="">
             <input name="origin" type="hidden" value="web">           
-{#            <div class="checkbox">
-                <label>
-                    <input type="checkbox" value="remember-me"> Remember me
-                </label>
-            </div>#}
+            {#            <div class="checkbox">
+                            <label>
+                                <input type="checkbox" value="remember-me"> Remember me
+                            </label>
+                        </div>#}
             <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
         </form>
 
