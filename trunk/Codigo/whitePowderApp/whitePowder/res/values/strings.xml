@@ -44,4 +44,7 @@
     <string name="alert_exit_message">¿Estás seguro que deseas salir?</string>
     <string name="alert_exit_no">No</string>
     <string name="alert_exit_yes">Sí</string>
+    <string name="process_dialog_login">Iniciando sesión.</string>
+    <string name="process_dialog_pwd_reset">Reseteando contraseña.</string>
+    <string name="process_dialog_register">Registrando usuario.</string>
 </resources>

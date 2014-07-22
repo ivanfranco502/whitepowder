@@ -15,6 +15,7 @@ import java.util.Date;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -32,7 +33,8 @@ public class LoginThread extends AsyncTask<String, Void, Void> {
 	private ApplicationError mError = null;
 	private Context mContext;
 	private LoginActivity mLoginActivity;
-	
+	private ProgressDialog progressDialog;
+		
 	public LoginThread(LoginActivity loginActivity, Context ctxt) {		
 		mContext = ctxt;
 		mLoginActivity = loginActivity;
@@ -40,7 +42,12 @@ public class LoginThread extends AsyncTask<String, Void, Void> {
 	
 	@Override
 	protected void onPreExecute() {
-	// NOTE: You can call UI Element here.       
+	// NOTE: You can call UI Element here.   
+		progressDialog = new ProgressDialog(mLoginActivity);
+		progressDialog.setMessage(mContext.getString(R.string.process_dialog_login));
+		progressDialog.setCancelable(false);
+		progressDialog.setIndeterminate(true);
+		progressDialog.show();
 	}
 	
 	@Override
@@ -48,11 +55,7 @@ public class LoginThread extends AsyncTask<String, Void, Void> {
 		
 		HttpURLConnection connection = null;
 		
-		if(!isValidInput(loginInput[0], loginInput[1])){
-			return null;
-		};
-			
-    	User user = User.getUserInstance();
+		User user = User.getUserInstance();
 		
 		try {
 			user.setUsername(loginInput[0]);
@@ -109,7 +112,6 @@ public class LoginThread extends AsyncTask<String, Void, Void> {
     protected void onPostExecute(Void unused) {	
 
     	if(mError==null){
-    		//TODO display UI
     		Intent intent;
     		
     		if(User.getUserInstance().getRole().toString().equals("ROLE_SKIER")){
@@ -143,18 +145,12 @@ public class LoginThread extends AsyncTask<String, Void, Void> {
 		    		Toast.makeText(mContext,R.string.error_server_unreachable,Toast.LENGTH_SHORT).show();
 		    		break;  			
     		}
+    		if (progressDialog!=null) {
+				progressDialog.dismiss();
+    		}
     	};
     }
 	
-	private boolean isValidInput(String user, String pass){
-		
-		if(!(user.length()>0&&pass.length()>0)){
-			mError = new ApplicationError(103,"Warning","Usuario o contraseña no completado en módulo de login");
-			return false;
-		};
-		
-		return true;
-	}
 	
 	private void parseLoginResponse(String response){
 		

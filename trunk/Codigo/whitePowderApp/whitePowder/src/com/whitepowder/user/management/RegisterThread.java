@@ -15,8 +15,8 @@ import org.json.JSONObject;
 import com.example.whitepowder.R;
 import com.whitepowder.ApplicationError;
 import com.whitepowder.SHA1Manager;
-import com.whitepowder.Security;
 
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
@@ -25,10 +25,21 @@ public class RegisterThread extends AsyncTask<String, Void, Void> {
 	private final String RegisterURL = "http://whitetavros.com/Sandbox/web/internalApi/user/register";
 	private ApplicationError mError = null;
 	private RegisterActivity mContext;
+	private ProgressDialog progressDialog;
 	
 	public RegisterThread(RegisterActivity ctxt) {
 		
 		mContext = ctxt;	
+	}
+	
+	@Override
+	protected void onPreExecute() {
+	// NOTE: You can call UI Element here.   
+		progressDialog = new ProgressDialog(mContext);
+		progressDialog.setMessage(mContext.getString(R.string.process_dialog_register));
+		progressDialog.setCancelable(false);
+		progressDialog.setIndeterminate(true);
+		progressDialog.show();
 	}
 	
 	@Override
@@ -38,16 +49,12 @@ public class RegisterThread extends AsyncTask<String, Void, Void> {
 		
 		String username = registerInput[0];
 		String password = registerInput[1];
-		String repeatedPassword =  registerInput[2];
+//		String repeatedPassword =  registerInput[2];
 		String email = registerInput[3];
 
 		String inactive = "0";
 		String superAdmin = "0";
 		String role = "ROLE_SKIER";				
-		
-		if(!isValidInput(username, password, repeatedPassword, email)){
-			return null;
-		};
 		
 		try {		
 			//Generates request
@@ -102,32 +109,7 @@ public class RegisterThread extends AsyncTask<String, Void, Void> {
 		return null;
 	}
 	
-	private boolean isValidInput(String username, String password, String repeatedPassword, String email) {
-
-		
-		if(!(username.length()>0&&password.length()>0&&repeatedPassword.length()>0&&email.length()>0)){
-			mError = new ApplicationError(203,"Warning", "Campos incompletos en el módulo de registro");
-			return false;
-		};
-		
-		if(!Security.isValidPassword(password)){
-			mError = new ApplicationError(210,"Warning", "Not valid password");
-			return false;
-		}
-			
-		if(!password.equals(repeatedPassword)){
-			mError = new ApplicationError(204,"Warning", "Password y repetición de password no coinciden en módulo de registro");
-			return false;
-		};
-		
-		if(!Security.isValidEmail(email)){
-			mError = new ApplicationError(205,"Warning", "Dirección de email invalida en módulo de registro");
-			return false;
-		};
-		
-		return true;
 	
-	}
 	
 	private void parseRegisterResponse(String response){
 		
@@ -200,6 +182,10 @@ public class RegisterThread extends AsyncTask<String, Void, Void> {
 		    	default: //100, 201, 202, 209
 		    		Toast.makeText(mContext,R.string.error_server_unreachable,Toast.LENGTH_SHORT).show();
 		    		break;  			
+    		}
+    		
+    		if (progressDialog!=null) {
+				progressDialog.dismiss();
     		}
     	};
 
