@@ -1,6 +1,7 @@
 package com.whitepowder.user.management;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.whitepowder.R;
+import com.whitepowder.ApplicationError;
 import com.whitepowder.slope.recognizer.SlopeRecognizerActivity;
 
 public class LoginActivity extends Activity {
@@ -43,9 +45,15 @@ public class LoginActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				TextView inputUser = (TextView)findViewById(R.id.login_username_input);
-				TextView inputPassword = (TextView)findViewById(R.id.login_password_input);				
-				LoginThread lt = new LoginThread(LoginActivity.this, getApplicationContext());
-				lt.execute(inputUser.getText().toString(),inputPassword.getText().toString());	
+				TextView inputPassword = (TextView)findViewById(R.id.login_password_input);	
+				if(isValidInput(inputUser.getText().toString(), inputPassword.getText().toString())){
+					LoginThread lt = new LoginThread(LoginActivity.this, getApplicationContext());
+					lt.execute(inputUser.getText().toString(),inputPassword.getText().toString());
+				}
+				else{
+					Toast.makeText(mContext,R.string.login_error_incomplete_data,Toast.LENGTH_SHORT).show();
+				}
+					
 			}
 		});
 		
@@ -101,5 +109,15 @@ public class LoginActivity extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 
+	private boolean isValidInput(String user, String pass){
+		
+		if(user.length()>0 && pass.length()>0){
+			return true;
+		}
+		else{
+			return false;
+		}
+		
+	}
 
 }

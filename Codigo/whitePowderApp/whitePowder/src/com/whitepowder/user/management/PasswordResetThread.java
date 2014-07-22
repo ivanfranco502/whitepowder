@@ -17,6 +17,7 @@ import com.example.whitepowder.R;
 import com.whitepowder.ApplicationError;
 import com.whitepowder.Security;
 
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
@@ -25,6 +26,7 @@ public class PasswordResetThread extends AsyncTask<String, Void, Void>  {
 	private final String PasswordResetChangeURL = "http://whitetavros.com/Sandbox/web/internalApi/user/reset";
 	private ApplicationError mError = null;
 	private PasswordResetActivity mContext;
+	private ProgressDialog progressDialog;
 	
 	public PasswordResetThread(PasswordResetActivity ctxt) {
 		
@@ -32,12 +34,19 @@ public class PasswordResetThread extends AsyncTask<String, Void, Void>  {
 	}
 	
 	@Override
+	protected void onPreExecute() {
+	// NOTE: You can call UI Element here.   
+		progressDialog = new ProgressDialog(mContext);
+		progressDialog.setMessage(mContext.getString(R.string.process_dialog_pwd_reset));
+		progressDialog.setCancelable(false);
+		progressDialog.setIndeterminate(true);
+		progressDialog.show();
+	}
+	
+	@Override
 	protected Void doInBackground(String... resetInput) {
 		String email = resetInput[0];
 		HttpURLConnection connection=null;
-		if(!isValidInput(email)){
-			return null;
-		};
 		
 		try {		
 			//Generates request
@@ -89,15 +98,6 @@ public class PasswordResetThread extends AsyncTask<String, Void, Void>  {
 		return null;
 	}
 	
-	private boolean isValidInput(String email){
-		
-		if(!Security.isValidEmail(email)){
-			mError = new ApplicationError(303,"Warning", "Dirección de email invalida en módulo de registro");
-			return false;
-		};		
-		
-		return true;
-	}
 	
 	private void parseResetResponse(String response){
 		try {
@@ -153,6 +153,10 @@ public class PasswordResetThread extends AsyncTask<String, Void, Void>  {
 		    	default: //100,301,302
 		    		Toast.makeText(mContext,R.string.error_server_unreachable,Toast.LENGTH_SHORT).show();
 		    		break;  			
+    		}
+    		
+    		if (progressDialog!=null) {
+				progressDialog.dismiss();
     		}
     	};
     }
