@@ -8,10 +8,13 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import com.whitepowder.ApplicationError;
 import com.whitepowder.user.management.User;
+import com.google.gson.Gson;
 
 import android.os.AsyncTask;
 
@@ -56,7 +59,7 @@ public class SlopeDownloaderThread extends AsyncTask<Void, Void, Void> {
 				InputStream is = connection.getInputStream();
 				BufferedReader reader = new BufferedReader(new InputStreamReader(is));		
 				String response = reader.readLine();
-				//parseResetResponse(response);
+				parseResponse(response);
 		    }
 		    
 		    else{
@@ -81,9 +84,21 @@ public class SlopeDownloaderThread extends AsyncTask<Void, Void, Void> {
 
 		};
 		
-		
 		return null;
 	}
 
+	private void parseResponse(String response){
+		try {
+			JSONObject jsonObject = new JSONObject(response);	
+			JSONArray slopes = jsonObject.getJSONArray("payload");
+			//TODO falta algo
+			Gson gson = new Gson();
+			SimplifiedSlope sl = gson.fromJson(response,SimplifiedSlope.class);
+		} 
+		catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 }
