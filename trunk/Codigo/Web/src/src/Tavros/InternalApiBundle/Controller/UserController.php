@@ -185,10 +185,10 @@ class UserController extends Controller {
 
             foreach ($roles as $r) {
 
-                if ($r == 'ROLE_SKIER') {
+                if ($r === 'ROLE_SKIER') {
                     $role = 'ROLE_SKIER';
                     break;
-                } elseif ($r == 'ROLE_RECON') {
+                } elseif ($r === 'ROLE_RECON') {
                     $role = 'ROLE_RECON';
                     break;
                 } else {
