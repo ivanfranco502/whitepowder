@@ -69,3 +69,22 @@ fos_user:
     db_driver: orm
     firewall_name: main
     user_class: Tavros\DomainBundle\Entity\Users
+
+sonata_block:
+    default_contexts: [cms]
+    blocks:
+        # Enable the SonataAdminBundle block
+        sonata.admin.block.admin_list:
+            contexts:   [admin]
+            
+services:
+    sonata.admin.slopedificulty:
+        class: Tavros\WebBundle\Admin\SlopeDificultyAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Content", label: "Slope Dificulty" }
+        arguments:
+            - ~
+            - Tavros\DomainBundle\Entity\SlopeDificulty
+            - ~
+        calls:
+            - [ setTranslationDomain, [TavrosWebBundle]]
