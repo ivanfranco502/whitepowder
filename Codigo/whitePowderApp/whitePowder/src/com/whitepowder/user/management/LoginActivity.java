@@ -31,10 +31,6 @@ public class LoginActivity extends Activity {
 		setContentView(R.layout.login);
 		mContext = getApplicationContext();
 		
-		//Hide the action bar
-		//	ActionBar bar = getActionBar();
-		//bar.hide();
-		
 		
 		RelativeLayout butLogin = (RelativeLayout)findViewById(R.id.login_login_button);	
 		TextView butRegister = (TextView)findViewById(R.id.login_register_button);

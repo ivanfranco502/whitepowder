@@ -17,7 +17,7 @@
     <string name="send_btn">ENVIAR</string>
     <string name="error_unexpected_response">Los servidores de WhitePowder no estan funcionando correctamente en este momento, intente nuevamente más tarde.</string>
     <string name="login_error_user_password_incorrect">El usuario o la contraseña indicados son incorrectos.</string>
-    <string name="register_error_incomplete_data">Por favor, para poder registrarte completá todos los campos.</string>
+    <string name="register_error_incomplete_data">Por favor, para poder registrarte, completá todos los campos.</string>
     <string name="register_error_passwords_not_matching">Las contraseñas no coinciden.</string>
     <string name="register_error_email_not_valid">El email ingresado no es válido.</string>
     <string name="register_error_existing_username">El nombre de usuario ingresado ya ha sido registrado.</string>
@@ -26,6 +26,10 @@
     <string name="pwd_change_hint_current_password">Contraseña actual</string>
     <string name="pwd_change_hint_new_password">Nueva contraseña</string>
     <string name="pwd_change_hint_repeat_new_password">Repetir nueva contraseña</string>
+    <string name="pwd_change_error_incomplete_data">Por favor, para poder cambiar la contraseña, completá todos los campos.</string>
+    <string name="pwd_change_error_passwords_not_matching">Las contraseñas no coinciden.</string>
+    <string name="pwd_change_invalid_token">Error de autenticación. Por favor, cierre sesión y vuelva a intentarlo.</string>
+    <string name="pwd_change_invalid_current_password">La contraseña actual es incorrecta.</string>
     <string name="pwd_reset_title">RESETEO DE CONTRASEÑA</string>
     <string name="pwd_reset_instructions">Si has olvidado tu contraseña, ingresa el e-mail con el que te has registrado y recibirás un mail con tu usuario y nueva contraseña.</string>
     <string name="pwd_reset_error_107">El email no se encuentra registrado.</string>
@@ -47,4 +51,11 @@
     <string name="process_dialog_login">Iniciando sesión.</string>
     <string name="process_dialog_pwd_reset">Reseteando contraseña.</string>
     <string name="process_dialog_register">Registrando usuario.</string>
+    <string name="process_dialog_pwd_change">Cambiando contraseña.</string>
+    <string name="profile_view_stats">Estadísticas</string>
+    <string name="profile_skier_mode">Modo esquiador</string>
+    <string name="profile_pwd_change">Cambiar contraseña</string>
+    
+    
+    
 </resources>
