@@ -8,26 +8,32 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import com.whitepowder.ApplicationError;
 import com.whitepowder.user.management.User;
+import com.example.whitepowder.R;
 import com.google.gson.Gson;
 
 import android.os.AsyncTask;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 public class SlopeDownloaderThread extends AsyncTask<Void, Void, Void> {
 
 	private final String SlopeDownloadURL = "http://whitetavros.com/Sandbox/web/internalApi/slope/all";
 	private ApplicationError mError = null;
 	private SlopeRecognizerActivity mContext;
+	private SlopeContainer mSlopes=null;
 	
 	public SlopeDownloaderThread(SlopeRecognizerActivity ctxt) {
 		
 		mContext = ctxt;	
-	}
+	};
 
 	@Override
 	protected Void doInBackground(Void... params) {
@@ -60,6 +66,7 @@ public class SlopeDownloaderThread extends AsyncTask<Void, Void, Void> {
 				BufferedReader reader = new BufferedReader(new InputStreamReader(is));		
 				String response = reader.readLine();
 				parseResponse(response);
+				
 		    }
 		    
 		    else{
@@ -85,20 +92,25 @@ public class SlopeDownloaderThread extends AsyncTask<Void, Void, Void> {
 		};
 		
 		return null;
-	}
+	};
+	
+	@Override
+	protected void onPostExecute(Void result) {
+		if(mSlopes!=null){
+			List<String> list = new ArrayList<String>();
+			for(int i=0;i<mSlopes.payload.size();i++){
+				list.add(mSlopes.payload.get(i).slop_description);
+			}
+			
+			ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(mContext,R.layout.slope_recognition_spinner_item, list);
+			
+		}
+	};
 
 	private void parseResponse(String response){
-		try {
-			JSONObject jsonObject = new JSONObject(response);	
-			JSONArray slopes = jsonObject.getJSONArray("payload");
-			//TODO falta algo
-			Gson gson = new Gson();
-			SimplifiedSlope sl = gson.fromJson(response,SimplifiedSlope.class);
-		} 
-		catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+		Gson gson = new Gson();
+		mSlopes = gson.fromJson(response,SlopeContainer.class);
+
+	};
 
 }
