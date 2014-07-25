@@ -1,7 +1,6 @@
 package com.whitepowder.user.management;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,10 +12,7 @@ import android.view.Window;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.whitepowder.R;
-import com.whitepowder.ApplicationError;
-import com.whitepowder.slope.recognizer.SlopeRecognizerActivity;
 
 public class LoginActivity extends Activity {
 

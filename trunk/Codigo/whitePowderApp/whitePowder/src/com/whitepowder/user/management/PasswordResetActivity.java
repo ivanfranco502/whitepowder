@@ -1,9 +1,7 @@
 package com.whitepowder.user.management;
 
 import com.example.whitepowder.R;
-import com.whitepowder.ApplicationError;
 import com.whitepowder.Security;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
