@@ -3,5 +3,4 @@ $('.menu li a').click(function(e) {
   if (!$this.hasClass('active')) {
     $this.addClass('active');
   }
-  e.preventDefault();
 });
