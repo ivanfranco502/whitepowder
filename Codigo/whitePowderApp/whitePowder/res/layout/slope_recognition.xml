@@ -8,11 +8,11 @@
     tools:ignore="MergeRootFrame">
 
     <Spinner
-        android:id="@+id/recognition_spinner_slopes"
-        android:layout_width="wrap_content"
+        android:id="@+id/slope_recognition_spinner"
+        android:background="#FFFFFF"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="59dp" />
+        android:prompt="@string/slope_recognition_slopes"
+		android:layout_centerInParent="true" />
      
 </RelativeLayout>

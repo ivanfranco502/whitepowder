@@ -145,6 +145,7 @@ public class LoginThread extends AsyncTask<String, Void, Void> {
 		    		Toast.makeText(mContext,R.string.error_server_unreachable,Toast.LENGTH_SHORT).show();
 		    		break;  			
     		}
+    		
     		if (progressDialog!=null) {
 				progressDialog.dismiss();
     		}

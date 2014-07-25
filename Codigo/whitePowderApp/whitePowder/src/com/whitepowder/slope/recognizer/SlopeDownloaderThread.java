@@ -8,20 +8,14 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import com.whitepowder.ApplicationError;
 import com.whitepowder.user.management.User;
 import com.example.whitepowder.R;
 import com.google.gson.Gson;
-
 import android.os.AsyncTask;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
+import android.widget.Toast;
 
 public class SlopeDownloaderThread extends AsyncTask<Void, Void, Void> {
 
@@ -75,13 +69,13 @@ public class SlopeDownloaderThread extends AsyncTask<Void, Void, Void> {
 		}
 	    
 		catch (MalformedURLException e) {
-			mError = new ApplicationError(301,"Error","MalformedURLException en módulo de reseteo de contraseña");
+			mError = new ApplicationError(601,"Error","MalformedURLException en módulo de reconocimiento de pista");
 		}
 		catch (IOException e) {
-			mError = new ApplicationError(302,"Error","IOException en módulo de reseteo de contraseña");
+			mError = new ApplicationError(602,"Error","IOException en módulo de reconocimiento de pista");
 		}
 		catch (JSONException e) {
-			
+			mError = new ApplicationError(603,"Error","JSonException en módulo de reconocimiento de pista");
 		}
 		
 		finally{
@@ -95,22 +89,27 @@ public class SlopeDownloaderThread extends AsyncTask<Void, Void, Void> {
 	};
 	
 	@Override
-	protected void onPostExecute(Void result) {
+	protected void onPostExecute(Void result) {    	
+
 		if(mSlopes!=null){
-			List<String> list = new ArrayList<String>();
-			for(int i=0;i<mSlopes.payload.size();i++){
-				list.add(mSlopes.payload.get(i).slop_description);
-			}
-			
-			ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(mContext,R.layout.slope_recognition_spinner_item, list);
-			
-		}
+			for(SimplifiedSlope ss : mSlopes.payload){
+				mContext.getAdapter().add(ss);			
+			};
+		};
+		
+		if(mError!=null){
+			switch(mError.getErrorCode()){
+				default: //100,601,602 y 603
+					Toast.makeText(mContext,R.string.error_server_unreachable,Toast.LENGTH_SHORT).show();
+					break;
+			};
+		};
+		
 	};
 
 	private void parseResponse(String response){
 		Gson gson = new Gson();
 		mSlopes = gson.fromJson(response,SlopeContainer.class);
-
 	};
 
 }

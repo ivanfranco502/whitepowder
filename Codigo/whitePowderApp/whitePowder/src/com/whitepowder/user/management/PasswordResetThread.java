@@ -9,13 +9,10 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import com.example.whitepowder.R;
 import com.whitepowder.ApplicationError;
-import com.whitepowder.Security;
 
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
