@@ -20,9 +20,7 @@ class SlopeController extends Controller {
         $response->headers->set('Content-Type', 'application/json');
         $em = $this->container->get('Doctrine')->getManager();
 
-        if ($this->container->get('request')->getMethod() == 'POST') {
-            $params = $_POST;
-        } else {
+        if (!$this->container->get('request')->getMethod() == 'POST') {
             $apiResponse->setCode(404);
             $response->setContent($serializer->serialize($apiResponse, 'json'));
             return $response;
@@ -45,7 +43,6 @@ class SlopeController extends Controller {
             $response->setContent($serializer->serialize($apiResponse, 'json'));
             return $response;
         }
-
 
         $apiResponse->setCode(200);
         $apiResponse->setPayload($slopes);
