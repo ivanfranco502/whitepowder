@@ -116,8 +116,16 @@ public class LoginActivity extends Activity {
 		
 	}
 	
-	public void loginAccordingToRole(){
+	public void loginAccordingToRole(boolean first_time){
 		Intent intent;
+		
+		if(first_time){
+			SharedPreferences sharedPreferences = getSharedPreferences("WP_USER_SHARED_PREFERENCES", Context.MODE_PRIVATE);
+			Editor editor = sharedPreferences.edit();
+			editor.putString("_token", User.getUserInstance().getToken().toString());
+			editor.putString("role", User.getUserInstance().getRole().toString());
+			editor.commit();
+		}
 		
 		if(User.getUserInstance().getRole().toString().equals("ROLE_SKIER")){
 			//Rol esquiador
@@ -131,22 +139,17 @@ public class LoginActivity extends Activity {
 			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			this.startActivity(intent);
 		};
-		SharedPreferences sharedPreferences = getSharedPreferences("WP_USER_SHARED_PREFERENCES", Context.MODE_PRIVATE);
-		Editor editor = sharedPreferences.edit();
-		editor.putString("_token", User.getUserInstance().getToken().toString());
-		editor.putString("role", User.getUserInstance().getRole().toString());
-		editor.commit();
 		this.finish();
 	}
 	
 	private void checkSharedPreferences(){
 		SharedPreferences sharedPreferences = getSharedPreferences("WP_USER_SHARED_PREFERENCES", Context.MODE_PRIVATE);
-		String role = sharedPreferences.getString("_token", "UNKNOWN");
-		String token = sharedPreferences.getString("role", "UNKNOWN");
+		String role = sharedPreferences.getString("role", "UNKNOWN");
+		String token = sharedPreferences.getString("_token", "UNKNOWN");
 		if(role != "UNKNOWN" && token != "UNKNOWN"){
 			User.getUserInstance().setRole(role);
 			User.getUserInstance().setToken(token);
-			loginAccordingToRole();
+			loginAccordingToRole(false);
 		}
 	}
 }

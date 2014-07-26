@@ -106,7 +106,7 @@ public class LoginThread extends AsyncTask<String, Void, Void> {
     protected void onPostExecute(Void unused) {	
 
     	if(mError==null){
-    		mLoginActivity.loginAccordingToRole();
+    		mLoginActivity.loginAccordingToRole(true);
     	}
     	//Error handling
     	else{

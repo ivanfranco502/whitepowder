@@ -30,9 +30,8 @@
 	    android:layout_marginTop="2dp"/>
    
     <RelativeLayout
-        android:layout_width="fill_parent"
+		android:layout_width="fill_parent"
         android:layout_height="25dp" >
-
 
         <Switch
             android:id="@+id/profile_skier_mode_switch"
@@ -70,6 +69,27 @@
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:text="@string/profile_pwd_change"
+	        android:layout_centerVertical="true"
+	        />
+    </RelativeLayout>
+    
+    <View
+	    android:layout_width="fill_parent"
+	    android:layout_height="1dp"
+	    android:background="#6DCAEC"
+	    android:layout_marginBottom="2dp"
+	    android:layout_marginTop="2dp"/>
+    
+    <RelativeLayout 
+        android:id="@+id/profile_logout_container"
+	    android:layout_width="fill_parent"
+	    android:layout_height="25dp"
+	    >
+	    <TextView
+	        android:id="@+id/profile_logout"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="@string/profile_logout"
 	        android:layout_centerVertical="true"
 	        />
     </RelativeLayout>
