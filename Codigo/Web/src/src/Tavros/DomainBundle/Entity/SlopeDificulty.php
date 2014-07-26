@@ -80,4 +80,8 @@ class SlopeDificulty
     {
         return $this->sldiColor;
     }
+    
+    public function __toString() {
+        return $this->sldiDescription;
+    }
 }

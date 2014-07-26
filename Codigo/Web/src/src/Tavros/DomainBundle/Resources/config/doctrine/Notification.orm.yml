@@ -5,6 +5,9 @@ Tavros\DomainBundle\Entity\Notification:
         FK_notification_message_idx:
             columns:
                 - noti_message_id
+        FK_notification_notification_type_idx:
+            columns:
+                - noti_notification_type_id
     id:
         notiId:
             type: integer
@@ -32,6 +35,15 @@ Tavros\DomainBundle\Entity\Notification:
             joinColumns:
                 noti_message_id:
                     referencedColumnName: mess_id
+            orphanRemoval: false
+        notiNotificationType:
+            targetEntity: NotificationType
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                noti_notification_type_id:
+                    referencedColumnName: noty_id
             orphanRemoval: false
     manyToMany:
         nousUser:

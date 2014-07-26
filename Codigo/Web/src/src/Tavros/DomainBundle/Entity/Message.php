@@ -20,15 +20,9 @@ class Message
     private $messCreateddate;
 
     /**
-     * @var \Tavros\DomainBundle\Entity\MessageType
-     */
-    private $messMessageType;
-
-    /**
      * @var \Tavros\DomainBundle\Entity\Users
      */
     private $messUser;
-
 
     /**
      * Get messId
@@ -61,29 +55,6 @@ class Message
     public function getMessCreateddate()
     {
         return $this->messCreateddate;
-    }
-
-    /**
-     * Set messMessageType
-     *
-     * @param \Tavros\DomainBundle\Entity\MessageType $messMessageType
-     * @return Message
-     */
-    public function setMessMessageType(\Tavros\DomainBundle\Entity\MessageType $messMessageType = null)
-    {
-        $this->messMessageType = $messMessageType;
-
-        return $this;
-    }
-
-    /**
-     * Get messMessageType
-     *
-     * @return \Tavros\DomainBundle\Entity\MessageType 
-     */
-    public function getMessMessageType()
-    {
-        return $this->messMessageType;
     }
 
     /**

@@ -30,6 +30,11 @@ class Notification
     private $nousUser;
 
     /**
+     * @var \Tavros\DomainBundle\Entity\NotificationType
+     */
+    private $notiNotificationType;
+    
+    /**
      * Constructor
      */
     public function __construct()
@@ -124,5 +129,28 @@ class Notification
     public function getNousUser()
     {
         return $this->nousUser;
+    }
+    
+    /**
+     * Set notiNotificationType
+     *
+     * @param \Tavros\DomainBundle\Entity\NotificationType $notiNotificationType
+     * @return Message
+     */
+    public function setNotiNotificationType(\Tavros\DomainBundle\Entity\NotificationType $notiNotificationType = null)
+    {
+        $this->notiNotificationType = $notiNotificationType;
+
+        return $this;
+    }
+
+    /**
+     * Get notiNotificationType
+     *
+     * @return \Tavros\DomainBundle\Entity\NotificationType 
+     */
+    public function getNotiNotificationType()
+    {
+        return $this->notiNotificationType;
     }
 }

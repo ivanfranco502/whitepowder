@@ -88,3 +88,43 @@ services:
             - ~
         calls:
             - [ setTranslationDomain, [TavrosWebBundle]]
+    sonata.admin.slope:
+        class: Tavros\WebBundle\Admin\SlopeAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Content", label: "Slope" }
+        arguments:
+            - ~
+            - Tavros\DomainBundle\Entity\Slope
+            - ~
+        calls:
+            - [ setTranslationDomain, [TavrosWebBundle]]
+    sonata.admin.generalinformation:
+        class: Tavros\WebBundle\Admin\GeneralInformationAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Content", label: "General Information" }
+        arguments:
+            - ~
+            - Tavros\DomainBundle\Entity\GeneralInformation
+            - ~
+        calls:
+            - [ setTranslationDomain, [TavrosWebBundle]]   
+    sonata.admin.hourday:
+        class: Tavros\WebBundle\Admin\HourDayAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Content", label: "Schedule" }
+        arguments:
+            - ~
+            - Tavros\DomainBundle\Entity\HourDay
+            - ~
+        calls:
+            - [ setTranslationDomain, [TavrosWebBundle]]
+    sonata.admin.notificationtype:
+        class: Tavros\WebBundle\Admin\NotificationTypeAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Content", label: "Notification Type" }
+        arguments:
+            - ~
+            - Tavros\DomainBundle\Entity\NotificationType
+            - ~
+        calls:
+            - [ setTranslationDomain, [TavrosWebBundle]]            

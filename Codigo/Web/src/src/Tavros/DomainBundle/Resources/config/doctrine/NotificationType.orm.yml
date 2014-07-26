@@ -1,0 +1,22 @@
+Tavros\DomainBundle\Entity\NotificationType:
+    type: entity
+    table: notification_type
+    id:
+        notyId:
+            type: integer
+            nullable: false
+            unsigned: false
+            comment: ''
+            id: true
+            column: noty_id
+            generator:
+                strategy: IDENTITY
+    fields:
+        notyDescription:
+            type: string
+            nullable: false
+            length: 45
+            fixed: false
+            comment: ''
+            column: noty_description
+    lifecycleCallbacks: {  }
