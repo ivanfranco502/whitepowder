@@ -44,7 +44,7 @@ public class SlopeSpinnerAdapter extends ArrayAdapter<SimplifiedSlope> implement
         }
 
         TextView slopeDesc =  (TextView) row.findViewById(com.example.whitepowder.R.id.slope_recognition_item_text);
-        slopeDesc.setText(slopes.get(position).slop_description);
+        slopeDesc.setText(slopes.get(position).slope_description);
         
         
 		return row;

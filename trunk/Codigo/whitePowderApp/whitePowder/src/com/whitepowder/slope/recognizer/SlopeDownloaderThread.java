@@ -19,7 +19,7 @@ import android.widget.Toast;
 
 public class SlopeDownloaderThread extends AsyncTask<Void, Void, Void> {
 
-	private final String SlopeDownloadURL = "http://whitetavros.com/Sandbox/web/internalApi/slope/all";
+	private final String SlopeDownloadURL = "http://whitetavros.com/Sandbox/web/internalApi/slope/allNames";
 	private ApplicationError mError = null;
 	private SlopeRecognizerActivity mContext;
 	private SlopeContainer mSlopes=null;
