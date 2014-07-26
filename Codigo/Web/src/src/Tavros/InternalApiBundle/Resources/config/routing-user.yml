@@ -14,3 +14,6 @@ tavros_internalApi_user_logout:
     pattern: /logout
     defaults: { _controller: TavrosInternalApiBundle:User:logout}
 
+tavros_internalApi_user_change_password:
+    pattern: /changePass
+    defaults: { _controller: TavrosInternalApiBundle:User:changePassword}

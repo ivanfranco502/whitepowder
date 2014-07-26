@@ -216,6 +216,73 @@ class UserController extends Controller {
         return $response;
     }
 
+    //PASSWORD CHANGE//
+    public function changePasswordAction() {
+        $logger = $this->container->get('logger');
+        $serializer = $this->container->get('jms_serializer');
+        $apiResponse = new ApiResponse();
+        $response = new Response();
+        $response->headers->set('Content-Type', 'application/json');
+        $userManager = $this->container->get('fos_user.user_manager');
+        $manipulator = $this->container->get('fos_user.util.user_manipulator');
+        $em = $this->container->get('Doctrine')->getManager();
+
+        $request = $this->container->get('request');
+
+        if (!$request->getMethod() == 'POST') {
+            $apiResponse->setCode(404);
+            $response->setContent($serializer->serialize($apiResponse, 'json'));
+            return $response;
+        }
+
+        $content = json_decode($this->container->get('request')->getContent());
+
+        $_token = $content->_token;
+        $current_password = $content->current_password;
+        $new_password = $content->new_password;
+
+        $token = $em->getRepository('TavrosDomainBundle:Token')->findOneByToken($_token);
+        /*@var $token \Tavros\DomainBundle\Entity\Token */
+
+        if (!$token) {
+            $apiResponse->setCode(110);
+            $response->setContent($serializer->serialize($apiResponse, 'json'));
+            return $response;
+        }
+        
+        $user = $token->getTokenUser();
+        
+        if (!$this->checkUserPassword($user, $current_password)) {
+            $apiResponse->setCode(113);
+            $response->setContent($serializer->serialize($apiResponse, 'json'));
+            return $response;
+        }
+
+        try {
+            $manipulator->changePassword($user->getUsername(), $new_password);
+            $message = \Swift_Message::newInstance()
+                    ->setSubject('Cambio de contraseña - [White Powder]')
+                    ->setFrom('info@whitepowder.com')
+                    ->setTo($user->getEmail())
+                    ->setBody(
+                    $this->container->get('twig')->render(
+                            'TavrosWebBundle:Emails:change.txt.twig', array(
+                        'name' => $user->getUsername())
+            ));
+            $this->container->get('mailer')->send($message);
+        } catch (Exception $ex) {
+            $apiResponse->setCode(114);
+            $response->setContent($serializer->serialize($apiResponse, 'json'));
+            $logger->error('[TAVROS - ERROR]' . $ex);
+            return $response;
+        }
+
+        $apiResponse->setCode(200);
+        $apiResponse->setPayload('');
+        $response->setContent($serializer->serialize($apiResponse, 'json'));
+        return $response;
+    }
+
     //USER LOGOUT//
     function logoutAction() {
         $this->logoutUser();
