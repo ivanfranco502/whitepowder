@@ -50,7 +50,7 @@ class SlopeController extends Controller {
         return $response;
     }
 
-    function allNameAction() {
+    function allNamesAction() {
         $logger = $this->container->get('logger');
         $serializer = $this->container->get('jms_serializer');
         $apiResponse = new ApiResponse();
@@ -58,9 +58,7 @@ class SlopeController extends Controller {
         $response->headers->set('Content-Type', 'application/json');
         $em = $this->container->get('Doctrine')->getManager();
 
-        if ($this->container->get('request')->getMethod() == 'POST') {
-            $params = $_POST;
-        } else {
+        if (!$this->container->get('request')->getMethod() == 'POST') {
             $apiResponse->setCode(404);
             $response->setContent($serializer->serialize($apiResponse, 'json'));
             return $response;
@@ -87,7 +85,18 @@ class SlopeController extends Controller {
         $payload = Array();
         foreach ($slopes as $slope) {
             /* @var $slope \Tavros\DomainBundle\Entity\Slope */
-            $payload[$slope->getSlopId()] = $slope->getSlopDescription();
+            $s = Array();
+            $s['slope_id'] = $slope->getSlopId();
+            $s['slope_description'] = $slope->getSlopDescription();
+
+            $coord = $em->getRepository('TavrosDomainBundle:SlopeCoordinate')->findBySlcoSlope($slope->getSlopId());
+            if ($coord) {
+                $s['slope_recognized'] = 1;
+            } else {
+                $s['slope_recognized'] = 0;
+            }
+
+            $payload[] = $s;
         }
 
         $apiResponse->setCode(200);

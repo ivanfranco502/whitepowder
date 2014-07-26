@@ -3,6 +3,6 @@ tavros_internalApi_slope_all:
     defaults: { _controller: TavrosInternalApiBundle:Slope:all}
 
 tavros_internalApi_slope_allName:
-    pattern: /allName
-    defaults: { _controller: TavrosInternalApiBundle:Slope:allName}
+    pattern: /allNames
+    defaults: { _controller: TavrosInternalApiBundle:Slope:allNames}
     
