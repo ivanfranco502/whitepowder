@@ -85,7 +85,7 @@ public class SkierActivity extends Activity implements ActionBar.TabListener {
 	public boolean onCreateOptionsMenu(Menu menu) {
 
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
+		//getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
 
@@ -121,14 +121,15 @@ public class SkierActivity extends Activity implements ActionBar.TabListener {
 	
 	@Override
 	public void onBackPressed() {
-	    new AlertDialog.Builder(this)
+		new AlertDialog.Builder(this)
 	        .setTitle(getString(R.string.alert_exit_title))
 	        .setMessage(getString(R.string.alert_exit_message))
-	        .setNegativeButton(getString(R.string.alert_exit_no), null)
-	        .setPositiveButton(getString(R.string.alert_exit_yes), new DialogInterface.OnClickListener() {
+	        .setNegativeButton(getString(R.string.alert_no), null)
+	        .setPositiveButton(getString(R.string.alert_yes), new DialogInterface.OnClickListener() {
 
 	            public void onClick(DialogInterface arg0, int arg1) {
-	                SkierActivity.this.finish();
+	            	
+	            	SkierActivity.this.finish();
 	            }
 	        }).create().show();
 	}

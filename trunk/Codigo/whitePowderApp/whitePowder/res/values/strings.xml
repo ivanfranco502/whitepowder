@@ -46,8 +46,10 @@
     <string name="title_section4">Perfil</string>
     <string name="alert_exit_title">Salir</string>
     <string name="alert_exit_message">¿Estás seguro que deseas salir?</string>
-    <string name="alert_exit_no">No</string>
-    <string name="alert_exit_yes">Sí</string>
+    <string name="alert_no">No</string>
+    <string name="alert_yes">Sí</string>
+    <string name="alert_logout_title">Cerrar sesión</string>
+    <string name="alert_logout_message">¿Estás seguro que deseas cerrar sesión?</string>
     <string name="process_dialog_login">Iniciando sesión.</string>
     <string name="process_dialog_pwd_reset">Reseteando contraseña.</string>
     <string name="process_dialog_register">Registrando usuario.</string>
@@ -55,6 +57,7 @@
     <string name="profile_view_stats">Estadísticas</string>
     <string name="profile_skier_mode">Modo esquiador</string>
     <string name="profile_pwd_change">Cambiar contraseña</string>
+    <string name="profile_logout">Cerrar sesión</string>
     <string name="slope_recognition_text">RECONOCER PISTA</string>
     <string name="slope_recognition_start_text">COMENZAR</string>
     <string name="slope_recognition_stop_text">DETENER</string>
