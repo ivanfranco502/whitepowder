@@ -11,21 +11,15 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.security.NoSuchAlgorithmException;
 import java.util.Date;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.widget.Toast;
-
 import com.example.whitepowder.R;
 import com.whitepowder.ApplicationError;
 import com.whitepowder.SHA1Manager;
-import com.whitepowder.skier.SkierActivity;
-import com.whitepowder.slope.recognizer.SlopeRecognizerActivity;
 
 public class LoginThread extends AsyncTask<String, Void, Void> {
 	

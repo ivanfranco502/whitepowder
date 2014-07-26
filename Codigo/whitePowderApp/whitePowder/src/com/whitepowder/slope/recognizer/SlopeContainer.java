@@ -21,27 +21,27 @@ public class SlopeContainer {
 }
 
 class SimplifiedSlope {
-	int slop_id;
-	String slop_description;
-	int slop_recognized;
+	int slope_id;
+	String slope_description;
+	int slope_recognized;
 	
-	public int getSlop_id() {
-		return slop_id;
+	public int getSlope_id() {
+		return slope_id;
 	}
-	public void setSlop_id(int slop_id) {
-		this.slop_id = slop_id;
+	public void setSlope_id(int slope_id) {
+		this.slope_id = slope_id;
 	}
-	public String getSlop_description() {
-		return slop_description;
+	public String getSlope_description() {
+		return slope_description;
 	}
-	public void setSlop_description(String slop_description) {
-		this.slop_description = slop_description;
+	public void setSlope_description(String slope_description) {
+		this.slope_description = slope_description;
 	}
-	public int getSlop_recognized() {
-		return slop_recognized;
+	public int getSlope_recognized() {
+		return slope_recognized;
 	}
-	public void setSlop_recognized(int slop_recognized) {
-		this.slop_recognized = slop_recognized;
+	public void setSlope_recognized(int slope_recognized) {
+		this.slope_recognized = slope_recognized;
 	}
 
 }
