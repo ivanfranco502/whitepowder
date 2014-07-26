@@ -77,7 +77,7 @@ class SlopeController extends Controller {
         $slopes = $em->getRepository('TavrosDomainBundle:Slope')->findAll();
 
         if (!$slopes) {
-            $apiResponse->setCode(111);
+            $apiResponse->setCode(115);
             $response->setContent($serializer->serialize($apiResponse, 'json'));
             return $response;
         }
