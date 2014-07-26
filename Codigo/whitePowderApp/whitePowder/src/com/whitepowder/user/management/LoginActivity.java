@@ -1,8 +1,12 @@
 package com.whitepowder.user.management;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,7 +16,11 @@ import android.view.Window;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.example.whitepowder.R;
+import com.whitepowder.ApplicationError;
+import com.whitepowder.skier.SkierActivity;
+import com.whitepowder.slope.recognizer.SlopeRecognizerActivity;
 
 public class LoginActivity extends Activity {
 
@@ -23,10 +31,10 @@ public class LoginActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		mContext = getApplicationContext();
+		checkSharedPreferences();
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.login);
-		mContext = getApplicationContext();
-		
 		
 		RelativeLayout butLogin = (RelativeLayout)findViewById(R.id.login_login_button);	
 		TextView butRegister = (TextView)findViewById(R.id.login_register_button);
@@ -111,5 +119,38 @@ public class LoginActivity extends Activity {
 		}
 		
 	}
-
+	
+	public void loginAccordingToRole(){
+		Intent intent;
+		
+		if(User.getUserInstance().getRole().toString().equals("ROLE_SKIER")){
+			//Rol esquiador
+			intent = new Intent(mContext, SkierActivity.class);
+			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			this.startActivity(intent);
+		}
+		else if (User.getUserInstance().getRole().toString().equals("ROLE_RECON")){
+			//Rol reconocedor de pistas
+			intent = new Intent(mContext, SlopeRecognizerActivity.class);
+			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			this.startActivity(intent);
+		};
+		SharedPreferences sharedPreferences = getSharedPreferences("WP_USER_SHARED_PREFERENCES", Context.MODE_PRIVATE);
+		Editor editor = sharedPreferences.edit();
+		editor.putString("_token", User.getUserInstance().getToken().toString());
+		editor.putString("role", User.getUserInstance().getRole().toString());
+		editor.commit();
+		this.finish();
+	}
+	
+	private void checkSharedPreferences(){
+		SharedPreferences sharedPreferences = getSharedPreferences("WP_USER_SHARED_PREFERENCES", Context.MODE_PRIVATE);
+		String role = sharedPreferences.getString("_token", "UNKNOWN");
+		String token = sharedPreferences.getString("role", "UNKNOWN");
+		if(role != "UNKNOWN" && token != "UNKNOWN"){
+			User.getUserInstance().setRole(role);
+			User.getUserInstance().setToken(token);
+			loginAccordingToRole();
+		}
+	}
 }

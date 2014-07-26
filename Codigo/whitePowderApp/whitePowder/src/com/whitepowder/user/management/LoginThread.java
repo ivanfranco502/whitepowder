@@ -112,21 +112,7 @@ public class LoginThread extends AsyncTask<String, Void, Void> {
     protected void onPostExecute(Void unused) {	
 
     	if(mError==null){
-    		Intent intent;
-    		
-    		if(User.getUserInstance().getRole().toString().equals("ROLE_SKIER")){
-    			//Rol esquiador
-    			intent = new Intent(mContext, SkierActivity.class);
-    			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-    			mLoginActivity.startActivity(intent);
-    		}
-    		else if (User.getUserInstance().getRole().toString().equals("ROLE_RECON")){
-    			//Rol reconocedor de pistas
-    			intent = new Intent(mContext, SlopeRecognizerActivity.class);
-    			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-    			mLoginActivity.startActivity(intent);
-    		};
-    		mLoginActivity.finish();
+    		mLoginActivity.loginAccordingToRole();
     	}
     	//Error handling
     	else{
