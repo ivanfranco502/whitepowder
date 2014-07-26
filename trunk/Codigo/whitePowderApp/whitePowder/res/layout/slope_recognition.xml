@@ -1,18 +1,46 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/login_container"
+    android:id="@+id/slope_recognition_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#6DCAEC"
-    tools:context="com.whitepowder.user.management.LoginActivity"
     tools:ignore="MergeRootFrame">
 
+    <TextView 
+        android:id="@+id/slope_recognition_text"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_centerHorizontal="true"
+	    android:layout_marginTop="25dp"
+	    android:text="@string/slope_recognition_text"
+	    android:textSize="20sp" />
+    
     <Spinner
         android:id="@+id/slope_recognition_spinner"
+        android:layout_below="@id/slope_recognition_text"
         android:background="#FFFFFF"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:prompt="@string/slope_recognition_slopes"
-		android:layout_centerInParent="true" />
+        android:layout_marginTop="35dp"/>
+    
+    <RelativeLayout
+	     android:id="@+id/slope_recognition_start_button"
+	     android:layout_width="match_parent"
+	     android:layout_height="50dp"
+	     android:layout_marginTop="25dp"
+	     android:gravity="center"
+	     android:layout_below="@+id/slope_recognition_spinner"
+	     android:background="#7caf00" >
+	     	
+	        <TextView
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="@string/slope_recognition_start_text"
+	           	android:textSize="20sp"
+	            android:textColor="#FFFFFF" /> 
+	                
+	  </RelativeLayout>		
+    
+    
      
 </RelativeLayout>

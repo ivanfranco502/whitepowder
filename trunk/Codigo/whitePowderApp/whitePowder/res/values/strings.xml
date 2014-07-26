@@ -55,7 +55,8 @@
     <string name="profile_view_stats">Estadísticas</string>
     <string name="profile_skier_mode">Modo esquiador</string>
     <string name="profile_pwd_change">Cambiar contraseña</string>
-    <string name="slope_recognition_slopes">Pistas</string>
+    <string name="slope_recognition_text">RECONOCER PISTA</string>
+    <string name="slope_recognition_start_text">COMENZAR</string>
     
     
     
