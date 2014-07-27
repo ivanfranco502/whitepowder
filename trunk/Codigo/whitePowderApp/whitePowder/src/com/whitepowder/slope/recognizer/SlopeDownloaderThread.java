@@ -40,7 +40,6 @@ public class SlopeDownloaderThread extends AsyncTask<Void, Void, Void> {
 			
 			URL url = new URL(SlopeDownloadURL);
 			connection = (HttpURLConnection)url.openConnection();
-
 		    connection.setRequestMethod("POST");
 			
 		    connection.setUseCaches (false);

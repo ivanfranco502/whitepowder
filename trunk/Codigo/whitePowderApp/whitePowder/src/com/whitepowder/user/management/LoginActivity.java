@@ -124,7 +124,7 @@ public class LoginActivity extends Activity {
 			Editor editor = sharedPreferences.edit();
 			editor.putString("_token", User.getUserInstance().getToken().toString());
 			editor.putString("role", User.getUserInstance().getRole().toString());
-			editor.commit();
+			editor.apply();
 		}
 		
 		if(User.getUserInstance().getRole().toString().equals("ROLE_SKIER")){

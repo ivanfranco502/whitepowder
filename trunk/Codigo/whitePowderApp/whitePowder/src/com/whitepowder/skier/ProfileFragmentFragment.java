@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.RelativeLayout;
 import android.widget.Switch;
+import android.widget.Toast;
 
 import com.example.whitepowder.R;
 import com.whitepowder.Logout;
@@ -20,6 +21,7 @@ import com.whitepowder.user.management.PasswordChangeActivity;
 
 public class ProfileFragmentFragment extends Fragment {
 	Activity mSkierActivity;
+	private static final int PWD_CHANGE_REQUEST_CODE = 1;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -44,7 +46,7 @@ public class ProfileFragmentFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(getActivity(), PasswordChangeActivity.class);
-				getActivity().startActivity(intent);
+				mSkierActivity.startActivityForResult(intent, PWD_CHANGE_REQUEST_CODE);
 			}
 		});
 		
