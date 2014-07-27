@@ -15,7 +15,7 @@ public class Logout {
 		SharedPreferences sharedPreferences = mContext.getSharedPreferences("WP_USER_SHARED_PREFERENCES", Context.MODE_PRIVATE);
 		Editor editor = sharedPreferences.edit();
 		editor.clear(); 
-		editor.commit();
+		editor.apply();
 		
 		Intent intent = new Intent(mContext, LoginActivity.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

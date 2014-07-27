@@ -11,6 +11,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -22,6 +23,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class SkierActivity extends Activity implements ActionBar.TabListener {
 
@@ -38,7 +40,9 @@ public class SkierActivity extends Activity implements ActionBar.TabListener {
 	 * The {@link ViewPager} that will host the section contents.
 	 */
 	ViewPager mViewPager;
-
+	
+	public static final int PWD_CHANGE_REQUEST_CODE = 1;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -190,9 +194,15 @@ public class SkierActivity extends Activity implements ActionBar.TabListener {
 			return null;
 		}
 	}
+	
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data){
+		if(requestCode == PWD_CHANGE_REQUEST_CODE){
+			if(resultCode==1){
+				Toast.makeText(this, R.string.pwd_change_successful, Toast.LENGTH_SHORT).show();
+			};
+		}
+	}
 
-	/**
-	 * A placeholder fragment containing a simple view.
-	 */
 
 }

@@ -45,11 +45,12 @@ public class PasswordChangeThread extends AsyncTask<String, Void, Void> {
 	@Override
 	protected Void doInBackground(String... registerInput) {
 		HttpURLConnection connection = null;
-		String token = User.getUserInstance().getToken();
-		String currentPassword = registerInput[0];
-		String newPassword = registerInput[1];
 			
 		try {		
+			String token = User.getUserInstance().getToken();
+			String currentPassword = registerInput[0];
+			String newPassword = registerInput[1];
+			
 			//Generates request
 			currentPassword = SHA1Manager.SHA1(currentPassword);
 			newPassword = SHA1Manager.SHA1(newPassword);
@@ -59,23 +60,22 @@ public class PasswordChangeThread extends AsyncTask<String, Void, Void> {
 			request.put("current_password", currentPassword);
 			request.put("new_password", newPassword);
 			
-			
 			URL url = new URL(PasswordChangeURL);
 			connection = (HttpURLConnection)url.openConnection();
 		    connection.setRequestMethod("POST");
 		    
-		    connection.setUseCaches (false);
+		    connection.setUseCaches(false);
 		    connection.setDoInput(true);
 		    connection.setDoOutput(true);
 		    
 		    //Send request
-		    DataOutputStream wr = new DataOutputStream (connection.getOutputStream ());
+		    DataOutputStream wr = new DataOutputStream (connection.getOutputStream());
 		    wr.writeBytes(request.toString());
-		    wr.flush ();
-		    wr.close ();
+		    wr.flush();
+		    wr.close();
 		        
+		    int responseCode = connection.getResponseCode();
 		    if(connection.getResponseCode()==200){
-			    
 		    	//Get Response
 				InputStream is = connection.getInputStream();
 				BufferedReader reader = new BufferedReader(new InputStreamReader(is));		
@@ -84,6 +84,8 @@ public class PasswordChangeThread extends AsyncTask<String, Void, Void> {
 		    }
 		    
 		    else{
+		    	InputStream es = connection.getErrorStream();
+
 		    	mError = new ApplicationError(100,"Error","Error en la conexión con el Servidor");
 		    };
 		}
@@ -100,12 +102,12 @@ public class PasswordChangeThread extends AsyncTask<String, Void, Void> {
 		catch (JSONException e){
 			mError = new ApplicationError(410, "Error", "JSONException en módulo de cambio de contraseña");
 		}
+		
 		finally{
 			if(connection!=null){
 				connection.disconnect();
 			};
 		};
-		
 		
 		return null;
 	}
@@ -114,6 +116,7 @@ public class PasswordChangeThread extends AsyncTask<String, Void, Void> {
 	protected void onPostExecute(Void unused) {	
 		
 		if(mError==null){
+			mContext.setResult(1);
     		mContext.finish();
     	}
     	//Error handling
@@ -129,7 +132,7 @@ public class PasswordChangeThread extends AsyncTask<String, Void, Void> {
 	    		case 411: 
 		    		Toast.makeText(mContext,R.string.pwd_change_try_again,Toast.LENGTH_SHORT).show();
 		    		break;
-		    	default: //100, 401, 402, 403
+		    	default: //100, 401, 402, 403, 410
 		    		Toast.makeText(mContext,R.string.error_server_unreachable,Toast.LENGTH_SHORT).show();
 		    		break;  			
     		}
