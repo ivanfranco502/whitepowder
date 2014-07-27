@@ -22,7 +22,7 @@ import android.widget.Toast;
 
 public class PasswordChangeThread extends AsyncTask<String, Void, Void> {
 
-	private final String PasswordChangeURL = "";
+	private final String PasswordChangeURL = "http://whitetavros.com/Sandbox/web/internalApi/user/changePass";
 	private ApplicationError mError = null;
 	private PasswordChangeActivity mContext;
 	private ProgressDialog progressDialog;
@@ -53,12 +53,11 @@ public class PasswordChangeThread extends AsyncTask<String, Void, Void> {
 			//Generates request
 			currentPassword = SHA1Manager.SHA1(currentPassword);
 			newPassword = SHA1Manager.SHA1(newPassword);
-			//String params = "token="+URLEncoder.encode(token, "utf-8")+"&current_password="+URLEncoder.encode(currentPassword, "utf-8")+"&new_password="+URLEncoder.encode(newPassword, "utf-8");
 			
 			JSONObject request= new JSONObject();
 			request.put("_token", token);
-			request.put("currentPassword", currentPassword);
-			request.put("newPassword", newPassword);
+			request.put("current_password", currentPassword);
+			request.put("new_password", newPassword);
 			
 			
 			URL url = new URL(PasswordChangeURL);
@@ -127,6 +126,9 @@ public class PasswordChangeThread extends AsyncTask<String, Void, Void> {
 	    		case 409: 
 		    		Toast.makeText(mContext,R.string.pwd_change_invalid_current_password,Toast.LENGTH_SHORT).show();
 		    		break;
+	    		case 411: 
+		    		Toast.makeText(mContext,R.string.pwd_change_try_again,Toast.LENGTH_SHORT).show();
+		    		break;
 		    	default: //100, 401, 402, 403
 		    		Toast.makeText(mContext,R.string.error_server_unreachable,Toast.LENGTH_SHORT).show();
 		    		break;  			
@@ -139,11 +141,7 @@ public class PasswordChangeThread extends AsyncTask<String, Void, Void> {
 
     }
 
-	
-	
-	
-
-	
+		
 	private void parseResponse(String response){
 		try {
 			JSONObject jsonObject = new JSONObject(response);
@@ -152,12 +150,17 @@ public class PasswordChangeThread extends AsyncTask<String, Void, Void> {
 	        int code = jsonObject.getInt("code");
 
 	        if(code!=200){
-	        	/*switch(code){
-	        		case xxx:
+	        	switch(code){
+	        		case 112:
 	        			mError = new ApplicationError(408,"Error","Token inválido en módulo de cambio de contraseña");
-	        		case yyy:
+	        			break;
+	        		case 113:
 	        			mError = new ApplicationError(409,"Error","Contraseña actual inválida en módulo de cambio de contraseña");
-	        	}*/
+	        			break;
+        			case 114:
+	        			mError = new ApplicationError(411,"Error","No se pudo cambiar la contraseña. Vuelva a intentarlo más tarde.");
+	        			break;
+	        	}
 	        };		
 		} 
 		

@@ -30,6 +30,7 @@
     <string name="pwd_change_error_passwords_not_matching">Las contraseñas no coinciden.</string>
     <string name="pwd_change_invalid_token">Error de autenticación. Por favor, cierre sesión y vuelva a intentarlo.</string>
     <string name="pwd_change_invalid_current_password">La contraseña actual es incorrecta.</string>
+    <string name="pwd_change_try_again">No se pudo cambiar la contraseña. Vuelva a intentarlo más tarde.</string>
     <string name="pwd_reset_title">RESETEO DE CONTRASEÑA</string>
     <string name="pwd_reset_instructions">Si has olvidado tu contraseña, ingresa el e-mail con el que te has registrado y recibirás un mail con tu usuario y nueva contraseña.</string>
     <string name="pwd_reset_error_107">El email no se encuentra registrado.</string>
