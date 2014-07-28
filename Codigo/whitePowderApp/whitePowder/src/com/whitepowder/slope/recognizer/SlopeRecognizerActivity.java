@@ -18,12 +18,14 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class SlopeRecognizerActivity extends Activity{
 	
 	private ApplicationError mError = null;
 	private RecognizedSlope mRecognizedSlope;
+	private Spinner spinner;
 	public SlopeSpinnerAdapter adapter;
 	private LocationManager mLocationManager;
 	private LocationListener mLocationListener;
@@ -40,7 +42,7 @@ public class SlopeRecognizerActivity extends Activity{
 		setContentView(R.layout.slope_recognition);
 		
 		//Generates hint option in slope spinner
-		final Spinner spinner = (Spinner) findViewById(R.id.slope_recognition_spinner);
+		spinner = (Spinner) findViewById(R.id.slope_recognition_spinner);
 		adapter = new SlopeSpinnerAdapter(this, generateDummySlope(), R.layout.slope_recognition_spinner_item);
 		spinner.setAdapter(adapter);
 		
@@ -146,32 +148,41 @@ public class SlopeRecognizerActivity extends Activity{
 		btnStart.setOnClickListener(new OnClickListener() {		
 			@Override
 			public void onClick(View v) {
-				
-				if(!mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
-					Toast.makeText(mContext, "Por favor active el GPS para continuar", Toast.LENGTH_SHORT).show();
+		
+				if(((SimplifiedSlope) spinner.getSelectedItem()).getSlope_id()==0){
+					Toast.makeText(mContext, "Por favor seleccione una pista a reconocer", Toast.LENGTH_SHORT).show();
 				}
-				else{
-					activeFlag=true;
-
-					if(!accurateFlag){
-						progressDialog = new ProgressDialog(mContext);
-						progressDialog.setMessage("Calibrando su GPS, por favor espere");
-						progressDialog.setCancelable(true);
-						progressDialog.setIndeterminate(true);
-						progressDialog.show();
+				else{				
+					if(!mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+						Toast.makeText(mContext, "Por favor active el GPS para continuar", Toast.LENGTH_SHORT).show();
+					}
+					else{
+						mContext.setContentView(R.layout.slope_recognition_map);
+						
+						/*
+						activeFlag=true;
+	
+						if(!accurateFlag){
+							progressDialog = new ProgressDialog(mContext);
+							progressDialog.setMessage("Calibrando su GPS, por favor espere");
+							progressDialog.setCancelable(true);
+							progressDialog.setIndeterminate(true);
+							progressDialog.show();
+						};
+						
+						//TODO get id
+						mRecognizedSlope = new RecognizedSlope(1);
+						
+						//TODO change UI				
+						btnStart.setVisibility(RelativeLayout.INVISIBLE);
+						btnStart.setClickable(false);
+						
+						RelativeLayout stop = (RelativeLayout) findViewById(R.id.slope_recognition_stop_button_container);
+						stop.setVisibility(RelativeLayout.VISIBLE);
+						stop.setClickable(true);
+						*/
 					};
-					
-					//TODO get id
-					mRecognizedSlope = new RecognizedSlope(1);
-					
-					//TODO change UI				
-					btnStart.setVisibility(RelativeLayout.INVISIBLE);
-					btnStart.setClickable(false);
-					
-					RelativeLayout stop = (RelativeLayout) findViewById(R.id.slope_recognition_stop_button_container);
-					stop.setVisibility(RelativeLayout.VISIBLE);
-					stop.setClickable(true);
-				};		
+				};
 			}
 		});
 	};
