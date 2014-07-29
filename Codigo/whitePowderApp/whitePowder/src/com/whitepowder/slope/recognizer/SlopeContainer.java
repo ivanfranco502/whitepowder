@@ -1,8 +1,9 @@
 package com.whitepowder.slope.recognizer;
-
 import java.util.ArrayList;
 
-public class SlopeContainer {
+public class SlopeContainer{
+
+	
 	int code;
 	ArrayList<SimplifiedSlope> payload;
 	
