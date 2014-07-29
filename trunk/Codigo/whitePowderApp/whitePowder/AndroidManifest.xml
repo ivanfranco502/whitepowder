@@ -47,6 +47,7 @@
         <activity android:name="com.whitepowder.user.management.PasswordResetActivity"/>
 		<activity android:name="com.whitepowder.user.management.PasswordChangeActivity"/>
 		<activity android:name="com.whitepowder.slope.recognizer.SlopeRecognizerActivity"/>
+        <activity android:name="com.whitepowder.slope.recognizer.MapDisplayActivity"/>
         <activity android:name="com.whitepowder.skier.SkierActivity"/>
     </application>
 

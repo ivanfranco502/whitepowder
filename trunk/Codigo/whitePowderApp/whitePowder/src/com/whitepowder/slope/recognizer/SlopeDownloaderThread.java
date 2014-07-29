@@ -108,6 +108,7 @@ public class SlopeDownloaderThread extends AsyncTask<Void, Void, Void> {
 
 	private void parseResponse(String response){
 		Gson gson = new Gson();
+		//TODO check error!!!
 		mSlopes = gson.fromJson(response,SlopeContainer.class);
 	};
 

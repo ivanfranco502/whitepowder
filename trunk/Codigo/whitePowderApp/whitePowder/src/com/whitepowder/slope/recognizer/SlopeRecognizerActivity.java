@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import com.example.whitepowder.R;
 import com.whitepowder.ApplicationError;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -18,7 +17,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 public class SlopeRecognizerActivity extends Activity{
@@ -66,12 +64,13 @@ public class SlopeRecognizerActivity extends Activity{
 		
 		RelativeLayout btnStart = (RelativeLayout) findViewById(R.id.slope_recognition_start_button_container);
 		RelativeLayout btnStop = (RelativeLayout) findViewById(R.id.slope_recognition_stop_button_container);
-		
+		RelativeLayout btnShow = (RelativeLayout) findViewById(R.id.slope_recognition_show_button_container);
 		
 		//Setup buttons
 		
 		setupStartButton(btnStart);
 		setupStopButton(btnStop);
+		setupShowButton(btnShow);
 		//TODO setup show button
 		
 	};
@@ -157,9 +156,6 @@ public class SlopeRecognizerActivity extends Activity{
 						Toast.makeText(mContext, "Por favor active el GPS para continuar", Toast.LENGTH_SHORT).show();
 					}
 					else{
-						mContext.setContentView(R.layout.slope_recognition_map);
-						
-						/*
 						activeFlag=true;
 	
 						if(!accurateFlag){
@@ -180,7 +176,6 @@ public class SlopeRecognizerActivity extends Activity{
 						RelativeLayout stop = (RelativeLayout) findViewById(R.id.slope_recognition_stop_button_container);
 						stop.setVisibility(RelativeLayout.VISIBLE);
 						stop.setClickable(true);
-						*/
 					};
 				};
 			}
@@ -191,7 +186,25 @@ public class SlopeRecognizerActivity extends Activity{
 		btnStop.setOnClickListener(new OnClickListener() {		
 			@Override
 			public void onClick(View v) {
-					
+
+			};
+		});
+	};
+	
+	private void setupShowButton(final RelativeLayout btnShow){
+		btnShow.setOnClickListener(new OnClickListener() {		
+			@Override
+			public void onClick(View v) {
+				
+				if(mRecognizedSlope==null){
+					//TODO Error
+					Toast.makeText(mContext, "Debes reconocer una pista para poder mostrarla", Toast.LENGTH_SHORT).show();
+				}
+				else{
+					Intent intent = new Intent(mContext,MapDisplayActivity.class);
+					intent.putExtra("slope", mRecognizedSlope);
+					startActivity(intent);
+				};
 			}
 		});
 	};
