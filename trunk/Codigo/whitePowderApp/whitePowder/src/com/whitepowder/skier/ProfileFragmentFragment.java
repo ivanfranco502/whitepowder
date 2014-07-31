@@ -45,7 +45,7 @@ public class ProfileFragmentFragment extends Fragment {
 		butChangePassword.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				mSkierActivity.startActivityForResult("PWD_CHANGE_REQUEST_CODE");
+				mSkierActivity.startActivityForResult(mSkierActivity.PWD_CHANGE_REQUEST_CODE);
 			}
 		});
 		

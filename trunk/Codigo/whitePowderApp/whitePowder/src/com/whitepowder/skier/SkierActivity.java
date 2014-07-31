@@ -44,7 +44,7 @@ public class SkierActivity extends Activity implements ActionBar.TabListener {
 	 */
 	ViewPager mViewPager;
 	
-	public static Map<String, Integer> requestCodeMap; 
+	public final int PWD_CHANGE_REQUEST_CODE = 1;
 		
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -87,8 +87,6 @@ public class SkierActivity extends Activity implements ActionBar.TabListener {
 					.setTabListener(this));
 		}
 		
-		requestCodeMap = new HashMap<String, Integer>();
-		requestCodeMap.put("PWD_CHANGE_REQUEST_CODE", 1);
 		
 	}
 
@@ -202,14 +200,14 @@ public class SkierActivity extends Activity implements ActionBar.TabListener {
 		}
 	}
 	
-	public void startActivityForResult(String requestCode){
+	public void startActivityForResult(int requestCode){
 		Intent intent = new Intent(this, PasswordChangeActivity.class);
-		startActivityForResult(intent, requestCodeMap.get(requestCode));
+		startActivityForResult(intent, requestCode);
 	}
 	
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data){
-		if(requestCode == requestCodeMap.get("PWD_CHANGE_REQUEST_CODE")){
+		if(requestCode == PWD_CHANGE_REQUEST_CODE){
 			if(resultCode==1){
 				Toast.makeText(this, R.string.pwd_change_successful, Toast.LENGTH_SHORT).show();
 			};
