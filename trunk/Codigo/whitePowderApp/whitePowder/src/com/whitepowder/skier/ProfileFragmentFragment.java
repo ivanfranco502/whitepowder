@@ -20,13 +20,13 @@ import com.whitepowder.Logout;
 import com.whitepowder.user.management.PasswordChangeActivity;
 
 public class ProfileFragmentFragment extends Fragment {
-	Activity mSkierActivity;
+	SkierActivity mSkierActivity;
 	private static final int PWD_CHANGE_REQUEST_CODE = 1;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		mSkierActivity = getActivity();
+		mSkierActivity = (SkierActivity) getActivity();
 		View rootView = inflater.inflate(R.layout.skier_fragment_profile, container,
 				false);
 		RelativeLayout butStats = (RelativeLayout) rootView.findViewById(R.id.profile_view_stats_container);
@@ -45,8 +45,7 @@ public class ProfileFragmentFragment extends Fragment {
 		butChangePassword.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(getActivity(), PasswordChangeActivity.class);
-				mSkierActivity.startActivityForResult(intent, PWD_CHANGE_REQUEST_CODE);
+				mSkierActivity.startActivityForResult("PWD_CHANGE_REQUEST_CODE");
 			}
 		});
 		

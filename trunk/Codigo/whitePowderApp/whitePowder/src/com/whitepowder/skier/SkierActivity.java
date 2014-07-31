@@ -1,8 +1,11 @@
 package com.whitepowder.skier;
 
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import com.example.whitepowder.R;
+import com.whitepowder.user.management.PasswordChangeActivity;
 
 import android.app.ActionBar;
 import android.app.Activity;
@@ -41,8 +44,8 @@ public class SkierActivity extends Activity implements ActionBar.TabListener {
 	 */
 	ViewPager mViewPager;
 	
-	public static final int PWD_CHANGE_REQUEST_CODE = 1;
-	
+	public static Map<String, Integer> requestCodeMap; 
+		
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -83,6 +86,10 @@ public class SkierActivity extends Activity implements ActionBar.TabListener {
 					.setText(mSectionsPagerAdapter.getPageTitle(i))
 					.setTabListener(this));
 		}
+		
+		requestCodeMap = new HashMap<String, Integer>();
+		requestCodeMap.put("PWD_CHANGE_REQUEST_CODE", 1);
+		
 	}
 
 	@Override
@@ -195,9 +202,14 @@ public class SkierActivity extends Activity implements ActionBar.TabListener {
 		}
 	}
 	
+	public void startActivityForResult(String requestCode){
+		Intent intent = new Intent(this, PasswordChangeActivity.class);
+		startActivityForResult(intent, requestCodeMap.get(requestCode));
+	}
+	
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data){
-		if(requestCode == PWD_CHANGE_REQUEST_CODE){
+		if(requestCode == requestCodeMap.get("PWD_CHANGE_REQUEST_CODE")){
 			if(resultCode==1){
 				Toast.makeText(this, R.string.pwd_change_successful, Toast.LENGTH_SHORT).show();
 			};
