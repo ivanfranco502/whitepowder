@@ -1,4 +1,4 @@
-package com.whitepowder.user.management;
+package com.whitepowder.skier;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -9,37 +9,42 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.NoSuchAlgorithmException;
+
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import com.example.whitepowder.R;
-import com.whitepowder.ApplicationError;
-import com.whitepowder.Logout;
-import com.whitepowder.SHA1Manager;
 
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
-public class PasswordChangeThread extends AsyncTask<String, Void, Void> {
+import com.example.whitepowder.R;
+import com.google.gson.Gson;
+import com.whitepowder.ApplicationError;
+import com.whitepowder.Logout;
+import com.whitepowder.SHA1Manager;
+import com.whitepowder.user.management.PasswordChangeActivity;
+import com.whitepowder.user.management.User;
 
-	private final String PasswordChangeURL = "http://whitetavros.com/Sandbox/web/internalApi/user/changePass";
+public class BasicInformationThread extends AsyncTask<String, Void, Void> {
+
+	private final String BasicInformationURL = "http://whitetavros.com/Sandbox/web/internalApi/user/info/basic";
 	private ApplicationError mError = null;
-	private PasswordChangeActivity mContext;
+	private SkierActivity mContext;
 	private ProgressDialog progressDialog;
+	private BasicInformationResponse basicInformationResponse;
+	private BasicInformation basicInformation;
 	
-	public PasswordChangeThread(PasswordChangeActivity ctxt) {
-		
-		mContext = ctxt;	
+	public BasicInformationThread(SkierActivity context) {
+		mContext = context;	
 	}
 	
 	@Override
 	protected void onPreExecute(){
-		progressDialog = new ProgressDialog(mContext);
+		/*progressDialog = new ProgressDialog(mContext);
 		progressDialog.setMessage(mContext.getString(R.string.process_dialog_pwd_change));
 		progressDialog.setCancelable(false);
 		progressDialog.setIndeterminate(true);
-		progressDialog.show();
+		progressDialog.show();*/
 	}
 	
 	
@@ -49,19 +54,13 @@ public class PasswordChangeThread extends AsyncTask<String, Void, Void> {
 			
 		try {		
 			String token = User.getUserInstance().getToken();
-			String currentPassword = registerInput[0];
-			String newPassword = registerInput[1];
 			
 			//Generates request
-			currentPassword = SHA1Manager.SHA1(currentPassword);
-			newPassword = SHA1Manager.SHA1(newPassword);
-			
+						
 			JSONObject request= new JSONObject();
 			request.put("_token", token);
-			request.put("current_password", currentPassword);
-			request.put("new_password", newPassword);
 			
-			URL url = new URL(PasswordChangeURL);
+			URL url = new URL(BasicInformationURL);
 			connection = (HttpURLConnection)url.openConnection();
 		    connection.setRequestMethod("POST");
 		    
@@ -89,16 +88,13 @@ public class PasswordChangeThread extends AsyncTask<String, Void, Void> {
 		}
 	    
 		catch (MalformedURLException e) {
-			mError = new ApplicationError(401,"Error","MalformedURLException en módulo de cambio de contraseña");
+			mError = new ApplicationError(501,"Error","MalformedURLException en descarga de información básica");
 		}
 		catch (IOException e) {
-			mError = new ApplicationError(402,"Error","IOException en módulo de cambio de contraseña");
-		}
-		catch (NoSuchAlgorithmException e) {
-			mError = new ApplicationError(403,"Error","NoSuchAlgorithmException en módulo de cambio de contraseña");
+			mError = new ApplicationError(502,"Error","IOException en descarga de información básica");
 		}
 		catch (JSONException e){
-			mError = new ApplicationError(410, "Error", "JSONException en módulo de cambio de contraseña");
+			mError = new ApplicationError(503, "Error", "JSONException en descarga de información básica");
 		}
 		
 		finally{
@@ -114,21 +110,16 @@ public class PasswordChangeThread extends AsyncTask<String, Void, Void> {
 	protected void onPostExecute(Void unused) {	
 		
 		if(mError==null){
-			mContext.setResult(1);
-    		mContext.finish();
+			//TODO llenar UI con la info del centro
     	}
     	//Error handling
     	else{
     		switch(mError.getErrorCode()){
-    		
-	    		case 408: 
+    			case 504:
+    				//TODO mandar a la UI que no hay info disponible
+    				break;
+	    		case 508: 
 	    			Logout.logout(mContext, true);
-		    		break;
-	    		case 409: 
-		    		Toast.makeText(mContext,R.string.pwd_change_invalid_current_password,Toast.LENGTH_SHORT).show();
-		    		break;
-	    		case 411: 
-		    		Toast.makeText(mContext,R.string.pwd_change_try_again,Toast.LENGTH_SHORT).show();
 		    		break;
 		    	default: //100, 401, 402, 403, 410
 		    		Toast.makeText(mContext,R.string.error_server_unreachable,Toast.LENGTH_SHORT).show();
@@ -144,30 +135,23 @@ public class PasswordChangeThread extends AsyncTask<String, Void, Void> {
 
 		
 	private void parseResponse(String response){
-		try {
-			JSONObject jsonObject = new JSONObject(response);
-			
-			//Gets code from json response
-	        int code = jsonObject.getInt("code");
-
-	        if(code!=200){
-	        	switch(code){
-	        		case 110:
-	        			mError = new ApplicationError(408,"Error","Token inválido en módulo de cambio de contraseña");
-	        			break;
-	        		case 113:
-	        			mError = new ApplicationError(409,"Error","Contraseña actual inválida en módulo de cambio de contraseña");
-	        			break;
-        			case 114:
-	        			mError = new ApplicationError(411,"Error","No se pudo cambiar la contraseña. Vuelva a intentarlo más tarde.");
-	        			break;
-	        	}
-	        };		
-		} 
-		
-		catch (JSONException e) {
-			mError = new ApplicationError(407,"Error","Respuesta inesperada en response en módulo de cambio de contraseña");
-		};
+	
+		Gson gson = new Gson();
+		basicInformationResponse = gson.fromJson(response, BasicInformationResponse.class);
+		if(basicInformationResponse.getCode() != 200){
+        	switch(basicInformationResponse.getCode()){
+        		case 110:
+        			mError = new ApplicationError(508,"Error","Token inválido en descarga de información básica");
+        			break;
+        		case 116:
+        			mError = new ApplicationError(504, "Error", "No hay información básica en la base de datos");
+        			break;
+        	}
+        }
+        else{
+        	basicInformation = basicInformationResponse.getBasicInformation();	
+        }
 	}
 
 }
+

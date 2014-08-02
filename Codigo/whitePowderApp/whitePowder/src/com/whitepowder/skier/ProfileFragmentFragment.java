@@ -1,10 +1,8 @@
 package com.whitepowder.skier;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,15 +11,12 @@ import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.RelativeLayout;
 import android.widget.Switch;
-import android.widget.Toast;
 
 import com.example.whitepowder.R;
 import com.whitepowder.Logout;
-import com.whitepowder.user.management.PasswordChangeActivity;
 
 public class ProfileFragmentFragment extends Fragment {
 	SkierActivity mSkierActivity;
-	private static final int PWD_CHANGE_REQUEST_CODE = 1;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -34,6 +29,7 @@ public class ProfileFragmentFragment extends Fragment {
 		Switch switchSkierMode = (Switch) rootView.findViewById(R.id.profile_skier_mode_switch);
 		RelativeLayout butLogout = (RelativeLayout) rootView.findViewById(R.id.profile_logout_container);
 		
+		//ESTADÍSTICAS
 		butStats.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -42,6 +38,7 @@ public class ProfileFragmentFragment extends Fragment {
 			}
 		});
 		
+		//CAMBIAR CONTRASEÑA
 		butChangePassword.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -49,6 +46,7 @@ public class ProfileFragmentFragment extends Fragment {
 			}
 		});
 		
+		//MODO ESQUIADOR
 		switchSkierMode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 		    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 		        if (isChecked) {
@@ -59,6 +57,7 @@ public class ProfileFragmentFragment extends Fragment {
 		    }
 		});
 		
+		//CERRAR SESIÓN
 		butLogout.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -68,7 +67,7 @@ public class ProfileFragmentFragment extends Fragment {
 		        .setNegativeButton(getString(R.string.alert_no), null)
 		        .setPositiveButton(getString(R.string.alert_yes), new DialogInterface.OnClickListener() {
 		            public void onClick(DialogInterface arg0, int arg1) {
-		            	Logout.logout(mSkierActivity);
+		            	Logout.logout(mSkierActivity, false);
 		            }
 		        }).create().show();
 			}
