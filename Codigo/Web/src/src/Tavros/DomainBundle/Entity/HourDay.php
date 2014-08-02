@@ -40,6 +40,9 @@ class HourDay
     private $hodaGeneralInformation;
 
 
+    public function __toString() {
+        return $this->hodaDay . " - " . $this->hodaStartHour . " - " . $this->hodaEndHour;
+    }
     /**
      * Get hodaId
      *
