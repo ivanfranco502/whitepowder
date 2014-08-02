@@ -28,7 +28,7 @@
     <string name="pwd_change_hint_repeat_new_password">Repetir nueva contraseña</string>
     <string name="pwd_change_error_incomplete_data">Por favor, para poder cambiar la contraseña, completá todos los campos.</string>
     <string name="pwd_change_error_passwords_not_matching">Las contraseñas no coinciden.</string>
-    <string name="pwd_change_invalid_token">Error de autenticación. Por favor, cierre sesión y vuelva a intentarlo.</string>
+    <string name="error_invalid_token">Error de autenticación. Por favor, vuelva a iniciar sesión.</string>
     <string name="pwd_change_invalid_current_password">La contraseña actual es incorrecta.</string>
     <string name="pwd_change_try_again">No se pudo cambiar la contraseña. Vuelva a intentarlo más tarde.</string>
     <string name="pwd_change_successful">La contraseña ha sido cambiada exitosamente.</string>
