@@ -15,34 +15,40 @@ class GeneralInformationAdmin extends Admin {
     // Fields to be shown on create/edit forms
     protected function configureFormFields(FormMapper $formMapper) {
         $formMapper
-                ->add('geinId')
-                ->add('geinAmenities')
-                ->add('geinMaximumHeight')
-                ->add('geinMinimumHeight')
-                ->add('geinSeasonSince')
-                ->add('geinSeasonTil');
+                ->add('geinCenterName', 'text', array('label' => 'Center Name'))
+                ->add('geinAmenities', 'text', array('label' => 'Amenities'))
+                ->add('geinMaximumHeight', 'text', array('label' => 'Max. Height'))
+                ->add('geinMinimumHeight', 'text', array('label' => 'Min. Height'))
+                ->add('geinSeasonSince', 'text', array('label' => 'Season since'))
+                ->add('geinSeasonTill', 'text', array('label' => 'Season till'))
+                ->add('geinLocation', 'text', array('label' => 'Location'))
+                ->add('geinDetails', 'text', array('label' => 'Details'));
     }
 
     // Fields to be shown on filter forms
     protected function configureDatagridFilters(DatagridMapper $datagridMapper) {
         $datagridMapper
-                ->add('geinId')
+                ->add('geinCenterName')
                 ->add('geinAmenities')
                 ->add('geinMaximumHeight')
                 ->add('geinMinimumHeight')
                 ->add('geinSeasonSince')
-                ->add('geinSeasonTil');
+                ->add('geinSeasonTill')
+                ->add('geinLocation')
+                ->add('geinDetails');
     }
 
     // Fields to be shown on lists
     protected function configureListFields(ListMapper $listMapper) {
         $listMapper
-                ->add('geinId')
+                ->add('geinCenterName')
                 ->add('geinAmenities')
                 ->add('geinMaximumHeight')
                 ->add('geinMinimumHeight')
                 ->add('geinSeasonSince')
-                ->add('geinSeasonTil');
+                ->add('geinSeasonTill')
+                ->add('geinLocation')
+                ->add('geinDetails');
     }
 
 }

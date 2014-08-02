@@ -12,6 +12,13 @@ Tavros\DomainBundle\Entity\GeneralInformation:
             generator:
                 strategy: IDENTITY
     fields:
+        geinCenterName:
+            type: string
+            nullable: true
+            length: 50
+            fixed: false
+            comment: ''
+            column: gein_center_name
         geinAmenities:
             type: text
             nullable: true
@@ -40,11 +47,25 @@ Tavros\DomainBundle\Entity\GeneralInformation:
             fixed: false
             comment: ''
             column: gein_season_since
-        geinSeasonTil:
+        geinSeasonTill:
             type: string
             nullable: true
             length: 10
             fixed: false
             comment: ''
-            column: gein_season_til
+            column: gein_season_till
+        geinLocation:
+            type: text
+            nullable: true
+            length: null
+            fixed: false
+            comment: ''
+            column: gein_location
+        geinDetails:
+            type: text
+            nullable: true
+            length: null
+            fixed: false
+            comment: ''
+            column: gein_details
     lifecycleCallbacks: {  }
