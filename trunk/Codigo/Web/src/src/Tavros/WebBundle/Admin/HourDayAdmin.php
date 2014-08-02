@@ -15,17 +15,15 @@ class HourDayAdmin extends Admin {
     // Fields to be shown on create/edit forms
     protected function configureFormFields(FormMapper $formMapper) {
         $formMapper
-                ->add('hodaId')
-                ->add('hodaDay')
-                ->add('hodaStartHour')
-                ->add('hodaEndHour')
-                ->add('hodaClose');
+                ->add('hodaDay', 'text', array('label' => 'Day'))
+                ->add('hodaStartHour', 'text', array('label' => 'Start Hour'))
+                ->add('hodaEndHour', 'text', array('label' => 'End Hour'))
+                ->add('hodaClose', null, array( 'label' => 'Close'));
     }
 
     // Fields to be shown on filter forms
     protected function configureDatagridFilters(DatagridMapper $datagridMapper) {
         $datagridMapper
-                ->add('hodaId')
                 ->add('hodaDay')
                 ->add('hodaStartHour')
                 ->add('hodaEndHour')
@@ -35,11 +33,10 @@ class HourDayAdmin extends Admin {
     // Fields to be shown on lists
     protected function configureListFields(ListMapper $listMapper) {
         $listMapper
-                ->add('hodaId')
-                ->add('hodaDay')
-                ->add('hodaStartHour')
-                ->add('hodaEndHour')
-                ->add('hodaClose');
+                ->add('hodaDay', null, array('name' => 'Day'))
+                ->add('hodaStartHour', null, array('name' => 'Start at'))
+                ->add('hodaEndHour', null, array('name' => 'End at'))
+                ->add('hodaClose', null, array('name' => 'Close'));
     }
 
 }

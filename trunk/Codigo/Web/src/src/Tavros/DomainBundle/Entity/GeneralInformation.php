@@ -17,6 +17,11 @@ class GeneralInformation
     /**
      * @var string
      */
+    private $geinCenterName;
+
+    /**
+     * @var string
+     */
     private $geinAmenities;
 
     /**
@@ -37,7 +42,17 @@ class GeneralInformation
     /**
      * @var string
      */
-    private $geinSeasonTil;
+    private $geinSeasonTill;
+
+    /**
+     * @var string
+     */
+    private $geinLocation;
+
+    /**
+     * @var string
+     */
+    private $geinDetails;
 
 
     /**
@@ -48,6 +63,29 @@ class GeneralInformation
     public function getGeinId()
     {
         return $this->geinId;
+    }
+
+    /**
+     * Set geinCenterName
+     *
+     * @param string $geinCenterName
+     * @return GeneralInformation
+     */
+    public function setGeinCenterName($geinCenterName)
+    {
+        $this->geinCenterName = $geinCenterName;
+
+        return $this;
+    }
+
+    /**
+     * Get geinCenterName
+     *
+     * @return string 
+     */
+    public function getGeinCenterName()
+    {
+        return $this->geinCenterName;
     }
 
     /**
@@ -143,25 +181,71 @@ class GeneralInformation
     }
 
     /**
-     * Set geinSeasonTil
+     * Set geinSeasonTill
      *
-     * @param string $geinSeasonTil
+     * @param string $geinSeasonTill
      * @return GeneralInformation
      */
-    public function setGeinSeasonTil($geinSeasonTil)
+    public function setGeinSeasonTill($geinSeasonTill)
     {
-        $this->geinSeasonTil = $geinSeasonTil;
+        $this->geinSeasonTill = $geinSeasonTill;
 
         return $this;
     }
 
     /**
-     * Get geinSeasonTil
+     * Get geinSeasonTill
      *
      * @return string 
      */
-    public function getGeinSeasonTil()
+    public function getGeinSeasonTill()
     {
-        return $this->geinSeasonTil;
+        return $this->geinSeasonTill;
+    }
+
+    /**
+     * Set geinLocation
+     *
+     * @param string $geinLocation
+     * @return GeneralInformation
+     */
+    public function setGeinLocation($geinLocation)
+    {
+        $this->geinLocation = $geinLocation;
+
+        return $this;
+    }
+
+    /**
+     * Get geinLocation
+     *
+     * @return string 
+     */
+    public function getGeinLocation()
+    {
+        return $this->geinLocation;
+    }
+
+    /**
+     * Set geinDetails
+     *
+     * @param string $geinDetails
+     * @return GeneralInformation
+     */
+    public function setGeinDetails($geinDetails)
+    {
+        $this->geinDetails = $geinDetails;
+
+        return $this;
+    }
+
+    /**
+     * Get geinDetails
+     *
+     * @return string 
+     */
+    public function getGeinDetails()
+    {
+        return $this->geinDetails;
     }
 }
