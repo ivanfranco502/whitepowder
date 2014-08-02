@@ -31,6 +31,7 @@ public class SlopeRecognizerActivity extends Activity{
 	private boolean accurateFlag = false;
 	private ProgressDialog progressDialog;
 	private SlopeRecognizerActivity mContext = this; 
+	private final int REQUEST_SHOW_MAP = 2;
 	
 	private int ACCURATE_RATE =20;
 	
@@ -64,14 +65,11 @@ public class SlopeRecognizerActivity extends Activity{
 		
 		RelativeLayout btnStart = (RelativeLayout) findViewById(R.id.slope_recognition_start_button_container);
 		RelativeLayout btnStop = (RelativeLayout) findViewById(R.id.slope_recognition_stop_button_container);
-		RelativeLayout btnShow = (RelativeLayout) findViewById(R.id.slope_recognition_show_button_container);
 		
 		//Setup buttons
 		
-		setupStartButton(btnStart);
-		setupStopButton(btnStop);
-		setupShowButton(btnShow);
-		//TODO setup show button
+		setupStartButton(btnStart,btnStop);
+		setupStopButton(btnStop,btnStart);
 		
 	};
 			
@@ -115,25 +113,27 @@ public class SlopeRecognizerActivity extends Activity{
 			public void onProviderDisabled(String arg0) {
 				mError = new ApplicationError(604, "Warning", "GPS provider disenabled in slope recognition module");
 				if(activeFlag){
-					activeFlag=false;
+					
 					Toast.makeText(mContext, "Se ha desactivado el GPS", Toast.LENGTH_SHORT).show();
-					mRecognizedSlope = null;
+				
+					activeFlag=false;
+					mRecognizedSlope.clearAll();
+					mRecognizedSlope = null;					
 					
-					RelativeLayout stop = (RelativeLayout) findViewById(R.id.slope_recognition_stop_button_container);
-					stop.setVisibility(RelativeLayout.INVISIBLE);
-					stop.setClickable(false);
-					
-					RelativeLayout btnStart = (RelativeLayout) findViewById(R.id.slope_recognition_start_button_container);
-					btnStart.setVisibility(RelativeLayout.VISIBLE);
+					//Changes UI
+					RelativeLayout btnStart = (RelativeLayout) mContext.findViewById(R.id.slope_recognition_start_button_container); 
 					btnStart.setClickable(true);
+					btnStart.setVisibility(RelativeLayout.VISIBLE);
 					
-					//TODO vuelta a 0 de la UI.
+					RelativeLayout btnStop = (RelativeLayout)mContext.findViewById(R.id.slope_recognition_stop_button_container);
+					btnStop.setClickable(false);
+					btnStop.setVisibility(RelativeLayout.INVISIBLE);
 				}
 			}
 
 			@Override
 			public void onProviderEnabled(String arg0) {
-				//TODO handle error
+				//TODO handle errors
 			}
 
 			@Override
@@ -143,11 +143,11 @@ public class SlopeRecognizerActivity extends Activity{
 		};
 	}
 	
-	private void setupStartButton(final RelativeLayout btnStart){
+	private void setupStartButton(final RelativeLayout btnStart, final RelativeLayout btnStop){
 		btnStart.setOnClickListener(new OnClickListener() {		
 			@Override
 			public void onClick(View v) {
-		
+				
 				if(((SimplifiedSlope) spinner.getSelectedItem()).getSlope_id()==0){
 					Toast.makeText(mContext, "Por favor seleccione una pista a reconocer", Toast.LENGTH_SHORT).show();
 				}
@@ -157,11 +157,19 @@ public class SlopeRecognizerActivity extends Activity{
 					}
 					else{
 						activeFlag=true;
+						
+						//Changes UI
+						btnStart.setClickable(false);
+						btnStart.setVisibility(RelativeLayout.INVISIBLE);
+						
+						btnStop.setClickable(true);
+						btnStop.setVisibility(RelativeLayout.VISIBLE);
+						
 	
 						if(!accurateFlag){
 							progressDialog = new ProgressDialog(mContext);
 							progressDialog.setMessage("Calibrando su GPS, por favor espere");
-							progressDialog.setCancelable(true);
+							progressDialog.setCancelable(false);
 							progressDialog.setIndeterminate(true);
 							progressDialog.show();
 						};
@@ -169,45 +177,46 @@ public class SlopeRecognizerActivity extends Activity{
 						//TODO get id
 						mRecognizedSlope = new RecognizedSlope(1);
 						
-						//TODO change UI				
-						btnStart.setVisibility(RelativeLayout.INVISIBLE);
-						btnStart.setClickable(false);
-						
-						RelativeLayout stop = (RelativeLayout) findViewById(R.id.slope_recognition_stop_button_container);
-						stop.setVisibility(RelativeLayout.VISIBLE);
-						stop.setClickable(true);
 					};
 				};
-			}
-		});
-	};
-	
-	private void setupStopButton(final RelativeLayout btnStop){
-		btnStop.setOnClickListener(new OnClickListener() {		
-			@Override
-			public void onClick(View v) {
-
 			};
 		});
 	};
 	
-	private void setupShowButton(final RelativeLayout btnShow){
-		btnShow.setOnClickListener(new OnClickListener() {		
+	private void setupStopButton(final RelativeLayout btnStop, final RelativeLayout btnStart){
+		btnStop.setOnClickListener(new OnClickListener() {		
 			@Override
 			public void onClick(View v) {
-				
-				if(mRecognizedSlope==null){
-					//TODO Error
-					Toast.makeText(mContext, "Debes reconocer una pista para poder mostrarla", Toast.LENGTH_SHORT).show();
-				}
-				else{
-					Intent intent = new Intent(mContext,MapDisplayActivity.class);
-					intent.putExtra("slope", mRecognizedSlope);
-					startActivity(intent);
-				};
-			}
+				Intent intent = new Intent(mContext,MapDisplayActivity.class);
+				intent.putExtra("slope", mRecognizedSlope);
+				startActivityForResult(intent, REQUEST_SHOW_MAP);
+			
+			};
 		});
 	};
+
+	public void onActivityResult(int requestCode, int resultCode, Intent data){
+		
+		if(requestCode == REQUEST_SHOW_MAP){
+			if(resultCode==RESULT_CANCELED){
+				RelativeLayout btnStart = (RelativeLayout)mContext.findViewById(R.id.slope_recognition_start_button_container);
+				btnStart.setClickable(true);
+				btnStart.setVisibility(RelativeLayout.VISIBLE);
+				
+				RelativeLayout btnStop = (RelativeLayout)mContext.findViewById(R.id.slope_recognition_stop_button_container);
+				btnStop.setClickable(false);
+				btnStop.setVisibility(RelativeLayout.INVISIBLE);
+				
+				mRecognizedSlope.clearAll();
+				mRecognizedSlope = null;
+				activeFlag = false;
+			}
+			else if(resultCode==RESULT_OK){
+				//TODO transmit
+			};
+		}
+
+	}
 
 	public SlopeSpinnerAdapter getAdapter() {
 		return adapter;
