@@ -22,7 +22,9 @@ class GeneralInformationAdmin extends Admin {
                 ->add('geinSeasonSince', 'text', array('label' => 'Season since'))
                 ->add('geinSeasonTill', 'text', array('label' => 'Season till'))
                 ->add('geinLocation', 'text', array('label' => 'Location'))
-                ->add('geinDetails', 'text', array('label' => 'Details'));
+                ->add('geinDetails', 'text', array('label' => 'Details'))
+                ->add('Schedules', null, array('label' => 'Schedules'))
+                ->add('Slopes', null, array('label' => 'Slopes'));
     }
 
     // Fields to be shown on filter forms

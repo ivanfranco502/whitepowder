@@ -32,6 +32,10 @@ Tavros\DomainBundle\Entity\Slope:
             unsigned: false
             comment: ''
             column: slop_length
+    oneToMany:
+        Coordinates:
+            targetEntity: SlopeCoordinate
+            mappedBy: Slope
     manyToOne:
         slopGeneralInformation:
             targetEntity: GeneralInformation

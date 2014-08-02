@@ -248,4 +248,88 @@ class GeneralInformation
     {
         return $this->geinDetails;
     }
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $Schedules;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $Slopes;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->Schedules = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->Slopes = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add Schedules
+     *
+     * @param \Tavros\DomainBundle\Entity\HourDay $schedules
+     * @return GeneralInformation
+     */
+    public function addSchedule(\Tavros\DomainBundle\Entity\HourDay $schedules)
+    {
+        $this->Schedules[] = $schedules;
+
+        return $this;
+    }
+
+    /**
+     * Remove Schedules
+     *
+     * @param \Tavros\DomainBundle\Entity\HourDay $schedules
+     */
+    public function removeSchedule(\Tavros\DomainBundle\Entity\HourDay $schedules)
+    {
+        $this->Schedules->removeElement($schedules);
+    }
+
+    /**
+     * Get Schedules
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getSchedules()
+    {
+        return $this->Schedules;
+    }
+
+    /**
+     * Add Slopes
+     *
+     * @param \Tavros\DomainBundle\Entity\Slope $slopes
+     * @return GeneralInformation
+     */
+    public function addSlope(\Tavros\DomainBundle\Entity\Slope $slopes)
+    {
+        $this->Slopes[] = $slopes;
+
+        return $this;
+    }
+
+    /**
+     * Remove Slopes
+     *
+     * @param \Tavros\DomainBundle\Entity\Slope $slopes
+     */
+    public function removeSlope(\Tavros\DomainBundle\Entity\Slope $slopes)
+    {
+        $this->Slopes->removeElement($slopes);
+    }
+
+    /**
+     * Get Slopes
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getSlopes()
+    {
+        return $this->Slopes;
+    }
 }

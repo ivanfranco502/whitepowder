@@ -35,6 +35,9 @@ class Slope
     private $slopDificulty;
 
 
+    public function __toString() {
+        return $this->slopDescription;
+    }
     /**
      * Get slopId
      *
@@ -135,5 +138,50 @@ class Slope
     public function getSlopDificulty()
     {
         return $this->slopDificulty;
+    }
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $Coordinates;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->Coordinates = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add Coordinates
+     *
+     * @param \Tavros\DomainBundle\Entity\SlopeCoordinate $coordinates
+     * @return Slope
+     */
+    public function addCoordinate(\Tavros\DomainBundle\Entity\SlopeCoordinate $coordinates)
+    {
+        $this->Coordinates[] = $coordinates;
+
+        return $this;
+    }
+
+    /**
+     * Remove Coordinates
+     *
+     * @param \Tavros\DomainBundle\Entity\SlopeCoordinate $coordinates
+     */
+    public function removeCoordinate(\Tavros\DomainBundle\Entity\SlopeCoordinate $coordinates)
+    {
+        $this->Coordinates->removeElement($coordinates);
+    }
+
+    /**
+     * Get Coordinates
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getCoordinates()
+    {
+        return $this->Coordinates;
     }
 }
