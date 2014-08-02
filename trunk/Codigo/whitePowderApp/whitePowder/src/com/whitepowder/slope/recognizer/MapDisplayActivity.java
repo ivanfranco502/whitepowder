@@ -5,23 +5,36 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.PolylineOptions;
-
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.RelativeLayout;
 
 public class MapDisplayActivity extends Activity {
 
-	MapDisplayActivity mContexy = this;
+	MapDisplayActivity mContext = this;
 	RecognizedSlope mSlope = null;
 	GoogleMap mMap = null;
+	RelativeLayout btnOk = null;
+	RelativeLayout btnCancel = null;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.slope_recognition_map);
+		this.setResult(10);
+		
+		btnOk = (RelativeLayout)findViewById(R.id.slope_recognition_map_ok);
+		btnCancel = (RelativeLayout)findViewById(R.id.slope_recognition_map_cancel);
 		
 		mSlope = (RecognizedSlope)getIntent().getSerializableExtra("slope");
+		
+		setupCancelButton(btnCancel);
+		setupOkButton(btnOk);
 		
 		mMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.slope_recognition_map)).getMap();
 		
@@ -34,6 +47,42 @@ public class MapDisplayActivity extends Activity {
 		 }
 		 
 		 mMap.addPolyline(plo);
-
 	}
+	
+	private void setupCancelButton(final RelativeLayout btnCancel){
+		btnOk.setOnClickListener(new OnClickListener() {		
+			@Override
+			public void onClick(View v) {
+				
+				//TODO deshadcode text
+				
+				new AlertDialog.Builder(mContext)
+		        .setTitle("Salir")
+		        .setMessage("¿Esta seguro que desea salir?")
+		        .setNegativeButton(getString(R.string.alert_no), null)
+		        .setPositiveButton(getString(R.string.alert_yes), new DialogInterface.OnClickListener() {
+		        	
+		            public void onClick(DialogInterface arg0, int arg1) {
+		            	
+		            	setResult(RESULT_CANCELED);
+		            	mContext.finish();
+
+		            }
+		        }).create().show();
+				
+				
+			}
+		});
+	}
+	
+	private void setupOkButton(final RelativeLayout btnOk){
+		btnOk.setOnClickListener(new OnClickListener() {		
+			@Override
+			public void onClick(View v) {
+				setResult(RESULT_OK);
+				finish();
+			}
+		});
+	};
 }
+	
