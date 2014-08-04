@@ -71,8 +71,8 @@ Tavros\DomainBundle\Entity\GeneralInformation:
     oneToMany:
       Schedules:
         targetEntity: HourDay
-        mappedBy: GeneralInformation
+        mappedBy: hodaGeneralInformation
       Slopes:
         targetEntity: Slope
-        mappedBy: GeneralInformation
+        mappedBy: slopGeneralInformation
     lifecycleCallbacks: {  }
