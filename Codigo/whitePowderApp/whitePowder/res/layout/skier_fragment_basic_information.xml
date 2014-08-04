@@ -1,16 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent" 
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin" >
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:orientation="vertical" >
     
+    <RelativeLayout 
+        android:id="@+id/ski_center_details_container"
+	    android:layout_width="fill_parent"
+	    android:layout_height="25dp"
+	    >
+	    <TextView
+	        android:id="@+id/ski_center_details"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="@string/profile_view_stats"
+	        android:layout_centerVertical="true"
+	        />
+    </RelativeLayout>
     
-    <TextView
-        android:id="@+id/basic_information_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+     <View
+	    android:layout_width="fill_parent"
+	    android:layout_height="1dp"
+	    android:background="#6DCAEC"
+	    android:layout_marginBottom="2dp"
+	    android:layout_marginTop="2dp"/>
+    
+    <RelativeLayout 
+        android:id="@+id/security_norms_container"
+	    android:layout_width="fill_parent"
+	    android:layout_height="25dp"
+	    >
+	    <TextView
+	        android:id="@+id/security_norms"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="@string/profile_view_stats"
+	        android:layout_centerVertical="true"
+	        />
+    </RelativeLayout>
+    
+    <View
+	    android:layout_width="fill_parent"
+	    android:layout_height="1dp"
+	    android:background="#6DCAEC"
+	    android:layout_marginBottom="2dp"
+	    android:layout_marginTop="2dp"/>
+    
+	<RelativeLayout 
+        android:id="@+id/forecast_container"
+	    android:layout_width="fill_parent"
+	    android:layout_height="25dp"
+	    >
+	    <TextView
+	        android:id="@+id/forecast"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="@string/profile_view_stats"
+	        android:layout_centerVertical="true"
+	        />
+    </RelativeLayout>
+    
 
-</RelativeLayout>
+</LinearLayout>

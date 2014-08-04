@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class BasicInformationFragment extends Fragment{
@@ -15,9 +16,10 @@ public class BasicInformationFragment extends Fragment{
 			Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.skier_fragment_basic_information, container,
 				false);
-		TextView textView = (TextView) rootView
-				.findViewById(R.id.basic_information_label);
-		textView.setText("Acá va la información básica del centro de esquí.");
+		
+		TextView ski_center_details = (TextView) rootView.findViewById(R.id.ski_center_details);
+		
+		
 		return rootView;
 	}
 }
