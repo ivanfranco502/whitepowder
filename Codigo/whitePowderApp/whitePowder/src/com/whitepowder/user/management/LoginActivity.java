@@ -1,6 +1,7 @@
 package com.whitepowder.user.management;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -14,20 +15,24 @@ import android.view.Window;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.database.Db4oHelper;
+import com.database.SyncThread;
+import com.db4o.ObjectContainer;
 import com.example.whitepowder.R;
 import com.whitepowder.skier.SkierActivity;
 import com.whitepowder.slope.recognizer.SlopeRecognizerActivity;
 
 public class LoginActivity extends Activity {
 
-	Context mContext;
+	LoginActivity mContext;
 	final int REGISTER_REQUEST_CODE = 1;
 	final int RESET_REQEST_CODE = 2;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		mContext = getApplicationContext();
+		mContext = this;
 		checkSharedPreferences();
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.login);
@@ -117,15 +122,31 @@ public class LoginActivity extends Activity {
 	}
 	
 	public void loginAccordingToRole(boolean first_time){
-		Intent intent;
 		
 		if(first_time){
+		
+			//Starts sync task
+			SyncThread sth = new SyncThread();
+			sth.execute(mContext);
+			
 			SharedPreferences sharedPreferences = getSharedPreferences("WP_USER_SHARED_PREFERENCES", Context.MODE_PRIVATE);
 			Editor editor = sharedPreferences.edit();
 			editor.putString("_token", User.getUserInstance().getToken().toString());
 			editor.putString("role", User.getUserInstance().getRole().toString());
 			editor.apply();
 		}
+		
+		else{
+			launchCorrespondngActivity();
+		};
+	}
+	
+	public void onSyncFinished(){
+		launchCorrespondngActivity();
+	}
+	
+	private void launchCorrespondngActivity(){
+		Intent intent;
 		
 		if(User.getUserInstance().getRole().toString().equals("ROLE_SKIER")){
 			//Rol esquiador
@@ -139,6 +160,7 @@ public class LoginActivity extends Activity {
 			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			this.startActivity(intent);
 		};
+		
 		this.finish();
 	}
 	
