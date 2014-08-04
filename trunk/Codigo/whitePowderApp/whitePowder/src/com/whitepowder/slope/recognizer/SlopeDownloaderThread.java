@@ -12,27 +12,22 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import com.whitepowder.ApplicationError;
 import com.whitepowder.user.management.User;
+import com.database.Db4oHelper;
 import com.example.whitepowder.R;
 import com.google.gson.Gson;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
-public class SlopeDownloaderThread extends AsyncTask<Void, Void, Void> {
 
+public class SlopeDownloaderThread extends Thread {
+    
 	private final String SlopeDownloadURL = "http://whitetavros.com/Sandbox/web/internalApi/slope/allNames";
 	private ApplicationError mError = null;
-	private SlopeRecognizerActivity mContext;
 	private SlopeContainer mSlopes=null;
 	
-	public SlopeDownloaderThread(SlopeRecognizerActivity ctxt) {
-		
-		mContext = ctxt;	
-	};
-
 	@Override
-	protected Void doInBackground(Void... params) {
-		
-		HttpURLConnection connection=null;
+    public void run() {
+	HttpURLConnection connection=null;
 		
 		try {		
 			JSONObject request= new JSONObject();
@@ -58,7 +53,15 @@ public class SlopeDownloaderThread extends AsyncTask<Void, Void, Void> {
 				InputStream is = connection.getInputStream();
 				BufferedReader reader = new BufferedReader(new InputStreamReader(is));		
 				String response = reader.readLine();
-				parseResponse(response);
+				
+				Gson gson = new Gson();
+				mSlopes = gson.fromJson(response,SlopeContainer.class);
+				
+				if(mSlopes!=null){
+					if(mSlopes.code==200){
+						Db4oHelper.db().store(mSlopes);
+					};
+				};
 				
 		    }
 		    
@@ -84,32 +87,27 @@ public class SlopeDownloaderThread extends AsyncTask<Void, Void, Void> {
 
 		};
 		
-		return null;
 	};
 	
-	@Override
-	protected void onPostExecute(Void result) {    	
-
-		if(mSlopes!=null){
-			for(SimplifiedSlope ss : mSlopes.payload){
-				mContext.getAdapter().add(ss);			
-			};
-		};
-		
-		if(mError!=null){
-			switch(mError.getErrorCode()){
-				default: //100,601,602 y 603
-					Toast.makeText(mContext,R.string.error_server_unreachable,Toast.LENGTH_SHORT).show();
-					break;
-			};
-		};
-		
-	};
-
-	private void parseResponse(String response){
-		Gson gson = new Gson();
-		//TODO check error!!!
-		mSlopes = gson.fromJson(response,SlopeContainer.class);
-	};
-
 }
+
+/*
+@Override
+protected void onPostExecute(Void result) {    	
+
+	if(mSlopes!=null){
+		for(SimplifiedSlope ss : mSlopes.payload){
+			mContext.getAdapter().add(ss);			
+		};
+	};
+	
+	if(mError!=null){
+		switch(mError.getErrorCode()){
+			default: //100,601,602 y 603
+				Toast.makeText(mContext,R.string.error_server_unreachable,Toast.LENGTH_SHORT).show();
+				break;
+		};
+	};
+	
+	*/
+		

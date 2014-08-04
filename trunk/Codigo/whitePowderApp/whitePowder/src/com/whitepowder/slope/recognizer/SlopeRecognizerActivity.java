@@ -21,7 +21,6 @@ import android.widget.Toast;
 
 public class SlopeRecognizerActivity extends Activity{
 	
-	private ApplicationError mError = null;
 	private RecognizedSlope mRecognizedSlope;
 	private Spinner spinner;
 	public SlopeSpinnerAdapter adapter;
@@ -46,8 +45,8 @@ public class SlopeRecognizerActivity extends Activity{
 		spinner.setAdapter(adapter);
 		
 		//Downloads and displays slopes
-		SlopeDownloaderThread sdt = new SlopeDownloaderThread(this);
-		sdt.execute();
+	//	SlopeDownloaderThread sdt = new SlopeDownloaderThread();
+	//	sdt.execute();
 		
 		// Acquire reference to the LocationManager
 		if (null == (mLocationManager = (LocationManager) getSystemService(LOCATION_SERVICE))){
@@ -111,7 +110,7 @@ public class SlopeRecognizerActivity extends Activity{
 			
 			@Override
 			public void onProviderDisabled(String arg0) {
-				mError = new ApplicationError(604, "Warning", "GPS provider disenabled in slope recognition module");
+				new ApplicationError(604, "Warning", "GPS provider disenabled in slope recognition module");
 				if(activeFlag){
 					
 					Toast.makeText(mContext, "Se ha desactivado el GPS", Toast.LENGTH_SHORT).show();

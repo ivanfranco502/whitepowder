@@ -104,7 +104,7 @@ public class LoginThread extends AsyncTask<String, Void, Void> {
 	
 	@Override
     protected void onPostExecute(Void unused) {	
-
+	
     	if(mError==null){
     		mLoginActivity.loginAccordingToRole(true);
     	}
@@ -126,9 +126,8 @@ public class LoginThread extends AsyncTask<String, Void, Void> {
 		    		break;  			
     		}
     		
-    		if (progressDialog!=null) {
-				progressDialog.dismiss();
-    		}
+    		progressDialog.dismiss();
+    		
     	};
     }
 	
