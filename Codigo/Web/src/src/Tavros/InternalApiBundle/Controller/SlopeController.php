@@ -89,7 +89,7 @@ class SlopeController extends Controller {
             $s['slope_id'] = $slope->getSlopId();
             $s['slope_description'] = $slope->getSlopDescription();
 
-            $coord = $em->getRepository('TavrosDomainBundle:SlopeCoordinate')->findBySlcoSlope($slope->getSlopId());
+            $coord = $slope->getCoordinates();
             if ($coord) {
                 $s['slope_recognized'] = 1;
             } else {
