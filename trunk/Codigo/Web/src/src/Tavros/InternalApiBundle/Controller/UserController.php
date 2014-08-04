@@ -260,16 +260,16 @@ class UserController extends Controller {
 
         try {
             $manipulator->changePassword($user->getUsername(), $new_password);
-            $message = \Swift_Message::newInstance()
-                    ->setSubject('Cambio de contraseña - [White Powder]')
-                    ->setFrom('info@whitepowder.com')
-                    ->setTo($user->getEmail())
-                    ->setBody(
-                    $this->container->get('twig')->render(
-                            'TavrosWebBundle:Emails:change.txt.twig', array(
-                        'name' => $user->getUsername())
-            ));
-            $this->container->get('mailer')->send($message);
+//            $message = \Swift_Message::newInstance()
+//                    ->setSubject('Cambio de contraseña - [White Powder]')
+//                    ->setFrom('info@whitepowder.com')
+//                    ->setTo($user->getEmail())
+//                    ->setBody(
+//                    $this->container->get('twig')->render(
+//                            'TavrosWebBundle:Emails:change.txt.twig', array(
+//                        'name' => $user->getUsername())
+//            ));
+//            $this->container->get('mailer')->send($message);
         } catch (Exception $ex) {
             $apiResponse->setCode(114);
             $response->setContent($serializer->serialize($apiResponse, 'json'));
