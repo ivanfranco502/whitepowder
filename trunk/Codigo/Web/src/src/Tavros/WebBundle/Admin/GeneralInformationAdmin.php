@@ -43,7 +43,6 @@ class GeneralInformationAdmin extends Admin {
     // Fields to be shown on lists
     protected function configureListFields(ListMapper $listMapper) {
         $listMapper
-                ->add('geinId')
                 ->add('geinCenterName')
                 ->add('geinAmenities')
                 ->add('geinMaximumHeight')
