@@ -29,7 +29,7 @@ class SlopeDificultyAdmin extends Admin {
     // Fields to be shown on lists
     protected function configureListFields(ListMapper $listMapper) {
         $listMapper
-                ->add('sldiDescription')
+                ->addIdentifier('sldiDescription')
                 ->add('sldiColor');
     }
 

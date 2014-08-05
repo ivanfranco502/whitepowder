@@ -33,7 +33,7 @@ class HourDayAdmin extends Admin {
     // Fields to be shown on lists
     protected function configureListFields(ListMapper $listMapper) {
         $listMapper
-                ->add('hodaDay', null, array('name' => 'Day'))
+                ->addIdentifier("hodaDay")
                 ->add('hodaStartHour', null, array('name' => 'Start at'))
                 ->add('hodaEndHour', null, array('name' => 'End at'))
                 ->add('hodaClose', null, array('name' => 'Close'));

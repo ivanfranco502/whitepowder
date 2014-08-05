@@ -27,7 +27,7 @@ class NotificationTypeAdmin extends Admin {
     // Fields to be shown on lists
     protected function configureListFields(ListMapper $listMapper) {
         $listMapper
-                ->add('notyDescription');
+                ->addIdentifier('notyDescription');
     }
 
 }
