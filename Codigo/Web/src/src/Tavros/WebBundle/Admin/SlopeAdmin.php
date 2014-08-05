@@ -31,7 +31,7 @@ class SlopeAdmin extends Admin {
     // Fields to be shown on lists
     protected function configureListFields(ListMapper $listMapper) {
         $listMapper
-                ->add('slopDescription')
+                ->addIdentifier('slopDescription')
                 ->add('slopLength')
                 ->add('slopDificulty');
     }
