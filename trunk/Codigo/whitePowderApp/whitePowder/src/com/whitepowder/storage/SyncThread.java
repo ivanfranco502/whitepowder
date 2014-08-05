@@ -1,4 +1,4 @@
-package com.database;
+package com.whitepowder.storage;
 
 import com.whitepowder.slope.recognizer.SlopeDownloaderThread;
 import com.whitepowder.user.management.LoginActivity;
@@ -14,7 +14,7 @@ public class SyncThread extends AsyncTask<LoginActivity, Void, Void> {
 		mContext = params[0];
 		
 		//Starts threads
-		SlopeDownloaderThread sdt = new SlopeDownloaderThread();
+		SlopeDownloaderThread sdt = new SlopeDownloaderThread(mContext);
 		sdt.start();
 		
 		try {
