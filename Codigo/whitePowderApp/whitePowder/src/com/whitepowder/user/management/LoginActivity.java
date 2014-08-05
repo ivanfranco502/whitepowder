@@ -1,7 +1,6 @@
 package com.whitepowder.user.management;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -15,13 +14,10 @@ import android.view.Window;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.database.Db4oHelper;
-import com.database.SyncThread;
-import com.db4o.ObjectContainer;
 import com.example.whitepowder.R;
 import com.whitepowder.skier.SkierActivity;
 import com.whitepowder.slope.recognizer.SlopeRecognizerActivity;
+import com.whitepowder.storage.SyncThread;
 
 public class LoginActivity extends Activity {
 

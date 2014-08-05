@@ -3,12 +3,17 @@ package com.whitepowder.slope.recognizer;
 import java.util.ArrayList;
 
 import com.example.whitepowder.R;
+import com.google.gson.Gson;
 import com.whitepowder.ApplicationError;
+import com.whitepowder.storage.StoringFiles;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -36,6 +41,8 @@ public class SlopeRecognizerActivity extends Activity{
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		SlopeContainer mSlopes=null;
+		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.slope_recognition);
 		
@@ -44,9 +51,19 @@ public class SlopeRecognizerActivity extends Activity{
 		adapter = new SlopeSpinnerAdapter(this, generateDummySlope(), R.layout.slope_recognition_spinner_item);
 		spinner.setAdapter(adapter);
 		
-		//Downloads and displays slopes
-	//	SlopeDownloaderThread sdt = new SlopeDownloaderThread();
-	//	sdt.execute();
+		//Gets and show slopes
+		
+		SharedPreferences prefs = mContext.getSharedPreferences(StoringFiles.SIMPLIFIED_SLOPES_CONTAINER_FILE, Context.MODE_PRIVATE);
+		String slopesText = prefs.getString(StoringFiles.SIMPLIFIED_SLOPES_CONTAINER_KEY, null);
+		
+		Gson gson = new Gson();
+		mSlopes = gson.fromJson(slopesText,SlopeContainer.class);
+		
+		if(mSlopes!=null){
+			for(SimplifiedSlope ss : mSlopes.payload){
+				mContext.getAdapter().add(ss);			
+			};
+		};	
 		
 		// Acquire reference to the LocationManager
 		if (null == (mLocationManager = (LocationManager) getSystemService(LOCATION_SERVICE))){

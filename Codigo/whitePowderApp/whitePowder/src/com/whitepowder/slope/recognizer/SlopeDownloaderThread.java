@@ -10,13 +10,13 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import org.json.JSONException;
 import org.json.JSONObject;
+import android.content.Context;
+import android.content.SharedPreferences;
+
 import com.whitepowder.ApplicationError;
+import com.whitepowder.storage.StoringFiles;
 import com.whitepowder.user.management.User;
-import com.database.Db4oHelper;
-import com.example.whitepowder.R;
 import com.google.gson.Gson;
-import android.os.AsyncTask;
-import android.widget.Toast;
 
 
 public class SlopeDownloaderThread extends Thread {
@@ -24,6 +24,11 @@ public class SlopeDownloaderThread extends Thread {
 	private final String SlopeDownloadURL = "http://whitetavros.com/Sandbox/web/internalApi/slope/allNames";
 	private ApplicationError mError = null;
 	private SlopeContainer mSlopes=null;
+	private Context mContext;
+	
+	public  SlopeDownloaderThread(Context ctx){
+		mContext = ctx;
+	};
 	
 	@Override
     public void run() {
@@ -57,11 +62,11 @@ public class SlopeDownloaderThread extends Thread {
 				Gson gson = new Gson();
 				mSlopes = gson.fromJson(response,SlopeContainer.class);
 				
-				if(mSlopes!=null){
-					if(mSlopes.code==200){
-						Db4oHelper.db().store(mSlopes);
-					};
-				};
+				//TODO Check errors
+				if((mSlopes.code)==200){
+					SharedPreferences prefs = mContext.getSharedPreferences(StoringFiles.SIMPLIFIED_SLOPES_CONTAINER_FILE, Context.MODE_PRIVATE);
+					prefs.edit().putString(StoringFiles.SIMPLIFIED_SLOPES_CONTAINER_KEY, response);
+				}
 				
 		    }
 		    
@@ -90,24 +95,4 @@ public class SlopeDownloaderThread extends Thread {
 	};
 	
 }
-
-/*
-@Override
-protected void onPostExecute(Void result) {    	
-
-	if(mSlopes!=null){
-		for(SimplifiedSlope ss : mSlopes.payload){
-			mContext.getAdapter().add(ss);			
-		};
-	};
-	
-	if(mError!=null){
-		switch(mError.getErrorCode()){
-			default: //100,601,602 y 603
-				Toast.makeText(mContext,R.string.error_server_unreachable,Toast.LENGTH_SHORT).show();
-				break;
-		};
-	};
-	
-	*/
 		
