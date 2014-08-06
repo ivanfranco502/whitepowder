@@ -129,6 +129,7 @@ public class SlopeRecognizerActivity extends Activity{
 				new ApplicationError(604, "Warning", "GPS provider disenabled in slope recognition module");
 				if(activeFlag){
 					
+					//TODO deshardcode text
 					Toast.makeText(mContext, "Se ha desactivado el GPS", Toast.LENGTH_SHORT).show();
 				
 					activeFlag=false;
@@ -148,12 +149,12 @@ public class SlopeRecognizerActivity extends Activity{
 
 			@Override
 			public void onProviderEnabled(String arg0) {
-				//TODO handle errors
+				return;
 			}
 
 			@Override
 			public void onStatusChanged(String arg0, int arg1, Bundle arg2) {
-				//TODO handle error
+				return;
 			};
 		};
 	}
@@ -162,7 +163,8 @@ public class SlopeRecognizerActivity extends Activity{
 		btnStart.setOnClickListener(new OnClickListener() {		
 			@Override
 			public void onClick(View v) {
-				
+			
+				//TODO deshardcode text
 				if(((SimplifiedSlope) spinner.getSelectedItem()).getSlope_id()==0){
 					Toast.makeText(mContext, "Por favor seleccione una pista a reconocer", Toast.LENGTH_SHORT).show();
 				}
