@@ -13,19 +13,18 @@ import org.json.JSONObject;
 import android.content.Context;
 import android.content.SharedPreferences;
 import com.whitepowder.ApplicationError;
-import com.whitepowder.storage.AppStorage;
+import com.whitepowder.storage.SPStorage;
 import com.whitepowder.user.management.User;
 import com.google.gson.Gson;
 
 
-public class SlopeDownloaderThread extends Thread {
+public class SimplifiedSlopeDownloaderThread extends Thread {
     
 	private final String SlopeDownloadURL = "http://whitetavros.com/Sandbox/web/internalApi/slope/allNames";
-	private ApplicationError mError = null;
 	private SlopeContainer mSlopes=null;
 	private Context mContext;
 	
-	public  SlopeDownloaderThread(Context ctx){
+	public  SimplifiedSlopeDownloaderThread(Context ctx){
 		mContext = ctx;
 	};
 	
@@ -61,27 +60,28 @@ public class SlopeDownloaderThread extends Thread {
 				Gson gson = new Gson();
 				mSlopes = gson.fromJson(response,SlopeContainer.class);
 				
-				//TODO Check errors
-				if((mSlopes.code)==200){
-					SharedPreferences prefs = mContext.getSharedPreferences(AppStorage.GENERAL_STORAGE_SHARED_PREFS, Context.MODE_PRIVATE);
-					prefs.edit().putString(AppStorage.SIMPLIFIED_SLOPES, response);
-				}
-				
+				if(mSlopes!=null){
+					if((mSlopes.code)==200){
+						SharedPreferences prefs = mContext.getSharedPreferences(SPStorage.GENERAL_STORAGE_SHARED_PREFS, Context.MODE_PRIVATE);
+						prefs.edit().putString(SPStorage.SIMPLIFIED_SLOPES, response);
+						prefs.edit().commit();
+					};
+				};				
 		    }
 		    
 		    else{
-		    	mError = new ApplicationError(100,"Error","Error en la conexión con el Servidor");
+		    	new ApplicationError(100,"Error","Error en la conexión con el Servidor");
 		    };
 		}
 	    
 		catch (MalformedURLException e) {
-			mError = new ApplicationError(601,"Error","MalformedURLException en módulo de reconocimiento de pista");
+			new ApplicationError(601,"Error","MalformedURLException en módulo de reconocimiento de pista");
 		}
 		catch (IOException e) {
-			mError = new ApplicationError(602,"Error","IOException en módulo de reconocimiento de pista");
+			new ApplicationError(602,"Error","IOException en módulo de reconocimiento de pista");
 		}
 		catch (JSONException e) {
-			mError = new ApplicationError(603,"Error","JSonException en módulo de reconocimiento de pista");
+			new ApplicationError(603,"Error","JSonException en módulo de reconocimiento de pista");
 		}
 		
 		finally{
