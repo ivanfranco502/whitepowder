@@ -5,8 +5,7 @@ import java.util.ArrayList;
 import com.example.whitepowder.R;
 import com.google.gson.Gson;
 import com.whitepowder.ApplicationError;
-import com.whitepowder.storage.StoringFiles;
-
+import com.whitepowder.storage.AppStorage;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -53,8 +52,8 @@ public class SlopeRecognizerActivity extends Activity{
 		
 		//Gets and show slopes
 		
-		SharedPreferences prefs = mContext.getSharedPreferences(StoringFiles.SIMPLIFIED_SLOPES_CONTAINER_FILE, Context.MODE_PRIVATE);
-		String slopesText = prefs.getString(StoringFiles.SIMPLIFIED_SLOPES_CONTAINER_KEY, null);
+		SharedPreferences prefs = mContext.getSharedPreferences(AppStorage.GENERAL_STORAGE_SHARED_PREFS, Context.MODE_PRIVATE);
+		String slopesText = prefs.getString(AppStorage.SIMPLIFIED_SLOPES, null);
 		
 		Gson gson = new Gson();
 		mSlopes = gson.fromJson(slopesText,SlopeContainer.class);

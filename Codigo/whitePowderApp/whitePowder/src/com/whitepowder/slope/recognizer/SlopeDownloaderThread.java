@@ -12,9 +12,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import android.content.Context;
 import android.content.SharedPreferences;
-
 import com.whitepowder.ApplicationError;
-import com.whitepowder.storage.StoringFiles;
+import com.whitepowder.storage.AppStorage;
 import com.whitepowder.user.management.User;
 import com.google.gson.Gson;
 
@@ -64,8 +63,8 @@ public class SlopeDownloaderThread extends Thread {
 				
 				//TODO Check errors
 				if((mSlopes.code)==200){
-					SharedPreferences prefs = mContext.getSharedPreferences(StoringFiles.SIMPLIFIED_SLOPES_CONTAINER_FILE, Context.MODE_PRIVATE);
-					prefs.edit().putString(StoringFiles.SIMPLIFIED_SLOPES_CONTAINER_KEY, response);
+					SharedPreferences prefs = mContext.getSharedPreferences(AppStorage.GENERAL_STORAGE_SHARED_PREFS, Context.MODE_PRIVATE);
+					prefs.edit().putString(AppStorage.SIMPLIFIED_SLOPES, response);
 				}
 				
 		    }
