@@ -1,6 +1,7 @@
 package com.whitepowder.user.management;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -22,6 +23,7 @@ import com.whitepowder.storage.SyncThread;
 public class LoginActivity extends Activity {
 
 	LoginActivity mContext;
+	ProgressDialog progressDialogSync=null;
 	final int REGISTER_REQUEST_CODE = 1;
 	final int RESET_REQEST_CODE = 2;
 	
@@ -49,7 +51,7 @@ public class LoginActivity extends Activity {
 				}
 				else{
 					Toast.makeText(mContext,R.string.login_error_incomplete_data,Toast.LENGTH_SHORT).show();
-				}
+				};
 					
 			}
 		});
@@ -94,18 +96,6 @@ public class LoginActivity extends Activity {
 		return true;
 	}
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
-	}
-
 	private boolean isValidInput(String user, String pass){
 		
 		if(user.length()>0 && pass.length()>0){
@@ -121,15 +111,16 @@ public class LoginActivity extends Activity {
 		
 		if(first_time){
 		
+			//TODO deshardcode text
+			progressDialogSync = new ProgressDialog(mContext);
+			progressDialogSync.setMessage("Sincronizando App");
+			progressDialogSync.setCancelable(false);
+			progressDialogSync.setIndeterminate(true);
+			progressDialogSync.show();
+			
 			//Starts sync task
 			SyncThread sth = new SyncThread();
 			sth.execute(mContext);
-			
-			SharedPreferences sharedPreferences = getSharedPreferences("WP_USER_SHARED_PREFERENCES", Context.MODE_PRIVATE);
-			Editor editor = sharedPreferences.edit();
-			editor.putString("_token", User.getUserInstance().getToken().toString());
-			editor.putString("role", User.getUserInstance().getRole().toString());
-			editor.apply();
 		}
 		
 		else{
@@ -137,8 +128,28 @@ public class LoginActivity extends Activity {
 		};
 	}
 	
-	public void onSyncFinished(){
-		launchCorrespondngActivity();
+	public void onSyncFinished(boolean success){
+		if (success){
+			
+			//Stores user and password
+			
+			SharedPreferences sharedPreferences = getSharedPreferences("WP_USER_SHARED_PREFERENCES", Context.MODE_PRIVATE);
+			Editor editor = sharedPreferences.edit();
+			editor.putString("_token", User.getUserInstance().getToken().toString());
+			editor.putString("role", User.getUserInstance().getRole().toString());
+			editor.apply();
+			
+			progressDialogSync.dismiss();			
+			launchCorrespondngActivity();
+		}
+		else{
+			
+			progressDialogSync.dismiss();
+			//TODO deshardcode text
+			Toast.makeText(mContext, "Error en la sincronización. Por favor intente nuevamente", Toast.LENGTH_SHORT).show();
+			
+		};
+		
 	}
 	
 	private void launchCorrespondngActivity(){
@@ -169,5 +180,17 @@ public class LoginActivity extends Activity {
 			User.getUserInstance().setToken(token);
 			loginAccordingToRole(false);
 		}
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// Handle action bar item clicks here. The action bar will
+		// automatically handle clicks on the Home/Up button, so long
+		// as you specify a parent activity in AndroidManifest.xml.
+		int id = item.getItemId();
+		if (id == R.id.action_settings) {
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 }
