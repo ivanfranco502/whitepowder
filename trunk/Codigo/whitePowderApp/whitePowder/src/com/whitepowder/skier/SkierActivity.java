@@ -75,9 +75,9 @@ public class SkierActivity extends Activity implements ActionBar.TabListener {
 			// the adapter. Also specify this Activity object, which implements
 			// the TabListener interface, as the callback (listener) for when
 			// this tab is selected.
-			actionBar.addTab(actionBar.newTab()
-					.setText(mSectionsPagerAdapter.getPageTitle(i))
+			actionBar.addTab(actionBar.newTab().setIcon(R.drawable.ic_basic_info)
 					.setTabListener(this));
+					
 		}
 		
 		
