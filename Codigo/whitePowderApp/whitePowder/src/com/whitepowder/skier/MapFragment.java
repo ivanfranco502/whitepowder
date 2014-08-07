@@ -16,9 +16,6 @@ public class MapFragment extends Fragment {
 			Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.skier_fragment_map, container,
 				false);
-		TextView textView = (TextView) rootView
-				.findViewById(R.id.map_label);
-		textView.setText("Acá va el mapa y la señalización de pistas.");
 		return rootView;
 	}
 
