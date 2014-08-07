@@ -165,6 +165,9 @@ public class SkierActivity extends Activity implements ActionBar.TabListener {
 			case 3:
 				fragment = new ProfileFragmentFragment();
 				return fragment;
+			case 4:
+				fragment = new SubmenuFragment();
+				return fragment;
 			}
 			return null;
 			
@@ -172,8 +175,8 @@ public class SkierActivity extends Activity implements ActionBar.TabListener {
 
 		@Override
 		public int getCount() {
-			// Show 4 total pages.
-			return 4;
+			// Show 5 total pages.
+			return 5;
 		}
 
 		@Override
@@ -188,6 +191,8 @@ public class SkierActivity extends Activity implements ActionBar.TabListener {
 				return getString(R.string.title_section3).toUpperCase(l);
 			case 3:
 				return getString(R.string.title_section4).toUpperCase(l);
+			case 4:
+				return getString(R.string.title_section5).toUpperCase(l);
 			}
 			return null;
 		}

@@ -8,16 +8,47 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:orientation="vertical" >
     
+   
+    <RelativeLayout
+		android:layout_width="fill_parent"
+        android:layout_height="25dp" >
+
+        <Switch
+            android:id="@+id/profile_skier_mode_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:checked="true"
+            />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:text="@string/profile_skier_mode" />
+
+    </RelativeLayout>
+    
+    <View
+	    android:layout_width="fill_parent"
+	    android:layout_height="1dp"
+	    android:background="#6DCAEC"
+	    android:layout_marginBottom="2dp"
+	    android:layout_marginTop="2dp"/>
+    
     <RelativeLayout 
-        android:id="@+id/profile_view_personal_info_container"
+        android:id="@+id/profile_pwd_change_container"
 	    android:layout_width="fill_parent"
 	    android:layout_height="25dp"
 	    >
 	    <TextView
-	        android:id="@+id/profile_view_personal_info"
+	        android:id="@+id/profile_pwd_change"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:text="@string/profile_view_personal_info"
+	        android:text="@string/profile_pwd_change"
 	        android:layout_centerVertical="true"
 	        />
     </RelativeLayout>
@@ -30,15 +61,15 @@
 	    android:layout_marginTop="2dp"/>
     
     <RelativeLayout 
-        android:id="@+id/profile_view_stats_container"
+        android:id="@+id/profile_logout_container"
 	    android:layout_width="fill_parent"
 	    android:layout_height="25dp"
 	    >
 	    <TextView
-	        android:id="@+id/profile_view_stats"
+	        android:id="@+id/profile_logout"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:text="@string/profile_view_stats"
+	        android:text="@string/profile_logout"
 	        android:layout_centerVertical="true"
 	        />
     </RelativeLayout>

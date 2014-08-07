@@ -46,6 +46,7 @@
     <string name="title_section2">Mapa</string>
     <string name="title_section3">Emergencia</string>
     <string name="title_section4">Perfil</string>
+    <string name="title_section5">Submenu</string>
     <string name="alert_exit_title">Salir</string>
     <string name="alert_exit_message">¿Estás seguro que deseas salir?</string>
     <string name="alert_no">No</string>
@@ -56,6 +57,7 @@
     <string name="process_dialog_pwd_reset">Reseteando contraseña.</string>
     <string name="process_dialog_register">Registrando usuario.</string>
     <string name="process_dialog_pwd_change">Cambiando contraseña.</string>
+    <string name="profile_view_personal_info">Datos Personales</string>
     <string name="profile_view_stats">Estadísticas</string>
     <string name="profile_skier_mode">Modo esquiador</string>
     <string name="profile_pwd_change">Cambiar contraseña</string>
