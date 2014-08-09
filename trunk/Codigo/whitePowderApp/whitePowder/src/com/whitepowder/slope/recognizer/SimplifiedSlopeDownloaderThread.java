@@ -14,6 +14,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import com.whitepowder.ApplicationError;
 import com.whitepowder.storage.SPStorage;
+import com.whitepowder.storage.SyncThread;
 import com.whitepowder.user.management.User;
 import com.google.gson.Gson;
 
@@ -62,9 +63,10 @@ public class SimplifiedSlopeDownloaderThread extends Thread {
 				
 				if(mSlopes!=null){
 					if((mSlopes.code)==200){
-						SharedPreferences prefs = mContext.getSharedPreferences(SPStorage.GENERAL_STORAGE_SHARED_PREFS, Context.MODE_PRIVATE);
-						prefs.edit().putString(SPStorage.SIMPLIFIED_SLOPES, response);
-						prefs.edit().commit();
+						SharedPreferences sp = mContext.getSharedPreferences(SPStorage.GENERAL_STORAGE_SHARED_PREFS, Context.MODE_MULTI_PROCESS);
+						SharedPreferences.Editor editor = sp.edit();
+						editor.putString(SPStorage.SIMPLIFIED_SLOPES, response);
+						editor.commit();
 					};
 				};				
 		    }

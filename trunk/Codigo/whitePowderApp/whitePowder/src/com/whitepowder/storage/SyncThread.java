@@ -17,13 +17,15 @@ public class SyncThread extends AsyncTask<LoginActivity, Void, Void> {
 	ApplicationError mError = null;
 	Gson gson;
 	SharedPreferences sharedPrefs=null;
+	public SharedPreferences.Editor editor=null;
 	
 	@Override
 	protected Void doInBackground(LoginActivity... params) {
 		mContext = params[0];
 		
 		//Gets Shared prefs file
-		sharedPrefs = mContext.getSharedPreferences(SPStorage.GENERAL_STORAGE_SHARED_PREFS, Context.MODE_PRIVATE);
+		sharedPrefs = mContext.getSharedPreferences(SPStorage.GENERAL_STORAGE_SHARED_PREFS, Context.MODE_MULTI_PROCESS);
+		editor = sharedPrefs.edit();
 		
 		//Loads Gson
 		gson = new Gson();
@@ -61,7 +63,7 @@ public class SyncThread extends AsyncTask<LoginActivity, Void, Void> {
 	private void checkSimplifiedSlopeErrors(){
 		SlopeContainer slopeContainer = null;
 		
-		String slopeContainerText = sharedPrefs.getString(SPStorage.SIMPLIFIED_SLOPES, null);
+		String slopeContainerText = sharedPrefs.getString(SPStorage.SIMPLIFIED_SLOPES,null);
 		
 		if(slopeContainerText==null){
 			mError = new ApplicationError(800,"Error","Error en la sincronización");		
