@@ -49,7 +49,7 @@ class SlopeController extends Controller {
         $response->setContent($serializer->serialize($apiResponse, 'json'));
         return $response;
     }
-
+    //GET ONLY ALL SLOPE NAMES//
     function allNamesAction() {
         $logger = $this->container->get('logger');
         $serializer = $this->container->get('jms_serializer');
@@ -83,6 +83,7 @@ class SlopeController extends Controller {
         }
 
         $payload = Array();
+        
         foreach ($slopes as $slope) {
             /* @var $slope \Tavros\DomainBundle\Entity\Slope */
             $s = Array();
@@ -90,7 +91,8 @@ class SlopeController extends Controller {
             $s['slope_description'] = $slope->getSlopDescription();
 
             $coord = $slope->getCoordinates();
-            if ($coord) {
+          
+            if ($coord[0]) {
                 $s['slope_recognized'] = 1;
             } else {
                 $s['slope_recognized'] = 0;
