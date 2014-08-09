@@ -35,7 +35,7 @@ Tavros\DomainBundle\Entity\Slope:
     oneToMany:
         Coordinates:
             targetEntity: SlopeCoordinate
-            mappedBy: Slope
+            mappedBy: slcoSlope
     manyToOne:
         slopGeneralInformation:
             targetEntity: GeneralInformation

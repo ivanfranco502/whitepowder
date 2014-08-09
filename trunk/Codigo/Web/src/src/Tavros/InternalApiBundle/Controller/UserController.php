@@ -140,12 +140,12 @@ class UserController extends Controller {
 
         $request = $this->container->get('request');
 
-        if ($request->getMethod() == 'POST') {
-            $params = $_POST;
-        } else {
+        if (!$this->container->get('request')->getMethod() == 'POST') {
             $apiResponse->setCode(404);
             $response->setContent($serializer->serialize($apiResponse, 'json'));
             return $response;
+        }else{
+            $params = $_POST;
         }
 
         $username = $params['username'];
