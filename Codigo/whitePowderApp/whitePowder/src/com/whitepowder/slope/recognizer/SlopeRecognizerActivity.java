@@ -21,10 +21,17 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class SlopeRecognizerActivity extends Activity{
 	
+	private final int REQUEST_SHOW_MAP = 2;
+	private final float DISTANCE_BETWEEN_POINTS = 1;
+	private int ACCURATE_RATE =20;
+	
+	private TextView pointsView;
+	private int pointsAmmount =0;
 	private RecognizedSlope mRecognizedSlope;
 	private Spinner spinner;
 	public SlopeSpinnerAdapter adapter;
@@ -34,10 +41,7 @@ public class SlopeRecognizerActivity extends Activity{
 	private boolean accurateFlag = false;
 	private ProgressDialog progressDialog;
 	private SlopeRecognizerActivity mContext = this; 
-	private final int REQUEST_SHOW_MAP = 2;
-	
-	private int ACCURATE_RATE =20;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		SlopeContainer mSlopes=null;
@@ -72,7 +76,7 @@ public class SlopeRecognizerActivity extends Activity{
 		enableLocationListener();
 				
 		//Register for location changes	
-		mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0,mLocationListener);
+		mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, DISTANCE_BETWEEN_POINTS,mLocationListener);
 		
 		if (!mLocationManager.isProviderEnabled( LocationManager.GPS_PROVIDER)) {
 			AlertNoGps();			
@@ -80,6 +84,7 @@ public class SlopeRecognizerActivity extends Activity{
 		
 		RelativeLayout btnStart = (RelativeLayout) findViewById(R.id.slope_recognition_start_button_container);
 		RelativeLayout btnStop = (RelativeLayout) findViewById(R.id.slope_recognition_stop_button_container);
+		pointsView = (TextView) findViewById(R.id.slope_recognition_points);
 		
 		//Setup buttons
 		
@@ -116,6 +121,8 @@ public class SlopeRecognizerActivity extends Activity{
 					
 					if(activeFlag){
 						mRecognizedSlope.add(new Coordinate(location.getLatitude(), location.getLongitude()));
+						pointsAmmount++;
+						pointsView.setText("Puntos usados: "+Integer.toString(pointsAmmount));
 					};
 				}
 				else{
@@ -134,7 +141,9 @@ public class SlopeRecognizerActivity extends Activity{
 				
 					activeFlag=false;
 					mRecognizedSlope.clearAll();
-					mRecognizedSlope = null;					
+					mRecognizedSlope = null;
+					pointsAmmount=0;
+					pointsView.setText("");
 					
 					//Changes UI
 					RelativeLayout btnStart = (RelativeLayout) mContext.findViewById(R.id.slope_recognition_start_button_container); 
@@ -173,27 +182,29 @@ public class SlopeRecognizerActivity extends Activity{
 						Toast.makeText(mContext, "Por favor active el GPS para continuar", Toast.LENGTH_SHORT).show();
 					}
 					else{
-						activeFlag=true;
-						
-						//Changes UI
-						btnStart.setClickable(false);
-						btnStart.setVisibility(RelativeLayout.INVISIBLE);
-						
-						btnStop.setClickable(true);
-						btnStop.setVisibility(RelativeLayout.VISIBLE);
-						
-	
+											
 						if(!accurateFlag){
 							progressDialog = new ProgressDialog(mContext);
 							progressDialog.setMessage("Calibrando su GPS, por favor espere");
-							progressDialog.setCancelable(false);
+							progressDialog.setCancelable(true);
 							progressDialog.setIndeterminate(true);
 							progressDialog.show();
 						};
 						
-						//TODO get id
-						mRecognizedSlope = new RecognizedSlope(1);
-						
+						if(accurateFlag){
+							
+							activeFlag=true;
+							
+							//Changes UI
+							btnStart.setClickable(false);
+							btnStart.setVisibility(RelativeLayout.INVISIBLE);
+							
+							btnStop.setClickable(true);
+							btnStop.setVisibility(RelativeLayout.VISIBLE);
+							
+							SimplifiedSlope ss = (SimplifiedSlope)spinner.getSelectedItem();
+							mRecognizedSlope = new RecognizedSlope(ss.getSlope_id());
+						};				
 					};
 				};
 			};
@@ -227,6 +238,8 @@ public class SlopeRecognizerActivity extends Activity{
 				mRecognizedSlope.clearAll();
 				mRecognizedSlope = null;
 				activeFlag = false;
+				pointsAmmount=0;
+				pointsView.setText("");
 			}
 			else if(resultCode==RESULT_OK){
 				//TODO transmit
