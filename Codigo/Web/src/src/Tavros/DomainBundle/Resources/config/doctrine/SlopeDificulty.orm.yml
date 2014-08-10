@@ -1,6 +1,10 @@
 Tavros\DomainBundle\Entity\SlopeDificulty:
     type: entity
     table: slope_dificulty
+    indexes:
+        FK_slope_dificulty_color_idx:
+            columns:
+                - sldi_color_id
     id:
         sldiId:
             type: integer
@@ -19,11 +23,14 @@ Tavros\DomainBundle\Entity\SlopeDificulty:
             fixed: false
             comment: ''
             column: sldi_description
+    manyToOne:
         sldiColor:
-            type: string
-            nullable: false
-            length: 45
-            fixed: false
-            comment: ''
-            column: sldi_color
+            targetEntity: Color
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                sldi_color_id:
+                    referencedColumnName: colo_id
+            orphanRemoval: false
     lifecycleCallbacks: {  }

@@ -16,7 +16,7 @@ class SlopeDificultyAdmin extends Admin {
     protected function configureFormFields(FormMapper $formMapper) {
         $formMapper
                 ->add('sldiDescription', 'text', array('label' => 'Description'))
-                ->add('sldiColor', 'text', array('label' => 'Color'));
+                ->add('sldiColor', null, array('label' => 'Color'));
     }
 
     // Fields to be shown on filter forms
