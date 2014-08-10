@@ -151,8 +151,7 @@ public class SlopeRecognizerActivity extends Activity{
 					accurateFlag = true;
 					
 					if(progressDialog!=null){
-						progressDialog.dismiss();
-						progressDialog = null;
+						startRecognition();						
 					};
 					
 					if(activeFlag){
@@ -175,21 +174,7 @@ public class SlopeRecognizerActivity extends Activity{
 					//TODO deshardcode text
 					Toast.makeText(mContext, "Se ha desactivado el GPS", Toast.LENGTH_SHORT).show();
 				
-					activeFlag=false;
-					mRecognizedSlope.clearAll();
-					mRecognizedSlope = null;
-					pointsAmmount=0;
-					pointsView.setText("");
-					spinner.setSelection(0);
-					
-					//Changes UI
-					RelativeLayout btnStart = (RelativeLayout) mContext.findViewById(R.id.slope_recognition_start_button_container); 
-					btnStart.setClickable(true);
-					btnStart.setVisibility(RelativeLayout.VISIBLE);
-					
-					RelativeLayout btnStop = (RelativeLayout)mContext.findViewById(R.id.slope_recognition_stop_button_container);
-					btnStop.setClickable(false);
-					btnStop.setVisibility(RelativeLayout.INVISIBLE);
+					stopRecognition();
 				}
 			}
 
@@ -227,26 +212,63 @@ public class SlopeRecognizerActivity extends Activity{
 							progressDialog.setCancelable(true);
 							progressDialog.setIndeterminate(true);
 							progressDialog.show();
-						};
-						
-						if(accurateFlag){
-							activeFlag=true;
-							
-							//Changes UI
-							btnStart.setClickable(false);
-							btnStart.setVisibility(RelativeLayout.INVISIBLE);
-							
-							btnStop.setClickable(true);
-							btnStop.setVisibility(RelativeLayout.VISIBLE);
-							
-							SimplifiedSlope ss = (SimplifiedSlope)spinner.getSelectedItem();
-							mRecognizedSlope = new RecognizedSlope(ss.getSlope_id());
+						}
+						else{		
+							startRecognition();
 						};	
 					};
 				};
 			};
 		});
 	};
+	
+	private void startRecognition(){
+		
+		//Sets flag
+		
+		activeFlag=true;
+		
+		//Changes UI
+		RelativeLayout btnStart = (RelativeLayout) mContext.findViewById(R.id.slope_recognition_start_button_container); 
+		btnStart.setClickable(false);
+		btnStart.setVisibility(RelativeLayout.INVISIBLE);
+		
+		RelativeLayout btnStop = (RelativeLayout)mContext.findViewById(R.id.slope_recognition_stop_button_container);
+		btnStop.setClickable(true);
+		btnStop.setVisibility(RelativeLayout.VISIBLE);
+		
+		//Starts recognition
+		
+		SimplifiedSlope ss = (SimplifiedSlope)spinner.getSelectedItem();
+		mRecognizedSlope = new RecognizedSlope(ss.getSlope_id());
+		
+		if(progressDialog!=null){	
+			progressDialog.dismiss();
+			progressDialog = null;
+		}
+	};
+	
+	private void stopRecognition(){
+		
+		//Sets flag
+		activeFlag = false;
+		
+		//Changes UI
+		
+		RelativeLayout btnStart = (RelativeLayout)mContext.findViewById(R.id.slope_recognition_start_button_container);
+		btnStart.setClickable(true);
+		btnStart.setVisibility(RelativeLayout.VISIBLE);
+		
+		RelativeLayout btnStop = (RelativeLayout)mContext.findViewById(R.id.slope_recognition_stop_button_container);
+		btnStop.setClickable(false);
+		btnStop.setVisibility(RelativeLayout.INVISIBLE);
+		
+		mRecognizedSlope.clearAll();
+		mRecognizedSlope = null;
+		pointsAmmount=0;
+		pointsView.setText("");
+		spinner.setSelection(0);
+	}
 	
 	private void setupStopButton(final RelativeLayout btnStop, final RelativeLayout btnStart){
 		btnStop.setOnClickListener(new OnClickListener() {		
@@ -264,20 +286,7 @@ public class SlopeRecognizerActivity extends Activity{
 		
 		Toast.makeText(mContext, "Transmisión realizada con éxito", Toast.LENGTH_SHORT).show();
 		
-		RelativeLayout btnStart = (RelativeLayout)mContext.findViewById(R.id.slope_recognition_start_button_container);
-		btnStart.setClickable(true);
-		btnStart.setVisibility(RelativeLayout.VISIBLE);
-		
-		RelativeLayout btnStop = (RelativeLayout)mContext.findViewById(R.id.slope_recognition_stop_button_container);
-		btnStop.setClickable(false);
-		btnStop.setVisibility(RelativeLayout.INVISIBLE);
-		
-		mRecognizedSlope.clearAll();
-		mRecognizedSlope = null;
-		activeFlag = false;
-		pointsAmmount=0;
-		pointsView.setText("");
-		spinner.setSelection(0);
+		stopRecognition();
 
 		
 	}
@@ -286,20 +295,7 @@ public class SlopeRecognizerActivity extends Activity{
 		
 		if(requestCode == REQUEST_SHOW_MAP){
 			if(resultCode==RESULT_CANCELED){
-				RelativeLayout btnStart = (RelativeLayout)mContext.findViewById(R.id.slope_recognition_start_button_container);
-				btnStart.setClickable(true);
-				btnStart.setVisibility(RelativeLayout.VISIBLE);
-				
-				RelativeLayout btnStop = (RelativeLayout)mContext.findViewById(R.id.slope_recognition_stop_button_container);
-				btnStop.setClickable(false);
-				btnStop.setVisibility(RelativeLayout.INVISIBLE);
-				
-				spinner.setSelection(0);
-				mRecognizedSlope.clearAll();
-				mRecognizedSlope = null;
-				activeFlag = false;
-				pointsAmmount=0;
-				pointsView.setText("");
+				stopRecognition();
 			}
 			else if(resultCode==RESULT_OK){
 				SlopeUploaderThread slut = new SlopeUploaderThread(this);
