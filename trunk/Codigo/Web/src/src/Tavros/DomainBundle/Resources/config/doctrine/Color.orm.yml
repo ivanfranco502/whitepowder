@@ -1,0 +1,29 @@
+Tavros\DomainBundle\Entity\Color:
+    type: entity
+    table: color
+    id:
+        coloId:
+            type: integer
+            nullable: false
+            unsigned: false
+            comment: ''
+            id: true
+            column: colo_id
+            generator:
+                strategy: IDENTITY
+    fields:
+        coloDescription:
+            type: string
+            nullable: true
+            length: 45
+            fixed: false
+            comment: ''
+            column: colo_description
+        coloHexaCode:
+            type: string
+            nullable: true
+            length: 6
+            fixed: false
+            comment: ''
+            column: colo_hexa_code
+    lifecycleCallbacks: {  }

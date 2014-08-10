@@ -20,7 +20,7 @@ class SlopeDificulty
     private $sldiDescription;
 
     /**
-     * @var string
+     * @var \Tavros\DomainBundle\Entity\Color
      */
     private $sldiColor;
 
@@ -61,10 +61,10 @@ class SlopeDificulty
     /**
      * Set sldiColor
      *
-     * @param string $sldiColor
+     * @param \Tavros\DomainBundle\Entity\Color $sldiColor
      * @return SlopeDificulty
      */
-    public function setSldiColor($sldiColor)
+    public function setSldiColor(\Tavros\DomainBundle\Entity\Color $sldiColor = null)
     {
         $this->sldiColor = $sldiColor;
 
@@ -74,7 +74,7 @@ class SlopeDificulty
     /**
      * Get sldiColor
      *
-     * @return string 
+     * @return \Tavros\DomainBundle\Entity\Color
      */
     public function getSldiColor()
     {
