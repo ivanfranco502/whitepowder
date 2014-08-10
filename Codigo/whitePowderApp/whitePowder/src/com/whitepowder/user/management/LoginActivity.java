@@ -17,7 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.example.whitepowder.R;
 import com.whitepowder.skier.SkierActivity;
-import com.whitepowder.slope.recognizer.SlopeRecognizerActivity;
+import com.whitepowder.slopeRecognizer.SlopeRecognizerActivity;
 import com.whitepowder.storage.SyncThread;
 
 public class LoginActivity extends Activity {

@@ -3,8 +3,8 @@ package com.whitepowder.storage;
 import com.google.gson.Gson;
 import com.whitepowder.ApplicationError;
 import com.whitepowder.Logout;
-import com.whitepowder.slope.recognizer.SimplifiedSlopeDownloaderThread;
-import com.whitepowder.slope.recognizer.SlopeContainer;
+import com.whitepowder.slopeRecognizer.SimplifiedSlopeDownloaderThread;
+import com.whitepowder.slopeRecognizer.SlopeContainer;
 import com.whitepowder.user.management.LoginActivity;
 
 import android.content.Context;

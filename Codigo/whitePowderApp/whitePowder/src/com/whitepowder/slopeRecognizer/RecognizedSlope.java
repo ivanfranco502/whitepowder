@@ -1,4 +1,4 @@
-package com.whitepowder.slope.recognizer;
+package com.whitepowder.slopeRecognizer;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -9,12 +9,12 @@ public class RecognizedSlope implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	@SuppressWarnings("unused") private String _token = User.getUserInstance().getToken();
-	int slope_code;
+	int slope_id;
 	
 	ArrayList<Coordinate> coordinates = new ArrayList<Coordinate>();
 
 	RecognizedSlope(int id){
-		slope_code = id;
+		slope_id = id;
 	}
 	
 	public void add(Coordinate p){
@@ -22,16 +22,16 @@ public class RecognizedSlope implements Serializable{
 	};
 	
 	public void clearAll(){
-		slope_code=0;
+		slope_id=0;
 		coordinates.clear();
 	};
 	
 	public int getSlop_code() {
-		return slope_code;
+		return slope_id;
 	}
 
 	public void setSlop_code(int slop_code) {
-		this.slope_code = slop_code;
+		this.slope_id = slop_code;
 	}
 
 }

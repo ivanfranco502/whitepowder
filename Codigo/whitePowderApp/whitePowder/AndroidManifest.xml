@@ -44,7 +44,7 @@
         </activity>
         
         <activity 
-		    android:name="com.whitepowder.slope.recognizer.SlopeRecognizerActivity"
+		    android:name="com.whitepowder.slopeRecognizer.SlopeRecognizerActivity"
 		    android:configChanges="orientation"
             android:screenOrientation="portrait"/>
         
@@ -52,7 +52,7 @@
         <activity android:name="com.whitepowder.user.management.PasswordResetActivity"/>
 		<activity android:name="com.whitepowder.user.management.PasswordChangeActivity"/>
 
-        <activity android:name="com.whitepowder.slope.recognizer.MapDisplayActivity"/>
+        <activity android:name="com.whitepowder.slopeRecognizer.MapDisplayActivity"/>
         <activity android:name="com.whitepowder.skier.SkierActivity"/>
     </application>
 

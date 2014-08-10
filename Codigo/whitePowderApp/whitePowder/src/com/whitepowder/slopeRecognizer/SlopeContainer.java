@@ -1,4 +1,4 @@
-package com.whitepowder.slope.recognizer;
+package com.whitepowder.slopeRecognizer;
 import java.util.ArrayList;
 
 public class SlopeContainer{

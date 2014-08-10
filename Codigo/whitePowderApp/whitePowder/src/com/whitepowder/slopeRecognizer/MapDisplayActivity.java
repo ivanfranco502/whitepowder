@@ -1,4 +1,4 @@
-package com.whitepowder.slope.recognizer;
+package com.whitepowder.slopeRecognizer;
 
 import com.example.whitepowder.R;
 import com.google.android.gms.maps.GoogleMap;
