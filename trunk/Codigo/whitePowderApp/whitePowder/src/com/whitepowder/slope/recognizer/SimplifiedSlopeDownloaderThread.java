@@ -14,7 +14,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import com.whitepowder.ApplicationError;
 import com.whitepowder.storage.SPStorage;
-import com.whitepowder.storage.SyncThread;
 import com.whitepowder.user.management.User;
 import com.google.gson.Gson;
 

@@ -43,22 +43,22 @@ public class MapDisplayActivity extends Activity {
 	     plo.color(Color.RED);
 
 		 for(Coordinate c: mSlope.coordinates){
-			 plo.add(new LatLng(c.posX, c.posY));
+			 plo.add(new LatLng(c.x, c.y));
 		 }
 		 
 		 mMap.addPolyline(plo);
 	}
 	
 	private void setupCancelButton(final RelativeLayout btnCancel){
-		btnOk.setOnClickListener(new OnClickListener() {		
+		btnCancel.setOnClickListener(new OnClickListener() {		
 			@Override
 			public void onClick(View v) {
 				
 				//TODO deshadcode text
 				
 				new AlertDialog.Builder(mContext)
-		        .setTitle("Salir")
-		        .setMessage("¿Esta seguro que desea salir?")
+		        .setTitle("Descartar")
+		        .setMessage("¿Esta seguro que desea descartar la pista?")
 		        .setNegativeButton(getString(R.string.alert_no), null)
 		        .setPositiveButton(getString(R.string.alert_yes), new DialogInterface.OnClickListener() {
 		        	

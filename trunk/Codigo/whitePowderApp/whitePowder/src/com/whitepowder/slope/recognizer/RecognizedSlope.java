@@ -3,16 +3,18 @@ package com.whitepowder.slope.recognizer;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import com.whitepowder.user.management.User;
+
 public class RecognizedSlope implements Serializable{
 
 	private static final long serialVersionUID = 1L;
-
-	int slop_code;
+	@SuppressWarnings("unused") private String _token = User.getUserInstance().getToken();
+	int slope_code;
 	
 	ArrayList<Coordinate> coordinates = new ArrayList<Coordinate>();
 
 	RecognizedSlope(int id){
-		slop_code = id;
+		slope_code = id;
 	}
 	
 	public void add(Coordinate p){
@@ -20,16 +22,16 @@ public class RecognizedSlope implements Serializable{
 	};
 	
 	public void clearAll(){
-		slop_code=0;
+		slope_code=0;
 		coordinates.clear();
 	};
 	
 	public int getSlop_code() {
-		return slop_code;
+		return slope_code;
 	}
 
 	public void setSlop_code(int slop_code) {
-		this.slop_code = slop_code;
+		this.slope_code = slop_code;
 	}
 
 }
@@ -38,11 +40,11 @@ class Coordinate implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	
-	double posX;
-	double posY;
+	double x;
+	double y;
 	
-	Coordinate (double x, double y){
-		posX = x;
-		posY = y;
+	Coordinate (double px, double py){
+		this.x = px;
+		this.y = py;
 	}
 }

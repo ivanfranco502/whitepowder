@@ -28,7 +28,7 @@ public class SlopeRecognizerActivity extends Activity{
 	
 	private final int REQUEST_SHOW_MAP = 2;
 	private final float DISTANCE_BETWEEN_POINTS = 1;
-	private int ACCURATE_RATE =20;
+	private int ACCURATE_RATE =21;
 	
 	private TextView pointsView;
 	private int pointsAmmount =0;
@@ -243,6 +243,10 @@ public class SlopeRecognizerActivity extends Activity{
 			}
 			else if(resultCode==RESULT_OK){
 				//TODO transmit
+				Gson gson = new Gson();
+				String reconocia = gson.toJson(mRecognizedSlope);
+				
+				reconocia = reconocia +"fin";
 			};
 		}
 
