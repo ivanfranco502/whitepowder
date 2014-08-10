@@ -30,7 +30,7 @@ Tavros\DomainBundle\Entity\SlopeCoordinate:
     manyToOne:
         slcoCoordinate:
             targetEntity: Coordinate
-            cascade: {  }
+            cascade: ["persist"]
             mappedBy: null
             inversedBy: null
             joinColumns:
@@ -39,7 +39,7 @@ Tavros\DomainBundle\Entity\SlopeCoordinate:
             orphanRemoval: false
         slcoSlope:
             targetEntity: Slope
-            cascade: {  }
+            cascade: ["persist"]
             mappedBy: null
             inversedBy: null
             joinColumns:
@@ -48,7 +48,7 @@ Tavros\DomainBundle\Entity\SlopeCoordinate:
             orphanRemoval: false
         slcoUser:
             targetEntity: Users
-            cascade: {  }
+            cascade: ["persist"]
             mappedBy: null
             inversedBy: null
             joinColumns:

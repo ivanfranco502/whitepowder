@@ -1,8 +1,16 @@
+tavros_internalApi_slope_recognition:
+    pattern: /recognition
+    defaults: { _controller: TavrosInternalApiBundle:Slope:recognition }
+
+tavros_internalApi_slope_all_path:
+    pattern: /allPath
+    defaults: { _controller: TavrosInternalApiBundle:Slope:allPath }
+    
 tavros_internalApi_slope_all:
     pattern: /all
-    defaults: { _controller: TavrosInternalApiBundle:Slope:all}
+    defaults: { _controller: TavrosInternalApiBundle:Slope:all }
 
-tavros_internalApi_slope_allNames:
+tavros_internalApi_slope_all_names:
     pattern: /allNames
-    defaults: { _controller: TavrosInternalApiBundle:Slope:allNames}
+    defaults: { _controller: TavrosInternalApiBundle:Slope:allNames }
     
