@@ -65,8 +65,8 @@
     <string name="slope_recognition_text">RECONOCER PISTA</string>
     <string name="slope_recognition_start_text">COMENZAR</string>
     <string name="slope_recognition_stop_text">DETENER</string>
-    <string name="slope_recognition_ok">OK!</string>
-    <string name="slope_recognition_cancel">CANCELAR</string>
+    <string name="slope_recognition_ok">ENVIAR</string>
+    <string name="slope_recognition_cancel">DESCARTAR</string>
     
     
     

@@ -1,4 +1,4 @@
-package com.whitepowder.slope.recognizer;
+package com.whitepowder.slopeRecognizer;
 
 import java.util.ArrayList;
 
@@ -19,6 +19,8 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -32,9 +34,9 @@ public class SlopeRecognizerActivity extends Activity{
 	
 	private TextView pointsView;
 	private int pointsAmmount =0;
-	private RecognizedSlope mRecognizedSlope;
-	private Spinner spinner;
+	public RecognizedSlope mRecognizedSlope;
 	public SlopeSpinnerAdapter adapter;
+	private Spinner spinner;
 	private LocationManager mLocationManager;
 	private LocationListener mLocationListener;
 	private boolean activeFlag = false;
@@ -91,6 +93,40 @@ public class SlopeRecognizerActivity extends Activity{
 		setupStartButton(btnStart,btnStop);
 		setupStopButton(btnStop,btnStart);
 		
+		//Setups already recognized dialog
+		
+		spinner.setOnItemSelectedListener(
+				new OnItemSelectedListener() {
+
+					public void onItemSelected(AdapterView<?> arg0, View arg1,int pos, long arg3) {
+						if(((SimplifiedSlope)spinner.getSelectedItem()).slope_recognized==1){
+							final AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+							builder.setMessage("La pista seleccionada ya se encuenta reconocida, ¿Desea sobrescribirla?");
+							builder.setCancelable(true);
+							
+					        builder.setPositiveButton("Si", new DialogInterface.OnClickListener() {
+					        	public void onClick(final DialogInterface dialog, final int id) {
+					        		dialog.cancel();        		
+					        	}});
+					        
+					        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+					        	public void onClick(final DialogInterface dialog, final int id) {
+					        		spinner.setSelection(0);
+					        		dialog.cancel();
+					        	}});
+					        
+							AlertDialog alert = builder.create();
+						    alert.show();
+						}
+					}
+					
+					@Override
+					public void onNothingSelected(AdapterView<?> arg0) {
+						
+					}	
+				}	
+		);
+	
 	};
 			
 	
@@ -144,6 +180,7 @@ public class SlopeRecognizerActivity extends Activity{
 					mRecognizedSlope = null;
 					pointsAmmount=0;
 					pointsView.setText("");
+					spinner.setSelection(0);
 					
 					//Changes UI
 					RelativeLayout btnStart = (RelativeLayout) mContext.findViewById(R.id.slope_recognition_start_button_container); 
@@ -174,6 +211,7 @@ public class SlopeRecognizerActivity extends Activity{
 			public void onClick(View v) {
 			
 				//TODO deshardcode text
+				
 				if(((SimplifiedSlope) spinner.getSelectedItem()).getSlope_id()==0){
 					Toast.makeText(mContext, "Por favor seleccione una pista a reconocer", Toast.LENGTH_SHORT).show();
 				}
@@ -192,7 +230,6 @@ public class SlopeRecognizerActivity extends Activity{
 						};
 						
 						if(accurateFlag){
-							
 							activeFlag=true;
 							
 							//Changes UI
@@ -204,7 +241,7 @@ public class SlopeRecognizerActivity extends Activity{
 							
 							SimplifiedSlope ss = (SimplifiedSlope)spinner.getSelectedItem();
 							mRecognizedSlope = new RecognizedSlope(ss.getSlope_id());
-						};				
+						};	
 					};
 				};
 			};
@@ -222,6 +259,28 @@ public class SlopeRecognizerActivity extends Activity{
 			};
 		});
 	};
+	
+	public void onTransmitionFinished(){
+		
+		Toast.makeText(mContext, "Transmisión realizada con éxito", Toast.LENGTH_SHORT).show();
+		
+		RelativeLayout btnStart = (RelativeLayout)mContext.findViewById(R.id.slope_recognition_start_button_container);
+		btnStart.setClickable(true);
+		btnStart.setVisibility(RelativeLayout.VISIBLE);
+		
+		RelativeLayout btnStop = (RelativeLayout)mContext.findViewById(R.id.slope_recognition_stop_button_container);
+		btnStop.setClickable(false);
+		btnStop.setVisibility(RelativeLayout.INVISIBLE);
+		
+		mRecognizedSlope.clearAll();
+		mRecognizedSlope = null;
+		activeFlag = false;
+		pointsAmmount=0;
+		pointsView.setText("");
+		spinner.setSelection(0);
+
+		
+	}
 
 	public void onActivityResult(int requestCode, int resultCode, Intent data){
 		
@@ -235,6 +294,7 @@ public class SlopeRecognizerActivity extends Activity{
 				btnStop.setClickable(false);
 				btnStop.setVisibility(RelativeLayout.INVISIBLE);
 				
+				spinner.setSelection(0);
 				mRecognizedSlope.clearAll();
 				mRecognizedSlope = null;
 				activeFlag = false;
@@ -242,11 +302,9 @@ public class SlopeRecognizerActivity extends Activity{
 				pointsView.setText("");
 			}
 			else if(resultCode==RESULT_OK){
-				//TODO transmit
-				Gson gson = new Gson();
-				String reconocia = gson.toJson(mRecognizedSlope);
+				SlopeUploaderThread slut = new SlopeUploaderThread(this);
+				slut.execute();
 				
-				reconocia = reconocia +"fin";
 			};
 		}
 
@@ -265,16 +323,16 @@ public class SlopeRecognizerActivity extends Activity{
 		builder.setMessage("El sistema GPS esta desactivado, ¿Desea activarlo?")
 			.setCancelable(false)
 	        .setPositiveButton("Si", new DialogInterface.OnClickListener() {
-	        	public void onClick(@SuppressWarnings("unused") final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+	        	public void onClick(final DialogInterface dialog, final int id) {
 	        		startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
 	        		
 	        	}
 	        })
 	        .setNegativeButton("No", new DialogInterface.OnClickListener() {
-	        	public void onClick(final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+	        	public void onClick(final DialogInterface dialog, final int id) {
 	        		dialog.cancel();
 	        	}	
-	           	});
+	        });
 		AlertDialog alert = builder.create();
 	    alert.show();
 	};
