@@ -5,6 +5,8 @@ namespace Tavros\InternalApiBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Tavros\InternalApiBundle\Entity\ApiResponse;
+use Tavros\DomainBundle\Entity\Coordinate as Coordinate;
+use Tavros\DomainBundle\Entity\SlopeCoordinate as SlopeCoordinate;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Authentication\Token\AnonymousToken;
 use \FOS\UserBundle\Entity\User as User;
@@ -49,6 +51,7 @@ class SlopeController extends Controller {
         $response->setContent($serializer->serialize($apiResponse, 'json'));
         return $response;
     }
+
     //GET ONLY ALL SLOPE NAMES//
     function allNamesAction() {
         $logger = $this->container->get('logger');
@@ -83,7 +86,7 @@ class SlopeController extends Controller {
         }
 
         $payload = Array();
-        
+
         foreach ($slopes as $slope) {
             /* @var $slope \Tavros\DomainBundle\Entity\Slope */
             $s = Array();
@@ -91,7 +94,7 @@ class SlopeController extends Controller {
             $s['slope_description'] = $slope->getSlopDescription();
 
             $coord = $slope->getCoordinates();
-          
+
             if ($coord[0]) {
                 $s['slope_recognized'] = 1;
             } else {
@@ -103,6 +106,140 @@ class SlopeController extends Controller {
 
         $apiResponse->setCode(200);
         $apiResponse->setPayload($payload);
+        $response->setContent($serializer->serialize($apiResponse, 'json'));
+        return $response;
+    }
+
+    //RECOGNIZE A NEW SLOPE
+    function recognitionAction() {
+        $logger = $this->container->get('logger');
+        $serializer = $this->container->get('jms_serializer');
+        $apiResponse = new ApiResponse();
+        $response = new Response();
+        $response->headers->set('Content-Type', 'application/json');
+        $em = $this->container->get('Doctrine')->getManager();
+
+        if (!$this->container->get('request')->getMethod() == 'POST') {
+            $apiResponse->setCode(404);
+            $response->setContent($serializer->serialize($apiResponse, 'json'));
+            return $response;
+        }
+
+        $content = json_decode($this->container->get('request')->getContent());
+
+        $token = $em->getRepository('TavrosDomainBundle:Token')->findOneByToken($content->_token);
+        /* @var $token  \Tavros\DomainBundle\Entity\Token */
+        if (!$token) {
+            $apiResponse->setCode(110);
+            $response->setContent($serializer->serialize($apiResponse, 'json'));
+            return $response;
+        }
+
+        $user = $token->getTokenUser();
+
+        /* @var $user  \Tavros\DomainBundle\Entity\Users */
+
+        $roles = $user->getRoles();
+
+        if (!in_array('ROLE_RECON', $roles)) {
+            $apiResponse->setCode(117);
+            $response->setContent($serializer->serialize($apiResponse, 'json'));
+            return $response;
+        }
+
+        $slope = $em->getRepository('TavrosDomainBundle:Slope')->find($content->slope_id);
+
+        /* @var $slope \Tavros\DomainBundle\Entity\Slope */
+
+        if (!$slope) {
+            $apiResponse->setCode(118);
+            $response->setContent($serializer->serialize($apiResponse, 'json'));
+            return $response;
+        }
+
+        try {
+            foreach ($content->coordinates as $coord_xy) {
+                $coord = new Coordinate();
+                $slopeCoordinate = new SlopeCoordinate();
+
+                $coord->setCoorCreatedDate(new \DateTime(date('Y-m-d H:i:s')));
+                $coord->setCoorX($coord_xy->x);
+                $coord->setCoorY($coord_xy->y);
+
+                $slopeCoordinate->setSlcoCoordinate($coord);
+                $slopeCoordinate->setSlcoSlope($slope);
+                $slopeCoordinate->setSlcoUpdateDate(new \DateTime(date('Y-m-d H:i:s')));
+
+                $slope->addCoordinate($slopeCoordinate);
+            }
+            $em->persist($slope);
+            $em->flush();
+        } catch (Exception $ex) {
+            $logger->error('[TAVROS - ERROR]' . $ex);
+            $apiResponse->setCode(119);
+            $response->setContent($serializer->serialize($apiResponse, 'json'));
+            return $response;
+        }
+
+        $apiResponse->setCode(200);
+        $response->setContent($serializer->serialize($apiResponse, 'json'));
+        return $response;
+    }
+
+    //GET SLOPE COORDINATE
+    function allPathAction() {
+        $logger = $this->container->get('logger');
+        $serializer = $this->container->get('jms_serializer');
+        $apiResponse = new ApiResponse();
+        $response = new Response();
+        $response->headers->set('Content-Type', 'application/json');
+        $em = $this->container->get('Doctrine')->getManager();
+
+        if (!$this->container->get('request')->getMethod() == 'POST') {
+            $apiResponse->setCode(404);
+            $response->setContent($serializer->serialize($apiResponse, 'json'));
+            return $response;
+        }
+
+        $content = json_decode($this->container->get('request')->getContent());
+
+        $token = $em->getRepository('TavrosDomainBundle:Token')->findOneByToken($content->_token);
+
+        if (!$token) {
+            $apiResponse->setCode(110);
+            $response->setContent($serializer->serialize($apiResponse, 'json'));
+            return $response;
+        }
+
+        $slopes = $em->getRepository('TavrosDomainBundle:Slope')->findAll();
+
+        if (!$slopes) {
+            $apiResponse->setCode(111);
+            $response->setContent($serializer->serialize($apiResponse, 'json'));
+            return $response;
+        }
+
+        $minSlopes = Array();
+        /* @var $slope \Tavros\DomainBundle\Entity\Slope */
+        foreach ($slopes as $slope) {
+            $minSlope = Array();
+            $minSlope['slope_id'] = $slope->getSlopId();
+//            $minSlope['slope_difficulty_color'] = $slope->getSlopDificulty()->getSldiColor();
+            $minSlope['slope_difficulty_color'] = '#008000';
+            
+            /* @var $coord \Tavros\DomainBundle\Entity\Coordinates */
+            foreach($slope->getCoordinates() as $coord){
+                /* @var $coord \Tavros\DomainBundle\Entity\Coordinates */
+                $minCoordinates = Array();
+                $minCoordinates['x'] = $coord->getSlcoCoordinate()->getCoorX();
+                $minCoordinates['y'] = $coord->getSlcoCoordinate()->getCoorY();
+                $minSlope['slope_coordinates'][] =  $minCoordinates;
+            }
+            $minSlopes[] = $minSlope;
+        }
+
+        $apiResponse->setCode(200);
+        $apiResponse->setPayload($minSlopes);
         $response->setContent($serializer->serialize($apiResponse, 'json'));
         return $response;
     }

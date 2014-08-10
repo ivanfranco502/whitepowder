@@ -36,10 +36,11 @@ Tavros\DomainBundle\Entity\Slope:
         Coordinates:
             targetEntity: SlopeCoordinate
             mappedBy: slcoSlope
+            cascade: ["persist"]
     manyToOne:
         slopGeneralInformation:
             targetEntity: GeneralInformation
-            cascade: {  }
+            cascade: [ "persist" ]
             mappedBy: null
             inversedBy: null
             joinColumns:
@@ -48,7 +49,7 @@ Tavros\DomainBundle\Entity\Slope:
             orphanRemoval: false
         slopDificulty:
             targetEntity: SlopeDificulty
-            cascade: {  }
+            cascade: [ "persist" ]
             mappedBy: null
             inversedBy: null
             joinColumns:
