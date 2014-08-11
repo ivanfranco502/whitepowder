@@ -74,14 +74,10 @@ class SlopeDificulty
     /**
      * Get sldiColor
      *
-     * @return \Tavros\DomainBundle\Entity\Color
+     * @return \Tavros\DomainBundle\Entity\Color 
      */
     public function getSldiColor()
     {
         return $this->sldiColor;
-    }
-    
-    public function __toString() {
-        return $this->sldiDescription;
     }
 }
