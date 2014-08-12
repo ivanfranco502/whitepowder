@@ -5,7 +5,12 @@ import java.util.ArrayList;
 import com.example.whitepowder.R;
 import com.google.gson.Gson;
 import com.whitepowder.ApplicationError;
+import com.whitepowder.Logout;
+import com.whitepowder.skier.SkierActivity;
 import com.whitepowder.storage.SPStorage;
+import com.whitepowder.user.management.PasswordChangeActivity;
+
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -17,6 +22,9 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -48,8 +56,13 @@ public class SlopeRecognizerActivity extends Activity{
 	protected void onCreate(Bundle savedInstanceState) {
 		SlopeContainer mSlopes=null;
 		
+		//Sets general
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.slope_recognition);
+		
+		ActionBar ab = getActionBar();
+		ab.setTitle("White Powder");
+		ab.setSubtitle("Reconocedor");
 		
 		//Generates hint option in slope spinner
 		spinner = (Spinner) findViewById(R.id.slope_recognition_spinner);
@@ -332,6 +345,32 @@ public class SlopeRecognizerActivity extends Activity{
 		AlertDialog alert = builder.create();
 	    alert.show();
 	};
-
+	
+	public boolean onCreateOptionsMenu(Menu menu) {
+	    // Inflate the menu items for use in the action bar
+	    MenuInflater inflater = getMenuInflater();
+	    inflater.inflate(R.menu.rescuer_menu, menu);
+	    return super.onCreateOptionsMenu(menu);
+	    
+	    
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+	  switch (item.getItemId()) {
+	  case R.id.slope_recon_menu_logout:
+		  Logout.logout(mContext, false);		  
+          break;
+          
+	  case R.id.slope_recon_menu_change_password:
+		  Intent intent = new Intent(mContext, PasswordChangeActivity.class);
+		  this.startActivity(intent);
+		  break;
+	  default:
+	    break;
+	  }
+	  
+	  return true;
+	}
 
 }
