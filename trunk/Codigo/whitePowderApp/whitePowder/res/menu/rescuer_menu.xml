@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item 
+        android:id="@+id/slope_recon_menu_logout" 
+        android:visible="true" 
+        android:title="Cerrar Sesión" 
+        android:menuCategory="system" 
+        android:showAsAction="always" 
+        android:icon="@drawable/logout">
+
+    </item>
+    <item 
+        android:id="@+id/slope_recon_menu_change_password" 
+        android:visible="true" 
+        android:title="Cambiar contraseña" 
+        android:menuCategory="system" 
+        android:showAsAction="ifRoom" >
+
+    </item>
+    
+
+</menu>
