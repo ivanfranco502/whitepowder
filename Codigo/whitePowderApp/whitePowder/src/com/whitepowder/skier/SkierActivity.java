@@ -1,9 +1,7 @@
 package com.whitepowder.skier;
 
+import java.util.ArrayList;
 import java.util.Locale;
-
-import com.example.whitepowder.R;
-import com.whitepowder.user.management.PasswordChangeActivity;
 
 import android.app.ActionBar;
 import android.app.Activity;
@@ -18,8 +16,10 @@ import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
-
 import android.widget.Toast;
+
+import com.example.whitepowder.R;
+import com.whitepowder.user.management.PasswordChangeActivity;
 
 public class SkierActivity extends Activity implements ActionBar.TabListener {
 
@@ -31,6 +31,7 @@ public class SkierActivity extends Activity implements ActionBar.TabListener {
 	 * {@link android.support.v13.app.FragmentStatePagerAdapter}.
 	 */
 	SectionsPagerAdapter mSectionsPagerAdapter;
+	ArrayList<Integer> icons = new ArrayList<Integer>();
 
 	/**
 	 * The {@link ViewPager} that will host the section contents.
@@ -49,6 +50,12 @@ public class SkierActivity extends Activity implements ActionBar.TabListener {
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 		actionBar.setDisplayShowHomeEnabled(false);
 		actionBar.setDisplayShowTitleEnabled(false);
+		
+		icons.add(R.drawable.ic_basic_info);
+		icons.add(R.drawable.ic_map);
+		icons.add(R.drawable.ic_emergency);
+		icons.add(R.drawable.ic_profile);
+		icons.add(R.drawable.ic_basic_info);
 		
 		// Create the adapter that will return a fragment for each of the three
 		// primary sections of the activity.
@@ -75,7 +82,7 @@ public class SkierActivity extends Activity implements ActionBar.TabListener {
 			// the adapter. Also specify this Activity object, which implements
 			// the TabListener interface, as the callback (listener) for when
 			// this tab is selected.
-			actionBar.addTab(actionBar.newTab().setIcon(R.drawable.ic_basic_info)
+			actionBar.addTab(actionBar.newTab().setIcon(icons.get(i))
 					.setTabListener(this));
 					
 		}
