@@ -5,8 +5,41 @@
         AppBaseTheme from BOTH res/values/styles.xml and
         res/values-v11/styles.xml on API 14+ devices.
     -->
-    <style name="AppBaseTheme" parent="android:Theme.Holo.Light.DarkActionBar">
+    <style name="AppBaseTheme" parent="Theme.AppCompat.Light">
         <!-- API 14 theme customizations can go here. -->
+    </style>
+    
+    <style name="AppTheme" parent="AppBaseTheme">
+    
+            <item name="android:actionBarStyle">@style/ActionBarStyle2</item>
+        <item name="android:actionBarTabStyle">@style/ActionBarTabStyle2</item>
+        <item name="android:actionBarTabBarStyle">@style/ActionBarTabBarStyle2</item>
+        
+        <item name="actionBarStyle">@style/ActionBarStyle2</item>
+        <item name="actionBarTabStyle">@style/ActionBarTabStyle2</item>
+        <item name="actionBarTabBarStyle">@style/ActionBarTabBarStyle2</item>
+        </style>
+        
+       <style name="ActionBarStyle2" parent="@style/Widget.AppCompat.Light.ActionBar">
+        <item name="android:background">@drawable/fondo</item>
+        
+        <item name="background">@drawable/fondo</item>
+    </style>
+    
+    <style name="ActionBarTabStyle2" parent="@style/Widget.AppCompat.Light.ActionBar.TabView">
+        <item name="android:background">@drawable/fondo</item>
+        
+        <item name="background">@drawable/fondo</item>
+    </style>
+    
+    <style name="ActionBarTabBarStyle2" parent="@style/Widget.AppCompat.Light.ActionBar.TabBar">
+        <item name="android:background">@drawable/fondo_blanco</item>
+        <item name="background">@drawable/fondo_blanco</item>
+        
+        
+        <item name="android:backgroundSplit">@drawable/fondo_blanco</item>
+        <item name="backgroundSplit">@drawable/fondo_blanco</item>
+        <item name="android:backgroundStacked">@drawable/fondo_blanco</item>
     </style>
 
 </resources>
