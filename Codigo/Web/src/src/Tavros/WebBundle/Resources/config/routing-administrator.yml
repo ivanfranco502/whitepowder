@@ -2,6 +2,10 @@ tavros_administrator_home:
     pattern:  /
     defaults: { _controller: TavrosWebBundle:Administrator:index }
 
+tavros_administrator_about:
+    pattern:  /about
+    defaults: { _controller: TavrosWebBundle:Administrator:about }
+    
 _admin_manager:
     resource: '@SonataAdminBundle/Resources/config/routing/sonata_admin.xml'
     prefix: /manager
