@@ -25,6 +25,9 @@ class SlopeDificulty
     private $sldiColor;
 
 
+     public function __toString() {
+        return $this->sldiDescription;
+    } 
     /**
      * Get sldiId
      *
