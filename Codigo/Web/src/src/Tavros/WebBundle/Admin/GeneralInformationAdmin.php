@@ -11,6 +11,8 @@ class GeneralInformationAdmin extends Admin {
 
     protected $baseRouteName = 'generalinformation';
     protected $baseRoutePattern = 'generalinformation';
+    
+    protected $childAssociationMapping = 'coordinate';
 
     // Fields to be shown on create/edit forms
     protected function configureFormFields(FormMapper $formMapper) {
@@ -22,6 +24,8 @@ class GeneralInformationAdmin extends Admin {
                 ->add('geinSeasonSince', 'text', array('label' => 'Season since'))
                 ->add('geinSeasonTill', 'text', array('label' => 'Season till'))
                 ->add('geinLocation', 'text', array('label' => 'Location'))
+                ->add('geinX', null, array('label' => 'Coordenada X'))
+                ->add('geinY', null, array('label' => 'Coordenada Y'))
                 ->add('geinDetails', 'text', array('label' => 'Details'))
                 ->add('Schedules', null, array('label' => 'Schedules'))
                 ->add('Slopes', null, array('label' => 'Slopes'));

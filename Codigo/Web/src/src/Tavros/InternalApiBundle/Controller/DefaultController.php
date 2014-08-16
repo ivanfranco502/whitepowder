@@ -36,19 +36,18 @@ class DefaultController extends Controller {
             return $response;
         }
 
-        $generalInformation = $em->getRepository('TavrosDomainBundle:GeneralInformation')->findAll();
+        $generalInformationDTO = $em->getRepository('TavrosDomainBundle:GeneralInformationDTO')->findAll();
 
-        if (!$generalInformation) {
+        if (!$generalInformationDTO) {
             $apiResponse->setCode(116);
             $response->setContent($serializer->serialize($apiResponse, 'json'));
             return $response;
         }
 
         $apiResponse->setCode(200);
-        $apiResponse->setPayload($generalInformation[0]);
+        $apiResponse->setPayload($generalInformationDTO[0]);
         $response->setContent($serializer->serialize($apiResponse, 'json'));
         return $response;
-
         
     }
 

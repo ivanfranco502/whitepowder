@@ -5,9 +5,9 @@ namespace Tavros\DomainBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * GeneralInformation
+ * GeneralInformationDTO
  */
-class GeneralInformation
+class GeneralInformationDTO
 {
     /**
      * @var integer
@@ -54,6 +54,18 @@ class GeneralInformation
      */
     private $geinDetails;
 
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $Schedules;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->Schedules = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
     /**
      * Get geinId
@@ -69,7 +81,7 @@ class GeneralInformation
      * Set geinCenterName
      *
      * @param string $geinCenterName
-     * @return GeneralInformation
+     * @return GeneralInformationDTO
      */
     public function setGeinCenterName($geinCenterName)
     {
@@ -92,7 +104,7 @@ class GeneralInformation
      * Set geinAmenities
      *
      * @param string $geinAmenities
-     * @return GeneralInformation
+     * @return GeneralInformationDTO
      */
     public function setGeinAmenities($geinAmenities)
     {
@@ -115,7 +127,7 @@ class GeneralInformation
      * Set geinMaximumHeight
      *
      * @param float $geinMaximumHeight
-     * @return GeneralInformation
+     * @return GeneralInformationDTO
      */
     public function setGeinMaximumHeight($geinMaximumHeight)
     {
@@ -138,7 +150,7 @@ class GeneralInformation
      * Set geinMinimumHeight
      *
      * @param float $geinMinimumHeight
-     * @return GeneralInformation
+     * @return GeneralInformationDTO
      */
     public function setGeinMinimumHeight($geinMinimumHeight)
     {
@@ -161,7 +173,7 @@ class GeneralInformation
      * Set geinSeasonSince
      *
      * @param string $geinSeasonSince
-     * @return GeneralInformation
+     * @return GeneralInformationDTO
      */
     public function setGeinSeasonSince($geinSeasonSince)
     {
@@ -184,7 +196,7 @@ class GeneralInformation
      * Set geinSeasonTill
      *
      * @param string $geinSeasonTill
-     * @return GeneralInformation
+     * @return GeneralInformationDTO
      */
     public function setGeinSeasonTill($geinSeasonTill)
     {
@@ -207,7 +219,7 @@ class GeneralInformation
      * Set geinLocation
      *
      * @param string $geinLocation
-     * @return GeneralInformation
+     * @return GeneralInformationDTO
      */
     public function setGeinLocation($geinLocation)
     {
@@ -230,7 +242,7 @@ class GeneralInformation
      * Set geinDetails
      *
      * @param string $geinDetails
-     * @return GeneralInformation
+     * @return GeneralInformationDTO
      */
     public function setGeinDetails($geinDetails)
     {
@@ -248,30 +260,12 @@ class GeneralInformation
     {
         return $this->geinDetails;
     }
-    /**
-     * @var \Doctrine\Common\Collections\Collection
-     */
-    private $Schedules;
-
-    /**
-     * @var \Doctrine\Common\Collections\Collection
-     */
-    private $Slopes;
-
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->Schedules = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->Slopes = new \Doctrine\Common\Collections\ArrayCollection();
-    }
 
     /**
      * Add Schedules
      *
      * @param \Tavros\DomainBundle\Entity\HourDay $schedules
-     * @return GeneralInformation
+     * @return GeneralInformationDTO
      */
     public function addSchedule(\Tavros\DomainBundle\Entity\HourDay $schedules)
     {
@@ -299,39 +293,6 @@ class GeneralInformation
     {
         return $this->Schedules;
     }
-
-    /**
-     * Add Slopes
-     *
-     * @param \Tavros\DomainBundle\Entity\Slope $slopes
-     * @return GeneralInformation
-     */
-    public function addSlope(\Tavros\DomainBundle\Entity\Slope $slopes)
-    {
-        $this->Slopes[] = $slopes;
-
-        return $this;
-    }
-
-    /**
-     * Remove Slopes
-     *
-     * @param \Tavros\DomainBundle\Entity\Slope $slopes
-     */
-    public function removeSlope(\Tavros\DomainBundle\Entity\Slope $slopes)
-    {
-        $this->Slopes->removeElement($slopes);
-    }
-
-    /**
-     * Get Slopes
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getSlopes()
-    {
-        return $this->Slopes;
-    }
     /**
      * @var \Tavros\DomainBundle\Entity\Coordinate
      */
@@ -342,7 +303,7 @@ class GeneralInformation
      * Set geinCoordinate
      *
      * @param \Tavros\DomainBundle\Entity\Coordinate $geinCoordinate
-     * @return GeneralInformation
+     * @return GeneralInformationDTO
      */
     public function setGeinCoordinate(\Tavros\DomainBundle\Entity\Coordinate $geinCoordinate = null)
     {
@@ -375,7 +336,7 @@ class GeneralInformation
      * Set geinX
      *
      * @param float $geinX
-     * @return GeneralInformation
+     * @return GeneralInformationDTO
      */
     public function setGeinX($geinX)
     {
@@ -398,7 +359,7 @@ class GeneralInformation
      * Set geinY
      *
      * @param float $geinY
-     * @return GeneralInformation
+     * @return GeneralInformationDTO
      */
     public function setGeinY($geinY)
     {

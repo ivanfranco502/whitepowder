@@ -127,4 +127,4 @@ services:
             - Tavros\DomainBundle\Entity\NotificationType
             - ~
         calls:
-            - [ setTranslationDomain, [TavrosWebBundle]]            
+            - [ setTranslationDomain, [TavrosWebBundle]]         

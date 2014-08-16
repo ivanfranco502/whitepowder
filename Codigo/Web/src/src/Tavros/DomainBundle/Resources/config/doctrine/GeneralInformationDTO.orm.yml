@@ -1,4 +1,4 @@
-Tavros\DomainBundle\Entity\GeneralInformation:
+Tavros\DomainBundle\Entity\GeneralInformationDTO:
     type: entity
     table: general_information
     id:
@@ -86,7 +86,4 @@ Tavros\DomainBundle\Entity\GeneralInformation:
       Schedules:
         targetEntity: HourDay
         mappedBy: hodaGeneralInformation
-      Slopes:
-        targetEntity: Slope
-        mappedBy: slopGeneralInformation
     lifecycleCallbacks: {  }
