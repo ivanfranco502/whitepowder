@@ -16,4 +16,9 @@ class AdministratorController extends Controller {
         return $this->render('TavrosWebBundle:Administrator:about.html.twig', Array('about_active' => 'active'));
     }
 
+    public function centerAction() {
+
+        return $this->render('TavrosWebBundle:Administrator:center.html.twig');
+    }
+
 }

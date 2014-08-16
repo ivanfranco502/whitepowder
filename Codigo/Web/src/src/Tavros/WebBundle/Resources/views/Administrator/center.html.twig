@@ -1,0 +1,19 @@
+{% extends "TavrosWebBundle::layout.html.twig" %}
+
+{% block addHeadJs %}
+    <script type="text/javascript"
+      src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDdetfv_9vJ-f9lAE0Fv5E6pmajk-ah5dY&sensor=true">
+    </script>
+{% endblock %}
+
+
+{% block main_content %}
+    <div class="container-fluid full-height">
+        <div class="row full-height">
+            <div class="col-xs-12 col-md-8 full-height">
+                <div id="center-map" class="full-height"></div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
