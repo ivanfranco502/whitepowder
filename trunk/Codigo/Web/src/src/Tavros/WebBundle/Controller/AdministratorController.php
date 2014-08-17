@@ -19,7 +19,7 @@ class AdministratorController extends Controller {
     public function centerAction() {
         $em = $this->container->get('Doctrine')->getManager();
         $generalInformationDTO = $em->getRepository('TavrosDomainBundle:GeneralInformationDTO')->findAll();
-        if(!generalInformationDTO){
+        if(!$generalInformationDTO){
             return $this->render('TavrosWebBundle:Administrator:center.html.twig', 
                                 array('coordinate_x' => 10,
                                         'coordinate_y' => 50));
