@@ -54,6 +54,34 @@ class GeneralInformation
      */
     private $geinDetails;
 
+    /**
+     * @var float
+     */
+    private $geinX;
+
+    /**
+     * @var float
+     */
+    private $geinY;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $Schedules;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $Slopes;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->Schedules = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->Slopes = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
     /**
      * Get geinId
@@ -248,23 +276,51 @@ class GeneralInformation
     {
         return $this->geinDetails;
     }
-    /**
-     * @var \Doctrine\Common\Collections\Collection
-     */
-    private $Schedules;
 
     /**
-     * @var \Doctrine\Common\Collections\Collection
+     * Set geinX
+     *
+     * @param float $geinX
+     * @return GeneralInformation
      */
-    private $Slopes;
-
-    /**
-     * Constructor
-     */
-    public function __construct()
+    public function setGeinX($geinX)
     {
-        $this->Schedules = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->Slopes = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->geinX = $geinX;
+
+        return $this;
+    }
+
+    /**
+     * Get geinX
+     *
+     * @return float 
+     */
+    public function getGeinX()
+    {
+        return $this->geinX;
+    }
+
+    /**
+     * Set geinY
+     *
+     * @param float $geinY
+     * @return GeneralInformation
+     */
+    public function setGeinY($geinY)
+    {
+        $this->geinY = $geinY;
+
+        return $this;
+    }
+
+    /**
+     * Get geinY
+     *
+     * @return float 
+     */
+    public function getGeinY()
+    {
+        return $this->geinY;
     }
 
     /**
@@ -331,89 +387,5 @@ class GeneralInformation
     public function getSlopes()
     {
         return $this->Slopes;
-    }
-    /**
-     * @var \Tavros\DomainBundle\Entity\Coordinate
-     */
-    private $geinCoordinate;
-
-
-    /**
-     * Set geinCoordinate
-     *
-     * @param \Tavros\DomainBundle\Entity\Coordinate $geinCoordinate
-     * @return GeneralInformation
-     */
-    public function setGeinCoordinate(\Tavros\DomainBundle\Entity\Coordinate $geinCoordinate = null)
-    {
-        $this->geinCoordinate = $geinCoordinate;
-
-        return $this;
-    }
-
-    /**
-     * Get geinCoordinate
-     *
-     * @return \Tavros\DomainBundle\Entity\Coordinate 
-     */
-    public function getGeinCoordinate()
-    {
-        return $this->geinCoordinate;
-    }
-    /**
-     * @var float
-     */
-    private $geinX;
-
-    /**
-     * @var float
-     */
-    private $geinY;
-
-
-    /**
-     * Set geinX
-     *
-     * @param float $geinX
-     * @return GeneralInformation
-     */
-    public function setGeinX($geinX)
-    {
-        $this->geinX = $geinX;
-
-        return $this;
-    }
-
-    /**
-     * Get geinX
-     *
-     * @return float 
-     */
-    public function getGeinX()
-    {
-        return $this->geinX;
-    }
-
-    /**
-     * Set geinY
-     *
-     * @param float $geinY
-     * @return GeneralInformation
-     */
-    public function setGeinY($geinY)
-    {
-        $this->geinY = $geinY;
-
-        return $this;
-    }
-
-    /**
-     * Get geinY
-     *
-     * @return float 
-     */
-    public function getGeinY()
-    {
-        return $this->geinY;
     }
 }

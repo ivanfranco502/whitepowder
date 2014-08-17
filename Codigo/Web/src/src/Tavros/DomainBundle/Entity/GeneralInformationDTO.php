@@ -55,6 +55,16 @@ class GeneralInformationDTO
     private $geinDetails;
 
     /**
+     * @var float
+     */
+    private $geinX;
+
+    /**
+     * @var float
+     */
+    private $geinY;
+
+    /**
      * @var \Doctrine\Common\Collections\Collection
      */
     private $Schedules;
@@ -262,77 +272,6 @@ class GeneralInformationDTO
     }
 
     /**
-     * Add Schedules
-     *
-     * @param \Tavros\DomainBundle\Entity\HourDay $schedules
-     * @return GeneralInformationDTO
-     */
-    public function addSchedule(\Tavros\DomainBundle\Entity\HourDay $schedules)
-    {
-        $this->Schedules[] = $schedules;
-
-        return $this;
-    }
-
-    /**
-     * Remove Schedules
-     *
-     * @param \Tavros\DomainBundle\Entity\HourDay $schedules
-     */
-    public function removeSchedule(\Tavros\DomainBundle\Entity\HourDay $schedules)
-    {
-        $this->Schedules->removeElement($schedules);
-    }
-
-    /**
-     * Get Schedules
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getSchedules()
-    {
-        return $this->Schedules;
-    }
-    /**
-     * @var \Tavros\DomainBundle\Entity\Coordinate
-     */
-    private $geinCoordinate;
-
-
-    /**
-     * Set geinCoordinate
-     *
-     * @param \Tavros\DomainBundle\Entity\Coordinate $geinCoordinate
-     * @return GeneralInformationDTO
-     */
-    public function setGeinCoordinate(\Tavros\DomainBundle\Entity\Coordinate $geinCoordinate = null)
-    {
-        $this->geinCoordinate = $geinCoordinate;
-
-        return $this;
-    }
-
-    /**
-     * Get geinCoordinate
-     *
-     * @return \Tavros\DomainBundle\Entity\Coordinate 
-     */
-    public function getGeinCoordinate()
-    {
-        return $this->geinCoordinate;
-    }
-    /**
-     * @var float
-     */
-    private $geinX;
-
-    /**
-     * @var float
-     */
-    private $geinY;
-
-
-    /**
      * Set geinX
      *
      * @param float $geinX
@@ -376,5 +315,38 @@ class GeneralInformationDTO
     public function getGeinY()
     {
         return $this->geinY;
+    }
+
+    /**
+     * Add Schedules
+     *
+     * @param \Tavros\DomainBundle\Entity\HourDay $schedules
+     * @return GeneralInformationDTO
+     */
+    public function addSchedule(\Tavros\DomainBundle\Entity\HourDay $schedules)
+    {
+        $this->Schedules[] = $schedules;
+
+        return $this;
+    }
+
+    /**
+     * Remove Schedules
+     *
+     * @param \Tavros\DomainBundle\Entity\HourDay $schedules
+     */
+    public function removeSchedule(\Tavros\DomainBundle\Entity\HourDay $schedules)
+    {
+        $this->Schedules->removeElement($schedules);
+    }
+
+    /**
+     * Get Schedules
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getSchedules()
+    {
+        return $this->Schedules;
     }
 }

@@ -2,7 +2,8 @@ var map;
 function initialize() {
     var mapOptions = {
         zoom: 14,
-        center: new google.maps.LatLng(-41.183162, -71.449619),
+        center: new google.maps.LatLng(parseFloat($('#y_coordinate').text()), 
+                                        parseFloat($('#x_coordinate').text())),
         mapTypeId: google.maps.MapTypeId.TERRAIN
     };
     map = new google.maps.Map(document.getElementById('center-map'),

@@ -17,8 +17,17 @@ class AdministratorController extends Controller {
     }
 
     public function centerAction() {
-
-        return $this->render('TavrosWebBundle:Administrator:center.html.twig');
+        $em = $this->container->get('Doctrine')->getManager();
+        $generalInformationDTO = $em->getRepository('TavrosDomainBundle:GeneralInformationDTO')->findAll();
+        if(!generalInformationDTO){
+            return $this->render('TavrosWebBundle:Administrator:center.html.twig', 
+                                array('coordinate_x' => 10,
+                                        'coordinate_y' => 50));
+        }else{
+        return $this->render('TavrosWebBundle:Administrator:center.html.twig', 
+                                array('coordinate_x' => $generalInformationDTO[0]->getGeinX(),
+                                        'coordinate_y' => $generalInformationDTO[0]->getGeinY()));
+        }
     }
 
 }
