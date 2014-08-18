@@ -14,42 +14,38 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.whitepowder.R;
 import com.google.gson.Gson;
 import com.whitepowder.ApplicationError;
 import com.whitepowder.Logout;
-import com.whitepowder.SHA1Manager;
-import com.whitepowder.user.management.PasswordChangeActivity;
+import com.whitepowder.storage.SPStorage;
 import com.whitepowder.user.management.User;
 
-public class BasicInformationThread extends AsyncTask<String, Void, Void> {
+public class BasicInformationThread extends Thread {
 
-	private final String BasicInformationURL = "http://whitetavros.com/Sandbox/web/internalApi/user/info/basic";
+	private final String BasicInformationURL = "http://whitetavros.com/Sandbox/web/internalApi/info/basic";
 	private ApplicationError mError = null;
-	private SkierActivity mContext;
-	private ProgressDialog progressDialog;
-	private BasicInformationResponse basicInformationResponse;
+	private Context mContext;
+	private BasicInformationResponse basicInformationResponse = null;
 	private BasicInformation basicInformation;
 	
-	public BasicInformationThread(SkierActivity context) {
+	public BasicInformationThread(Context context) {
 		mContext = context;	
 	}
 	
-	@Override
-	protected void onPreExecute(){
-		/*progressDialog = new ProgressDialog(mContext);
-		progressDialog.setMessage(mContext.getString(R.string.process_dialog_pwd_change));
-		progressDialog.setCancelable(false);
-		progressDialog.setIndeterminate(true);
-		progressDialog.show();*/
-	}
-	
+		
 	
 	@Override
-	protected Void doInBackground(String... registerInput) {
+	public void run() {
 		HttpURLConnection connection = null;
 			
 		try {		
@@ -79,7 +75,17 @@ public class BasicInformationThread extends AsyncTask<String, Void, Void> {
 				InputStream is = connection.getInputStream();
 				BufferedReader reader = new BufferedReader(new InputStreamReader(is));		
 				String response = reader.readLine();
-				parseResponse(response);
+				
+				Gson gson = new Gson();
+				basicInformationResponse = gson.fromJson(response, BasicInformationResponse.class);
+				if(basicInformationResponse != null){
+					if(basicInformationResponse.getCode() == 200){
+					SharedPreferences sp = mContext.getSharedPreferences(SPStorage.GENERAL_STORAGE_SHARED_PREFS, Context.MODE_MULTI_PROCESS);
+					SharedPreferences.Editor editor = sp.edit();
+					editor.putString(SPStorage.BASIC_INFORMATION, response);
+					editor.commit();
+					};
+				};
 		    }
 		    
 		    else{
@@ -102,56 +108,6 @@ public class BasicInformationThread extends AsyncTask<String, Void, Void> {
 				connection.disconnect();
 			};
 		};
-		
-		return null;
-	}
-	
-	@Override
-	protected void onPostExecute(Void unused) {	
-		
-		if(mError==null){
-			//TODO llenar UI con la info del centro
-    	}
-    	//Error handling
-    	else{
-    		switch(mError.getErrorCode()){
-    			case 504:
-    				//TODO mandar a la UI que no hay info disponible
-    				break;
-	    		case 508: 
-	    			Logout.logout(mContext, true);
-		    		break;
-		    	default: //100, 401, 402, 403, 410
-		    		Toast.makeText(mContext,R.string.error_server_unreachable,Toast.LENGTH_SHORT).show();
-		    		break;  			
-    		}
-    		
-    		if (progressDialog!=null) {
-				progressDialog.dismiss();
-    		}
-    	};
-
-    }
-
-		
-	private void parseResponse(String response){
-	
-		Gson gson = new Gson();
-		basicInformationResponse = gson.fromJson(response, BasicInformationResponse.class);
-		if(basicInformationResponse.getCode() != 200){
-        	switch(basicInformationResponse.getCode()){
-        		case 110:
-        			mError = new ApplicationError(508,"Error","Token inválido en descarga de información básica");
-        			break;
-        		case 116:
-        			mError = new ApplicationError(504, "Error", "No hay información básica en la base de datos");
-        			break;
-        	}
-        }
-        else{
-        	basicInformation = basicInformationResponse.getBasicInformation();	
-        }
-	}
-
+	};
 }
 

@@ -67,7 +67,7 @@
     <string name="slope_recognition_stop_text">DETENER</string>
     <string name="slope_recognition_ok">ENVIAR</string>
     <string name="slope_recognition_cancel">DESCARTAR</string>
-    
+    <string name="forecast_see_extended"><u>Ver pronóstico extendido</u></string>
     
     
 </resources>
