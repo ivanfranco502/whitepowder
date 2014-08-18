@@ -6,10 +6,8 @@ import com.example.whitepowder.R;
 import com.google.gson.Gson;
 import com.whitepowder.ApplicationError;
 import com.whitepowder.Logout;
-import com.whitepowder.skier.SkierActivity;
 import com.whitepowder.storage.SPStorage;
 import com.whitepowder.user.management.PasswordChangeActivity;
-
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -140,6 +138,12 @@ public class SlopeRecognizerActivity extends Activity{
 				}	
 		);
 	
+	};
+	
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		mLocationManager.removeUpdates(mLocationListener);
 	};
 			
 	
@@ -359,8 +363,20 @@ public class SlopeRecognizerActivity extends Activity{
 	public boolean onOptionsItemSelected(MenuItem item) {
 	  switch (item.getItemId()) {
 	  case R.id.slope_recon_menu_logout:
-		  Logout.logout(mContext, false);		  
-          break;
+		  
+			new AlertDialog.Builder(this)
+	        .setTitle(getString(R.string.alert_exit_title))
+	        .setMessage(getString(R.string.alert_exit_message))
+	        .setNegativeButton(getString(R.string.alert_no), null)
+	        .setPositiveButton(getString(R.string.alert_yes), new DialogInterface.OnClickListener() {
+
+	            public void onClick(DialogInterface arg0, int arg1) {
+	            	
+	      		  Logout.logout(mContext, false);		  
+	            }
+	        }).create().show();
+			break;
+		 
           
 	  case R.id.slope_recon_menu_change_password:
 		  Intent intent = new Intent(mContext, PasswordChangeActivity.class);
@@ -371,6 +387,21 @@ public class SlopeRecognizerActivity extends Activity{
 	  }
 	  
 	  return true;
+	}
+	
+	@Override
+	public void onBackPressed() {
+		new AlertDialog.Builder(this)
+	        .setTitle(getString(R.string.alert_exit_title))
+	        .setMessage(getString(R.string.alert_exit_message))
+	        .setNegativeButton(getString(R.string.alert_no), null)
+	        .setPositiveButton(getString(R.string.alert_yes), new DialogInterface.OnClickListener() {
+
+	            public void onClick(DialogInterface arg0, int arg1) {
+	            	
+	            	SlopeRecognizerActivity.this.finish();
+	            }
+	        }).create().show();
 	}
 
 }

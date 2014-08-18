@@ -1,6 +1,8 @@
 package com.whitepowder.slopeRecognizer;
 
 import com.example.whitepowder.R;
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
@@ -25,28 +27,45 @@ public class MapDisplayActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		this.setContentView(R.layout.slope_recognition_map);
-		this.setResult(10);
-		
-		btnOk = (RelativeLayout)findViewById(R.id.slope_recognition_map_ok);
-		btnCancel = (RelativeLayout)findViewById(R.id.slope_recognition_map_cancel);
 		
 		mSlope = (RecognizedSlope)getIntent().getSerializableExtra("slope");
 		
-		setupCancelButton(btnCancel);
-		setupOkButton(btnOk);
+		//If there are no points skip everything
 		
-		mMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.slope_recognition_map)).getMap();
+		if(mSlope.coordinates.size()==0){
+			this.finish();
+		}
+		else{
 		
-		 PolylineOptions plo = new PolylineOptions();
-	     plo.width(5);
-	     plo.color(Color.RED);
-
-		 for(Coordinate c: mSlope.coordinates){
-			 plo.add(new LatLng(c.x, c.y));
-		 }
-		 
-		 mMap.addPolyline(plo);
+			this.setContentView(R.layout.slope_recognition_map);
+			this.setResult(10);
+			
+			btnOk = (RelativeLayout)findViewById(R.id.slope_recognition_map_ok);
+			btnCancel = (RelativeLayout)findViewById(R.id.slope_recognition_map_cancel);
+	
+			setupCancelButton(btnCancel);
+			setupOkButton(btnOk);
+			
+			//Gets map
+			
+			mMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.slope_recognition_map)).getMap();
+			
+			//Setups map
+	        
+	        CameraUpdate cam = CameraUpdateFactory.newLatLngZoom(new LatLng(mSlope.coordinates.get(0).x,mSlope.coordinates.get(0).y),14);
+	        mMap.moveCamera(cam);
+	      
+			//Draw slope
+			PolylineOptions plo = new PolylineOptions();
+		    plo.width(6);
+		    plo.color(Color.RED);
+	
+			for(Coordinate c: mSlope.coordinates){
+				plo.add(new LatLng(c.x, c.y));
+			}
+			 
+			 mMap.addPolyline(plo);
+		};
 	}
 	
 	private void setupCancelButton(final RelativeLayout btnCancel){
@@ -84,5 +103,6 @@ public class MapDisplayActivity extends Activity {
 			}
 		});
 	};
+	
 }
 	
