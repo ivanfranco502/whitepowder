@@ -1,5 +1,7 @@
 package com.whitepowder.skier;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 
 public class BasicInformationResponse{
@@ -15,54 +17,122 @@ public class BasicInformationResponse{
 }
 
 class BasicInformation {
-	private String amenities;
-	private int maximum_height;
-	private int minimum_height;
-	private String season_since;
-	private String season_till;
-	private String location;
-	private List<Day> days;
+	private String gein_center_name;
+	private String gein_amenities;
+	private int gein_maximum_height;
+	private int gein_minimum_height;
+	private String gein_season_since;
+	private String gein_season_till;
+	private String gein_location;
+	private String gein_details;
+	private ArrayList<Day> _schedules;
+	private List<Slope> _slopes;
 	
+	public String getCenterName(){
+		return gein_center_name;
+	}
 	public String getAmenities(){
-		return amenities;
+		return gein_amenities;
 	}
-	public int getMaximumHeight(){
-		return maximum_height;
+	public String getMaximumHeight(){
+		return "Altura máxima: " + gein_maximum_height + " m.s.n.m.";
 	}
-	public int getMinimumHeight(){
-		return minimum_height;
+	public String getMinimumHeight(){
+		return "Altura mínima: " + gein_minimum_height + " m.s.n.m.";
 	}
 	public String getSeasonSince(){
-		return season_since;
+		return gein_season_since;
 	}
 	public String getSeasonTill(){
-		return season_till;
+		return gein_season_till;
 	}
 	public String getLocation(){
-		return location;
+		return gein_location;
 	}
-	public List<Day> getDays(){
-		return days;
+	public String getDetails(){
+		return gein_details;
+	}
+	public ArrayList<Day> getDays(){
+		return _schedules;
+	}
+	public List<Slope> getSlopes(){
+		return _slopes;
+	}
+	
+	public String getSeason(){
+		return "Temporada: desde " + getSeasonSince() + " hasta " + getSeasonTill() + ".";
 	}
 	
 }
 
 class Day {
-	private String name;
-	private String start_hour;
-	private String end_hour;
-	private boolean close;
+	private String hoda_day;
+	private String hoda_start_hour;
+	private String hoda_end_hour;
+	private boolean hoda_close;
 	
-	public String getName(){
-		return name;
+	public String getDay(){
+		return hoda_day;
 	}
 	public String getStartHour(){
-		return start_hour;
+		return hoda_start_hour;
 	}
 	public String getEndHour(){
-		return end_hour;
+		return hoda_end_hour;
 	}
 	public boolean getClose(){
-		return close;
+		return hoda_close;
 	}
+	
+	public String toString(){
+		if(getClose()){
+			return  getDay() + ": cerrado.";
+		}
+		else{
+			return getDay() + ": " + getStartHour() + " - " + getEndHour();
+		}
+		
+	}
+}
+
+class Slope{
+	private int slop_id;
+	private String slop_description;
+	private int slop_length;
+	private Dificulty slop_dificulty;
+	private List<Coordinates> _coordinates;
+	
+	public int getId(){
+		return slop_id;
+	}
+	public String getDescription() {
+		return slop_description;
+	}
+	public int getLength() {
+		return slop_length;
+	}
+	public Dificulty getDificulty() {
+		return slop_dificulty;
+	}
+}
+
+class Dificulty{
+	private String sldi_description;
+	private String sldi_color;
+	
+	public String getDescription() {
+		return sldi_description;
+	}
+	public String getColor() {
+		return sldi_color;
+	}	
+}
+
+class Coordinates{
+	private Coordinate slco_coordinate;
+}
+
+class Coordinate{
+	private double coor_x;
+	private double coor_y;
 }

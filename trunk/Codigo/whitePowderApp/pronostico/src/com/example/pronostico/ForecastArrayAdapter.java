@@ -50,11 +50,14 @@ public class ForecastArrayAdapter extends ArrayAdapter<Forecast> {
         TextView fecha =  (TextView) row.findViewById(R.id.fecha);
         fecha.setText(pronostico[i].getFecha());
         
+        TextView description =  (TextView) row.findViewById(R.id.description);
+        description.setText(pronostico[i].getWeatherMain());
+        
         TextView tMin =  (TextView) row.findViewById(R.id.tMin);
-        tMin.setText("Temperatura mínima "+pronostico[i].getTemperaturaMin().toString());
+        tMin.setText("Temperatura mínima "+pronostico[i].getTemperaturaMin()+" °C");
         
         TextView tMax =  (TextView) row.findViewById(R.id.tMax);
-        tMax.setText("Temperatura máxima "+pronostico[i].getTemperaturaMax().toString());
+        tMax.setText("Temperatura máxima "+pronostico[i].getTemperaturaMax()+" °C");
   
         
         return row;
