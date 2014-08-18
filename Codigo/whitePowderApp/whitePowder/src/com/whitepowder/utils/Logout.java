@@ -1,7 +1,7 @@
-package com.whitepowder;
+package com.whitepowder.utils;
 
 import com.example.whitepowder.R;
-import com.whitepowder.user.management.LoginActivity;
+import com.whitepowder.userManagement.LoginActivity;
 
 import android.app.Activity;
 import android.content.Context;

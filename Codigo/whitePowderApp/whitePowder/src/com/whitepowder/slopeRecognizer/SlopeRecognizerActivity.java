@@ -4,10 +4,11 @@ import java.util.ArrayList;
 
 import com.example.whitepowder.R;
 import com.google.gson.Gson;
-import com.whitepowder.ApplicationError;
-import com.whitepowder.Logout;
 import com.whitepowder.storage.SPStorage;
-import com.whitepowder.user.management.PasswordChangeActivity;
+import com.whitepowder.userManagement.PasswordChangeActivity;
+import com.whitepowder.utils.ApplicationError;
+import com.whitepowder.utils.Logout;
+
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -254,6 +255,9 @@ public class SlopeRecognizerActivity extends Activity{
 		btnStop.setClickable(true);
 		btnStop.setVisibility(RelativeLayout.VISIBLE);
 		
+		//Locks spinner
+		spinner.setEnabled(false);
+		
 		//Starts recognition
 		
 		SimplifiedSlope ss = (SimplifiedSlope)spinner.getSelectedItem();
@@ -279,6 +283,9 @@ public class SlopeRecognizerActivity extends Activity{
 		RelativeLayout btnStop = (RelativeLayout)mContext.findViewById(R.id.slope_recognition_stop_button_container);
 		btnStop.setClickable(false);
 		btnStop.setVisibility(RelativeLayout.INVISIBLE);
+		
+		//Locks spinner
+		spinner.setEnabled(true);
 		
 		mRecognizedSlope.clearAll();
 		mRecognizedSlope = null;

@@ -1,4 +1,4 @@
-package com.whitepowder.slopeRecognizer;
+package com.whitepowder.skier.map;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -11,20 +11,17 @@ import java.net.URL;
 import org.json.JSONException;
 import org.json.JSONObject;
 import android.content.Context;
-import android.content.SharedPreferences;
-import com.whitepowder.storage.SPStorage;
+import com.google.gson.Gson;
 import com.whitepowder.userManagement.User;
 import com.whitepowder.utils.ApplicationError;
-import com.google.gson.Gson;
 
+public class SlopeDownloaderThread extends Thread {
 
-public class SimplifiedSlopeDownloaderThread extends Thread {
     
-	private final String SlopeDownloadURL = "http://whitetavros.com/Sandbox/web/internalApi/slope/allNames";
-	private SlopeContainer mSlopes=null;
+	private final String SlopeDownloadURL = "http://whitetavros.com/Sandbox/web/internalApi/slope/all";
 	private Context mContext;
 	
-	public  SimplifiedSlopeDownloaderThread(Context ctx){
+	public  SlopeDownloaderThread(Context ctx){
 		mContext = ctx;
 	};
 	
@@ -58,7 +55,7 @@ public class SimplifiedSlopeDownloaderThread extends Thread {
 				String response = reader.readLine();
 				
 				Gson gson = new Gson();
-				mSlopes = gson.fromJson(response,SlopeContainer.class);
+			/*	mSlopes = gson.fromJson(response,SlopeContainer.class);
 				
 				if(mSlopes!=null){
 					if((mSlopes.code)==200){
@@ -67,7 +64,7 @@ public class SimplifiedSlopeDownloaderThread extends Thread {
 						editor.putString(SPStorage.SIMPLIFIED_SLOPES, response);
 						editor.commit();
 					};
-				};				
+				};		*/		
 		    }
 		    
 		    else{
@@ -95,4 +92,3 @@ public class SimplifiedSlopeDownloaderThread extends Thread {
 	};
 	
 }
-		

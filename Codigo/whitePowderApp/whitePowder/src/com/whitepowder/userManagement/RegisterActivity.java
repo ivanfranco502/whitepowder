@@ -1,8 +1,8 @@
-package com.whitepowder.user.management;
+package com.whitepowder.userManagement;
 
 import com.example.whitepowder.R;
-import com.whitepowder.ApplicationError;
-import com.whitepowder.Security;
+import com.whitepowder.utils.ApplicationError;
+import com.whitepowder.utils.Security;
 
 import android.app.Activity;
 import android.os.Bundle;

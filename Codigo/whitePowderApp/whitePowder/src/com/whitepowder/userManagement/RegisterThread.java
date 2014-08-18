@@ -1,4 +1,4 @@
-package com.whitepowder.user.management;
+package com.whitepowder.userManagement;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -13,8 +13,8 @@ import java.security.NoSuchAlgorithmException;
 import org.json.JSONException;
 import org.json.JSONObject;
 import com.example.whitepowder.R;
-import com.whitepowder.ApplicationError;
-import com.whitepowder.SHA1Manager;
+import com.whitepowder.utils.ApplicationError;
+import com.whitepowder.utils.SHA1Manager;
 
 import android.app.ProgressDialog;
 import android.os.AsyncTask;

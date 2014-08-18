@@ -1,4 +1,4 @@
-package com.whitepowder.skier;
+package com.whitepowder.skier.basicInformation;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;

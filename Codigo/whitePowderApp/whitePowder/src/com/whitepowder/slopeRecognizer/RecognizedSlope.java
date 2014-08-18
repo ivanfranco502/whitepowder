@@ -3,7 +3,7 @@ package com.whitepowder.slopeRecognizer;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import com.whitepowder.user.management.User;
+import com.whitepowder.userManagement.User;
 
 public class RecognizedSlope implements Serializable{
 
