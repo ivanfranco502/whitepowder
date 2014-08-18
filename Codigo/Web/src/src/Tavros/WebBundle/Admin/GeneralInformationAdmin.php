@@ -6,12 +6,12 @@ use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Route\RouteCollection;
 
 class GeneralInformationAdmin extends Admin {
 
     protected $baseRouteName = 'generalinformation';
     protected $baseRoutePattern = 'generalinformation';
-    
     protected $childAssociationMapping = 'coordinate';
 
     // Fields to be shown on create/edit forms
@@ -56,6 +56,13 @@ class GeneralInformationAdmin extends Admin {
                 ->add('geinSeasonTill')
                 ->add('geinLocation')
                 ->add('geinDetails');
+    }
+
+    protected function configureRoutes(RouteCollection $collection) {
+        // to remove a single route
+        // $collection->remove('delete');
+        // OR remove all route except named ones
+        $collection->clearExcept(array('edit', 'show'));
     }
 
 }
