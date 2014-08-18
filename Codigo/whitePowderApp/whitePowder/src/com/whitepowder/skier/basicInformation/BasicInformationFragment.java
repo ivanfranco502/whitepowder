@@ -12,7 +12,7 @@ import org.json.JSONObject;
 
 import com.example.whitepowder.R;
 import com.google.gson.Gson;
-import com.whitepowder.storage.SPStorage;
+import com.whitepowder.storage.StorageConstants;
 import com.whitepowder.utils.ApplicationError;
 
 import android.app.Fragment;
@@ -90,9 +90,9 @@ public class BasicInformationFragment extends Fragment{
 	}
 
 	private void fillUIFields() {
-		SharedPreferences sharedPrefs = getActivity().getSharedPreferences(SPStorage.GENERAL_STORAGE_SHARED_PREFS, Context.MODE_MULTI_PROCESS);;
+		SharedPreferences sharedPrefs = getActivity().getSharedPreferences(StorageConstants.GENERAL_STORAGE_SHARED_PREFS, Context.MODE_MULTI_PROCESS);;
 		Gson gson = new Gson();
-		String basicInformationValue = sharedPrefs.getString(SPStorage.BASIC_INFORMATION,null);
+		String basicInformationValue = sharedPrefs.getString(StorageConstants.BASIC_INFORMATION_KEY,null);
 		
 		if(basicInformationValue==null){
 			
@@ -164,7 +164,7 @@ public class BasicInformationFragment extends Fragment{
 				}
 				JSONObject jsonObject = null;
 				try{
-					jsonObject = new JSONObject(sharedPrefs.getString(SPStorage.BASIC_INFORMATION_SCHEDULE,null));
+					jsonObject = new JSONObject(sharedPrefs.getString(StorageConstants.BASIC_INFORMATION_SCHEDULE_KEY,null));
 					if(jsonObject != null){
 						JSONArray forecastArray = null;
 						forecastArray = jsonObject.getJSONArray("list");

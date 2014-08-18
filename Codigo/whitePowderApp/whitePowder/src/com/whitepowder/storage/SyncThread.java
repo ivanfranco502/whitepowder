@@ -1,11 +1,11 @@
 package com.whitepowder.storage;
 
-import com.example.whitepowder.R;
 import com.google.gson.Gson;
 import com.whitepowder.skier.basicInformation.BasicInformationResponse;
 import com.whitepowder.skier.basicInformation.BasicInformationThread;
+import com.whitepowder.skier.map.SlopeDownloaderThread;
 import com.whitepowder.slopeRecognizer.SimplifiedSlopeDownloaderThread;
-import com.whitepowder.slopeRecognizer.SlopeContainer;
+import com.whitepowder.slopeRecognizer.SimplifiedSlopeContainer;
 import com.whitepowder.userManagement.LoginActivity;
 import com.whitepowder.utils.ApplicationError;
 import com.whitepowder.utils.Logout;
@@ -13,7 +13,6 @@ import com.whitepowder.utils.Logout;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.widget.Toast;
 
 public class SyncThread extends AsyncTask<LoginActivity, Void, Void> {
 
@@ -28,18 +27,21 @@ public class SyncThread extends AsyncTask<LoginActivity, Void, Void> {
 		mContext = params[0];
 		
 		//Gets Shared prefs file
-		sharedPrefs = mContext.getSharedPreferences(SPStorage.GENERAL_STORAGE_SHARED_PREFS, Context.MODE_MULTI_PROCESS);
+		sharedPrefs = mContext.getSharedPreferences(StorageConstants.GENERAL_STORAGE_SHARED_PREFS, Context.MODE_MULTI_PROCESS);
 		editor = sharedPrefs.edit();
 		
 		//Loads Gson
 		gson = new Gson();
 		
 		//Starts threads
-		SimplifiedSlopeDownloaderThread sdt = new SimplifiedSlopeDownloaderThread(mContext);
-		sdt.start();
+		SimplifiedSlopeDownloaderThread ssdt = new SimplifiedSlopeDownloaderThread(mContext);
+		ssdt.start();
 		
 		BasicInformationThread bit = new BasicInformationThread(mContext);
 		bit.start();
+		
+		SlopeDownloaderThread sdt = new SlopeDownloaderThread(mContext);
+		sdt.start();
 		
 		//Join threads and check errors
 		try {
@@ -48,6 +50,9 @@ public class SyncThread extends AsyncTask<LoginActivity, Void, Void> {
 			
 			bit.join();
 			checkBasicInformationErrors();	
+			
+			sdt.join();
+			//TODO checkerrors
 		} 
 		catch (InterruptedException e) {
 		}
@@ -68,15 +73,15 @@ public class SyncThread extends AsyncTask<LoginActivity, Void, Void> {
 	}
 	
 	private void checkSimplifiedSlopeErrors(){
-		SlopeContainer slopeContainer = null;
+		SimplifiedSlopeContainer slopeContainer = null;
 		
-		String slopeContainerText = sharedPrefs.getString(SPStorage.SIMPLIFIED_SLOPES,null);
+		String slopeContainerText = sharedPrefs.getString(StorageConstants.SIMPLIFIED_SLOPES_KEY,null);
 		
 		if(slopeContainerText==null){
 			mError = new ApplicationError(800,"Error","Error en la sincronización");		
 		}
 		else{
-			slopeContainer = gson.fromJson(slopeContainerText, SlopeContainer.class);
+			slopeContainer = gson.fromJson(slopeContainerText, SimplifiedSlopeContainer.class);
 			if(slopeContainer.getCode()!=200){
 				if(slopeContainer.getCode()==110){
 					mError = new ApplicationError(801,"Error","Usuario no logueado");
@@ -90,7 +95,7 @@ public class SyncThread extends AsyncTask<LoginActivity, Void, Void> {
 	}
 	
 	private void checkBasicInformationErrors() {
-		String basicInformationValue = sharedPrefs.getString(SPStorage.BASIC_INFORMATION,null);
+		String basicInformationValue = sharedPrefs.getString(StorageConstants.BASIC_INFORMATION_KEY,null);
 		
 		if(basicInformationValue==null){
 			mError = new ApplicationError(800,"Error","Error en la sincronización");

@@ -25,7 +25,7 @@ import android.widget.Toast;
 
 import com.example.whitepowder.R;
 import com.google.gson.Gson;
-import com.whitepowder.storage.SPStorage;
+import com.whitepowder.storage.StorageConstants;
 import com.whitepowder.userManagement.User;
 import com.whitepowder.utils.ApplicationError;
 import com.whitepowder.utils.Logout;
@@ -80,9 +80,9 @@ public class BasicInformationThread extends Thread {
 				basicInformationResponse = gson.fromJson(response, BasicInformationResponse.class);
 				if(basicInformationResponse != null){
 					if(basicInformationResponse.getCode() == 200){
-					SharedPreferences sp = mContext.getSharedPreferences(SPStorage.GENERAL_STORAGE_SHARED_PREFS, Context.MODE_MULTI_PROCESS);
+					SharedPreferences sp = mContext.getSharedPreferences(StorageConstants.GENERAL_STORAGE_SHARED_PREFS, Context.MODE_MULTI_PROCESS);
 					SharedPreferences.Editor editor = sp.edit();
-					editor.putString(SPStorage.BASIC_INFORMATION, response);
+					editor.putString(StorageConstants.BASIC_INFORMATION_KEY, response);
 					editor.commit();
 					};
 				};

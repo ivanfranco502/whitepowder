@@ -13,7 +13,7 @@ import org.json.JSONObject;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.whitepowder.storage.SPStorage;
+import com.whitepowder.storage.StorageConstants;
 import com.whitepowder.utils.ApplicationError;
 
 public class BasicInformationForecastThread extends Thread {
@@ -49,9 +49,9 @@ public class BasicInformationForecastThread extends Thread {
 	        int mensaje  = jsonObject.getInt("cod");
 	        
 	        if(mensaje==200){
-	        	SharedPreferences sp = mContext.getSharedPreferences(SPStorage.GENERAL_STORAGE_SHARED_PREFS, Context.MODE_MULTI_PROCESS);
+	        	SharedPreferences sp = mContext.getSharedPreferences(StorageConstants.GENERAL_STORAGE_SHARED_PREFS, Context.MODE_MULTI_PROCESS);
 				SharedPreferences.Editor editor = sp.edit();
-				editor.putString(SPStorage.BASIC_INFORMATION_SCHEDULE, response);
+				editor.putString(StorageConstants.BASIC_INFORMATION_SCHEDULE_KEY, response);
 				editor.commit();
 	        }
 			

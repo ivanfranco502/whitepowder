@@ -1,7 +1,7 @@
 package com.whitepowder.slopeRecognizer;
 import java.util.ArrayList;
 
-public class SlopeContainer{
+public class SimplifiedSlopeContainer{
 
 	
 	int code;
