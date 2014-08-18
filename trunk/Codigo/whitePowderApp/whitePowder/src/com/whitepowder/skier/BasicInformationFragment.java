@@ -11,10 +11,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.example.whitepowder.R;
-import com.google.android.gms.cast.RemoteMediaPlayer.OnStatusUpdatedListener;
 import com.google.gson.Gson;
 import com.whitepowder.ApplicationError;
-import com.whitepowder.Logout;
 import com.whitepowder.storage.SPStorage;
 
 import android.app.Fragment;
@@ -23,16 +21,13 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
-import android.view.View.OnCreateContextMenuListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class BasicInformationFragment extends Fragment{
@@ -51,6 +46,7 @@ public class BasicInformationFragment extends Fragment{
 	private TextView forecast_min_temp;
 	private TextView forecast_max_temp;
 	private ImageView forecast_icon;
+	private TextView forecast_see_extended;
 
 	
 	@Override
@@ -73,6 +69,14 @@ public class BasicInformationFragment extends Fragment{
 		forecast_min_temp = (TextView) rootView.findViewById(R.id.forecast_min_temp);
 		forecast_max_temp = (TextView) rootView.findViewById(R.id.forecast_max_temp);
 		forecast_icon = (ImageView) rootView.findViewById(R.id.forecast_icon);
+		forecast_see_extended = (TextView) rootView.findViewById(R.id.forecast_see_extended);		
+		
+		forecast_see_extended.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				//launch intent with the extended forecast
+			}
+		});
 		
 		return rootView;
 	}
@@ -87,7 +91,6 @@ public class BasicInformationFragment extends Fragment{
 
 	private void fillUIFields() {
 		SharedPreferences sharedPrefs = getActivity().getSharedPreferences(SPStorage.GENERAL_STORAGE_SHARED_PREFS, Context.MODE_MULTI_PROCESS);;
-		ApplicationError mError = null;
 		Gson gson = new Gson();
 		String basicInformationValue = sharedPrefs.getString(SPStorage.BASIC_INFORMATION,null);
 		
@@ -148,7 +151,10 @@ public class BasicInformationFragment extends Fragment{
 				ski_center_details.setText(skiCenterDetails);
 				
 			//chequear coor nulls y llamar al forecast.
-				BasicInformationForecastThread bift = new BasicInformationForecastThread(getActivity(), -34.611246, -58.387235);
+				double coorX = basicInformationResponse.getBasicInformation().getX();
+				double coorY = basicInformationResponse.getBasicInformation().getY();
+				
+				BasicInformationForecastThread bift = new BasicInformationForecastThread(getActivity(), coorX, coorY);
 				bift.start();
 				try{
 					bift.join();
