@@ -26,7 +26,8 @@ class BasicInformation {
 	private String gein_location;
 	private String gein_details;
 	private ArrayList<Day> _schedules;
-	private List<Slope> _slopes;
+	private double gein_x;
+	private double gein_y;
 	
 	public String getCenterName(){
 		return gein_center_name;
@@ -55,8 +56,11 @@ class BasicInformation {
 	public ArrayList<Day> getDays(){
 		return _schedules;
 	}
-	public List<Slope> getSlopes(){
-		return _slopes;
+	public double getX(){
+		return gein_x;
+	}
+	public double getY(){
+		return gein_y;
 	}
 	
 	public String getSeason(){
@@ -89,7 +93,7 @@ class Day {
 			return  getDay() + ": cerrado.";
 		}
 		else{
-			return getDay() + ": " + getStartHour() + " - " + getEndHour();
+			return getDay() + ": " + getStartHour() + " h - " + getEndHour() + " h.";
 		}
 		
 	}
