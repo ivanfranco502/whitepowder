@@ -10,12 +10,10 @@
     tools:context="com.example.actionbartest.MainActivity$PlaceholderFragment" >
 
 	       
-		<fragment
-		    android:id="@+id/slope_recognition_map"
-		    android:name="com.google.android.gms.maps.MapFragment"
-		    android:layout_width="match_parent"
-		    android:layout_height="match_parent"/>
-		  
-	
+	<fragment
+	    android:id="@+id/skier_map"
+	    android:name="com.google.android.gms.maps.MapFragment"
+	    android:layout_width="match_parent"
+		android:layout_height="match_parent" />
 
 </RelativeLayout>

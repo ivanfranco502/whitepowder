@@ -1,4 +1,4 @@
-package com.whitepowder.skier;
+package com.whitepowder.skier.basicInformation;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,8 +13,8 @@ import org.json.JSONObject;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.whitepowder.ApplicationError;
 import com.whitepowder.storage.SPStorage;
+import com.whitepowder.utils.ApplicationError;
 
 public class BasicInformationForecastThread extends Thread {
 

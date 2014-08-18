@@ -1,4 +1,4 @@
-package com.whitepowder;
+package com.whitepowder.utils;
 
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;

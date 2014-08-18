@@ -2,13 +2,13 @@ package com.whitepowder.storage;
 
 import com.example.whitepowder.R;
 import com.google.gson.Gson;
-import com.whitepowder.ApplicationError;
-import com.whitepowder.Logout;
-import com.whitepowder.skier.BasicInformationResponse;
-import com.whitepowder.skier.BasicInformationThread;
+import com.whitepowder.skier.basicInformation.BasicInformationResponse;
+import com.whitepowder.skier.basicInformation.BasicInformationThread;
 import com.whitepowder.slopeRecognizer.SimplifiedSlopeDownloaderThread;
 import com.whitepowder.slopeRecognizer.SlopeContainer;
-import com.whitepowder.user.management.LoginActivity;
+import com.whitepowder.userManagement.LoginActivity;
+import com.whitepowder.utils.ApplicationError;
+import com.whitepowder.utils.Logout;
 
 import android.content.Context;
 import android.content.SharedPreferences;

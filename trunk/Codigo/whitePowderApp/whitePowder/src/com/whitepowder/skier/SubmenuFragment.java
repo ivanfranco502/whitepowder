@@ -13,7 +13,7 @@ import android.widget.RelativeLayout;
 import android.widget.Switch;
 
 import com.example.whitepowder.R;
-import com.whitepowder.Logout;
+import com.whitepowder.utils.Logout;
 
 public class SubmenuFragment extends Fragment {
 	

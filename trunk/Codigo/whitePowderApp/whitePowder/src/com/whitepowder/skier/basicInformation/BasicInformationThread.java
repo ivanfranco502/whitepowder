@@ -1,4 +1,4 @@
-package com.whitepowder.skier;
+package com.whitepowder.skier.basicInformation;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -25,10 +25,10 @@ import android.widget.Toast;
 
 import com.example.whitepowder.R;
 import com.google.gson.Gson;
-import com.whitepowder.ApplicationError;
-import com.whitepowder.Logout;
 import com.whitepowder.storage.SPStorage;
-import com.whitepowder.user.management.User;
+import com.whitepowder.userManagement.User;
+import com.whitepowder.utils.ApplicationError;
+import com.whitepowder.utils.Logout;
 
 public class BasicInformationThread extends Thread {
 

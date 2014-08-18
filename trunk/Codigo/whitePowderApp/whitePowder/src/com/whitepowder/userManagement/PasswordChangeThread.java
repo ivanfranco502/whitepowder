@@ -1,4 +1,4 @@
-package com.whitepowder.user.management;
+package com.whitepowder.userManagement;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -13,9 +13,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.example.whitepowder.R;
-import com.whitepowder.ApplicationError;
-import com.whitepowder.Logout;
-import com.whitepowder.SHA1Manager;
+import com.whitepowder.utils.ApplicationError;
+import com.whitepowder.utils.Logout;
+import com.whitepowder.utils.SHA1Manager;
 
 import android.app.ProgressDialog;
 import android.os.AsyncTask;

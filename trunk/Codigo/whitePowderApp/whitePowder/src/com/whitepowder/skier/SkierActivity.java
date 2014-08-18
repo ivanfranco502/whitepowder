@@ -19,7 +19,9 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.example.whitepowder.R;
-import com.whitepowder.user.management.PasswordChangeActivity;
+import com.whitepowder.skier.basicInformation.BasicInformationFragment;
+import com.whitepowder.skier.map.MapFragment;
+import com.whitepowder.userManagement.PasswordChangeActivity;
 
 public class SkierActivity extends Activity implements ActionBar.TabListener {
 

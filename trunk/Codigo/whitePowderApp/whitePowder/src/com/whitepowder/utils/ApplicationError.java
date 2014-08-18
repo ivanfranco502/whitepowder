@@ -1,4 +1,4 @@
-package com.whitepowder;
+package com.whitepowder.utils;
 
 import android.util.Log;
 

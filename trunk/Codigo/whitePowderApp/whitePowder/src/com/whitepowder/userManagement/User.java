@@ -1,4 +1,4 @@
-package com.whitepowder.user.management;
+package com.whitepowder.userManagement;
 
 import java.util.Date;
 

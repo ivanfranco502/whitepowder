@@ -1,4 +1,4 @@
-package com.whitepowder.user.management;
+package com.whitepowder.userManagement;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -18,8 +18,8 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.widget.Toast;
 import com.example.whitepowder.R;
-import com.whitepowder.ApplicationError;
-import com.whitepowder.SHA1Manager;
+import com.whitepowder.utils.ApplicationError;
+import com.whitepowder.utils.SHA1Manager;
 
 public class LoginThread extends AsyncTask<String, Void, Void> {
 	

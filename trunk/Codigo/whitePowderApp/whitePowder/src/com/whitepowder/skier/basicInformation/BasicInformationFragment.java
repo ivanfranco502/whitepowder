@@ -1,4 +1,4 @@
-package com.whitepowder.skier;
+package com.whitepowder.skier.basicInformation;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,8 +12,8 @@ import org.json.JSONObject;
 
 import com.example.whitepowder.R;
 import com.google.gson.Gson;
-import com.whitepowder.ApplicationError;
 import com.whitepowder.storage.SPStorage;
+import com.whitepowder.utils.ApplicationError;
 
 import android.app.Fragment;
 import android.content.Context;
