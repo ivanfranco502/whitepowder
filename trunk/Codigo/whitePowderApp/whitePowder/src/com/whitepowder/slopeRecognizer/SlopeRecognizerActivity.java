@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import com.example.whitepowder.R;
 import com.google.gson.Gson;
-import com.whitepowder.storage.SPStorage;
+import com.whitepowder.storage.StorageConstants;
 import com.whitepowder.userManagement.PasswordChangeActivity;
 import com.whitepowder.utils.ApplicationError;
 import com.whitepowder.utils.Logout;
@@ -53,7 +53,7 @@ public class SlopeRecognizerActivity extends Activity{
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		SlopeContainer mSlopes=null;
+		SimplifiedSlopeContainer mSlopes=null;
 		
 		//Sets general
 		super.onCreate(savedInstanceState);
@@ -70,11 +70,11 @@ public class SlopeRecognizerActivity extends Activity{
 		
 		//Gets and show slopes
 		
-		SharedPreferences prefs = mContext.getSharedPreferences(SPStorage.GENERAL_STORAGE_SHARED_PREFS, Context.MODE_PRIVATE);
-		String slopesText = prefs.getString(SPStorage.SIMPLIFIED_SLOPES, null);
+		SharedPreferences prefs = mContext.getSharedPreferences(StorageConstants.GENERAL_STORAGE_SHARED_PREFS, Context.MODE_PRIVATE);
+		String slopesText = prefs.getString(StorageConstants.SIMPLIFIED_SLOPES_KEY, null);
 		
 		Gson gson = new Gson();
-		mSlopes = gson.fromJson(slopesText,SlopeContainer.class);
+		mSlopes = gson.fromJson(slopesText,SimplifiedSlopeContainer.class);
 		
 		if(mSlopes!=null){
 			for(SimplifiedSlope ss : mSlopes.payload){

@@ -1,7 +1,10 @@
 package com.whitepowder.skier.map;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -10,20 +13,23 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import android.content.Context;
+
 import com.google.gson.Gson;
+import com.whitepowder.storage.StorageConstants;
 import com.whitepowder.userManagement.User;
 import com.whitepowder.utils.ApplicationError;
 
 public class SlopeDownloaderThread extends Thread {
 
-    
-	private final String SlopeDownloadURL = "http://whitetavros.com/Sandbox/web/internalApi/slope/all";
+    private DrawableSlopeContainer mDrawableSlopeContainer;
+	private final String SlopeDownloadURL = "http://whitetavros.com/Sandbox/web/internalApi/slope/allPath";
 	private Context mContext;
 	
-	public  SlopeDownloaderThread(Context ctx){
+	public SlopeDownloaderThread(Context ctx) {
 		mContext = ctx;
-	};
+	}
 	
 	@Override
     public void run() {
@@ -55,16 +61,23 @@ public class SlopeDownloaderThread extends Thread {
 				String response = reader.readLine();
 				
 				Gson gson = new Gson();
-			/*	mSlopes = gson.fromJson(response,SlopeContainer.class);
 				
-				if(mSlopes!=null){
-					if((mSlopes.code)==200){
-						SharedPreferences sp = mContext.getSharedPreferences(SPStorage.GENERAL_STORAGE_SHARED_PREFS, Context.MODE_MULTI_PROCESS);
-						SharedPreferences.Editor editor = sp.edit();
-						editor.putString(SPStorage.SIMPLIFIED_SLOPES, response);
-						editor.commit();
+				mDrawableSlopeContainer = gson.fromJson(response,DrawableSlopeContainer.class);
+				
+				if(mDrawableSlopeContainer!=null){
+					if((mDrawableSlopeContainer.code)==200){
+						
+						File file = new File(mContext.getFilesDir().getPath().toString() + "/"+StorageConstants.DRAWABLE_SLOPES_FILE);
+						if(!file.exists()){
+							file.createNewFile();
+						};
+						
+						FileWriter fw = new FileWriter(file.getAbsoluteFile());
+						BufferedWriter bw = new BufferedWriter(fw);
+						bw.write(response);
+						bw.close();			
 					};
-				};		*/		
+				};				
 		    }
 		    
 		    else{
@@ -73,13 +86,13 @@ public class SlopeDownloaderThread extends Thread {
 		}
 	    
 		catch (MalformedURLException e) {
-			new ApplicationError(601,"Error","MalformedURLException en módulo de reconocimiento de pista");
+			new ApplicationError(801,"Error","MalformedURLException en módulo de esquiador");
 		}
 		catch (IOException e) {
-			new ApplicationError(602,"Error","IOException en módulo de reconocimiento de pista");
+			new ApplicationError(802,"Error","IOException en módulo de esquiador");
 		}
 		catch (JSONException e) {
-			new ApplicationError(603,"Error","JSonException en módulo de reconocimiento de pista");
+			new ApplicationError(803,"Error","JSonException en módulo de esquiador");
 		}
 		
 		finally{

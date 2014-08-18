@@ -12,7 +12,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import android.content.Context;
 import android.content.SharedPreferences;
-import com.whitepowder.storage.SPStorage;
+import com.whitepowder.storage.StorageConstants;
 import com.whitepowder.userManagement.User;
 import com.whitepowder.utils.ApplicationError;
 import com.google.gson.Gson;
@@ -21,7 +21,7 @@ import com.google.gson.Gson;
 public class SimplifiedSlopeDownloaderThread extends Thread {
     
 	private final String SlopeDownloadURL = "http://whitetavros.com/Sandbox/web/internalApi/slope/allNames";
-	private SlopeContainer mSlopes=null;
+	private SimplifiedSlopeContainer mSlopes=null;
 	private Context mContext;
 	
 	public  SimplifiedSlopeDownloaderThread(Context ctx){
@@ -58,13 +58,13 @@ public class SimplifiedSlopeDownloaderThread extends Thread {
 				String response = reader.readLine();
 				
 				Gson gson = new Gson();
-				mSlopes = gson.fromJson(response,SlopeContainer.class);
+				mSlopes = gson.fromJson(response,SimplifiedSlopeContainer.class);
 				
 				if(mSlopes!=null){
 					if((mSlopes.code)==200){
-						SharedPreferences sp = mContext.getSharedPreferences(SPStorage.GENERAL_STORAGE_SHARED_PREFS, Context.MODE_MULTI_PROCESS);
+						SharedPreferences sp = mContext.getSharedPreferences(StorageConstants.GENERAL_STORAGE_SHARED_PREFS, Context.MODE_MULTI_PROCESS);
 						SharedPreferences.Editor editor = sp.edit();
-						editor.putString(SPStorage.SIMPLIFIED_SLOPES, response);
+						editor.putString(StorageConstants.SIMPLIFIED_SLOPES_KEY, response);
 						editor.commit();
 					};
 				};				
