@@ -35,6 +35,7 @@ public class MapFragment extends Fragment {
 	@Override
 	public void onStart(){
 		super.onStart();
+		//acá o en el onResume() hay que ir actualizando el mapa si es que hay nuevas pistas. Si no, se deja como está.
 	
 	}
 

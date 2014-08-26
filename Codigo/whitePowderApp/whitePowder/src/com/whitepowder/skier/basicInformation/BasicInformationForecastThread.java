@@ -19,7 +19,6 @@ import com.whitepowder.utils.ApplicationError;
 public class BasicInformationForecastThread extends Thread {
 
 	private String ForecastURL = null;
-	private ApplicationError mError = null;
 	private Context mContext;
 	
 	public BasicInformationForecastThread(Context context, double ... coor) {
@@ -56,9 +55,9 @@ public class BasicInformationForecastThread extends Thread {
 	        }
 			
 		} catch (IOException e) {
-			mError = new ApplicationError(600,"Error","IOException en descarga de pronóstico");
+			new ApplicationError(600,"Error","IOException en descarga de pronóstico");
 		} catch (JSONException e) {
-			mError = new ApplicationError(601, "Error", "JSONException en descarga de pronóstico");
+			new ApplicationError(601, "Error", "JSONException en descarga de pronóstico");
 		}
 		
 		finally{

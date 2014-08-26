@@ -12,11 +12,14 @@ import org.json.JSONObject;
 
 import com.example.whitepowder.R;
 import com.google.gson.Gson;
+import com.whitepowder.skier.SkierActivity;
 import com.whitepowder.storage.StorageConstants;
+import com.whitepowder.userManagement.RegisterActivity;
 import com.whitepowder.utils.ApplicationError;
 
 import android.app.Fragment;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -47,6 +50,13 @@ public class BasicInformationFragment extends Fragment{
 	private TextView forecast_max_temp;
 	private ImageView forecast_icon;
 	private TextView forecast_see_extended;
+	
+	private SkierActivity mContext;
+	
+	double coorX;
+	double coorY;
+	
+	
 
 	
 	@Override
@@ -71,10 +81,18 @@ public class BasicInformationFragment extends Fragment{
 		forecast_icon = (ImageView) rootView.findViewById(R.id.forecast_icon);
 		forecast_see_extended = (TextView) rootView.findViewById(R.id.forecast_see_extended);		
 		
+		mContext = (SkierActivity) getActivity();
+		
+		mContext.basicInformationForecast = new BasicInformationForecast[7];
+		
 		forecast_see_extended.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				//launch intent with the extended forecast
+				Intent intent = new Intent(mContext,BasicInformationForecastActivity.class);
+				intent.putExtra("coorX", coorX);
+				intent.putExtra("coorY", coorY);
+				mContext.startActivity(intent);
 			}
 		});
 		
@@ -151,9 +169,9 @@ public class BasicInformationFragment extends Fragment{
 				ski_center_details.setText(skiCenterDetails);
 				
 			//chequear coor nulls y llamar al forecast.
-				double coorX = basicInformationResponse.getBasicInformation().getX();
-				double coorY = basicInformationResponse.getBasicInformation().getY();
-				
+			coorX = basicInformationResponse.getBasicInformation().getX();
+			coorY = basicInformationResponse.getBasicInformation().getY();
+			if(coorX != 0 || coorY != 0){	
 				BasicInformationForecastThread bift = new BasicInformationForecastThread(getActivity(), coorX, coorY);
 				bift.start();
 				try{
@@ -169,41 +187,52 @@ public class BasicInformationFragment extends Fragment{
 						JSONArray forecastArray = null;
 						forecastArray = jsonObject.getJSONArray("list");
 						
-						if(forecastArray != null){       		 
-			        		 JSONObject forec= null;
-			        		 forec = (JSONObject) forecastArray.get(0);
-			        		 
-			        		 String dt =  forec.getString("dt");      		
-			        		 long dv = Long.valueOf(dt)*1000;
-			        		 Date df = new java.util.Date(dv);
-			        		 forecast_date.setText((new SimpleDateFormat("dd/MM/yyyy", java.util.Locale.getDefault()).format(df)).toString());     		 
-			        		 
-			        		 JSONObject temp = forec.getJSONObject("temp");
-			        		 Double tempMin = temp.getDouble("min");
-			        		 forecast_min_temp.setText(tempMin.toString());
-			        		 Double tempMax = temp.getDouble("max");
-			        		 forecast_max_temp.setText(tempMax.toString());
-			        		 
-			        		 
-			        		 JSONArray weatherArray = forec.getJSONArray("weather");
-			        		 
-			        		 JSONObject weather = weatherArray.getJSONObject(0);
-			        		 forecast_description.setText(weather.getString("main"));     		 
-			        		 
-			        		 try {
-			        				InputStream logoBitmap = getActivity().getAssets().open("weatherIcons/"+weather.getString("icon")+".png");
-			        				Bitmap bitmap = BitmapFactory.decodeStream(logoBitmap);
-			        				forecast_icon.setImageBitmap(bitmap);
-			        				
-			        			} catch (IOException e) {
-			        				new ApplicationError(602, "Error","No se encuentra el icono del pronostico");
-			        			}
+						for(int i = 0; i < forecastArray.length(); i++){       		 
+							BasicInformationForecast pronostico = new BasicInformationForecast();
+			        		pronostico.setId(i);    		 
+			        		JSONObject forec = (JSONObject) forecastArray.get(i);
+			        		
+			        		String dt =  forec.getString("dt");      		
+			        		long dv = Long.valueOf(dt)*1000;
+			        		Date df = new java.util.Date(dv);
+			        		pronostico.setFecha(new SimpleDateFormat("dd/MM/yyyy", java.util.Locale.getDefault()).format(df));     		 
+			        		
+			        		JSONObject temp = forec.getJSONObject("temp");
+			        		pronostico.setTemperaturaMax(temp.getDouble("max"));
+			        		pronostico.setTemperaturaMin(temp.getDouble("min"));
+			        	
+			        		JSONArray weatherArray = forec.getJSONArray("weather");
+			        		
+			        		JSONObject weather = weatherArray.getJSONObject(0);
+			        		pronostico.setWeatherId(weather.getInt("id"));      		 
+			        		pronostico.setWeatherMain(weather.getString("main"));
+			        		pronostico.setWeatherIcon(weather.getString("icon"));
+			        		
+			        		mContext.basicInformationForecast[i]=pronostico;
 						}
+						
+						BasicInformationForecast todayForecast = mContext.basicInformationForecast[0];
+						
+						forecast_date.setText(todayForecast.getFecha());
+						forecast_description.setText(todayForecast.getWeatherMain());
+						forecast_min_temp.setText(todayForecast.getTemperaturaMin());
+						forecast_max_temp.setText(todayForecast.getTemperaturaMax());
+						
+		        		try {
+		        			InputStream logoBitmap = getActivity().getAssets().open("weatherIcons/"+todayForecast.getWeatherIcon()+".png");
+		        			Bitmap bitmap = BitmapFactory.decodeStream(logoBitmap);
+		        			forecast_icon.setImageBitmap(bitmap);
+		        			
+		        		} catch (IOException e) {
+		        			new ApplicationError(602, "Error","No se encuentra el icono del pronostico");
+		        		}
+		        		
+						
 					}
 				}  
 				catch(JSONException e){	}
 				} 
-
+			}
 				
 				
 			}
