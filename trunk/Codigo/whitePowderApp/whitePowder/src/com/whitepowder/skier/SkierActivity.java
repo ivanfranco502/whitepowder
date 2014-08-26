@@ -19,6 +19,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.example.whitepowder.R;
+import com.whitepowder.skier.basicInformation.BasicInformationForecast;
 import com.whitepowder.skier.basicInformation.BasicInformationFragment;
 import com.whitepowder.skier.map.MapFragment;
 import com.whitepowder.userManagement.PasswordChangeActivity;
@@ -41,6 +42,8 @@ public class SkierActivity extends Activity implements ActionBar.TabListener {
 	ViewPager mViewPager;
 	
 	public final int PWD_CHANGE_REQUEST_CODE = 1;
+	
+	public BasicInformationForecast[] basicInformationForecast;
 		
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
