@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!--
         Base application theme, dependent on API level. This theme is replaced
@@ -17,10 +17,13 @@
     <style name="AppTheme" parent="AppBaseTheme">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
         <!-- <item name="android:windowNoTitle">true</item> -->
+        <item name="android:background">@drawable/gr_background</item>
+        
         <item name="android:actionBarStyle">@style/ActionBarStyle2</item>
         <item name="android:actionBarTabStyle">@style/ActionBarTabStyle2</item>
         <item name="android:actionBarTabBarStyle">@style/ActionBarTabBarStyle2</item>
         
+        <item name="background">@drawable/gr_background</item>
         <item name="actionBarStyle">@style/ActionBarStyle2</item>
         <item name="actionBarTabStyle">@style/ActionBarTabStyle2</item>
         <item name="actionBarTabBarStyle">@style/ActionBarTabBarStyle2</item>
@@ -33,15 +36,15 @@
     </style>
     
     <style name="ActionBarTabStyle2" parent="@style/Widget.AppCompat.Light.ActionBar.TabView">
-        <item name="android:background">@drawable/fondo</item>
+        <item name="android:background">@drawable/ic_selector</item>
         
-        <item name="background">@drawable/fondo</item>
+        <item name="background">@drawable/ic_selector</item>
     </style>
     
     <style name="ActionBarTabBarStyle2" parent="@style/Widget.AppCompat.Light.ActionBar.TabBar">
-        <item name="android:background">@drawable/fondo_blanco</item>
+        <item name="android:background">@drawable/fondo</item>
         
-        <item name="background">@drawable/fondo_blanco</item>
+        <item name="background">@drawable/fondo</item>
     </style>
 
 </resources>
