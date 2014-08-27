@@ -3,7 +3,7 @@
     android:id="@+id/register_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#6DCAEC"
+    android:background="@drawable/gr_background"
     tools:context="com.whitepowder.userManagement.RegisterActivity"
     tools:ignore="MergeRootFrame">
 
