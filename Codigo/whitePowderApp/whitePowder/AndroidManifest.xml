@@ -21,7 +21,7 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@drawable/logowp"
         android:label="@string/app_name"
         android:theme="@style/AppBaseTheme" >
         <meta-data
@@ -45,16 +45,28 @@
         <activity
             android:name="com.whitepowder.slopeRecognizer.SlopeRecognizerActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait" />
-        <activity android:name="com.whitepowder.userManagement.RegisterActivity" />
-        <activity android:name="com.whitepowder.userManagement.PasswordResetActivity" />
-        <activity android:name="com.whitepowder.userManagement.PasswordChangeActivity" />
-        <activity android:name="com.whitepowder.slopeRecognizer.MapDisplayActivity" />
+            android:screenOrientation="nosensor" />
+        <activity android:name="com.whitepowder.userManagement.RegisterActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="nosensor" />
+        <activity android:name="com.whitepowder.userManagement.PasswordResetActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="nosensor" />
+        <activity android:name="com.whitepowder.userManagement.PasswordChangeActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="nosensor" />
+        <activity android:name="com.whitepowder.slopeRecognizer.MapDisplayActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="nosensor" />
         <activity
             android:name="com.whitepowder.skier.SkierActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="nosensor"
             android:theme="@style/AppTheme" />
         <activity
             android:name="com.whitepowder.skier.basicInformation.BasicInformationForecastActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="nosensor"
             android:label="@string/title_activity_basic_information_forecast" >
         </activity>
     </application>
