@@ -56,45 +56,45 @@ public class BasicInformationFragment extends Fragment{
 	double coorX;
 	double coorY;
 	
-	
+	View rootView = null;
 
 	
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		View rootView = inflater.inflate(R.layout.skier_fragment_basic_information, container,
-				false);
-		
-		ski_center_name = (TextView) rootView.findViewById(R.id.ski_center_name);
-		ski_center_location = (TextView) rootView.findViewById(R.id.ski_center_location);
-		ski_center_amenities = (TextView) rootView.findViewById(R.id.ski_center_amenities);
-		ski_center_minimum_height = (TextView) rootView.findViewById(R.id.ski_center_minimum_height);
-		ski_center_maximum_height = (TextView) rootView.findViewById(R.id.ski_center_maximum_height);
-		ski_center_season = (TextView) rootView.findViewById(R.id.ski_center_season);
-		ski_center_schedule = (ListView) rootView.findViewById(R.id.ski_center_schedule);
-		ski_center_details = (TextView) rootView.findViewById(R.id.ski_center_details);
-		
-		forecast_date = (TextView) rootView.findViewById(R.id.forecast_date);
-		forecast_description = (TextView) rootView.findViewById(R.id.forecast_description);
-		forecast_min_temp = (TextView) rootView.findViewById(R.id.forecast_min_temp);
-		forecast_max_temp = (TextView) rootView.findViewById(R.id.forecast_max_temp);
-		forecast_icon = (ImageView) rootView.findViewById(R.id.forecast_icon);
-		forecast_see_extended = (TextView) rootView.findViewById(R.id.forecast_see_extended);		
-		
-		mContext = (SkierActivity) getActivity();
-		
-		mContext.basicInformationForecast = new BasicInformationForecast[7];
-		
-		forecast_see_extended.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				//launch intent with the extended forecast
-				Intent intent = new Intent(mContext,BasicInformationForecastActivity.class);
-				intent.putExtra("coorX", coorX);
-				intent.putExtra("coorY", coorY);
-				mContext.startActivity(intent);
-			}
-		});
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		if(rootView == null){
+			rootView = inflater.inflate(R.layout.skier_fragment_basic_information, container, false);
+				
+			ski_center_name = (TextView) rootView.findViewById(R.id.ski_center_name);
+			ski_center_location = (TextView) rootView.findViewById(R.id.ski_center_location);
+			ski_center_amenities = (TextView) rootView.findViewById(R.id.ski_center_amenities);
+			ski_center_minimum_height = (TextView) rootView.findViewById(R.id.ski_center_minimum_height);
+			ski_center_maximum_height = (TextView) rootView.findViewById(R.id.ski_center_maximum_height);
+			ski_center_season = (TextView) rootView.findViewById(R.id.ski_center_season);
+			ski_center_schedule = (ListView) rootView.findViewById(R.id.ski_center_schedule);
+			ski_center_details = (TextView) rootView.findViewById(R.id.ski_center_details);
+			
+			forecast_date = (TextView) rootView.findViewById(R.id.forecast_date);
+			forecast_description = (TextView) rootView.findViewById(R.id.forecast_description);
+			forecast_min_temp = (TextView) rootView.findViewById(R.id.forecast_min_temp);
+			forecast_max_temp = (TextView) rootView.findViewById(R.id.forecast_max_temp);
+			forecast_icon = (ImageView) rootView.findViewById(R.id.forecast_icon);
+			forecast_see_extended = (TextView) rootView.findViewById(R.id.forecast_see_extended);		
+			
+			mContext = (SkierActivity) getActivity();
+			
+			mContext.basicInformationForecast = new BasicInformationForecast[7];
+			
+			forecast_see_extended.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					//launch intent with the extended forecast
+					Intent intent = new Intent(mContext,BasicInformationForecastActivity.class);
+					intent.putExtra("coorX", coorX);
+					intent.putExtra("coorY", coorY);
+					mContext.startActivity(intent);
+				}
+			});
+		}
 		
 		return rootView;
 	}
