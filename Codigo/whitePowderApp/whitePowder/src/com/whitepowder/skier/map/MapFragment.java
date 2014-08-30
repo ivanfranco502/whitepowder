@@ -1,7 +1,6 @@
 package com.whitepowder.skier.map;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -29,25 +28,28 @@ public class MapFragment extends Fragment {
 	
 	private static View rootView;
 	private GoogleMap mMap=null;
-	
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
 		if(rootView == null){
 	
 			try{
 				rootView = inflater.inflate(R.layout.skier_fragment_map, container,false);
+				setupMap();
 			}
 			catch (InflateException e){
 				//TODO log 
 			}
-		};
-		
-		mMap = ((com.google.android.gms.maps.MapFragment) getFragmentManager().findFragmentById(R.id.skier_map_fragment)).getMap();
-		mMap.setMyLocationEnabled(true);
-		drawSlopes();		
+		};	
 		
 		return rootView;	
 		
+	}
+	
+	public void setupMap(){
+		mMap = ((com.google.android.gms.maps.MapFragment) getFragmentManager().findFragmentById(R.id.skier_map_fragment)).getMap();
+		mMap.setMyLocationEnabled(true);
+		drawSlopes();	
 	}
 	
 	@Override
