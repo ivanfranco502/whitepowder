@@ -68,19 +68,22 @@ public class MapFragment extends Fragment {
 		if(dsc.code==200){
 			
 			for(DrawableSlope ds: dsc.payload){
-				MarkerOptions mo = new MarkerOptions();
-				mo.position(new LatLng(20,20));
-				mMap.addMarker(mo);
-				
-				PolylineOptions plo = new PolylineOptions();
-			    plo.width(6);
-			    plo.color(Color.parseColor(ds.getSlope_difficulty_color()));
-		
-				for(SimpleCoordinate c: ds.slope_coordinates){
-					plo.add(new LatLng(c.x, c.y));
+				if(ds.getSlope_coordinates()!=null){
+					
+					MarkerOptions mo = new MarkerOptions();
+					mo.position(new LatLng(20,20));
+					mMap.addMarker(mo);
+					
+					PolylineOptions plo = new PolylineOptions();
+				    plo.width(6);
+				    plo.color(Color.parseColor(ds.getSlope_difficulty_color()));
+			
+					for(SimpleCoordinate c: ds.slope_coordinates){
+						plo.add(new LatLng(c.x, c.y));
+					}
+					 
+					 mMap.addPolyline(plo);
 				}
-				 
-				 mMap.addPolyline(plo);
 			}						
 		};
 		
