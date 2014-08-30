@@ -1,8 +1,6 @@
 package com.whitepowder.skier;
 
 import java.util.ArrayList;
-import java.util.Locale;
-
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -26,19 +24,9 @@ import com.whitepowder.userManagement.PasswordChangeActivity;
 
 public class SkierActivity extends Activity implements ActionBar.TabListener {
 
-	/**
-	 * The {@link android.support.v4.view.PagerAdapter} that will provide
-	 * fragments for each of the sections. We use a {@link FragmentPagerAdapter}
-	 * derivative, which will keep every loaded fragment in memory. If this
-	 * becomes too memory intensive, it may be best to switch to a
-	 * {@link android.support.v13.app.FragmentStatePagerAdapter}.
-	 */
 	SectionsPagerAdapter mSectionsPagerAdapter;
 	ArrayList<Integer> icons = new ArrayList<Integer>();
 
-	/**
-	 * The {@link ViewPager} that will host the section contents.
-	 */
 	ViewPager mViewPager;
 	
 	public final int PWD_CHANGE_REQUEST_CODE = 1;
@@ -62,8 +50,7 @@ public class SkierActivity extends Activity implements ActionBar.TabListener {
 		icons.add(R.drawable.ic_profile);
 		icons.add(R.drawable.ic_basic_info);
 		
-		// Create the adapter that will return a fragment for each of the three
-		// primary sections of the activity.
+		// Create the adapter that will return a fragment for each of the main sections of the activity.
 		mSectionsPagerAdapter = new SectionsPagerAdapter(getFragmentManager());
 
 		// Set up the ViewPager with the sections adapter.
@@ -96,14 +83,6 @@ public class SkierActivity extends Activity implements ActionBar.TabListener {
 	}
 
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-
-		// Inflate the menu; this adds items to the action bar if it is present.
-		//getMenuInflater().inflate(R.menu.main, menu);
-		return true;
-	}
-
-	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle action bar item clicks here. The action bar will
 		// automatically handle clicks on the Home/Up button, so long
@@ -116,21 +95,29 @@ public class SkierActivity extends Activity implements ActionBar.TabListener {
 	}
 
 	@Override
-	public void onTabSelected(ActionBar.Tab tab,
-			FragmentTransaction fragmentTransaction) {
+	public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
 		// When the given tab is selected, switch to the corresponding page in
 		// the ViewPager.
 		mViewPager.setCurrentItem(tab.getPosition());
+	/*	
+	       if (mFragment == null) {
+	            mFragment = Fragment.instantiate(mActivity, mClass.getName());
+	            ft.replace(android.R.id.content, mFragment, mTag);
+	        } else {
+	            if (mFragment.isDetached()) {
+	                ft.attach(mFragment);
+	            }
+	        }
+		*/
+		
 	}
 
 	@Override
-	public void onTabUnselected(ActionBar.Tab tab,
-			FragmentTransaction fragmentTransaction) {
+	public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
 	}
 
 	@Override
-	public void onTabReselected(ActionBar.Tab tab,
-			FragmentTransaction fragmentTransaction) {
+	public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
 	}
 	
 	@Override
@@ -163,6 +150,7 @@ public class SkierActivity extends Activity implements ActionBar.TabListener {
 			// getItem is called to instantiate the fragment for the given page.
 			// Return a PlaceholderFragment (defined as a static inner class
 			// below).
+
 			Fragment fragment;
 			switch(position){
 			case 0:
@@ -191,23 +179,6 @@ public class SkierActivity extends Activity implements ActionBar.TabListener {
 			return 5;
 		}
 
-		@Override
-		public CharSequence getPageTitle(int position) {
-			Locale l = Locale.getDefault();
-			switch (position) {
-			case 0:
-				return getString(R.string.title_section1).toUpperCase(l);
-			case 1:
-				return getString(R.string.title_section2).toUpperCase(l);
-			case 2:
-				return getString(R.string.title_section3).toUpperCase(l);
-			case 3:
-				return getString(R.string.title_section4).toUpperCase(l);
-			case 4:
-				return getString(R.string.title_section5).toUpperCase(l);
-			}
-			return null;
-		}
 	}
 	
 	public void startActivityForResult(int requestCode){
@@ -222,6 +193,14 @@ public class SkierActivity extends Activity implements ActionBar.TabListener {
 				Toast.makeText(this, R.string.pwd_change_successful, Toast.LENGTH_SHORT).show();
 			};
 		}
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+
+		// Inflate the menu; this adds items to the action bar if it is present.
+		//getMenuInflater().inflate(R.menu.main, menu);
+		return true;
 	}
 
 
