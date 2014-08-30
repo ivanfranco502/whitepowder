@@ -94,18 +94,13 @@ public class BasicInformationFragment extends Fragment{
 					mContext.startActivity(intent);
 				}
 			});
+			
+			fillUIFields();
 		}
 		
 		return rootView;
 	}
 	
-	
-	@Override
-	public void onStart(){
-		super.onStart();
-		
-		fillUIFields();
-	}
 
 	private void fillUIFields() {
 		SharedPreferences sharedPrefs = getActivity().getSharedPreferences(StorageConstants.GENERAL_STORAGE_SHARED_PREFS, Context.MODE_MULTI_PROCESS);;
