@@ -11,7 +11,9 @@ import com.example.whitepowder.R;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.gson.Gson;
@@ -93,8 +95,26 @@ public class MapFragment extends Fragment {
 					}
 					 
 					 mMap.addPolyline(plo);
+					 
+					mMap.addMarker(new MarkerOptions()
+			        .position(new LatLng(ds.getSlope_coordinates().get(0).x, ds.getSlope_coordinates().get(0).y))
+			        .title("Kiel")
+			        .snippet("Kiel is cool")
+			        .icon(BitmapDescriptorFactory
+			            .fromResource(R.drawable.slope_start)));
+					
+					mMap.addMarker(new MarkerOptions()
+			        .position(new LatLng(ds.getSlope_coordinates().get(ds.getSlope_coordinates().size()-1).x, ds.getSlope_coordinates().get(ds.getSlope_coordinates().size()-1).y))
+			        .title("Kiel")
+			        .snippet("Kiel is cool")
+			        .icon(BitmapDescriptorFactory
+			        	.fromResource(R.drawable.slope_end)));
+					
+					
 				};
 			};
+			
+
 			
 			MarkerOptions mo = new MarkerOptions();
 			mo.position(new LatLng(20,20));
