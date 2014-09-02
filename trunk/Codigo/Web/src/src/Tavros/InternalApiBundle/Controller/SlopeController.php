@@ -224,8 +224,11 @@ class SlopeController extends Controller {
         foreach ($slopes as $slope) {
             $minSlope = Array();
             $minSlope['slope_id'] = $slope->getSlopId();
-//            $minSlope['slope_difficulty_color'] = $slope->getSlopDificulty()->getSldiColor();
-            $minSlope['slope_difficulty_color'] = '#008000';
+            $minSlope['slope_description'] = $slope->getSlopDescription();
+            $minSlope['slope_length'] = $slope->getSlopLength();
+            $minSlope['slope_difficulty_color'] = $slope->getSlopDificulty()->getSldiColor()->getColoHexaCode();
+            $minSlope['slope_difficulty_description'] = $slope->getSlopDificulty()->getSldiDescription();
+//            $minSlope['slope_difficulty_color'] = '#008000';
             
             /* @var $coord \Tavros\DomainBundle\Entity\Coordinates */
             foreach($slope->getCoordinates() as $coord){
