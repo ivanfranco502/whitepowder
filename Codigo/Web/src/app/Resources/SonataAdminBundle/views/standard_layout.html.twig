@@ -50,7 +50,7 @@
             <section class="content-header">
                 {% block sonata_page_content_header %}
                     {% block sonata_page_content_nav %}
-                        {% if _tab_menu is not empty or _actions is not empty %}
+                        {# {% if _tab_menu is not empty or _actions is not empty %}
                             <nav class="navbar navbar-default" role="navigation">
                                 {% if _navbar_title is not empty %}
                                     <div class="navbar-header">
@@ -64,7 +64,7 @@
                                         {% endif %}
                                     </div>
 
-                                    {% if _actions is not empty %}
+                                     {% if _actions is not empty %}
                                         <ul class="nav navbar-nav navbar-right">
                                             <li class="dropdown sonata-actions">
                                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ 'link_actions'|trans({}, 'TavrosWebBundle') }} <b class="caret"></b></a>
@@ -73,10 +73,10 @@
                                                 </ul>
                                             </li>
                                         </ul>
-                                    {% endif %}
+                                    {% endif %} 
                                 </div>
                             </nav>
-                        {% endif %}
+                        {% endif %}#}
                     {% endblock sonata_page_content_nav %}
 
                 {% endblock sonata_page_content_header %}
@@ -84,7 +84,6 @@
 
             <section class="content">
                 {% block sonata_admin_content %}
-
                     {% block notice %}
                         {% include 'SonataCoreBundle:FlashMessage:render.html.twig' %}
                     {% endblock notice %}
