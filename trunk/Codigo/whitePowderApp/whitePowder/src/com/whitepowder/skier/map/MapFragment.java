@@ -18,7 +18,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.gson.Gson;
 import com.whitepowder.storage.StorageConstants;
-
+import com.google.android.gms.maps.GoogleMap.InfoWindowAdapter;
 import android.app.Fragment;
 import android.content.Context;
 import android.graphics.Color;
@@ -27,6 +27,7 @@ import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 public class MapFragment extends Fragment {
 	
@@ -70,6 +71,7 @@ public class MapFragment extends Fragment {
         
         CameraUpdate cam = CameraUpdateFactory.newLatLngZoom(determineCenter(dsc),13);
         mMap.moveCamera(cam);
+        
 		
 	}
 	
@@ -88,37 +90,34 @@ public class MapFragment extends Fragment {
 					
 					PolylineOptions plo = new PolylineOptions();
 				    plo.width(6);
-				    plo.color(Color.parseColor(ds.getSlope_difficulty_color()));
+				    plo.color(Color.parseColor("#"+ds.getSlope_difficulty_color()));
 			
 					for(SimpleCoordinate c: ds.slope_coordinates){
 						plo.add(new LatLng(c.x, c.y));
 					}
 					 
-					 mMap.addPolyline(plo);
-					 
+					mMap.addPolyline(plo);
+					
+					//Adds start marker
+					
 					mMap.addMarker(new MarkerOptions()
 			        .position(new LatLng(ds.getSlope_coordinates().get(0).x, ds.getSlope_coordinates().get(0).y))
-			        .title("Kiel")
-			        .snippet("Kiel is cool")
+			        .title("Pista: "+ds.getSlope_description())
+			        .snippet("Longitud: "+Integer.toString(ds.getSlope_length())+" metros")
 			        .icon(BitmapDescriptorFactory
 			            .fromResource(R.drawable.slope_start)));
 					
+					//Adds end marker
+					
 					mMap.addMarker(new MarkerOptions()
 			        .position(new LatLng(ds.getSlope_coordinates().get(ds.getSlope_coordinates().size()-1).x, ds.getSlope_coordinates().get(ds.getSlope_coordinates().size()-1).y))
-			        .title("Kiel")
-			        .snippet("Kiel is cool")
+			        .title("Fin de "+ds.getSlope_description())
 			        .icon(BitmapDescriptorFactory
-			        	.fromResource(R.drawable.slope_end)));
-					
+			        	.fromResource(R.drawable.slope_end)));				
 					
 				};
 			};
 			
-
-			
-			MarkerOptions mo = new MarkerOptions();
-			mo.position(new LatLng(20,20));
-			mMap.addMarker(mo);
 		};
 		
 		
