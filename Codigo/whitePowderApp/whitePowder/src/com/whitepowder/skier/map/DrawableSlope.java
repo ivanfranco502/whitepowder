@@ -3,16 +3,15 @@ package com.whitepowder.skier.map;
 import java.util.ArrayList;
 
 public class DrawableSlope {
-	String slope_name =null;
+	String slope_description =null;
+	int slope_length=0;
 	int slope_id=0;
 	String slope_difficulty_color=null;
+	String slope_difficulty_description=null;
 	ArrayList<SimpleCoordinate> slope_coordinates;
 	
 	public String getSlope_name() {
-		return slope_name;
-	}
-	public void setSlope_name(String slope_name) {
-		this.slope_name = slope_name;
+		return slope_description;
 	}
 	public int getSlope_id() {
 		return slope_id;
@@ -31,6 +30,21 @@ public class DrawableSlope {
 	}
 	public void setSlope_coordinates(ArrayList<SimpleCoordinate> slope_coordinates) {
 		this.slope_coordinates = slope_coordinates;
+	}
+	public int getSlope_length() {
+		return slope_length;
+	}
+	public void setSlope_length(int slope_length) {
+		this.slope_length = slope_length;
+	}
+	public String getSlope_difficulty_description() {
+		return slope_difficulty_description;
+	}
+	public void setSlope_difficulty_description(String slope_difficulty_description) {
+		this.slope_difficulty_description = slope_difficulty_description;
+	}
+	public String getSlope_description() {
+		return slope_description;
 	}
 }
 
