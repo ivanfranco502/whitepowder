@@ -28,11 +28,12 @@ import com.google.gson.Gson;
 import com.whitepowder.storage.StorageConstants;
 import com.whitepowder.userManagement.User;
 import com.whitepowder.utils.ApplicationError;
+import com.whitepowder.utils.BaseTavrosURI;
 import com.whitepowder.utils.Logout;
 
 public class BasicInformationThread extends Thread {
 
-	private final String BasicInformationURL = "http://whitetavros.com/Sandbox/web/internalApi/info/basic";
+	private final String BasicInformationURL = BaseTavrosURI.getBaseURI()+"info/basic";
 	private ApplicationError mError = null;
 	private Context mContext;
 	private BasicInformationResponse basicInformationResponse = null;

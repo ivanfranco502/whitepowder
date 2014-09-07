@@ -23,6 +23,7 @@ public class GCM {
 				public void run() {
 					try {
 						String registrationId = gcm.register(SENDER_ID);
+						//TODO sacar este log
 						Log.i("ads","sdfsd");
 					} 
 					catch (IOException e) {

@@ -15,12 +15,13 @@ import android.content.SharedPreferences;
 import com.whitepowder.storage.StorageConstants;
 import com.whitepowder.userManagement.User;
 import com.whitepowder.utils.ApplicationError;
+import com.whitepowder.utils.BaseTavrosURI;
 import com.google.gson.Gson;
 
 
 public class SimplifiedSlopeDownloaderThread extends Thread {
     
-	private final String SlopeDownloadURL = "http://whitetavros.com/Sandbox/web/internalApi/slope/allNames";
+	private final String SlopeDownloadURL = BaseTavrosURI.getBaseURI()+"slope/allNames";
 	private SimplifiedSlopeContainer mSlopes=null;
 	private Context mContext;
 	

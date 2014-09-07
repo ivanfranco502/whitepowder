@@ -26,8 +26,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -104,40 +102,6 @@ public class SlopeRecognizerActivity extends Activity{
 		
 		setupStartButton(btnStart,btnStop);
 		setupStopButton(btnStop,btnStart);
-		
-		//Setups already recognized dialog
-		
-		spinner.setOnItemSelectedListener(
-				new OnItemSelectedListener() {
-
-					public void onItemSelected(AdapterView<?> arg0, View arg1,int pos, long arg3) {
-						if(((SimplifiedSlope)spinner.getSelectedItem()).slope_recognized==1){
-							final AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-							builder.setMessage("La pista seleccionada ya se encuenta reconocida, ¿Desea sobrescribirla?");
-							builder.setCancelable(true);
-							
-					        builder.setPositiveButton("Si", new DialogInterface.OnClickListener() {
-					        	public void onClick(final DialogInterface dialog, final int id) {
-					        		dialog.cancel();        		
-					        	}});
-					        
-					        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-					        	public void onClick(final DialogInterface dialog, final int id) {
-					        		spinner.setSelection(0);
-					        		dialog.cancel();
-					        	}});
-					        
-							AlertDialog alert = builder.create();
-						    alert.show();
-						}
-					}
-					
-					@Override
-					public void onNothingSelected(AdapterView<?> arg0) {
-						
-					}	
-				}	
-		);
 	
 	};
 	
@@ -213,32 +177,61 @@ public class SlopeRecognizerActivity extends Activity{
 			@Override
 			public void onClick(View v) {
 			
-				//TODO deshardcode text
+				//TODO deshardcode texts
 				
 				if(((SimplifiedSlope) spinner.getSelectedItem()).getSlope_id()==0){
 					Toast.makeText(mContext, "Por favor seleccione una pista a reconocer", Toast.LENGTH_SHORT).show();
 				}
-				else{				
-					if(!mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
-						Toast.makeText(mContext, "Por favor active el GPS para continuar", Toast.LENGTH_SHORT).show();
+				
+				//Checks if slope is already recognized
+				
+				else if(((SimplifiedSlope)spinner.getSelectedItem()).slope_recognized==1){
+						final AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+						builder.setMessage("La pista seleccionada ya se encuenta reconocida, ¿Desea sobrescribirla?");
+						builder.setCancelable(true);
+						
+				        builder.setPositiveButton("Si", new DialogInterface.OnClickListener() {
+				        	public void onClick(final DialogInterface dialog, final int id) {
+				        		dialog.cancel();
+				        		checkAndStart();
+				        	}});
+				        
+				        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+				        	public void onClick(final DialogInterface dialog, final int id) {
+				        		spinner.setSelection(0);
+				        		dialog.cancel();
+				        	}});
+				        
+						AlertDialog alert = builder.create();
+					    alert.show();
 					}
-					else{
-											
-						if(!accurateFlag){
-							progressDialog = new ProgressDialog(mContext);
-							progressDialog.setMessage("Calibrando su GPS, por favor espere");
-							progressDialog.setCancelable(true);
-							progressDialog.setIndeterminate(true);
-							progressDialog.show();
-						}
-						else{		
-							startRecognition();
-						};	
-					};
+				else{				
+					checkAndStart();
 				};
 			};
 		});
 	};
+	
+	private void checkAndStart(){
+		
+		if(!mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+			Toast.makeText(mContext, "Por favor active el GPS para continuar", Toast.LENGTH_SHORT).show();
+		}
+		else{
+								
+			if(!accurateFlag){
+				progressDialog = new ProgressDialog(mContext);
+				progressDialog.setMessage("Calibrando su GPS, por favor espere");
+				progressDialog.setCancelable(true);
+				progressDialog.setIndeterminate(true);
+				progressDialog.show();
+			}
+			else{		
+				startRecognition();
+			};	
+		};
+		
+	}
 	
 	private void startRecognition(){
 		
