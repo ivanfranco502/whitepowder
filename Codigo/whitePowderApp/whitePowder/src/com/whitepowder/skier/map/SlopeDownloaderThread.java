@@ -20,11 +20,12 @@ import com.google.gson.Gson;
 import com.whitepowder.storage.StorageConstants;
 import com.whitepowder.userManagement.User;
 import com.whitepowder.utils.ApplicationError;
+import com.whitepowder.utils.BaseTavrosURI;
 
 public class SlopeDownloaderThread extends Thread {
 
     private DrawableSlopeContainer mDrawableSlopeContainer;
-	private final String SlopeDownloadURL = "http://whitetavros.com/Sandbox/web/internalApi/slope/allPath";
+	private final String SlopeDownloadURL = BaseTavrosURI.getBaseURI()+"slope/allPath";
 	private Context mContext;
 	
 	public SlopeDownloaderThread(Context ctx) {

@@ -13,6 +13,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import com.example.whitepowder.R;
 import com.whitepowder.utils.ApplicationError;
+import com.whitepowder.utils.BaseTavrosURI;
 
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
@@ -20,7 +21,7 @@ import android.widget.Toast;
 
 public class PasswordResetThread extends AsyncTask<String, Void, Void>  {
 
-	private final String PasswordResetChangeURL = "http://whitetavros.com/Sandbox/web/internalApi/user/reset";
+	private final String PasswordResetChangeURL = BaseTavrosURI.getBaseURI()+"user/reset";
 	private ApplicationError mError = null;
 	private PasswordResetActivity mContext;
 	private ProgressDialog progressDialog;

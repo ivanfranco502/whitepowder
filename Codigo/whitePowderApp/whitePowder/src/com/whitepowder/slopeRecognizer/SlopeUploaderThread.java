@@ -14,6 +14,7 @@ import org.json.JSONObject;
 import com.example.whitepowder.R;
 import com.google.gson.Gson;
 import com.whitepowder.utils.ApplicationError;
+import com.whitepowder.utils.BaseTavrosURI;
 import com.whitepowder.utils.Logout;
 
 import android.app.ProgressDialog;
@@ -22,7 +23,7 @@ import android.widget.Toast;
 
 public class SlopeUploaderThread extends AsyncTask<Void, Void, Void> {
 
-	private final String SlopeUploadURL = "http://whitetavros.com/Sandbox/web/internalApi/slope/recognition";
+	private final String SlopeUploadURL = BaseTavrosURI.getBaseURI()+"slope/recognition";
 	ProgressDialog progressDialog = null;
 	SlopeRecognizerActivity mContext;
 	ApplicationError mError=null;

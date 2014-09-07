@@ -14,6 +14,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import com.example.whitepowder.R;
 import com.whitepowder.utils.ApplicationError;
+import com.whitepowder.utils.BaseTavrosURI;
 import com.whitepowder.utils.SHA1Manager;
 
 import android.app.ProgressDialog;
@@ -22,7 +23,7 @@ import android.widget.Toast;
 
 public class RegisterThread extends AsyncTask<String, Void, Void> {
 
-	private final String RegisterURL = "http://whitetavros.com/Sandbox/web/internalApi/user/register";
+	private final String RegisterURL = BaseTavrosURI.getBaseURI()+"user/register";
 	private ApplicationError mError = null;
 	private RegisterActivity mContext;
 	private ProgressDialog progressDialog;

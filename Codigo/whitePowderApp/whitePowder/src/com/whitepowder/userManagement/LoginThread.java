@@ -19,11 +19,12 @@ import android.os.AsyncTask;
 import android.widget.Toast;
 import com.example.whitepowder.R;
 import com.whitepowder.utils.ApplicationError;
+import com.whitepowder.utils.BaseTavrosURI;
 import com.whitepowder.utils.SHA1Manager;
 
 public class LoginThread extends AsyncTask<String, Void, Void> {
 	
-	private final String LoginURL = "http://whitetavros.com/Sandbox/web/internalApi/user/login";
+	private final String LoginURL = BaseTavrosURI.getBaseURI()+"user/login";
 	private ApplicationError mError = null;
 	private Context mContext;
 	private LoginActivity mLoginActivity;
@@ -127,9 +128,7 @@ public class LoginThread extends AsyncTask<String, Void, Void> {
 		    		Toast.makeText(mContext,R.string.error_server_unreachable,Toast.LENGTH_SHORT).show();
 		    		break;  			
     		}
-    		
-    		
-    		
+    				
     	};
     }
 	

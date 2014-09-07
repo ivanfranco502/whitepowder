@@ -14,6 +14,7 @@ import org.json.JSONObject;
 
 import com.example.whitepowder.R;
 import com.whitepowder.utils.ApplicationError;
+import com.whitepowder.utils.BaseTavrosURI;
 import com.whitepowder.utils.Logout;
 import com.whitepowder.utils.SHA1Manager;
 
@@ -23,7 +24,7 @@ import android.widget.Toast;
 
 public class PasswordChangeThread extends AsyncTask<String, Void, Void> {
 
-	private final String PasswordChangeURL = "http://whitetavros.com/Sandbox/web/internalApi/user/changePass";
+	private final String PasswordChangeURL = BaseTavrosURI.getBaseURI()+"user/changePass";
 	private ApplicationError mError = null;
 	private PasswordChangeActivity mContext;
 	private ProgressDialog progressDialog;
