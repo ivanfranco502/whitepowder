@@ -1,14 +1,14 @@
 tavros_internalApi_user:
     resource: "@TavrosInternalApiBundle/Resources/config/routing-user.yml"
     prefix:   /user
-
-tavros_internalApi_user:
+    
+tavros_internalApi_skier:
     resource: "@TavrosInternalApiBundle/Resources/config/routing-skier.yml"
     prefix:   /skier
     
 tavros_internalApi_slope:
     resource: "@TavrosInternalApiBundle/Resources/config/routing-slope.yml"
-    prefix: /slope
+    prefix:   /slope
     
 tavros_internal_api_basic_information:
     pattern:  /info/basic
