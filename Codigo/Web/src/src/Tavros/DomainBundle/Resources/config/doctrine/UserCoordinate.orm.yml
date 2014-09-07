@@ -27,7 +27,7 @@ Tavros\DomainBundle\Entity\UserCoordinate:
     manyToOne:
         uscoCoordinate:
             targetEntity: Coordinate
-            cascade: {  }
+            cascade: ["persist"]
             mappedBy: null
             inversedBy: null
             joinColumns:
@@ -36,7 +36,7 @@ Tavros\DomainBundle\Entity\UserCoordinate:
             orphanRemoval: false
         uscoUser:
             targetEntity: Users
-            cascade: {  }
+            cascade: ["persist"]
             mappedBy: null
             inversedBy: null
             joinColumns:

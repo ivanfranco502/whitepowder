@@ -1,0 +1,8 @@
+tavros_internalApi_skier_setPosition:
+    pattern: /setPosition
+    defaults: { _controller: TavrosInternalApiBundle:Skier:setPosition }
+
+tavros_internalApi_skier_getPosition:
+    pattern: /getPosition
+    defaults: { _controller: TavrosInternalApiBundle:Skier:getPosition }
+    
