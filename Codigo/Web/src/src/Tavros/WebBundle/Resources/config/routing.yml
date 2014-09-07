@@ -1,3 +1,7 @@
 tavros_web_home:
     pattern:  /
     defaults: { _controller: TavrosWebBundle:Default:index }
+
+tavros_send_gcm:
+    pattern:  /sendMessage
+    defaults: { _controller: TavrosWebBundle:GCM:sendNotification }

@@ -128,3 +128,7 @@ services:
             - ~
         calls:
             - [ setTranslationDomain, [TavrosWebBundle]]         
+            
+parameters:
+#    tavros_internal_api.example.class: Tavros\InternalApiBundle\Example
+    api_key: AIzaSyDaFh7OglzVz3u5LCQ_OvR1BFusgxRWPrI
