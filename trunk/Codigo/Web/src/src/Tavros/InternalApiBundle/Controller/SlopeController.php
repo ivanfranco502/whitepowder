@@ -158,6 +158,13 @@ class SlopeController extends Controller {
         }
 
         try {
+            /* @var $actualCoord \SlopeCoordinate*/
+
+            foreach ($slope->getCoordinates() as $actualCoord) {
+                $slope->removeCoordinate($actualCoord);
+                $actualCoord->setSlcoSlope(null);
+            }
+            $em->flush();
             foreach ($content->coordinates as $coord_xy) {
                 $coord = new Coordinate();
                 $slopeCoordinate = new SlopeCoordinate();
@@ -229,14 +236,14 @@ class SlopeController extends Controller {
             $minSlope['slope_difficulty_color'] = $slope->getSlopDificulty()->getSldiColor()->getColoHexaCode();
             $minSlope['slope_difficulty_description'] = $slope->getSlopDificulty()->getSldiDescription();
 //            $minSlope['slope_difficulty_color'] = '#008000';
-            
+
             /* @var $coord \Tavros\DomainBundle\Entity\Coordinates */
-            foreach($slope->getCoordinates() as $coord){
+            foreach ($slope->getCoordinates() as $coord) {
                 /* @var $coord \Tavros\DomainBundle\Entity\Coordinates */
                 $minCoordinates = Array();
                 $minCoordinates['x'] = $coord->getSlcoCoordinate()->getCoorX();
                 $minCoordinates['y'] = $coord->getSlcoCoordinate()->getCoorY();
-                $minSlope['slope_coordinates'][] =  $minCoordinates;
+                $minSlope['slope_coordinates'][] = $minCoordinates;
             }
             $minSlopes[] = $minSlope;
         }
