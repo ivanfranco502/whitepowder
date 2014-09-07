@@ -16,6 +16,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.example.whitepowder.R;
+import com.whitepowder.gcmModule.GCM;
 import com.whitepowder.skier.SkierActivity;
 import com.whitepowder.slopeRecognizer.SlopeRecognizerActivity;
 import com.whitepowder.storage.SyncThread;
@@ -34,6 +35,8 @@ public class LoginActivity extends Activity {
 		checkSharedPreferences();
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.login);
+		
+		new GCM(mContext);
 		
 		RelativeLayout butLogin = (RelativeLayout)findViewById(R.id.login_login_button);	
 		TextView butRegister = (TextView)findViewById(R.id.login_register_button);
