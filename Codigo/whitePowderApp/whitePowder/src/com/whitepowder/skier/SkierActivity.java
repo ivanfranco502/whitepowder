@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.example.whitepowder.R;
 import com.whitepowder.skier.basicInformation.BasicInformationActivity;
 import com.whitepowder.skier.basicInformation.BasicInformationForecast;
+import com.whitepowder.skier.map.MapActivity;
 import com.whitepowder.userManagement.PasswordChangeActivity;
 
 public class SkierActivity extends Activity {
@@ -42,6 +43,16 @@ public class SkierActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(mContext, BasicInformationActivity.class);
+				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				startActivity(intent);
+				
+			}
+		});
+		
+		butMap.setOnClickListener(new OnClickListener() {			
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(mContext, MapActivity.class);
 				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				startActivity(intent);
 				
