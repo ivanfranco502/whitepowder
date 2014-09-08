@@ -81,6 +81,12 @@
             android:screenOrientation="nosensor"
             android:theme="@style/AppTheme" />
         <activity
+            android:name="com.whitepowder.skier.basicInformation.BasicInformationActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="nosensor"
+            android:theme="@style/AppTheme" />
+        
+        <activity
             android:name="com.whitepowder.skier.basicInformation.BasicInformationForecastActivity"
             android:configChanges="orientation"
             android:screenOrientation="nosensor"

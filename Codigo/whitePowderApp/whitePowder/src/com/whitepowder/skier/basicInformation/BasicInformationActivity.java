@@ -10,30 +10,26 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.example.whitepowder.R;
-import com.google.gson.Gson;
-import com.whitepowder.skier.SkierActivity;
-import com.whitepowder.storage.StorageConstants;
-import com.whitepowder.userManagement.RegisterActivity;
-import com.whitepowder.utils.ApplicationError;
-
-import android.app.Fragment;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class BasicInformationFragment extends Fragment{
+import com.example.whitepowder.R;
+import com.google.gson.Gson;
+import com.whitepowder.storage.StorageConstants;
+import com.whitepowder.utils.ApplicationError;
+
+public class BasicInformationActivity extends Activity {
 	
 	private TextView ski_center_name;
 	private TextView ski_center_location;
@@ -51,36 +47,37 @@ public class BasicInformationFragment extends Fragment{
 	private ImageView forecast_icon;
 	private TextView forecast_see_extended;
 	
-	private SkierActivity mContext;
+	private BasicInformationActivity mContext;
+	
+	public BasicInformationForecast[] basicInformationForecast;
 	
 	double coorX;
 	double coorY;
 	
 	View rootView = null;
 
-	
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		if(rootView == null){
-			rootView = inflater.inflate(R.layout.skier_fragment_basic_information, container, false);
+	protected void onCreate(Bundle savedInstanceState) {
+			super.onCreate(savedInstanceState);
+			setContentView(R.layout.skier_fragment_basic_information);
+			mContext = this;
 				
-			ski_center_name = (TextView) rootView.findViewById(R.id.ski_center_name);
-			ski_center_location = (TextView) rootView.findViewById(R.id.ski_center_location);
-			ski_center_amenities = (TextView) rootView.findViewById(R.id.ski_center_amenities);
-			ski_center_minimum_height = (TextView) rootView.findViewById(R.id.ski_center_minimum_height);
-			ski_center_maximum_height = (TextView) rootView.findViewById(R.id.ski_center_maximum_height);
-			ski_center_season = (TextView) rootView.findViewById(R.id.ski_center_season);
-			ski_center_schedule = (ListView) rootView.findViewById(R.id.ski_center_schedule);
-			ski_center_details = (TextView) rootView.findViewById(R.id.ski_center_details);
+			ski_center_name = (TextView) findViewById(R.id.ski_center_name);
+			ski_center_location = (TextView) findViewById(R.id.ski_center_location);
+			ski_center_amenities = (TextView) findViewById(R.id.ski_center_amenities);
+			ski_center_minimum_height = (TextView) findViewById(R.id.ski_center_minimum_height);
+			ski_center_maximum_height = (TextView) findViewById(R.id.ski_center_maximum_height);
+			ski_center_season = (TextView) findViewById(R.id.ski_center_season);
+			ski_center_schedule = (ListView) findViewById(R.id.ski_center_schedule);
+			ski_center_details = (TextView) findViewById(R.id.ski_center_details);
 			
-			forecast_date = (TextView) rootView.findViewById(R.id.forecast_date);
-			forecast_description = (TextView) rootView.findViewById(R.id.forecast_description);
-			forecast_min_temp = (TextView) rootView.findViewById(R.id.forecast_min_temp);
-			forecast_max_temp = (TextView) rootView.findViewById(R.id.forecast_max_temp);
-			forecast_icon = (ImageView) rootView.findViewById(R.id.forecast_icon);
-			forecast_see_extended = (TextView) rootView.findViewById(R.id.forecast_see_extended);		
+			forecast_date = (TextView) findViewById(R.id.forecast_date);
+			forecast_description = (TextView) findViewById(R.id.forecast_description);
+			forecast_min_temp = (TextView) findViewById(R.id.forecast_min_temp);
+			forecast_max_temp = (TextView) findViewById(R.id.forecast_max_temp);
+			forecast_icon = (ImageView) findViewById(R.id.forecast_icon);
+			forecast_see_extended = (TextView) findViewById(R.id.forecast_see_extended);		
 			
-			mContext = (SkierActivity) getActivity();
 			
 			mContext.basicInformationForecast = new BasicInformationForecast[7];
 			
@@ -91,19 +88,16 @@ public class BasicInformationFragment extends Fragment{
 					Intent intent = new Intent(mContext,BasicInformationForecastActivity.class);
 					intent.putExtra("coorX", coorX);
 					intent.putExtra("coorY", coorY);
-					mContext.startActivity(intent);
+					startActivity(intent);
 				}
 			});
 			
 			fillUIFields();
-		}
 		
-		return rootView;
 	}
 	
-
 	private void fillUIFields() {
-		SharedPreferences sharedPrefs = getActivity().getSharedPreferences(StorageConstants.GENERAL_STORAGE_SHARED_PREFS, Context.MODE_MULTI_PROCESS);;
+		SharedPreferences sharedPrefs = this.getSharedPreferences(StorageConstants.GENERAL_STORAGE_SHARED_PREFS, Context.MODE_MULTI_PROCESS);;
 		Gson gson = new Gson();
 		String basicInformationValue = sharedPrefs.getString(StorageConstants.BASIC_INFORMATION_KEY,null);
 		
@@ -154,7 +148,7 @@ public class BasicInformationFragment extends Fragment{
 					arraySchedules.add(days.get(i).toString());
 				}
 				ArrayAdapter<String> arrayAdapter =      
-				new ArrayAdapter<String>(this.getActivity(),R.layout.skier_fragment_basic_information_schedule_row, arraySchedules);
+				new ArrayAdapter<String>(mContext,R.layout.skier_fragment_basic_information_schedule_row, arraySchedules);
 				// Set The Adapter
 				ski_center_schedule.setAdapter(arrayAdapter); 
 			}
@@ -167,7 +161,7 @@ public class BasicInformationFragment extends Fragment{
 			coorX = basicInformationResponse.getBasicInformation().getX();
 			coorY = basicInformationResponse.getBasicInformation().getY();
 			if(coorX != 0 || coorY != 0){	
-				BasicInformationForecastThread bift = new BasicInformationForecastThread(getActivity(), coorX, coorY);
+				BasicInformationForecastThread bift = new BasicInformationForecastThread(mContext, coorX, coorY);
 				bift.start();
 				try{
 					bift.join();
@@ -203,7 +197,7 @@ public class BasicInformationFragment extends Fragment{
 			        		pronostico.setWeatherMain(weather.getString("main"));
 			        		pronostico.setWeatherIcon(weather.getString("icon"));
 			        		
-			        		mContext.basicInformationForecast[i]=pronostico;
+			        		//mContext.basicInformationForecast[i]=pronostico;
 						}
 						
 						BasicInformationForecast todayForecast = mContext.basicInformationForecast[0];
@@ -214,7 +208,7 @@ public class BasicInformationFragment extends Fragment{
 						forecast_max_temp.setText(todayForecast.getTemperaturaMax());
 						
 		        		try {
-		        			InputStream logoBitmap = getActivity().getAssets().open("weatherIcons/"+todayForecast.getWeatherIcon()+".png");
+		        			InputStream logoBitmap = this.getAssets().open("weatherIcons/"+todayForecast.getWeatherIcon()+".png");
 		        			Bitmap bitmap = BitmapFactory.decodeStream(logoBitmap);
 		        			forecast_icon.setImageBitmap(bitmap);
 		        			
@@ -232,4 +226,5 @@ public class BasicInformationFragment extends Fragment{
 				
 			}
 		}
-	}
+	
+}
