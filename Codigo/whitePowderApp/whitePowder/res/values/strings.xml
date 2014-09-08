@@ -69,6 +69,8 @@
     <string name="slope_recognition_cancel">DESCARTAR</string>
     <string name="forecast_see_extended"><u>Ver pronóstico extendido</u></string>
     <string name="title_activity_basic_information_forecast">BasicInformationForecastActivity</string>
+    <string name="submenu_change_password">Cambiar contraseña</string>
+    <string name="submenu_logout">Cerrar sesión</string>
     <string name="hello_world">Hello world!</string>
 
 </resources>
