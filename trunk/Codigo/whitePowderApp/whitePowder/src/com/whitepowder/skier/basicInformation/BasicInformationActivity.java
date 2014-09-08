@@ -81,16 +81,6 @@ public class BasicInformationActivity extends Activity {
 			
 			mContext.basicInformationForecast = new BasicInformationForecast[7];
 			
-			forecast_see_extended.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					//launch intent with the extended forecast
-					Intent intent = new Intent(mContext,BasicInformationForecastActivity.class);
-					intent.putExtra("coorX", coorX);
-					intent.putExtra("coorY", coorY);
-					startActivity(intent);
-				}
-			});
 			
 			fillUIFields();
 		
@@ -197,7 +187,7 @@ public class BasicInformationActivity extends Activity {
 			        		pronostico.setWeatherMain(weather.getString("main"));
 			        		pronostico.setWeatherIcon(weather.getString("icon"));
 			        		
-			        		//mContext.basicInformationForecast[i]=pronostico;
+			        		mContext.basicInformationForecast[i]=pronostico;
 						}
 						
 						BasicInformationForecast todayForecast = mContext.basicInformationForecast[0];

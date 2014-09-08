@@ -7,52 +7,38 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 
+import android.app.Activity;
+import android.content.Context;
+import android.graphics.Color;
+import android.os.Bundle;
+
 import com.example.whitepowder.R;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.gson.Gson;
 import com.whitepowder.storage.StorageConstants;
-import com.google.android.gms.maps.GoogleMap.InfoWindowAdapter;
-import android.app.Fragment;
-import android.content.Context;
-import android.graphics.Color;
-import android.os.Bundle;
-import android.view.InflateException;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
 
-public class MapFragment extends Fragment {
+public class MapActivity extends Activity {
 	
-	private static View rootView;
 	private GoogleMap mMap=null;
-
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
-		if(rootView == null){
+	private MapActivity mContext;
 	
-			try{
-				rootView = inflater.inflate(R.layout.skier_fragment_map, container,false);
-				setupMap();
-			}
-			catch (InflateException e){
-				//TODO log 
-			}
-		};	
-		
-		return rootView;	
-		
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+			super.onCreate(savedInstanceState);
+			setContentView(R.layout.skier_fragment_map);
+			mContext = this;
+			setupMap();
+			
 	}
 	
 	public void setupMap(){
-				
+		
 		//Gets map
 		
 		mMap = ((com.google.android.gms.maps.MapFragment) getFragmentManager().findFragmentById(R.id.skier_map_fragment)).getMap();
@@ -62,7 +48,7 @@ public class MapFragment extends Fragment {
 		//Find points
 		
 		Gson gson = new Gson();
-		String data = read_file(getActivity().getApplicationContext(), StorageConstants.DRAWABLE_SLOPES_FILE);	
+		String data = read_file(mContext.getApplicationContext(), StorageConstants.DRAWABLE_SLOPES_FILE);	
 		DrawableSlopeContainer dsc = gson.fromJson(data, DrawableSlopeContainer.class);
 		
 		drawSlopes(dsc);	
@@ -74,7 +60,7 @@ public class MapFragment extends Fragment {
         
 		
 	}
-	
+
 	@Override
 	public void onStart(){
 		super.onStart();
@@ -168,3 +154,5 @@ public class MapFragment extends Fragment {
     }
 
 }
+
+
