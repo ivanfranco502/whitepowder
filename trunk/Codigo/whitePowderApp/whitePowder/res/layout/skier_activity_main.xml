@@ -52,18 +52,18 @@
 	        android:layout_weight="3"
 	        android:src="@drawable/ic_logowp"/>
 	    
-	       <RelativeLayout
+	       <LinearLayout
 	         android:id="@+id/RelativeLayout2"
 	         android:layout_width="match_parent"
 	         android:layout_height="0dp"
 	         android:layout_weight="2"
-	         android:layout_below="@id/logowp">
+	         android:layout_below="@id/logowp"
+	         android:orientation="vertical">
 		    
 	           <LinearLayout 
 	               android:id="@+id/LinearLayout1"
-	               android:layout_height="wrap_content"
+	               android:layout_height="65dp"
 	               android:layout_width="match_parent"
-	               android:layout_marginTop="4dp"
 				   android:layout_marginLeft="25dp"
 				   android:layout_marginRight="25dp"
 				   android:orientation="horizontal"
@@ -73,8 +73,8 @@
 				        android:id="@+id/bt_basicinfo"
 				        style="?android:attr/buttonBarButtonStyle"
 				        android:contentDescription="BasicInfo"
-				    	android:layout_width="70dp"
-				    	android:layout_height="70dp"
+				    	android:layout_width="65dp"
+				    	android:layout_height="65dp"
 				    	android:layout_marginRight="26dp"
 				    	android:background="@drawable/ic_basicinfo"
 				    	/>
@@ -83,8 +83,8 @@
 				        android:id="@+id/bt_clima"
 				        style="?android:attr/buttonBarButtonStyle"
 				        android:contentDescription="Clima"
-				    	android:layout_width="70dp"
-				    	android:layout_height="70dp"
+				    	android:layout_width="65dp"
+				    	android:layout_height="65dp"
 				    	android:background="@drawable/ic_clima"
 				    	/>
 			       
@@ -92,8 +92,8 @@
 				        android:id="@+id/bt_security"
 				        style="?android:attr/buttonBarButtonStyle"
 				        android:contentDescription="Security"
-				    	android:layout_width="70dp"
-				    	android:layout_height="70dp"
+				    	android:layout_width="65dp"
+				    	android:layout_height="65dp"
 				    	android:layout_marginLeft="25dp"
 				    	android:background="@drawable/ic_security"
 				    	/>
@@ -102,9 +102,9 @@
 		        
 	           <LinearLayout 
 	               android:id="@+id/LinearLayout2"
-	               android:layout_height="70dp"
+	               android:layout_height="65dp"
 	               android:layout_width="match_parent"
-	               android:layout_marginTop="15dp"
+	               android:layout_marginTop="5dp"
 				   android:layout_marginLeft="25dp"
 				   android:layout_marginRight="25dp"
 				   android:orientation="horizontal"
@@ -115,8 +115,8 @@
 				        android:id="@+id/bt_statistics"
 				        style="?android:attr/buttonBarButtonStyle"
 				        android:contentDescription="Statistics"
-				    	android:layout_width="70dp"
-				    	android:layout_height="70dp"
+				    	android:layout_width="65dp"
+				    	android:layout_height="65dp"
 				    	android:layout_marginRight="26dp"
 				    	android:background="@drawable/ic_statistics"
 				    	/>
@@ -125,15 +125,15 @@
 				        android:id="@+id/bt_map"
 				        style="?android:attr/buttonBarButtonStyle"
 				        android:contentDescription="Map"
-				    	android:layout_width="70dp"
-				    	android:layout_height="70dp"
+				    	android:layout_width="65dp"
+				    	android:layout_height="65dp"
 				    	android:background="@drawable/ic_map"
 				    	/>
 			       
 			       
 		        </LinearLayout>
 	
-		   </RelativeLayout>
+		   </LinearLayout>
 		   
 	       <RelativeLayout 
 	         android:id="@+id/RelativeLayout3"
