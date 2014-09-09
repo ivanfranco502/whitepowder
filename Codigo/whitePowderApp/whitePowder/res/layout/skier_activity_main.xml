@@ -4,139 +4,153 @@
     android:layout_height="match_parent"
     android:background="@drawable/gr_background"
     tools:context="com.example.actionbartest.SkierActivity" >
-
-     <RelativeLayout
-         android:id="@+id/RelativeLayout1"
-         android:layout_width="match_parent"
-         android:layout_height="70dp">  
-       
-       <ImageButton
-	        android:id="@+id/bt_submenu"
-	        style="?android:attr/buttonBarButtonStyle"
-	        android:contentDescription="Submenu"
-	    	android:layout_width="60dp"
-	    	android:layout_height="60dp"
-	    	android:layout_marginTop="4dp"
-	    	android:layout_marginLeft="8dp"
-	    	android:layout_alignParentLeft="true"
-	    	android:background="@drawable/ic_submenu"
-	    	/>
-        
-	    <ImageButton
-	        android:id="@+id/bt_skiermode"
-	        style="?android:attr/buttonBarButtonStyle"
-	        android:contentDescription="Skiermode"
-	    	android:layout_width="70dp"
-	    	android:layout_height="70dp"
-	    	android:layout_marginTop="6dp"
-	    	android:layout_marginRight="6dp"
-	    	android:layout_alignParentRight="true"
-	    	android:background="@drawable/sl_skiermode"
-	    	/>
-	   </RelativeLayout>
     
-    <ImageView
-        android:id="@+id/logowp"
-        android:contentDescription="Logowp"
+    <LinearLayout
+        android:id="@+id/VerticalLayout1"
         android:layout_width="match_parent"
-        android:layout_height="240dp"
-        android:layout_below="@id/RelativeLayout1"
-        android:src="@drawable/ic_logowp"/>
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:weightSum="7">
     
-       <RelativeLayout
-         android:id="@+id/RelativeLayout2"
-         android:layout_width="match_parent"
-         android:layout_height="200dp"
-         android:layout_below="@id/logowp">
-	    
-           <LinearLayout 
-               android:id="@+id/LinearLayout1"
-               android:layout_height="70dp"
-               android:layout_width="match_parent"
-               android:layout_marginTop="4dp"
-			   android:layout_marginLeft="25dp"
-			   android:layout_marginRight="25dp"
-			   android:orientation="horizontal"
-			   android:gravity="center">
-			   
-               <ImageButton
-			        android:id="@+id/bt_basicinfo"
-			        style="?android:attr/buttonBarButtonStyle"
-			        android:contentDescription="BasicInfo"
-			    	android:layout_width="70dp"
-			    	android:layout_height="70dp"
-			    	android:layout_marginRight="26dp"
-			    	android:background="@drawable/ic_basicinfo"
-			    	/>
-       
-		       <ImageButton
-			        android:id="@+id/bt_clima"
-			        style="?android:attr/buttonBarButtonStyle"
-			        android:contentDescription="Clima"
-			    	android:layout_width="70dp"
-			    	android:layout_height="70dp"
-			    	android:background="@drawable/ic_clima"
-			    	/>
-		       
-		       <ImageButton
-			        android:id="@+id/bt_security"
-			        style="?android:attr/buttonBarButtonStyle"
-			        android:contentDescription="Security"
-			    	android:layout_width="70dp"
-			    	android:layout_height="70dp"
-			    	android:layout_marginLeft="25dp"
-			    	android:background="@drawable/ic_security"
-			    	/>
-		       
-	        </LinearLayout>
+	     <RelativeLayout
+	         android:id="@+id/RelativeLayout1"
+	         android:layout_width="match_parent"
+			 android:layout_height="0dp"
+	         android:layout_weight="1">  
+	       
+	       <ImageButton
+		        android:id="@+id/bt_submenu"
+		        style="?android:attr/buttonBarButtonStyle"
+		        android:contentDescription="Submenu"
+		    	android:layout_width="60dp"
+		    	android:layout_height="60dp"
+		    	android:layout_marginTop="4dp"
+		    	android:layout_marginLeft="8dp"
+		    	android:layout_alignParentLeft="true"
+		    	android:background="@drawable/ic_submenu"
+		    	/>
 	        
-           <LinearLayout 
-               android:id="@+id/LinearLayout2"
-               android:layout_height="70dp"
-               android:layout_width="match_parent"
-               android:layout_marginTop="15dp"
-			   android:layout_marginLeft="25dp"
-			   android:layout_marginRight="25dp"
-			   android:orientation="horizontal"
-			   android:layout_below="@id/LinearLayout1"
-			   android:gravity="center">
-			   
-               <ImageButton
-			        android:id="@+id/bt_statistics"
-			        style="?android:attr/buttonBarButtonStyle"
-			        android:contentDescription="Statistics"
-			    	android:layout_width="70dp"
-			    	android:layout_height="70dp"
-			    	android:layout_marginRight="26dp"
-			    	android:background="@drawable/ic_statistics"
-			    	/>
-       
-		       <ImageButton
-			        android:id="@+id/bt_map"
-			        style="?android:attr/buttonBarButtonStyle"
-			        android:contentDescription="Map"
-			    	android:layout_width="70dp"
-			    	android:layout_height="70dp"
-			    	android:background="@drawable/ic_map"
-			    	/>
-		       
-		       
-	        </LinearLayout>
-
-	   </RelativeLayout>
-	   
-       <RelativeLayout 
-         android:id="@+id/RelativeLayout3"
-         android:layout_width="match_parent"
-         android:layout_height="70dp"
-         android:layout_alignParentBottom="true">
-	        <ImageView
-		        android:id="@+id/emergency"
-		        android:contentDescription="Emergency"
-		        android:layout_width="match_parent"
-		        android:layout_height="100dp"
-		        android:background="@drawable/gr_emergency"/>
-       </RelativeLayout>
+		    <ImageButton
+		        android:id="@+id/bt_skiermode"
+		        style="?android:attr/buttonBarButtonStyle"
+		        android:contentDescription="Skiermode"
+		    	android:layout_width="70dp"
+		    	android:layout_height="70dp"
+		    	android:layout_marginTop="6dp"
+		    	android:layout_marginRight="6dp"
+		    	android:layout_alignParentRight="true"
+		    	android:background="@drawable/sl_skiermode"
+		    	/>
+		   </RelativeLayout>
+	    
+	    <ImageView
+	        android:id="@+id/logowp"
+	        android:contentDescription="Logowp"
+	        android:layout_width="match_parent"
+	        android:layout_height="0dp"
+	        android:layout_below="@id/RelativeLayout1"
+	        android:layout_weight="3"
+	        android:src="@drawable/ic_logowp"/>
+	    
+	       <RelativeLayout
+	         android:id="@+id/RelativeLayout2"
+	         android:layout_width="match_parent"
+	         android:layout_height="0dp"
+	         android:layout_weight="2"
+	         android:layout_below="@id/logowp">
+		    
+	           <LinearLayout 
+	               android:id="@+id/LinearLayout1"
+	               android:layout_height="wrap_content"
+	               android:layout_width="match_parent"
+	               android:layout_marginTop="4dp"
+				   android:layout_marginLeft="25dp"
+				   android:layout_marginRight="25dp"
+				   android:orientation="horizontal"
+				   android:gravity="center">
+				   
+	               <ImageButton
+				        android:id="@+id/bt_basicinfo"
+				        style="?android:attr/buttonBarButtonStyle"
+				        android:contentDescription="BasicInfo"
+				    	android:layout_width="70dp"
+				    	android:layout_height="70dp"
+				    	android:layout_marginRight="26dp"
+				    	android:background="@drawable/ic_basicinfo"
+				    	/>
+	       
+			       <ImageButton
+				        android:id="@+id/bt_clima"
+				        style="?android:attr/buttonBarButtonStyle"
+				        android:contentDescription="Clima"
+				    	android:layout_width="70dp"
+				    	android:layout_height="70dp"
+				    	android:background="@drawable/ic_clima"
+				    	/>
+			       
+			       <ImageButton
+				        android:id="@+id/bt_security"
+				        style="?android:attr/buttonBarButtonStyle"
+				        android:contentDescription="Security"
+				    	android:layout_width="70dp"
+				    	android:layout_height="70dp"
+				    	android:layout_marginLeft="25dp"
+				    	android:background="@drawable/ic_security"
+				    	/>
+			       
+		        </LinearLayout>
+		        
+	           <LinearLayout 
+	               android:id="@+id/LinearLayout2"
+	               android:layout_height="70dp"
+	               android:layout_width="match_parent"
+	               android:layout_marginTop="15dp"
+				   android:layout_marginLeft="25dp"
+				   android:layout_marginRight="25dp"
+				   android:orientation="horizontal"
+				   android:layout_below="@id/LinearLayout1"
+				   android:gravity="center">
+				   
+	               <ImageButton
+				        android:id="@+id/bt_statistics"
+				        style="?android:attr/buttonBarButtonStyle"
+				        android:contentDescription="Statistics"
+				    	android:layout_width="70dp"
+				    	android:layout_height="70dp"
+				    	android:layout_marginRight="26dp"
+				    	android:background="@drawable/ic_statistics"
+				    	/>
+	       
+			       <ImageButton
+				        android:id="@+id/bt_map"
+				        style="?android:attr/buttonBarButtonStyle"
+				        android:contentDescription="Map"
+				    	android:layout_width="70dp"
+				    	android:layout_height="70dp"
+				    	android:background="@drawable/ic_map"
+				    	/>
+			       
+			       
+		        </LinearLayout>
+	
+		   </RelativeLayout>
+		   
+	       <RelativeLayout 
+	         android:id="@+id/RelativeLayout3"
+	         android:layout_width="match_parent"
+	         android:layout_height="0dp"
+	         android:layout_alignParentBottom="true"
+	         android:layout_weight="1"
+	         android:gravity="bottom">
+		        <ImageView
+			        android:id="@+id/emergency"
+			        android:contentDescription="Emergency"
+			        android:layout_width="match_parent"
+			        android:layout_height="70dp"
+			        android:background="@drawable/gr_emergency"/>
+	       </RelativeLayout>
+	       
+	  </LinearLayout>
     
 </RelativeLayout>
 
