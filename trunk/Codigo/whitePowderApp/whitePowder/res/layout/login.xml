@@ -9,11 +9,11 @@
     
  <ImageView
      android:id="@+id/login_logo_WhitePowder"
-     android:layout_width="wrap_content"
+     android:layout_width="match_parent"
      android:layout_height="wrap_content"
      android:layout_alignParentTop="true"
      android:contentDescription="@string/whitePowder_logo_description"
-     android:layout_marginTop="50dp"
+     android:layout_marginTop="15dp"
      android:layout_centerHorizontal="true"
      android:src="@drawable/ic_bannerwp" />
     
@@ -22,6 +22,7 @@
      android:layout_width="match_parent"
      android:layout_height="65dp"
      android:layout_centerVertical="true"
+     android:layout_below="@+id/login_logo_WhitePowder"
      android:background="#FFFFFF">
 
      <EditText
