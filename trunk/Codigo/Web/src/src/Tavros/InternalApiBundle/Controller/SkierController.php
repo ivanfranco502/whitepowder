@@ -13,7 +13,7 @@ use \FOS\UserBundle\Entity\User as User;
 
 class SkierController extends Controller {
 
-    //SET CURRENT POSITION
+    //SET CURRENT POSITION FOR ONE SKIER
     public function setPositionAction() {
         $logger = $this->container->get('logger');
         $serializer = $this->container->get('jms_serializer');
@@ -67,7 +67,7 @@ class SkierController extends Controller {
         return $response;
     }
 
-    //GET POSITION
+    //GET CURRENT POSITION FOR ONE SKIER
     public function getPositionAction() {
         $logger = $this->container->get('logger');
         $serializer = $this->container->get('jms_serializer');
@@ -108,6 +108,33 @@ class SkierController extends Controller {
 
         $apiResponse->setCode(200);
         $apiResponse->setPayload($coordinate->getUscoCoordinate());
+        $response->setContent($serializer->serialize($apiResponse, 'json'));
+        return $response;
+    }
+
+    //GET ALL SKIER POSITION
+    public function getAllPositionAction() {
+        $logger = $this->container->get('logger');
+        $serializer = $this->container->get('jms_serializer');
+        $apiResponse = new ApiResponse();
+        $response = new Response();
+        $response->headers->set('Content-Type', 'application/json');
+        $em = $this->container->get('Doctrine')->getManager();
+        //TODO VERIFICAR QUE SEA ADMINISITRADOR
+
+        $allPositions = $em->getRepository('TavrosDomainBundle:UserCoordinate')->findAll();
+        /* @var $userPosition \UserCoordinate */
+        $positionsDTO = Array();
+        foreach ($allPositions as $userPosition) {
+            $positionDTO = Array();
+            $positionDTO['username'] = $userPosition->getUscoUser()->getUsername();
+            $positionDTO['coor_X'] = $userPosition->getUscoCoordinate()->getCoorX();
+            $positionDTO['coor_Y'] = $userPosition->getUscoCoordinate()->getCoorY();
+            
+            $positionsDTO[] = $positionDTO;
+        }
+        $apiResponse->setCode(200);
+        $apiResponse->setPayload($positionsDTO);
         $response->setContent($serializer->serialize($apiResponse, 'json'));
         return $response;
     }
