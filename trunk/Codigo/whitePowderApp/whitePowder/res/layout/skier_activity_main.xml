@@ -4,53 +4,50 @@
     android:layout_height="match_parent"
     android:background="@drawable/gr_background"
     tools:context="com.example.actionbartest.SkierActivity" >
-    
-    <LinearLayout
-        android:id="@+id/VerticalLayout1"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:weightSum="7">
-    
-	     <RelativeLayout
-	         android:id="@+id/RelativeLayout1"
-	         android:layout_width="match_parent"
-			 android:layout_height="0dp"
-	         android:layout_weight="1">  
+     
 	       
-	       <ImageButton
+	         <ImageButton
 		        android:id="@+id/bt_submenu"
 		        style="?android:attr/buttonBarButtonStyle"
 		        android:contentDescription="Submenu"
-		    	android:layout_width="60dp"
-		    	android:layout_height="60dp"
-		    	android:layout_marginTop="4dp"
-		    	android:layout_marginLeft="8dp"
+		    	android:layout_width="35dp"
+		    	android:layout_height="15dp"
+		    	android:layout_marginTop="16dp"
+		    	android:layout_marginLeft="20dp"
 		    	android:layout_alignParentLeft="true"
 		    	android:background="@drawable/ic_submenu"
 		    	/>
-	        
-		    <ImageButton
+
+	          <ImageButton
 		        android:id="@+id/bt_skiermode"
 		        style="?android:attr/buttonBarButtonStyle"
 		        android:contentDescription="Skiermode"
-		    	android:layout_width="70dp"
-		    	android:layout_height="70dp"
-		    	android:layout_marginTop="6dp"
-		    	android:layout_marginRight="6dp"
+		    	android:layout_width="58dp"
+		    	android:layout_height="80dp"
+		    	android:layout_marginTop="8dp"
+		    	android:layout_marginRight="8dp"
 		    	android:layout_alignParentRight="true"
 		    	android:background="@drawable/sl_skiermode"
 		    	/>
-		   </RelativeLayout>
+    
+		    
+	  <LinearLayout
+        android:id="@+id/VerticalLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/bt_submenu"
+        android:layout_marginTop="35dp"
+        android:orientation="vertical"
+        android:weightSum="6">
 	    
 	    <ImageView
 	        android:id="@+id/logowp"
 	        android:contentDescription="Logowp"
 	        android:layout_width="match_parent"
 	        android:layout_height="0dp"
-	        android:layout_below="@id/RelativeLayout1"
+	        android:layout_below="@id/bt_submenu"
 	        android:layout_weight="3"
-	        android:src="@drawable/ic_logowp"/>
+	        android:src="@drawable/ic_bannerwp"/>
 	    
 	       <LinearLayout
 	         android:id="@+id/RelativeLayout2"
@@ -104,9 +101,9 @@
 	               android:id="@+id/LinearLayout2"
 	               android:layout_height="65dp"
 	               android:layout_width="match_parent"
-	               android:layout_marginTop="5dp"
-				   android:layout_marginLeft="25dp"
-				   android:layout_marginRight="25dp"
+	               android:layout_marginTop="15dp"
+				   android:layout_marginLeft="35dp"
+				   android:layout_marginRight="35dp"
 				   android:orientation="horizontal"
 				   android:layout_below="@id/LinearLayout1"
 				   android:gravity="center">
@@ -117,7 +114,7 @@
 				        android:contentDescription="Statistics"
 				    	android:layout_width="65dp"
 				    	android:layout_height="65dp"
-				    	android:layout_marginRight="26dp"
+				    	android:layout_marginRight="35dp"
 				    	android:background="@drawable/ic_statistics"
 				    	/>
 	       

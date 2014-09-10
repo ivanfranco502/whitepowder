@@ -87,7 +87,7 @@ public class SkierActivity extends Activity {
 
           popup.show();//showing popup menu  
          }  
-        });//closing the setOnClickListener method 
+        });//closing the setOnClickListener method */
         
         //Set Skiermode Button
         butSkiermode.setOnClickListener(new OnClickListener() {			

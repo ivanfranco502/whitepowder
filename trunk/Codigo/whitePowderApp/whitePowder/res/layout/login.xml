@@ -15,7 +15,7 @@
      android:contentDescription="@string/whitePowder_logo_description"
      android:layout_marginTop="50dp"
      android:layout_centerHorizontal="true"
-     android:src="@drawable/whitepowder_logo" />
+     android:src="@drawable/ic_bannerwp" />
     
  <RelativeLayout
      android:id="@+id/login_username_container"
