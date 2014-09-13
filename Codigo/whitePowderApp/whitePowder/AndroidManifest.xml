@@ -97,6 +97,8 @@
             android:screenOrientation="nosensor"
             android:label="@string/title_activity_basic_information_forecast" >
         </activity>
+        
+        <service android:name="com.whitepowder.skier.SkierModeService" />
     </application>
 
 </manifest>
