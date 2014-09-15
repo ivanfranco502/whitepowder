@@ -29,4 +29,22 @@ public class Logout {
 		
 		return;
 	}
+	
+	public static void logout(Context mContext, boolean tokenError){
+		
+		SharedPreferences sharedPreferences = mContext.getSharedPreferences("WP_USER_SHARED_PREFERENCES", Context.MODE_PRIVATE);
+		Editor editor = sharedPreferences.edit();
+		editor.clear(); 
+		editor.apply();
+		
+		Intent intent = new Intent(mContext, LoginActivity.class);
+		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+		mContext.startActivity(intent);
+				
+		if(tokenError){
+			Toast.makeText(mContext,R.string.error_invalid_token,Toast.LENGTH_SHORT).show();
+		}
+		
+		return;
+	}
 }
