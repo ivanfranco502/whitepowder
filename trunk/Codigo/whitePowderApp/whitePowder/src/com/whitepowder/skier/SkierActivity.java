@@ -2,22 +2,22 @@ package com.whitepowder.skier;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.location.Location;
-import android.location.LocationListener;
+import android.content.IntentFilter;
+import android.content.ServiceConnection;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.v7.widget.PopupMenu;
-import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
 import android.widget.Toast;
-
 import com.example.whitepowder.R;
 import com.whitepowder.skier.basicInformation.BasicInformationActivity;
 import com.whitepowder.skier.basicInformation.BasicInformationForecast;
@@ -33,8 +33,9 @@ public class SkierActivity extends Activity {
 	public final int PWD_CHANGE_REQUEST_CODE = 1;
 	
 	private LocationManager mLocationManager;
-	private LocationListener mLocationListener;
-	private int TIME_BETWEEN_POINTS = 4000;
+	private BroadcastReceiver serviceBroadcastReciever;
+	private SkierModeService mBoundService;
+	private ServiceConnection mConnection;
 	
 	private ImageButton butSubmenu;
 	private ImageButton butInfoBasic;
@@ -46,13 +47,14 @@ public class SkierActivity extends Activity {
 	
 	public BasicInformationForecast[] basicInformationForecast;
 
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);	
 		
 		setContentView(R.layout.skier_activity_main);
 		mContext = this;
-		loadButtons();
+		loadButtons();	
 		
 		// Acquire reference to the LocationManager
 		if (null == (mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE))){
@@ -65,9 +67,49 @@ public class SkierActivity extends Activity {
         setupSkierModeButton();       
         setupBasikcInformationButton();  
         setupMapButton();
-
+        
+        //Create service connection
+        createServiceConnectionAndRegisterForBroadcast();
 		
 	};
+	
+	private void createServiceConnectionAndRegisterForBroadcast(){
+		
+		
+		mConnection = new ServiceConnection() {
+			@Override
+			public void onServiceConnected(ComponentName className, IBinder service) {
+				mBoundService = ((SkierModeService.LocalBinder)service).getService();
+				
+				serviceBroadcastReciever = new BroadcastReceiver() {
+
+			        @Override
+			        public void onReceive(Context context, Intent intent) {
+			        	stopSkierMode();
+						Toast.makeText(mContext, "Por favor active el GPS para utilizar el modo esquiador.", Toast.LENGTH_SHORT).show();
+			        };
+			    };
+				
+				if(mBoundService!=null){
+					registerReceiver(serviceBroadcastReciever, new IntentFilter(mBoundService.getIntentStopSkierModeAction()));
+				};
+				
+			};
+
+			@Override
+			public void onServiceDisconnected(ComponentName className) {
+				mBoundService = null;
+				butSkiermode.setSelected(false);
+				Toast.makeText(mContext, "El modo esquiador ha sido desactivado.", Toast.LENGTH_SHORT).show();
+				unregisterReceiver(serviceBroadcastReciever);
+			};
+			
+		};
+		
+
+	    
+	    
+	}
 
 	private void loadButtons(){
 		butSubmenu = (ImageButton) findViewById(R.id.bt_submenu);
@@ -87,29 +129,31 @@ public class SkierActivity extends Activity {
 			public void onClick(View v) {
 				
 				if(!v.isSelected()){
-					
 					if (!mLocationManager.isProviderEnabled( LocationManager.GPS_PROVIDER)) {
 						alertNoGps();
 					}
 					else{
-				
-						//Enables location listener
-						enableLocationListener();
-						
-						//Register for location changes	
-						mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, TIME_BETWEEN_POINTS, 0,mLocationListener);
-						
+						//Binds to service
+						bindService(new Intent(mContext, SkierModeService.class), mConnection, Context.BIND_AUTO_CREATE);
 						v.setSelected(true);
-					};
+					};			
 					
 				}
 				else{
-					//Disenables location listener
-					mLocationManager.removeUpdates(mLocationListener);
-					v.setSelected(false);
+					stopSkierMode();
 				};
+				
+				
 			}
 		});
+	}
+	
+	private void stopSkierMode(){
+		unbindService(mConnection);
+		unregisterReceiver(serviceBroadcastReciever);
+		butSkiermode.setSelected(false);
+		mBoundService = null;
+		serviceBroadcastReciever=null;
 	}
 	
 	private void setupBasikcInformationButton(){
@@ -183,7 +227,6 @@ public class SkierActivity extends Activity {
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-
 		
 		int id = item.getItemId();
 		if (id == R.id.action_settings) {
@@ -224,47 +267,8 @@ public class SkierActivity extends Activity {
 		}
 	};
 	
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-
-		return true;
-	};
-	
-	private void enableLocationListener(){
-		mLocationListener = new LocationListener() {
-
-			// Called back when location changes
-
-			@Override
-			public void onLocationChanged(Location arg0) {
-				Log.i("pos","poas");
-				
-				Intent i = new Intent(mContext, SkierModeService.class);
-				mContext.startService(i);
-				
-			}
-			
-			@Override
-			public void onProviderDisabled(String arg0) {
-				//TODO do something
-			}
-
-			@Override
-			public void onProviderEnabled(String arg0) {
-				return;
-			}
-
-			@Override
-			public void onStatusChanged(String arg0, int arg1, Bundle arg2) {
-				// TODO Auto-generated method stub
-				
-			};
-		};
-
-	};
-	
 	private void alertNoGps() {
-		final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		final AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
 		builder.setMessage("El sistema GPS esta desactivado, ¿Desea activarlo?")
 			.setCancelable(false)
 	        .setPositiveButton("Si", new DialogInterface.OnClickListener() {
@@ -281,4 +285,7 @@ public class SkierActivity extends Activity {
 		AlertDialog alert = builder.create();
 	    alert.show();
 	};
+
+
+
 }
