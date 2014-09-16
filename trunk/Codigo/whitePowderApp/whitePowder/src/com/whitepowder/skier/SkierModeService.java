@@ -96,7 +96,7 @@ public class SkierModeService extends Service  {
 			@Override
 			public void onProviderDisabled(String arg0) {
 				
-				//Stops skier mode
+				//Envio un intent al SkierActivity para que detenga el skier mode.
 				Intent intent = new Intent();
 				intent.setAction(IntentStopSkierModeAction);
 				sendBroadcast(intent);
@@ -125,6 +125,8 @@ public class SkierModeService extends Service  {
 	
 	public void sendPosition(String myPos){
 	
+		//Hago 5 intentos por posición, si no consigo un OK la desestimo.
+		
 		for(int trys=0; trys<5 ;trys++){		
 
 			HttpURLConnection connection = null;
@@ -173,6 +175,7 @@ public class SkierModeService extends Service  {
 			
 			if(!success){
 				try {
+					//Si no se envió la OK la posición, espero 1 seg antes de volver a intentar.
 					Thread.sleep(1000);
 				} 
 				catch (InterruptedException e) {
