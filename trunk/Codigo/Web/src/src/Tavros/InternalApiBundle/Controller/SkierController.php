@@ -32,7 +32,7 @@ class SkierController extends Controller {
 
         /* @var $token \Tavros\DomainBundle\Entity\Token */
 
-        $token = $em->getRepository('TavrosDomainBundle:Token')->findOneByToken($content->_token);
+        $token = $em->getRepository('TavrosDomainBundle:ExternalData')->findOneByToken($content->_token);
 
         if (!$token) {
             $apiResponse->setCode(110);
@@ -86,7 +86,7 @@ class SkierController extends Controller {
 
         /* @var $token \Tavros\DomainBundle\Entity\Token */
 
-        $token = $em->getRepository('TavrosDomainBundle:Token')->findOneByToken($content->_token);
+        $token = $em->getRepository('TavrosDomainBundle:ExternalData')->findOneByToken($content->_token);
 
         if (!$token) {
             $apiResponse->setCode(110);

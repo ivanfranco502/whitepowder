@@ -13,3 +13,7 @@ tavros_internalApi_slope:
 tavros_internal_api_basic_information:
     pattern:  /info/basic
     defaults: { _controller: TavrosInternalApiBundle:Default:basicInformation }
+    
+tavros_internal_api_number_version:
+    pattern:  /version/number
+    defaults: { _controller: TavrosInternalApiBundle:Default:numberVersion }

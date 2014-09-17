@@ -1,0 +1,21 @@
+Tavros\DomainBundle\Entity\Version:
+    type: entity
+    table: version
+    id:
+        versId:
+            type: integer
+            nullable: false
+            unsigned: false
+            comment: ''
+            id: true
+            column: vers_id
+            generator:
+                strategy: IDENTITY
+    fields:
+        versNumber:
+            type: integer
+            nullable: false
+            unsigned: false
+            comment: ''
+            column: vers_number
+    lifecycleCallbacks: {  }

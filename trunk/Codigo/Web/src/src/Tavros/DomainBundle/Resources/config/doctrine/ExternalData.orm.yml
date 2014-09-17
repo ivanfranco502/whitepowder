@@ -1,0 +1,47 @@
+Tavros\DomainBundle\Entity\ExternalData:
+    type: entity
+    table: external_data
+    indexes:
+        fk_user_id_idx:
+            columns:
+                - exda_user_id
+    uniqueConstraints:
+        token_UNIQUE:
+            columns:
+                - exda_token
+    id:
+        exdaId:
+            type: integer
+            nullable: false
+            unsigned: false
+            comment: ''
+            id: true
+            column: exda_id
+            generator:
+                strategy: IDENTITY
+    fields:
+        exdaToken:
+            type: string
+            nullable: true
+            length: 45
+            fixed: false
+            comment: ''
+            column: exda_token
+        exdaRegistrationCode:
+            type: text
+            nullable: true
+            length: null
+            fixed: false
+            comment: ''
+            column: exda_registration_code
+    manyToOne:
+        exdaUser:
+            targetEntity: Users
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                exda_user_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }
