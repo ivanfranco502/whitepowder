@@ -12,13 +12,11 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -92,7 +90,7 @@ public class BasicInformationActivity extends Activity {
 		String basicInformationValue = sharedPrefs.getString(StorageConstants.BASIC_INFORMATION_KEY,null);
 		
 		if(basicInformationValue==null){
-			
+			//TODO decir que no hay info cargada
 
     	}
     	else{
@@ -147,74 +145,64 @@ public class BasicInformationActivity extends Activity {
 			if(skiCenterDetails != null){
 				ski_center_details.setText(skiCenterDetails);
 				
-			//chequear coor nulls y llamar al forecast.
-			coorX = basicInformationResponse.getBasicInformation().getX();
-			coorY = basicInformationResponse.getBasicInformation().getY();
-			if(coorX != 0 || coorY != 0){	
-				BasicInformationForecastThread bift = new BasicInformationForecastThread(mContext, coorX, coorY);
-				bift.start();
-				try{
-					bift.join();
-				}
-				catch(InterruptedException e){
+			JSONObject jsonObject = null;
+			try{
+				jsonObject = new JSONObject(sharedPrefs.getString(StorageConstants.BASIC_INFORMATION_SCHEDULE_KEY,null));
+				if(jsonObject != null){
+					JSONArray forecastArray = null;
+					forecastArray = jsonObject.getJSONArray("list");
 					
-				}
-				JSONObject jsonObject = null;
-				try{
-					jsonObject = new JSONObject(sharedPrefs.getString(StorageConstants.BASIC_INFORMATION_SCHEDULE_KEY,null));
-					if(jsonObject != null){
-						JSONArray forecastArray = null;
-						forecastArray = jsonObject.getJSONArray("list");
-						
-						for(int i = 0; i < forecastArray.length(); i++){       		 
-							BasicInformationForecast pronostico = new BasicInformationForecast();
-			        		pronostico.setId(i);    		 
-			        		JSONObject forec = (JSONObject) forecastArray.get(i);
-			        		
-			        		String dt =  forec.getString("dt");      		
-			        		long dv = Long.valueOf(dt)*1000;
-			        		Date df = new java.util.Date(dv);
-			        		pronostico.setFecha(new SimpleDateFormat("dd/MM/yyyy", java.util.Locale.getDefault()).format(df));     		 
-			        		
-			        		JSONObject temp = forec.getJSONObject("temp");
-			        		pronostico.setTemperaturaMax(temp.getDouble("max"));
-			        		pronostico.setTemperaturaMin(temp.getDouble("min"));
-			        	
-			        		JSONArray weatherArray = forec.getJSONArray("weather");
-			        		
-			        		JSONObject weather = weatherArray.getJSONObject(0);
-			        		pronostico.setWeatherId(weather.getInt("id"));      		 
-			        		pronostico.setWeatherMain(weather.getString("main"));
-			        		pronostico.setWeatherIcon(weather.getString("icon"));
-			        		
-			        		mContext.basicInformationForecast[i]=pronostico;
-						}
-						
-						BasicInformationForecast todayForecast = mContext.basicInformationForecast[0];
-						
-						forecast_date.setText(todayForecast.getFecha());
-						forecast_description.setText(todayForecast.getWeatherMain());
-						forecast_min_temp.setText(todayForecast.getTemperaturaMin());
-						forecast_max_temp.setText(todayForecast.getTemperaturaMax());
-						
-		        		try {
-		        			InputStream logoBitmap = this.getAssets().open("weatherIcons/"+todayForecast.getWeatherIcon()+".png");
-		        			Bitmap bitmap = BitmapFactory.decodeStream(logoBitmap);
-		        			forecast_icon.setImageBitmap(bitmap);
-		        			
-		        		} catch (IOException e) {
-		        			new ApplicationError(602, "Error","No se encuentra el icono del pronostico");
-		        		}
+					for(int i = 0; i < forecastArray.length(); i++){       		 
+						BasicInformationForecast pronostico = new BasicInformationForecast();
+		        		pronostico.setId(i);    		 
+		        		JSONObject forec = (JSONObject) forecastArray.get(i);
 		        		
-						
+		        		String dt =  forec.getString("dt");      		
+		        		long dv = Long.valueOf(dt)*1000;
+		        		Date df = new java.util.Date(dv);
+		        		pronostico.setFecha(new SimpleDateFormat("dd/MM/yyyy", java.util.Locale.getDefault()).format(df));     		 
+		        		
+		        		JSONObject temp = forec.getJSONObject("temp");
+		        		pronostico.setTemperaturaMax(temp.getDouble("max"));
+		        		pronostico.setTemperaturaMin(temp.getDouble("min"));
+		        	
+		        		JSONArray weatherArray = forec.getJSONArray("weather");
+		        		
+		        		JSONObject weather = weatherArray.getJSONObject(0);
+		        		pronostico.setWeatherId(weather.getInt("id"));      		 
+		        		pronostico.setWeatherMain(weather.getString("main"));
+		        		pronostico.setWeatherIcon(weather.getString("icon"));
+		        		
+		        		mContext.basicInformationForecast[i]=pronostico;
 					}
-				}  
-				catch(JSONException e){	}
-				} 
-			}
+					
+					BasicInformationForecast todayForecast = mContext.basicInformationForecast[0];
+					
+					forecast_date.setText(todayForecast.getFecha());
+					forecast_description.setText(todayForecast.getWeatherMain());
+					forecast_min_temp.setText(todayForecast.getTemperaturaMin());
+					forecast_max_temp.setText(todayForecast.getTemperaturaMax());
+					
+	        		try {
+	        			InputStream logoBitmap = this.getAssets().open("weatherIcons/"+todayForecast.getWeatherIcon()+".png");
+	        			Bitmap bitmap = BitmapFactory.decodeStream(logoBitmap);
+	        			forecast_icon.setImageBitmap(bitmap);
+	        			
+	        		} catch (IOException e) {
+	        			new ApplicationError(602, "Error","No se encuentra el icono del pronostico");
+	        		}
+	        		
+					
+				}else{
+					//TODO avisar que no hay pronostico
+				}
+			}  
+			catch(JSONException e){	}
+			} 
+		}
 				
 				
-			}
+			
 		}
 	
 }

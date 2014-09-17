@@ -1,6 +1,7 @@
 package com.whitepowder.storage;
 
 import com.google.gson.Gson;
+import com.whitepowder.skier.basicInformation.BasicInformationForecastThread;
 import com.whitepowder.skier.basicInformation.BasicInformationResponse;
 import com.whitepowder.skier.basicInformation.BasicInformationThread;
 import com.whitepowder.skier.map.SlopeDownloaderThread;
@@ -45,7 +46,7 @@ public class SyncThread extends AsyncTask<LoginActivity, Void, Void> {
 		
 		//Join threads and check errors
 		try {
-			sdt.join();
+			ssdt.join();
 			checkSimplifiedSlopeErrors();
 			
 			bit.join();
@@ -115,7 +116,25 @@ public class SyncThread extends AsyncTask<LoginActivity, Void, Void> {
 	        			mError = new ApplicationError(504, "Error", "No hay información básica en la base de datos");
 	        			break;
 	        	}
+	        }else{
+	        	launchForecastThread(basicInformationResponse);
 	        }
+		}
+	}
+	
+	private void launchForecastThread(BasicInformationResponse basicInformationResponse){
+		//chequear coor nulls y llamar al forecast.
+		double coorX = basicInformationResponse.getBasicInformation().getX();
+		double coorY = basicInformationResponse.getBasicInformation().getY();
+		if(coorX != 0 || coorY != 0){	
+			BasicInformationForecastThread bift = new BasicInformationForecastThread(mContext, coorX, coorY);
+			bift.start();
+			try{
+				bift.join();
+			}
+			catch(InterruptedException e){
+				
+			}
 		}
 	}
 	

@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.example.whitepowder.R;
 import com.whitepowder.skier.basicInformation.BasicInformationActivity;
 import com.whitepowder.skier.basicInformation.BasicInformationForecast;
+import com.whitepowder.skier.basicInformation.BasicInformationForecastActivity;
 import com.whitepowder.skier.map.MapActivity;
 import com.whitepowder.userManagement.PasswordChangeActivity;
 import com.whitepowder.utils.Logout;
@@ -66,6 +67,7 @@ public class SkierActivity extends Activity {
         setupPopupMenu();	    
         setupSkierModeButton();       
         setupBasikcInformationButton();  
+        setupForecastButton();
         setupMapButton();
         
         //Create service connection
@@ -163,6 +165,16 @@ public class SkierActivity extends Activity {
 				Intent intent = new Intent(mContext, BasicInformationActivity.class);
 				startActivity(intent);
 				
+			}
+		});
+	}
+	
+	private void setupForecastButton(){
+		butClima.setOnClickListener(new OnClickListener() {			
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(mContext, BasicInformationForecastActivity.class);
+				startActivity(intent);
 			}
 		});
 	}
