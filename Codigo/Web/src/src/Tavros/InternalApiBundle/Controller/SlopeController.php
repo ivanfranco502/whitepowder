@@ -30,7 +30,7 @@ class SlopeController extends Controller {
 
         $content = json_decode($this->container->get('request')->getContent());
 
-        $token = $em->getRepository('TavrosDomainBundle:Token')->findOneByToken($content->_token);
+        $token = $em->getRepository('TavrosDomainBundle:ExternalData')->findOneByToken($content->_token);
 
         if (!$token) {
             $apiResponse->setCode(110);
@@ -69,7 +69,7 @@ class SlopeController extends Controller {
 
         $content = json_decode($this->container->get('request')->getContent());
 
-        $token = $em->getRepository('TavrosDomainBundle:Token')->findOneByToken($content->_token);
+        $token = $em->getRepository('TavrosDomainBundle:ExternalData')->findOneByToken($content->_token);
 
         if (!$token) {
             $apiResponse->setCode(110);
@@ -127,7 +127,7 @@ class SlopeController extends Controller {
 
         $content = json_decode($this->container->get('request')->getContent());
 
-        $token = $em->getRepository('TavrosDomainBundle:Token')->findOneByToken($content->_token);
+        $token = $em->getRepository('TavrosDomainBundle:ExternalData')->findOneByToken($content->_token);
         /* @var $token  \Tavros\DomainBundle\Entity\Token */
         if (!$token) {
             $apiResponse->setCode(110);
@@ -210,7 +210,7 @@ class SlopeController extends Controller {
 
         $content = json_decode($this->container->get('request')->getContent());
 
-        $token = $em->getRepository('TavrosDomainBundle:Token')->findOneByToken($content->_token);
+        $token = $em->getRepository('TavrosDomainBundle:ExternalData')->findOneByToken($content->_token);
 
         if (!$token) {
             $apiResponse->setCode(110);

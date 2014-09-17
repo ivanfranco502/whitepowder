@@ -170,7 +170,7 @@ class UserController extends Controller {
             return $response;
         }
 
-        $token = $em->getRepository('TavrosDomainBundle:Token')->findOneByTokenUser($user);
+        $token = $em->getRepository('TavrosDomainBundle:ExternalData')->findOneByTokenUser($user);
         /* @var $token \Tavros\DomainBundle\Entity\Token */
 
         if (!$token) {
@@ -241,7 +241,7 @@ class UserController extends Controller {
         $current_password = $content->current_password;
         $new_password = $content->new_password;
 
-        $token = $em->getRepository('TavrosDomainBundle:Token')->findOneByToken($_token);
+        $token = $em->getRepository('TavrosDomainBundle:ExternalData')->findOneByToken($_token);
         /*@var $token \Tavros\DomainBundle\Entity\Token */
 
         if (!$token) {
