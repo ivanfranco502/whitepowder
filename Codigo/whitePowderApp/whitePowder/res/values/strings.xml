@@ -42,11 +42,11 @@
     <string name="reset_invalid_email">El email ingresado no es válido.</string>
     <string name="login_reset_successful">¡Reseteo exitoso!</string>
     <string name="login_register_successful">¡Registro exitoso!</string>
-    <string name="title_section1">Info</string>
-    <string name="title_section2">Mapa</string>
-    <string name="title_section3">Emergencia</string>
-    <string name="title_section4">Perfil</string>
-    <string name="title_section5">Submenu</string>
+    <string name="title_section1">Señales</string>
+    <string name="title_section2">Normas</string>
+    <string name="title_section3">3</string>
+    <string name="title_section4">4</string>
+    <string name="title_section5">5</string>
     <string name="alert_exit_title">Salir</string>
     <string name="alert_exit_message">¿Estás seguro que deseas salir?</string>
     <string name="alert_no">No</string>
@@ -72,5 +72,7 @@
     <string name="submenu_change_password">Cambiar contraseña</string>
     <string name="submenu_logout">Cerrar sesión</string>
     <string name="hello_world">Hello world!</string>
+    <string name="title_activity_nas">NASActivity</string>
+    <string name="title_activity_sign">SignActivity</string>
 
 </resources>
