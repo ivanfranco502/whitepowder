@@ -23,6 +23,7 @@ import com.whitepowder.skier.basicInformation.BasicInformationActivity;
 import com.whitepowder.skier.basicInformation.BasicInformationForecast;
 import com.whitepowder.skier.basicInformation.BasicInformationForecastActivity;
 import com.whitepowder.skier.map.MapActivity;
+import com.whitepowder.skier.normsAndSigns.NASActivity;
 import com.whitepowder.userManagement.PasswordChangeActivity;
 import com.whitepowder.utils.Logout;
 
@@ -68,6 +69,7 @@ public class SkierActivity extends Activity {
         setupSkierModeButton();       
         setupBasikcInformationButton();  
         setupForecastButton();
+        setupSecurityButton();
         setupMapButton();
         
         //Create service connection
@@ -184,6 +186,17 @@ public class SkierActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(mContext, MapActivity.class);
+				startActivity(intent);
+				
+			}
+		});
+	}
+	
+	private void setupSecurityButton(){
+		butSecurity.setOnClickListener(new OnClickListener() {			
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(mContext, NASActivity.class);
 				startActivity(intent);
 				
 			}

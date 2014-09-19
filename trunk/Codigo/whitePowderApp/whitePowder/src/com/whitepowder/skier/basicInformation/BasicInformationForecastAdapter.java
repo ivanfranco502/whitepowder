@@ -62,6 +62,20 @@ public class BasicInformationForecastAdapter extends BaseAdapter{
 			
 		} catch (IOException e) {
 			new ApplicationError(602, "Error","No se encuentra el icono del pronostico");
+		}try {
+			InputStream logoBitmap = mContext.getAssets().open("weatherIcons/"+basicForecast.getWeatherIcon()+".png");
+			Bitmap bitmap = BitmapFactory.decodeStream(logoBitmap);
+			forecast_icon.setImageBitmap(bitmap);
+			
+		} catch (IOException e) {
+			new ApplicationError(602, "Error","No se encuentra el icono del pronostico");
+		}try {
+			InputStream logoBitmap = mContext.getAssets().open("weatherIcons/"+basicForecast.getWeatherIcon()+".png");
+			Bitmap bitmap = BitmapFactory.decodeStream(logoBitmap);
+			forecast_icon.setImageBitmap(bitmap);
+			
+		} catch (IOException e) {
+			new ApplicationError(602, "Error","No se encuentra el icono del pronostico");
 		}
   
         return view;
