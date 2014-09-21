@@ -11,6 +11,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.example.whitepowder.R;
 import com.google.android.gms.maps.CameraUpdate;
@@ -22,6 +23,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.gson.Gson;
 import com.whitepowder.storage.StorageConstants;
+import com.whitepowder.utils.ReadFile;
 
 public class MapActivity extends Activity {
 	
@@ -48,22 +50,17 @@ public class MapActivity extends Activity {
 		//Find points
 		
 		Gson gson = new Gson();
-		String data = read_file(mContext.getApplicationContext(), StorageConstants.DRAWABLE_SLOPES_FILE);	
-		DrawableSlopeContainer dsc = gson.fromJson(data, DrawableSlopeContainer.class);
+		String data = ReadFile.read_file(mContext.getApplicationContext(), StorageConstants.DRAWABLE_SLOPES_FILE);	
 		
-		drawSlopes(dsc);	
-		
-		//Setups zoom and center
-        
-        CameraUpdate cam = CameraUpdateFactory.newLatLngZoom(determineCenter(dsc),13);
-        mMap.moveCamera(cam);
-        
-		
-	}
-
-	@Override
-	public void onStart(){
-		super.onStart();
+		if(data!=null){
+			DrawableSlopeContainer dsc = gson.fromJson(data, DrawableSlopeContainer.class);
+			drawSlopes(dsc);	
+			
+			//Setups zoom and center
+	        
+	        CameraUpdate cam = CameraUpdateFactory.newLatLngZoom(determineCenter(dsc),13);
+	        mMap.moveCamera(cam);
+		};
 	
 	}
 	
@@ -132,27 +129,6 @@ public class MapActivity extends Activity {
 		}
 
 	}
-	
-	private String read_file(Context context, String filename) {
-        try {
-            FileInputStream fis = context.openFileInput(filename);
-            InputStreamReader isr = new InputStreamReader(fis, "UTF-8");
-            BufferedReader bufferedReader = new BufferedReader(isr);
-            StringBuilder sb = new StringBuilder();
-            String line;
-            while ((line = bufferedReader.readLine()) != null) {
-                sb.append(line).append("\n");
-            }
-            return sb.toString();
-        } catch (FileNotFoundException e) {
-            return "";
-        } catch (UnsupportedEncodingException e) {
-            return "";
-        } catch (IOException e) {
-            return "";
-        }
-    }
-
 }
 
 

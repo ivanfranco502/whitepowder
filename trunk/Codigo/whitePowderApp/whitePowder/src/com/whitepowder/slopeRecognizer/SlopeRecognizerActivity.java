@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.example.whitepowder.R;
 import com.google.gson.Gson;
 import com.whitepowder.storage.StorageConstants;
+import com.whitepowder.storage.SyncThread;
 import com.whitepowder.userManagement.PasswordChangeActivity;
 import com.whitepowder.utils.ApplicationError;
 import com.whitepowder.utils.Logout;
@@ -13,9 +14,11 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.location.Location;
 import android.location.LocationListener;
@@ -48,6 +51,11 @@ public class SlopeRecognizerActivity extends Activity{
 	private boolean accurateFlag = false;
 	private ProgressDialog progressDialog;
 	private SlopeRecognizerActivity mContext = this; 
+	
+	//Sync
+	private ProgressDialog progressDialogSync;
+	private BroadcastReceiver syncFinishedBroadcastReciever=null;
+	private SyncThread sth;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -109,6 +117,10 @@ public class SlopeRecognizerActivity extends Activity{
 	protected void onDestroy() {
 		super.onDestroy();
 		mLocationManager.removeUpdates(mLocationListener);
+		
+		if(syncFinishedBroadcastReciever!=null){
+			unregisterReceiver(syncFinishedBroadcastReciever);
+		};
 	};
 			
 	
@@ -382,12 +394,28 @@ public class SlopeRecognizerActivity extends Activity{
 		  Intent intent = new Intent(mContext, PasswordChangeActivity.class);
 		  this.startActivity(intent);
 		  break;
+		  
+	  case R.id.submenu_sync:
+ 			
+			//Stats sync dialog
+			progressDialogSync = new ProgressDialog(mContext);
+			progressDialogSync.setMessage(getResources().getString(R.string.sync_dialog_message));
+			progressDialogSync.setCancelable(false);
+			progressDialogSync.setIndeterminate(true);
+			progressDialogSync.show();
+						
+			//Starts sync task
+			sth = new SyncThread();
+			setupOnSyncFinishedListener();
+			sth.execute(mContext);
+						
+			break;
 	  default:
 	    break;
 	  }
 	  
 	  return true;
-	}
+	};
 	
 	@Override
 	public void onBackPressed() {
@@ -402,6 +430,34 @@ public class SlopeRecognizerActivity extends Activity{
 	            	SlopeRecognizerActivity.this.finish();
 	            }
 	        }).create().show();
-	}
+	};
+	
+	public void setupOnSyncFinishedListener(){
+		
+		syncFinishedBroadcastReciever = new BroadcastReceiver() {
+
+	        @Override
+	        public void onReceive(Context context, Intent intent) {
+				Boolean success = intent.getExtras().getBoolean("success");
+				onSyncFinished(success);
+	        };
+	    };
+		
+		registerReceiver(syncFinishedBroadcastReciever, new IntentFilter(sth.getIntentOnSyncFinishedAction()));
+	};
+	
+	public void onSyncFinished(boolean success){
+		if (success){			
+			//Closes dialog			
+			progressDialogSync.dismiss();			
+		}
+		else{	
+			progressDialogSync.dismiss();
+			Toast.makeText(mContext, getResources().getString(R.string.sync_toast_error), Toast.LENGTH_SHORT).show();
+			
+		};
+		
+	};
+
 
 }
