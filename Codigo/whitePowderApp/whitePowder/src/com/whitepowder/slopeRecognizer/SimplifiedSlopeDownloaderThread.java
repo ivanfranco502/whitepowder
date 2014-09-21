@@ -16,13 +16,11 @@ import com.whitepowder.storage.StorageConstants;
 import com.whitepowder.userManagement.User;
 import com.whitepowder.utils.ApplicationError;
 import com.whitepowder.utils.BaseTavrosURI;
-import com.google.gson.Gson;
 
 
 public class SimplifiedSlopeDownloaderThread extends Thread {
     
 	private final String SlopeDownloadURL = BaseTavrosURI.getBaseURI()+"slope/allNames";
-	private SimplifiedSlopeContainer mSlopes=null;
 	private Context mContext;
 	
 	public  SimplifiedSlopeDownloaderThread(Context ctx){
@@ -58,16 +56,11 @@ public class SimplifiedSlopeDownloaderThread extends Thread {
 				BufferedReader reader = new BufferedReader(new InputStreamReader(is));		
 				String response = reader.readLine();
 				
-				Gson gson = new Gson();
-				mSlopes = gson.fromJson(response,SimplifiedSlopeContainer.class);
-				
-				if(mSlopes!=null){
-					if((mSlopes.code)==200){
-						SharedPreferences sp = mContext.getSharedPreferences(StorageConstants.GENERAL_STORAGE_SHARED_PREFS, Context.MODE_MULTI_PROCESS);
-						SharedPreferences.Editor editor = sp.edit();
-						editor.putString(StorageConstants.SIMPLIFIED_SLOPES_KEY, response);
-						editor.commit();
-					};
+				if(response!=null){
+					SharedPreferences sp = mContext.getSharedPreferences(StorageConstants.GENERAL_STORAGE_SHARED_PREFS, Context.MODE_MULTI_PROCESS);
+					SharedPreferences.Editor editor = sp.edit();
+					editor.putString(StorageConstants.SIMPLIFIED_SLOPES_KEY, response);
+					editor.commit();
 				};				
 		    }
 		    
