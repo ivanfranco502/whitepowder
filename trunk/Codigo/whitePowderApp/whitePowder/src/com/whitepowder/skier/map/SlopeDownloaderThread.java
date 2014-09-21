@@ -65,9 +65,7 @@ public class SlopeDownloaderThread extends Thread {
 				
 				mDrawableSlopeContainer = gson.fromJson(response,DrawableSlopeContainer.class);
 				
-				if(mDrawableSlopeContainer!=null){
-					if((mDrawableSlopeContainer.code)==200){
-						
+				if(mDrawableSlopeContainer!=null){						
 						File file = new File(mContext.getFilesDir().getPath().toString() + "/"+StorageConstants.DRAWABLE_SLOPES_FILE);
 						if(!file.exists()){
 							file.createNewFile();
@@ -77,7 +75,6 @@ public class SlopeDownloaderThread extends Thread {
 						BufferedWriter bw = new BufferedWriter(fw);
 						bw.write(response);
 						bw.close();			
-					};
 				};				
 		    }
 		    

@@ -8,36 +8,22 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.security.NoSuchAlgorithmException;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
-import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import com.example.whitepowder.R;
-import com.google.gson.Gson;
 import com.whitepowder.storage.StorageConstants;
 import com.whitepowder.userManagement.User;
 import com.whitepowder.utils.ApplicationError;
 import com.whitepowder.utils.BaseTavrosURI;
-import com.whitepowder.utils.Logout;
+
 
 public class BasicInformationThread extends Thread {
 
 	private final String BasicInformationURL = BaseTavrosURI.getBaseURI()+"info/basic";
 	private ApplicationError mError = null;
 	private Context mContext;
-	private BasicInformationResponse basicInformationResponse = null;
-	private BasicInformation basicInformation;
+
 	
 	public BasicInformationThread(Context context) {
 		mContext = context;	
@@ -77,15 +63,11 @@ public class BasicInformationThread extends Thread {
 				BufferedReader reader = new BufferedReader(new InputStreamReader(is));		
 				String response = reader.readLine();
 				
-				Gson gson = new Gson();
-				basicInformationResponse = gson.fromJson(response, BasicInformationResponse.class);
-				if(basicInformationResponse != null){
-					if(basicInformationResponse.getCode() == 200){
+				if(response != null){
 					SharedPreferences sp = mContext.getSharedPreferences(StorageConstants.GENERAL_STORAGE_SHARED_PREFS, Context.MODE_MULTI_PROCESS);
 					SharedPreferences.Editor editor = sp.edit();
 					editor.putString(StorageConstants.BASIC_INFORMATION_KEY, response);
 					editor.commit();
-					};
 				};
 		    }
 		    

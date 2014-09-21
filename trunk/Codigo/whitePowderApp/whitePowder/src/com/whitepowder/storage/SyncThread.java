@@ -23,17 +23,19 @@ public class SyncThread extends AsyncTask<Context, Void, Void> {
 	private final String IntentOnSyncFinished = "SYNC_FINISHED";
 	Context mContext;
 	ApplicationError mError = null;
-	Gson gson;
 	SharedPreferences sharedPrefs=null;
-	public SharedPreferences.Editor editor=null;
+	Gson gson;
+	DataBackup backup;
 	
 	@Override
 	protected Void doInBackground(Context... params) {
 		mContext = params[0];
 		
+		//Creo el backup de lo que tengo levantado y borro todo
+		backup = new DataBackup(mContext);
+		
 		//Gets Shared prefs file
 		sharedPrefs = mContext.getSharedPreferences(StorageConstants.GENERAL_STORAGE_SHARED_PREFS, Context.MODE_MULTI_PROCESS);
-		editor = sharedPrefs.edit();
 		
 		//Loads Gson
 		gson = new Gson();
@@ -90,22 +92,25 @@ public class SyncThread extends AsyncTask<Context, Void, Void> {
 		boolean status = false;
 		if(mError==null){
 			status=true;
-		};	
+		}
+		else{
+			backup.restore();
+		}
 		
 		sendOnSyncFinished(status);
-
+	
 	};
 	
 	private void checkSimplifiedSlopeErrors(){
 		SimplifiedSlopeContainer slopeContainer = null;
 		
-		String slopeContainerText = sharedPrefs.getString(StorageConstants.SIMPLIFIED_SLOPES_KEY,null);
+		String simplifiedSlopeContainerText = sharedPrefs.getString(StorageConstants.SIMPLIFIED_SLOPES_KEY,null);
 		
-		if(slopeContainerText==null){
+		if(simplifiedSlopeContainerText==null){
 			mError = new ApplicationError(800,"Error","Error en la sincronización");		
 		}
 		else{
-			slopeContainer = gson.fromJson(slopeContainerText, SimplifiedSlopeContainer.class);
+			slopeContainer = gson.fromJson(simplifiedSlopeContainerText, SimplifiedSlopeContainer.class);
 			if(slopeContainer.getCode()!=200){
 				if(slopeContainer.getCode()==110){
 					mError = new ApplicationError(801,"Error","Usuario no logueado");
@@ -153,7 +158,7 @@ public class SyncThread extends AsyncTask<Context, Void, Void> {
 		
 		String drawableSlopeContainerText = ReadFile.read_file(mContext.getApplicationContext(), StorageConstants.DRAWABLE_SLOPES_FILE);	
 		
-		if(drawableSlopeContainerText==null){
+		if(drawableSlopeContainerText==""){
 			mError = new ApplicationError(800,"Error","Error en la sincronización");		
 		}
 		else{

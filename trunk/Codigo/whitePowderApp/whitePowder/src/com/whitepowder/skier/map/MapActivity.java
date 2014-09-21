@@ -1,18 +1,8 @@
 package com.whitepowder.skier.map;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
-
 import android.app.Activity;
-import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
-
 import com.example.whitepowder.R;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -52,7 +42,7 @@ public class MapActivity extends Activity {
 		Gson gson = new Gson();
 		String data = ReadFile.read_file(mContext.getApplicationContext(), StorageConstants.DRAWABLE_SLOPES_FILE);	
 		
-		if(data!=null){
+		if((data!=null)||(data!="")){
 			DrawableSlopeContainer dsc = gson.fromJson(data, DrawableSlopeContainer.class);
 			drawSlopes(dsc);	
 			
