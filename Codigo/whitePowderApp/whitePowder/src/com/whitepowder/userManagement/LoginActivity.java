@@ -2,8 +2,10 @@ package com.whitepowder.userManagement;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
@@ -27,6 +29,9 @@ public class LoginActivity extends Activity {
 	ProgressDialog progressDialogSync=null;
 	final int REGISTER_REQUEST_CODE = 1;
 	final int RESET_REQEST_CODE = 2;
+	SyncThread sth;
+	
+	private BroadcastReceiver syncFinishedBroadcastReciever = null;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +81,16 @@ public class LoginActivity extends Activity {
 			}
 		});
 		
-	}
+	};
+	
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		if(syncFinishedBroadcastReciever!=null){
+			unregisterReceiver(syncFinishedBroadcastReciever);
+		};
+
+	};
 	
 	public void onActivityResult(int requestCode, int resultCode, Intent data){
 		if(requestCode == REGISTER_REQUEST_CODE){
@@ -114,15 +128,16 @@ public class LoginActivity extends Activity {
 		
 		if(first_time){
 		
-			//TODO deshardcode text
+			//Stats sync dialog
 			progressDialogSync = new ProgressDialog(mContext);
-			progressDialogSync.setMessage("Sincronizando App");
+			progressDialogSync.setMessage(getResources().getString(R.string.sync_dialog_message));
 			progressDialogSync.setCancelable(false);
 			progressDialogSync.setIndeterminate(true);
 			progressDialogSync.show();
 			
 			//Starts sync task
-			SyncThread sth = new SyncThread();
+			sth = new SyncThread();
+			setupOnSyncFinishedListener();
 			sth.execute(mContext);
 		}
 		
@@ -131,9 +146,22 @@ public class LoginActivity extends Activity {
 		};
 	}
 	
+	public void setupOnSyncFinishedListener(){
+		
+		syncFinishedBroadcastReciever = new BroadcastReceiver() {
+
+	        @Override
+	        public void onReceive(Context context, Intent intent) {
+				Boolean success = intent.getExtras().getBoolean("success");
+				onSyncFinished(success);
+	        };
+	    };
+		
+		registerReceiver(syncFinishedBroadcastReciever, new IntentFilter(sth.getIntentOnSyncFinishedAction()));
+	}
+	
 	public void onSyncFinished(boolean success){
-		if (success){
-			
+		if (success){			
 			//Stores user and password
 			
 			SharedPreferences sharedPreferences = getSharedPreferences("WP_USER_SHARED_PREFERENCES", Context.MODE_PRIVATE);
@@ -148,8 +176,7 @@ public class LoginActivity extends Activity {
 		else{
 			
 			progressDialogSync.dismiss();
-			//TODO deshardcode text
-			Toast.makeText(mContext, "Error en la sincronización. Por favor intente nuevamente", Toast.LENGTH_SHORT).show();
+			Toast.makeText(mContext, getResources().getString(R.string.sync_toast_error), Toast.LENGTH_SHORT).show();
 			
 		};
 		

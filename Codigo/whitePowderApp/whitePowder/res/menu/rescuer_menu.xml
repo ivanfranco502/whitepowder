@@ -15,8 +15,14 @@
         android:title="Cambiar contraseña" 
         android:menuCategory="system" 
         android:showAsAction="ifRoom" >
-
     </item>
     
+  	<item
+		android:id="@+id/submenu_sync"  
+		android:title="@string/submenu_sync"
+		android:menuCategory="system" 
+		android:showAsAction="ifRoom">
+	</item>
+   
 
 </menu>

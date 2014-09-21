@@ -2,6 +2,7 @@ package com.whitepowder.skier;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -20,10 +21,10 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 import com.example.whitepowder.R;
 import com.whitepowder.skier.basicInformation.BasicInformationActivity;
-import com.whitepowder.skier.basicInformation.BasicInformationForecast;
 import com.whitepowder.skier.basicInformation.BasicInformationForecastActivity;
 import com.whitepowder.skier.map.MapActivity;
 import com.whitepowder.skier.normsAndSigns.NASActivity;
+import com.whitepowder.storage.SyncThread;
 import com.whitepowder.userManagement.PasswordChangeActivity;
 import com.whitepowder.utils.Logout;
 
@@ -34,11 +35,18 @@ public class SkierActivity extends Activity {
 	final int REGISTER_REQUEST_CODE = 1;
 	public final int PWD_CHANGE_REQUEST_CODE = 1;
 	
+	//Location and communication with thread
 	private LocationManager mLocationManager;
-	private BroadcastReceiver serviceBroadcastReciever;
+	private BroadcastReceiver serviceBroadcastReciever=null;
 	private SkierModeService mBoundService;
 	private ServiceConnection mConnection;
 	
+	//Sync
+	private ProgressDialog progressDialogSync;
+	private BroadcastReceiver syncFinishedBroadcastReciever=null;
+	private SyncThread sth;
+	
+	//Buttons
 	private ImageButton butSubmenu;
 	private ImageButton butInfoBasic;
 	private ImageButton butClima;
@@ -46,9 +54,6 @@ public class SkierActivity extends Activity {
 	private ImageButton butStatistics;
 	private ImageButton butMap;		
 	private ImageButton butSkiermode;
-	
-	public BasicInformationForecast[] basicInformationForecast;
-
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +80,18 @@ public class SkierActivity extends Activity {
         //Create service connection
         createServiceConnectionAndRegisterForBroadcast();
 		
+	};
+	
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+
+		if(serviceBroadcastReciever!=null){
+			unregisterReceiver(serviceBroadcastReciever);	
+		};	
+		if(syncFinishedBroadcastReciever!=null){
+			unregisterReceiver(syncFinishedBroadcastReciever);
+		};
 	};
 	
 	private void createServiceConnectionAndRegisterForBroadcast(){
@@ -236,6 +253,22 @@ public class SkierActivity extends Activity {
 							Intent intent = new Intent(mContext, PasswordChangeActivity.class);
 							startActivity(intent);
 							break;
+							
+						case R.id.submenu_sync:
+		         			
+							//Stats sync dialog
+							progressDialogSync = new ProgressDialog(mContext);
+							progressDialogSync.setMessage(getResources().getString(R.string.sync_dialog_message));
+							progressDialogSync.setCancelable(false);
+							progressDialogSync.setIndeterminate(true);
+							progressDialogSync.show();
+							
+							//Starts sync task
+							sth = new SyncThread();
+							setupOnSyncFinishedListener();
+							sth.execute(mContext);
+							
+							break;
 	         			 
 						default:
 							break;
@@ -309,6 +342,33 @@ public class SkierActivity extends Activity {
 	        });
 		AlertDialog alert = builder.create();
 	    alert.show();
+	};
+	
+	public void setupOnSyncFinishedListener(){
+		
+		syncFinishedBroadcastReciever = new BroadcastReceiver() {
+
+	        @Override
+	        public void onReceive(Context context, Intent intent) {
+				Boolean success = intent.getExtras().getBoolean("success");
+				onSyncFinished(success);
+	        };
+	    };
+		
+		registerReceiver(syncFinishedBroadcastReciever, new IntentFilter(sth.getIntentOnSyncFinishedAction()));
+	};
+	
+	public void onSyncFinished(boolean success){
+		if (success){			
+			//Closes dialog			
+			progressDialogSync.dismiss();			
+		}
+		else{	
+			progressDialogSync.dismiss();
+			Toast.makeText(mContext, getResources().getString(R.string.sync_toast_error), Toast.LENGTH_SHORT).show();
+			
+		};
+		
 	};
 
 

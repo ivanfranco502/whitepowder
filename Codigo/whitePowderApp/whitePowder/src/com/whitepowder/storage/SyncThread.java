@@ -4,27 +4,31 @@ import com.google.gson.Gson;
 import com.whitepowder.skier.basicInformation.BasicInformationForecastThread;
 import com.whitepowder.skier.basicInformation.BasicInformationResponse;
 import com.whitepowder.skier.basicInformation.BasicInformationThread;
+import com.whitepowder.skier.map.DrawableSlopeContainer;
 import com.whitepowder.skier.map.SlopeDownloaderThread;
 import com.whitepowder.slopeRecognizer.SimplifiedSlopeDownloaderThread;
 import com.whitepowder.slopeRecognizer.SimplifiedSlopeContainer;
-import com.whitepowder.userManagement.LoginActivity;
 import com.whitepowder.utils.ApplicationError;
 import com.whitepowder.utils.Logout;
+import com.whitepowder.utils.ReadFile;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.util.Log;
 
-public class SyncThread extends AsyncTask<LoginActivity, Void, Void> {
+public class SyncThread extends AsyncTask<Context, Void, Void> {
 
-	LoginActivity mContext;
+	private final String IntentOnSyncFinished = "SYNC_FINISHED";
+	Context mContext;
 	ApplicationError mError = null;
 	Gson gson;
 	SharedPreferences sharedPrefs=null;
 	public SharedPreferences.Editor editor=null;
 	
 	@Override
-	protected Void doInBackground(LoginActivity... params) {
+	protected Void doInBackground(Context... params) {
 		mContext = params[0];
 		
 		//Gets Shared prefs file
@@ -34,32 +38,51 @@ public class SyncThread extends AsyncTask<LoginActivity, Void, Void> {
 		//Loads Gson
 		gson = new Gson();
 		
-		//Starts threads
-		SimplifiedSlopeDownloaderThread ssdt = new SimplifiedSlopeDownloaderThread(mContext);
-		ssdt.start();
-		
-		BasicInformationThread bit = new BasicInformationThread(mContext);
-		bit.start();
-		
-		SlopeDownloaderThread sdt = new SlopeDownloaderThread(mContext);
-		sdt.start();
-		
-		//Join threads and check errors
-		try {
-			ssdt.join();
-			checkSimplifiedSlopeErrors();
+		//Logica de reintentos
+		for(int trys=0;trys<5;trys++){
+			mError=null;
 			
-			bit.join();
-			checkBasicInformationErrors();	
+			//Starts threads
+			SimplifiedSlopeDownloaderThread ssdt = new SimplifiedSlopeDownloaderThread(mContext);
+			ssdt.start();
 			
-			sdt.join();
-			//TODO checkerrors
-		} 
-		catch (InterruptedException e) {
-		}
-		
+			BasicInformationThread bit = new BasicInformationThread(mContext);
+			bit.start();
+			
+			SlopeDownloaderThread sdt = new SlopeDownloaderThread(mContext);
+			sdt.start();
+			
+			//Join threads and check errors
+			try {
+				ssdt.join();
+				checkSimplifiedSlopeErrors();
+				
+				bit.join();
+				checkBasicInformationErrors();	
+				
+				sdt.join();
+				checkSlopeErrors();
+			} 
+			catch (InterruptedException e) {
+				mError = new ApplicationError(800,"Error","Error en la sincronización");
+			}
+			finally{
+				if(mError==null){
+					break;
+				}
+				else{
+					try {
+						//Si hubo error, espero medio segundo antes de reintentar.
+						Thread.sleep(500);
+					} 
+					catch (InterruptedException e) {
+						Log.i("Warning","Error al dormir thread de sincronización");
+					};
+				};
+			};
+		};
 		return null;
-	}
+	};
 	
 	@Override
 	protected void onPostExecute(Void result) {
@@ -67,11 +90,11 @@ public class SyncThread extends AsyncTask<LoginActivity, Void, Void> {
 		boolean status = false;
 		if(mError==null){
 			status=true;
-		};
+		};	
+		
+		sendOnSyncFinished(status);
 
-		mContext.onSyncFinished(status);
-
-	}
+	};
 	
 	private void checkSimplifiedSlopeErrors(){
 		SimplifiedSlopeContainer slopeContainer = null;
@@ -93,7 +116,8 @@ public class SyncThread extends AsyncTask<LoginActivity, Void, Void> {
 				};
 			};
 		};
-	}
+	};
+
 	
 	private void checkBasicInformationErrors() {
 		String basicInformationValue = sharedPrefs.getString(StorageConstants.BASIC_INFORMATION_KEY,null);
@@ -116,10 +140,35 @@ public class SyncThread extends AsyncTask<LoginActivity, Void, Void> {
 	        			mError = new ApplicationError(504, "Error", "No hay información básica en la base de datos");
 	        			break;
 	        	}
-	        }else{
+	        }
+			else{
 	        	launchForecastThread(basicInformationResponse);
 	        }
 		}
+	};
+	
+	private void checkSlopeErrors(){
+		
+		DrawableSlopeContainer drawableSlopeContainer = null;
+		
+		String drawableSlopeContainerText = ReadFile.read_file(mContext.getApplicationContext(), StorageConstants.DRAWABLE_SLOPES_FILE);	
+		
+		if(drawableSlopeContainerText==null){
+			mError = new ApplicationError(800,"Error","Error en la sincronización");		
+		}
+		else{
+			drawableSlopeContainer = gson.fromJson(drawableSlopeContainerText, DrawableSlopeContainer.class);
+			if(drawableSlopeContainer.getCode()!=200){
+				if(drawableSlopeContainer.getCode()==110){
+					mError = new ApplicationError(801,"Error","Usuario no logueado");
+					Logout.logout(mContext, true);
+				}
+				else{
+					mError = new ApplicationError(800,"Error","Error en la sincronización");
+				};
+			};
+		};
+		
 	}
 	
 	private void launchForecastThread(BasicInformationResponse basicInformationResponse){
@@ -136,7 +185,19 @@ public class SyncThread extends AsyncTask<LoginActivity, Void, Void> {
 				
 			}
 		}
-	}
+	};
+	
+	private void sendOnSyncFinished(Boolean status){
+		//Envio un intent a quien este esperando para que de por finalizada la sync
+		Intent intent = new Intent();
+		intent.putExtra("success", status);
+		intent.setAction(getIntentOnSyncFinishedAction());
+		mContext.sendBroadcast(intent);
+	};
+
+	public String getIntentOnSyncFinishedAction(){
+		return IntentOnSyncFinished;
+	};
 	
 
 }

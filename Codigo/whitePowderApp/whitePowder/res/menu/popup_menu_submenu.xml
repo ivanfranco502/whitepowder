@@ -12,6 +12,12 @@
         android:title="@string/submenu_logout"
         android:menuCategory="system" 
         android:showAsAction="always" />  
+        
+	<item  	
+		android:id="@+id/submenu_sync"  
+		android:title="@string/submenu_sync"
+		android:menuCategory="system" 
+		android:showAsAction="always" />  
   
 
 </menu>

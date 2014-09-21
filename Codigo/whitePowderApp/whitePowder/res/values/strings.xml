@@ -74,5 +74,8 @@
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_nas">NASActivity</string>
     <string name="title_activity_sign">SignActivity</string>
+    <string name="submenu_sync">Sincronizar</string>
+    <string name="sync_dialog_message">Sincronizando aplicación, por favor espere.</string>
+    <string name="sync_toast_error">Se ha producido un error en la sincronización, por favor intente nuevamente más tarde</string>
 
 </resources>
