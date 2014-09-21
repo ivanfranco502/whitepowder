@@ -34,6 +34,7 @@ public class DataBackup {
 		basicInformationText = sharedPrefs.getString(StorageConstants.BASIC_INFORMATION_KEY,null);
 		drawableSlopeContainerText = ReadFile.read_file(mContext.getApplicationContext(), StorageConstants.DRAWABLE_SLOPES_FILE);
 		
+		
 		//Puts null values
 		
 		editor.putString(StorageConstants.SIMPLIFIED_SLOPES_KEY, null);

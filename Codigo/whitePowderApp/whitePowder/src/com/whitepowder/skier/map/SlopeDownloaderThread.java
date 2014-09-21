@@ -61,11 +61,7 @@ public class SlopeDownloaderThread extends Thread {
 				BufferedReader reader = new BufferedReader(new InputStreamReader(is));		
 				String response = reader.readLine();
 				
-				Gson gson = new Gson();
-				
-				mDrawableSlopeContainer = gson.fromJson(response,DrawableSlopeContainer.class);
-				
-				if(mDrawableSlopeContainer!=null){						
+				if(response!=null){						
 						File file = new File(mContext.getFilesDir().getPath().toString() + "/"+StorageConstants.DRAWABLE_SLOPES_FILE);
 						if(!file.exists()){
 							file.createNewFile();

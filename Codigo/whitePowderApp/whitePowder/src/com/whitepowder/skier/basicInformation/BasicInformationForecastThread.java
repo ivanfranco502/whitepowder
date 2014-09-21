@@ -26,8 +26,6 @@ public class BasicInformationForecastThread extends Thread {
 		ForecastURL = "http://api.openweathermap.org/data/2.5/forecast/daily?lat="+coor[0]+"&lon="+coor[1]+"&units=metric&cnt=7&APPID=6a4c7323eb6848f9d7ac4224402ed312";
 	}
 	
-		
-	
 	@Override
 	public void run() {
 		

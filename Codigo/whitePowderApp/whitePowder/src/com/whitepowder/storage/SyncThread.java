@@ -111,14 +111,20 @@ public class SyncThread extends AsyncTask<Context, Void, Void> {
 		}
 		else{
 			slopeContainer = gson.fromJson(simplifiedSlopeContainerText, SimplifiedSlopeContainer.class);
-			if(slopeContainer.getCode()!=200){
-				if(slopeContainer.getCode()==110){
-					mError = new ApplicationError(801,"Error","Usuario no logueado");
-					Logout.logout(mContext, true);
-				}
-				else{
-					mError = new ApplicationError(800,"Error","Error en la sincronización");
+			
+			if(slopeContainer!=null){
+				if(slopeContainer.getCode()!=200){
+					if(slopeContainer.getCode()==110){
+						mError = new ApplicationError(801,"Error","Usuario no logueado");
+						Logout.logout(mContext, true);
+					}
+					else{
+						mError = new ApplicationError(800,"Error","Error en la sincronización");
+					};
 				};
+			}
+			else{
+				mError = new ApplicationError(800,"Error","Error en la sincronización");
 			};
 		};
 	};
@@ -129,27 +135,35 @@ public class SyncThread extends AsyncTask<Context, Void, Void> {
 		
 		if(basicInformationValue==null){
 			mError = new ApplicationError(800,"Error","Error en la sincronización");
-
     	}
-    	//Error handling
+
     	else{
     		final BasicInformationResponse basicInformationResponse;
     		basicInformationResponse = gson.fromJson(basicInformationValue, BasicInformationResponse.class);
-			if(basicInformationResponse.getCode() != 200){
-	        	switch(basicInformationResponse.getCode()){
-	        		case 110:
-	        			mError = new ApplicationError(508,"Error","Token inválido en descarga de información básica");
-	        			Logout.logout(mContext, true);
-	        			break;
-	        		case 116:
-	        			mError = new ApplicationError(504, "Error", "No hay información básica en la base de datos");
-	        			break;
-	        	}
-	        }
-			else{
-	        	launchForecastThread(basicInformationResponse);
-	        }
-		}
+    		
+    		if(basicInformationResponse!=null){
+				if(basicInformationResponse.getCode() != 200){
+		        	switch(basicInformationResponse.getCode()){
+		        		case 110:
+		        			mError = new ApplicationError(508,"Error","Token inválido en descarga de información básica");
+		        			Logout.logout(mContext, true);
+		        			break;
+		        		case 116:
+		        			mError = new ApplicationError(504, "Error", "No hay información básica en la base de datos");
+		        			break;
+	        			default:
+	        				mError = new ApplicationError(800,"Error","Error en la sincronización");
+	        				break;
+		        	};
+		        }
+				else{
+		        	launchForecastThread(basicInformationResponse);
+		        };
+    		}
+	        else{
+	        	mError = new ApplicationError(800,"Error","Error en la sincronización");
+	        };
+    	};
 	};
 	
 	private void checkSlopeErrors(){
@@ -158,20 +172,26 @@ public class SyncThread extends AsyncTask<Context, Void, Void> {
 		
 		String drawableSlopeContainerText = ReadFile.read_file(mContext.getApplicationContext(), StorageConstants.DRAWABLE_SLOPES_FILE);	
 		
-		if(drawableSlopeContainerText==""){
+		if((drawableSlopeContainerText=="")||(drawableSlopeContainerText==null)){
 			mError = new ApplicationError(800,"Error","Error en la sincronización");		
 		}
 		else{
 			drawableSlopeContainer = gson.fromJson(drawableSlopeContainerText, DrawableSlopeContainer.class);
-			if(drawableSlopeContainer.getCode()!=200){
-				if(drawableSlopeContainer.getCode()==110){
-					mError = new ApplicationError(801,"Error","Usuario no logueado");
-					Logout.logout(mContext, true);
-				}
-				else{
-					mError = new ApplicationError(800,"Error","Error en la sincronización");
+			if(drawableSlopeContainer!=null){
+				if(drawableSlopeContainer.getCode()!=200){
+					if(drawableSlopeContainer.getCode()==110){
+						mError = new ApplicationError(801,"Error","Usuario no logueado");
+						Logout.logout(mContext, true);
+					}
+					else{
+						mError = new ApplicationError(800,"Error","Error en la sincronización");
+					};
 				};
+			}
+			else{
+				mError = new ApplicationError(800,"Error","Error en la sincronización");
 			};
+
 		};
 		
 	}
