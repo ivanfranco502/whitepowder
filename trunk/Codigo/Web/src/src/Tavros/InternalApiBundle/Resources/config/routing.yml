@@ -1,4 +1,4 @@
-tavros_internalApi_user:
+info/basictavros_internalApi_user:
     resource: "@TavrosInternalApiBundle/Resources/config/routing-user.yml"
     prefix:   /user
     

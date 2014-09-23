@@ -30,8 +30,8 @@ a:hover,a:focus{color:#165db5;text-decoration:underline}
 
 .wrap {
   min-height: 100%;
-  .display: table;
-  .height: 100%;
+  display: table;
+  height: 100%;
 }
 
 .top-bar {

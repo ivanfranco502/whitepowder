@@ -28,9 +28,9 @@ class DefaultController extends Controller {
 
         $content = json_decode($this->container->get('request')->getContent());
 
-        $token = $em->getRepository('TavrosDomainBundle:ExternalData')->findOneByToken($content->_token);
+        $extData = $em->getRepository('TavrosDomainBundle:ExternalData')->findOneByExdaToken($content->_token);
 
-        if (!$token) {
+        if (!$extData) {
             $apiResponse->setCode(110);
             $response->setContent($serializer->serialize($apiResponse, 'json'));
             return $response;
@@ -68,9 +68,9 @@ class DefaultController extends Controller {
 
         $content = json_decode($this->container->get('request')->getContent());
 
-        $token = $em->getRepository('TavrosDomainBundle:ExternalData')->findOneByToken($content->_token);
+        $extData = $em->getRepository('TavrosDomainBundle:ExternalData')->findOneByExdaToken($content->_token);
 
-        if (!$token) {
+        if (!$extData) {
             $apiResponse->setCode(110);
             $response->setContent($serializer->serialize($apiResponse, 'json'));
             return $response;

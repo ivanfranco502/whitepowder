@@ -5,10 +5,14 @@ namespace Tavros\DomainBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
+ * @ORM\Entity(repositoryClass="Tavros\DomainBundle\Repositories\UserCoordinateRepository")
+ */
+
+/**
  * UserCoordinate
  */
-class UserCoordinate
-{
+class UserCoordinate {
+
     /**
      * @var integer
      */
@@ -29,14 +33,17 @@ class UserCoordinate
      */
     private $uscoUser;
 
+    /**
+     * @var integer
+     */
+    private $uscoSkiMode;
 
     /**
      * Get uscoId
      *
      * @return integer 
      */
-    public function getUscoId()
-    {
+    public function getUscoId() {
         return $this->uscoId;
     }
 
@@ -46,8 +53,7 @@ class UserCoordinate
      * @param \DateTime $uscoUpdateDate
      * @return UserCoordinate
      */
-    public function setUscoUpdateDate($uscoUpdateDate)
-    {
+    public function setUscoUpdateDate($uscoUpdateDate) {
         $this->uscoUpdateDate = $uscoUpdateDate;
 
         return $this;
@@ -58,8 +64,7 @@ class UserCoordinate
      *
      * @return \DateTime 
      */
-    public function getUscoUpdateDate()
-    {
+    public function getUscoUpdateDate() {
         return $this->uscoUpdateDate;
     }
 
@@ -69,8 +74,7 @@ class UserCoordinate
      * @param \Tavros\DomainBundle\Entity\Coordinate $uscoCoordinate
      * @return UserCoordinate
      */
-    public function setUscoCoordinate(\Tavros\DomainBundle\Entity\Coordinate $uscoCoordinate = null)
-    {
+    public function setUscoCoordinate(\Tavros\DomainBundle\Entity\Coordinate $uscoCoordinate = null) {
         $this->uscoCoordinate = $uscoCoordinate;
 
         return $this;
@@ -81,8 +85,7 @@ class UserCoordinate
      *
      * @return \Tavros\DomainBundle\Entity\Coordinate 
      */
-    public function getUscoCoordinate()
-    {
+    public function getUscoCoordinate() {
         return $this->uscoCoordinate;
     }
 
@@ -92,8 +95,7 @@ class UserCoordinate
      * @param \Tavros\DomainBundle\Entity\Users $uscoUser
      * @return UserCoordinate
      */
-    public function setUscoUser(\Tavros\DomainBundle\Entity\Users $uscoUser = null)
-    {
+    public function setUscoUser(\Tavros\DomainBundle\Entity\Users $uscoUser = null) {
         $this->uscoUser = $uscoUser;
 
         return $this;
@@ -104,8 +106,16 @@ class UserCoordinate
      *
      * @return \Tavros\DomainBundle\Entity\Users 
      */
-    public function getUscoUser()
-    {
+    public function getUscoUser() {
         return $this->uscoUser;
     }
+
+    public function setUscoSkiMode($mode) {
+        return $this->uscoSkiMode = $mode;
+    }
+
+    public function getUscoSkiMode($mode) {
+        return $this->uscoSkiMode;
+    }
+
 }

@@ -1,5 +1,6 @@
 Tavros\DomainBundle\Entity\UserCoordinate:
     type: entity
+    repositoryClass: Tavros\DomainBundle\Repositories\UserCoordinateRepository
     table: user_coordinate
     indexes:
         FK_user_coordinate_user_idx:
@@ -24,6 +25,10 @@ Tavros\DomainBundle\Entity\UserCoordinate:
             nullable: true
             comment: ''
             column: usco_update_date
+        uscoSkiMode:
+            type: integer
+            nullable: false
+            column: usco_ski_mode
     manyToOne:
         uscoCoordinate:
             targetEntity: Coordinate
