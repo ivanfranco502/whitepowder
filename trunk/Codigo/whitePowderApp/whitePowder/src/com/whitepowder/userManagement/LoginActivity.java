@@ -9,10 +9,12 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnKeyListener;
 import android.view.Window;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -43,9 +45,10 @@ public class LoginActivity extends Activity {
 		
 		new GCM(mContext);
 		
-		RelativeLayout butLogin = (RelativeLayout)findViewById(R.id.login_login_button);	
+		final RelativeLayout butLogin = (RelativeLayout)findViewById(R.id.login_login_button);	
 		TextView butRegister = (TextView)findViewById(R.id.login_register_button);
 		TextView butResetPassword = (TextView)findViewById(R.id.login_reset_button);
+		TextView inputPassword = (TextView)findViewById(R.id.login_password_input);	
 		
 					
 		butLogin.setOnClickListener(new OnClickListener() {
@@ -64,6 +67,26 @@ public class LoginActivity extends Activity {
 			}
 		});
 		
+		inputPassword.setOnKeyListener(new OnKeyListener()
+		{
+		    public boolean onKey(View v, int keyCode, KeyEvent event)
+		    {
+		        if (event.getAction() == KeyEvent.ACTION_DOWN)
+		        {
+		            switch (keyCode)
+		            {
+		                case KeyEvent.KEYCODE_DPAD_CENTER:
+		                case KeyEvent.KEYCODE_ENTER:
+		                	butLogin.performClick();
+		                    return true;
+		                default:
+		                    break;
+		            }
+		        }
+		        return false;
+		    }
+		});		
+		
 		butRegister.setOnClickListener(new OnClickListener() {			
 			@Override
 			public void onClick(View v) {
@@ -80,6 +103,8 @@ public class LoginActivity extends Activity {
 				startActivityForResult(intent, RESET_REQEST_CODE);
 			}
 		});
+		
+		
 		
 	};
 	
