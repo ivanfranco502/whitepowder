@@ -30,9 +30,9 @@ class SlopeController extends Controller {
 
         $content = json_decode($this->container->get('request')->getContent());
 
-        $token = $em->getRepository('TavrosDomainBundle:ExternalData')->findOneByToken($content->_token);
+        $extData = $em->getRepository('TavrosDomainBundle:ExternalData')->findOneByExdaToken($content->_token);
 
-        if (!$token) {
+        if (!$extData) {
             $apiResponse->setCode(110);
             $response->setContent($serializer->serialize($apiResponse, 'json'));
             return $response;
@@ -69,9 +69,9 @@ class SlopeController extends Controller {
 
         $content = json_decode($this->container->get('request')->getContent());
 
-        $token = $em->getRepository('TavrosDomainBundle:ExternalData')->findOneByToken($content->_token);
+        $extData = $em->getRepository('TavrosDomainBundle:ExternalData')->findOneByExdaToken($content->_token);
 
-        if (!$token) {
+        if (!$extData) {
             $apiResponse->setCode(110);
             $response->setContent($serializer->serialize($apiResponse, 'json'));
             return $response;
@@ -127,15 +127,15 @@ class SlopeController extends Controller {
 
         $content = json_decode($this->container->get('request')->getContent());
 
-        $token = $em->getRepository('TavrosDomainBundle:ExternalData')->findOneByToken($content->_token);
-        /* @var $token  \Tavros\DomainBundle\Entity\Token */
-        if (!$token) {
+        $extData = $em->getRepository('TavrosDomainBundle:ExternalData')->findOneByExdaToken($content->_token);
+        /* @var $extData  \Tavros\DomainBundle\Entity\Token */
+        if (!$extData) {
             $apiResponse->setCode(110);
             $response->setContent($serializer->serialize($apiResponse, 'json'));
             return $response;
         }
 
-        $user = $token->getTokenUser();
+        $user = $extData->getExdaUser();
 
         /* @var $user  \Tavros\DomainBundle\Entity\Users */
 
@@ -210,9 +210,9 @@ class SlopeController extends Controller {
 
         $content = json_decode($this->container->get('request')->getContent());
 
-        $token = $em->getRepository('TavrosDomainBundle:ExternalData')->findOneByToken($content->_token);
+        $extData = $em->getRepository('TavrosDomainBundle:ExternalData')->findOneByExdaToken($content->_token);
 
-        if (!$token) {
+        if (!$extData) {
             $apiResponse->setCode(110);
             $response->setContent($serializer->serialize($apiResponse, 'json'));
             return $response;

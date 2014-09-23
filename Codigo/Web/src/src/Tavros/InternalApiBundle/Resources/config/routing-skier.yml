@@ -9,3 +9,11 @@ tavros_internalApi_skier_getPosition:
 tavros_internalApi_skier_getAllPosition:
     pattern: /getAllPosition
     defaults: { _controller: TavrosInternalApiBundle:Skier:getAllPosition }
+    
+tavros_internalApi_skier_setGCMRegistrationCode:
+    pattern: /setGCMRegistrationCode
+    defaults: { _controller: TavrosInternalApiBundle:Skier:setGCMRegistrationCode }
+
+tavros_internalApi_skier_offSkiMode:
+    pattern: /offSkiMode
+    defaults: { _controller: TavrosInternalApiBundle:Skier:offSkiMode }

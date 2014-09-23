@@ -30,11 +30,11 @@ class SkierController extends Controller {
 
         $content = json_decode($this->container->get('request')->getContent());
 
-        /* @var $token \Tavros\DomainBundle\Entity\Token */
+        /* @var $extData \Tavros\DomainBundle\Entity\ExternalData */
 
-        $token = $em->getRepository('TavrosDomainBundle:ExternalData')->findOneByToken($content->_token);
+        $extData = $em->getRepository('TavrosDomainBundle:ExternalData')->findOneByExdaToken($content->_token);
 
-        if (!$token) {
+        if (!$extData) {
             $apiResponse->setCode(110);
             $response->setContent($serializer->serialize($apiResponse, 'json'));
             return $response;
@@ -44,14 +44,16 @@ class SkierController extends Controller {
             $coord_xy = $content->coordinate;
             $coord = new Coordinate();
             $userCoord = new UserCoordinate();
-
+            /* @var $userCoord \Tavros\DomainBundle\Entity\UserCoordinate */
             $coord->setCoorCreatedDate(new \DateTime(date('Y-m-d H:i:s')));
             $coord->setCoorX($coord_xy->x);
             $coord->setCoorY($coord_xy->y);
-
+            
             $userCoord->setUscoCoordinate($coord);
-            $user = $token->getTokenUser();
+            $userCoord->setUscoSkiMode(1);
+            $user = $extData->getExdaUser();
             $userCoord->setUscoUser($user);
+            $userCoord->setUscoUpdateDate(new \DateTime(date('Y-m-d H:i:s')));
 
             $em->persist($userCoord);
             $em->flush();
@@ -85,7 +87,6 @@ class SkierController extends Controller {
         $content = json_decode($this->container->get('request')->getContent());
 
         /* @var $token \Tavros\DomainBundle\Entity\Token */
-
         $token = $em->getRepository('TavrosDomainBundle:ExternalData')->findOneByToken($content->_token);
 
         if (!$token) {
@@ -121,20 +122,114 @@ class SkierController extends Controller {
         $response->headers->set('Content-Type', 'application/json');
         $em = $this->container->get('Doctrine')->getManager();
         //TODO VERIFICAR QUE SEA ADMINISITRADOR
+        $allPositions = $em->getRepository('TavrosDomainBundle:UserCoordinate')->findAllLastPosition();
 
-        $allPositions = $em->getRepository('TavrosDomainBundle:UserCoordinate')->findAll();
         /* @var $userPosition \UserCoordinate */
         $positionsDTO = Array();
         foreach ($allPositions as $userPosition) {
             $positionDTO = Array();
-            $positionDTO['username'] = $userPosition->getUscoUser()->getUsername();
-            $positionDTO['coor_X'] = $userPosition->getUscoCoordinate()->getCoorX();
-            $positionDTO['coor_Y'] = $userPosition->getUscoCoordinate()->getCoorY();
-            
+            $userPositionObject = $em->getRepository('TavrosDomainBundle:UserCoordinate')->find($userPosition['usco_id']);
+            $positionDTO['username'] = $userPositionObject->getUscoUser()->getUsername();
+            $positionDTO['coor_X'] = $userPositionObject->getUscoCoordinate()->getCoorX();
+            $positionDTO['coor_Y'] = $userPositionObject->getUscoCoordinate()->getCoorY();
+
             $positionsDTO[] = $positionDTO;
         }
+
         $apiResponse->setCode(200);
         $apiResponse->setPayload($positionsDTO);
+        $response->setContent($serializer->serialize($apiResponse, 'json'));
+        return $response;
+    }
+
+    //SET GCM REGISTRATION CODE FOR SKIER ALERTS
+    public function setGCMRegistrationCodeAction() {
+        $logger = $this->container->get('logger');
+        $serializer = $this->container->get('jms_serializer');
+        $apiResponse = new ApiResponse();
+        $response = new Response();
+        $response->headers->set('Content-Type', 'application/json');
+        $em = $this->container->get('Doctrine')->getManager();
+
+        if (!$this->container->get('request')->getMethod() == 'POST') {
+            $apiResponse->setCode(404);
+            $response->setContent($serializer->serialize($apiResponse, 'json'));
+            return $response;
+        }
+
+        $content = json_decode($this->container->get('request')->getContent());
+
+        /* @var $extData \Tavros\DomainBundle\Entity\ExternalData */
+
+        $extData = $em->getRepository('TavrosDomainBundle:ExternalData')->findOneByExdaToken($content->_token);
+
+        if (!$extData) {
+            $apiResponse->setCode(110);
+            $response->setContent($serializer->serialize($apiResponse, 'json'));
+            return $response;
+        }
+
+        try {
+            $registrationCode = $content->registrationCode;
+
+            $extData->setExdaRegistrationCode($registrationCode);
+            $em->persist($extData);
+            $em->flush();
+        } catch (Exception $ex) {
+            $logger->error('[TAVROS - ERROR]' . $ex);
+            $apiResponse->setCode(120);
+            $response->setContent($serializer->serialize($apiResponse, 'json'));
+            return $response;
+        }
+
+        $apiResponse->setCode(200);
+        $response->setContent($serializer->serialize($apiResponse, 'json'));
+        return $response;
+    }
+
+    //SET GCM REGISTRATION CODE FOR SKIER ALERTS
+    public function offSkiModeAction() {
+        $logger = $this->container->get('logger');
+        $serializer = $this->container->get('jms_serializer');
+        $apiResponse = new ApiResponse();
+        $response = new Response();
+        $response->headers->set('Content-Type', 'application/json');
+        $em = $this->container->get('Doctrine')->getManager();
+
+        if (!$this->container->get('request')->getMethod() == 'POST') {
+            $apiResponse->setCode(404);
+            $response->setContent($serializer->serialize($apiResponse, 'json'));
+            return $response;
+        }
+
+        $content = json_decode($this->container->get('request')->getContent());
+
+        /* @var $extData \Tavros\DomainBundle\Entity\ExternalData */
+
+        $extData = $em->getRepository('TavrosDomainBundle:ExternalData')->findOneByExdaToken($content->_token);
+
+        if (!$extData) {
+            $apiResponse->setCode(110);
+            $response->setContent($serializer->serialize($apiResponse, 'json'));
+            return $response;
+        }
+
+        try {
+            $lastPosition = $em->getRepository('TavrosDomainBundle:UserCoordinate')->findLastPosition($extData->getExdaUser());
+            
+            $lastUserCoordinate = $em->getRepository('TavrosDomainBundle:UserCoordinate')->find($lastPosition["usco_id"]);
+            
+            $lastUserCoordinate->setSkiMode(0);
+            $em->persist($lastUserCoordinate);
+            $em->flush();
+        } catch (Exception $ex) {
+            $logger->error('[TAVROS - ERROR]' . $ex);
+            $apiResponse->setCode(120);
+            $response->setContent($serializer->serialize($apiResponse, 'json'));
+            return $response;
+        }
+
+        $apiResponse->setCode(200);
         $response->setContent($serializer->serialize($apiResponse, 'json'));
         return $response;
     }

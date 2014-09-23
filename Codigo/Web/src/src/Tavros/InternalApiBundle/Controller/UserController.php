@@ -170,15 +170,14 @@ class UserController extends Controller {
             return $response;
         }
 
-        $token = $em->getRepository('TavrosDomainBundle:ExternalData')->findOneByTokenUser($user);
-        /* @var $token \Tavros\DomainBundle\Entity\Token */
+        $extData = $em->getRepository('TavrosDomainBundle:ExternalData')->findOneByExdaUser($user);
 
-        if (!$token) {
-            $token = new \Tavros\DomainBundle\Entity\Token();
+        if (!$extData) {
+            $extData = new \Tavros\DomainBundle\Entity\ExternalData();
         }
 
         try {
-            $token->setToken($this->loginUser($user));
+            $extData->setExdaToken($this->loginUser($user));
 
             $apiResponse->setCode(200);
             $roles = $user->getRoles();
@@ -198,12 +197,12 @@ class UserController extends Controller {
             }
 
             $payload = array(
-                "_token" => $token->getToken(),
+                "_token" => $extData->getExdaToken(),
                 "role" => $role
             );
             $apiResponse->setPayload($payload);
-            $token->setTokenUser($user);
-            $em->persist($token);
+            $extData->setExdaUser($user);
+            $em->persist($extData);
             $em->flush();
             $response->setContent($serializer->serialize($apiResponse, 'json'));
         } catch (Exception $ex) {
@@ -241,16 +240,16 @@ class UserController extends Controller {
         $current_password = $content->current_password;
         $new_password = $content->new_password;
 
-        $token = $em->getRepository('TavrosDomainBundle:ExternalData')->findOneByToken($_token);
-        /*@var $token \Tavros\DomainBundle\Entity\Token */
+        $extData = $em->getRepository('TavrosDomainBundle:ExternalData')->findOneByExdaToken($_token);
+        /*@var $extData \Tavros\DomainBundle\Entity\ExternalData */
 
-        if (!$token) {
+        if (!$extData) {
             $apiResponse->setCode(110);
             $response->setContent($serializer->serialize($apiResponse, 'json'));
             return $response;
         }
         
-        $user = $token->getTokenUser();
+        $user = $extData->getExdaUser;
         
         if (!$this->checkUserPassword($user, $current_password)) {
             $apiResponse->setCode(113);
