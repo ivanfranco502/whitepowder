@@ -39,8 +39,8 @@ public class LoginActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		mContext = this;
-		checkSharedPreferences();
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		checkSharedPreferences();
 		setContentView(R.layout.login);
 		
 		new GCM(mContext);
