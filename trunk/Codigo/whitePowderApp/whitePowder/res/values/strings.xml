@@ -71,11 +71,84 @@
     <string name="title_activity_basic_information_forecast">BasicInformationForecastActivity</string>
     <string name="submenu_change_password">Cambiar contraseña</string>
     <string name="submenu_logout">Cerrar sesión</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="title_activity_nas">NASActivity</string>
-    <string name="title_activity_sign">SignActivity</string>
     <string name="submenu_sync">Sincronizar</string>
     <string name="sync_dialog_message">Sincronizando aplicación, por favor espere.</string>
     <string name="sync_toast_error">Se ha producido un error en la sincronización, por favor intente nuevamente más tarde</string>
+	
+    <!-- Sección de strings de las normas y señales de seguridad -->
+    <string name="title_activity_nas">Normas y señales de seguridad</string>
+    <string name="title_activity_sign">Señal</string>
+    <string name="title_section_signs">Señales</string>
+    <string name="title_section_norms">Normas</string>
+    
+    <string name="sign1_name">Avalancha</string>
+	<string name="sign2_name">Dificultad fácil</string>
+	<string name="sign3_name">Dificultad intermedia</string>
+	<string name="sign4_name">Dificultad avanzada</string>
+	<string name="sign5_name">Dificultad experto</string>
+	<string name="sign6_name">Dificultad demente</string>
+	<string name="sign7_name">Patrulla de esquí</string>
+	<string name="sign8_name">Parque de terreno</string>
+	<string name="sign9_name">Zona resbaladiza</string>
+	<string name="sign10_name">Caida de nieve</string>
+	<string name="sign11_name">Remolque</string>
+	<string name="sign12_name">Esquí sobre hielo</string>
+	<string name="sign13_name">Esquí</string>
+	<string name="sign14_name">Snowboard</string>
+	<string name="sign15_name">Esquí cuesta abajo</string>
+	<string name="sign16_name">Salto de esquí</string>
+	<string name="sign17_name">Deslizamiento en trineo</string>
+	<string name="sign18_name">Motonieve</string>
+	<string name="sign19_name">Prohibido esquí cuesta abajo</string>
+	<string name="sign20_name">Prohibido salto de esquí</string>
+	<string name="sign21_name">Prohibido deslizamiento en trineo</string>
+	<string name="sign22_name">Prohibido motonieve</string>
+	
+	<string name="sign1_description">Señalización que indica el comienzo de una zona propensa a recibir avalanchas generadas a una mayor altitud en la montaña. Una avalancha es un desprendimiento violento de nieve que arrastra a su paso todo material presente en la ladera de la montaña, como rocas y árboles.</string>
+	<string name="sign2_description">Señalización que indica el comienzo de una pista de dificultad fácil.</string>
+	<string name="sign3_description">Señalización que indica el comienzo de una pista de dificultad intermedia.</string>
+	<string name="sign4_description">Señalización que indica el comienzo de una pista de dificultad avanzada.</string>
+	<string name="sign5_description">Señalización que indica el comienzo de una pista de dificultad experto.</string>
+	<string name="sign6_description">Señalización que indica el comienzo de una pista de dificultad demete. Mantenerse lejos porque existe presencia de esquiadores orates.</string>
+	<string name="sign7_description">Señalización que indica la presencia de una patrulla de ski. Una patrulla de esquí ofrece servicios médicos de emergencia y rescate a los participantes de los deportes en la nieve en una estación de esquí. Los patrulleros están entrenados en Soporte Vital Avanzado para estabilizar y trasladar a los pacientes a la atención definitiva, a menudo con las mismas capacidades que en una ambulancia.</string>
+	<string name="sign8_description">Señalización que indica un parque de terreno. Un parque de terreno es una área de recreación consistente en terreno al aire libre que permite a los esquiadores y practicantes de snowboard realizar trucos. Los parques de terreno tienen sus raíces en parques de skateboard y muchas de las características son comunes a ambos.</string>
+	<string name="sign9_description">Señalización que indica el comienzo de una zona resbaladiza. Siempre que sea posible, es deseable evitar transitar a pie por esta zona, a fin de evitar accidentes producto de una caida.</string>
+	<string name="sign10_description">Señalización que indica una zona propensa a desprendimientos de nieve. Si bien no reviste la gravedad de una avalancha, puede generar perdida de equilibrio y caidas.</string>
+	<string name="sign11_description">Señalización que indica la presencia de remolques o medios de elevación.</string>
+	<string name="sign12_description">Señalización que indica el comienzo de la zona permitida para realizar esquí sobre hielo.</string>
+	<string name="sign13_description">Señalización que indica el comienzo de la zona permitida para realizar esquí, en sus diferentes variantes (alpino, nórdico o de fondo).</string>
+	<string name="sign14_description">Señalización que indica el comienzo de la zona permitida para realizar snowboard.</string>
+	<string name="sign15_description">Señalización que indica el comienzo de la zona permitida para realizar esquí cuesta abajo, en pendiente o en descenso. Esta zona está particularmente diseñada para la posibilidad de alcanzar grandes velocidades de forma segura.</string>
+	<string name="sign16_description">Señalización que indica el comienzo de la zona permitida para realizar salto de esquí. El salto de esquí es un deporte que consiste en descender sobre esquís por una rampa para obtener velocidad y luego iniciar el vuelo con el objetivo de aterrizar lo más lejos posible.</string>
+	<string name="sign17_description">Señalización que indica el comienzo de la zona permitida para realizar deslizamiento en trineo. Esta práctica consiste en deslizarse por un tobogán especialmente diseñado para ser recorrido con un trineo de nieve.</string>
+	<string name="sign18_description">Señalización que indica el comienzo de la zona permitida para conducir vehículos de nieve. Esta zona está particularmente diseñada para que el vehículo no cause accidentes ni desate avalanchas.</string>
+	<string name="sign19_description">Señalización que indica la prohibición para realizar esquí cuesta abajo, en pendiente o en descenso.</string>
+	<string name="sign20_description">Señalización que indica la prohibición para realizar salto de esquí. El salto de esquí es un deporte que consiste en descender sobre esquís por una rampa para obtener velocidad y luego iniciar el vuelo con el objetivo de aterrizar lo más lejos posible.</string>
+	<string name="sign21_description">Señalización que indica la prohibición para realizar deslizamiento en trineo. Esta práctica consiste en deslizarse por un tobogán especialmente diseñado para ser recorrido con un trineo de nieve.</string>
+	<string name="sign22_description">Señalización que indica la prohibición para conducir vehículos de nieve. El incumplimiento de esta señal es la prinicipal causa de avalanchas y accidentes en el centro de esquí.</string>
+    
+    <string name="norms_title">Normas de la Federación Internacional de Esquí</string>
 
+	<string name="norm1_name">Respetar a los otros</string>
+	<string name="norm2_name">Control de velocidad y comportamiento</string>
+	<string name="norm3_name">Elección de las pistas</string>
+	<string name="norm4_name">Adelantamiento</string>
+	<string name="norm5_name">Entrar en la pista</string>
+	<string name="norm6_name">Parar en la pista</string>
+	<string name="norm7_name">Subir y bajar a pie</string>
+	<string name="norm8_name">Respeto del balizaje y la señalización</string>
+	<string name="norm9_name">Ayudar</string>
+	<string name="norm10_name">Identificación</string>
+	
+	<string name="norm1_description">Comportarse de manera que no ponga en peligro o perjudique a los demás.</string>
+	<string name="norm2_description">Se debe esquiar de forma controlada. Adaptar la velocidad y forma de esquiar o deslizarse a su habilidad personal y a las condiciones generales del terreno, nieve y tiempo así como la densidad del tráfico de las pistas. (Adaptar la velocidad para parar, girar y moverse dentro del campo visual  disminuyendo la velocidad en zonas concurridas, cambios de rasante, fin de pistas y accesos a medios de elevación). </string>
+	<string name="norm3_description">El esquiador o snowboarder que viene de atrás debe elegir su camino de forma que no ponga en peligro al esquiador o snowboarder de adelante. (Mantenga distancia con los que estén a su altura y respete la elección del que tiene adelante). </string>
+	<string name="norm4_description">El adelantamiento puede efectuarse por arriba o abajo, derecha o izquierda, pero siempre de manera que se deje espacio suficiente para prevenir las evoluciones voluntarias o involuntarias del esquiador o snowboarder adelantado.</string>
+	<string name="norm5_description">Todo esquiador y snowboarder que ingresa a una pista o reanuda su marcha luego de parar o sube, debe mirar hacia arriba y hacia debajo de la pista para asegurarse que puede hacerlo sin provocar peligro para él o los demás. </string>
+	<string name="norm6_description">Debe evitar choques sin necesidad en los pasos estrechos o de poca visibilidad. (Buscar siempre puntos de buena visibilidad o laterales para detenerse). </string>
+	<string name="norm7_description">Bajar y subir a pie debe hacerse por los laterales de las pistas. (Las huellas de las botas dañan las pistas y pueden provocar accidentes.</string>
+	<string name="norm8_description">Respetar las balizas y la señalización.</string>
+	<string name="norm9_description">Todo esquiador y snowboarder debe prestar socorro. (La FIS espera que el delito de fuga en las pistas sea sancionado penalmente al igual que como sucede en las rutas viales). </string>
+	<string name="norm10_description">Todos los esquiadores o snowboarders que sean testigos de un accidente, sean o no responsables del mismo, deben identificarse e intercambiar nombres y direcciones.</string>
+	
 </resources>

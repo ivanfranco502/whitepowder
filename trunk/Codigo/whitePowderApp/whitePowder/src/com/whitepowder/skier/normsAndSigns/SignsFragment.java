@@ -49,26 +49,51 @@ public class SignsFragment extends Fragment {
 	private void getAllSigns(){
 		signs = new ArrayList();
 		Sign sign;
-		sign = new Sign("Avalancha", "signs/avalanche.jpg");
+		sign = new Sign(getString(R.string.sign1_name), getString(R.string.sign1_description), "signs/avalanche.jpg");
 		signs.add(sign);
-		sign = new Sign("Dificultad fácil", "signs/easiest.jpg");
+		sign = new Sign(getString(R.string.sign2_name), getString(R.string.sign2_description), "signs/easiest.jpg");
 		signs.add(sign);
-		sign = new Sign("Dificultad intermedia", "signs/more difficult.jpg");
+		sign = new Sign(getString(R.string.sign3_name), getString(R.string.sign3_description), "signs/more difficult.jpg");
 		signs.add(sign);
-		sign = new Sign("Dificultad avanzada", "signs/most difficult.jpg");
+		sign = new Sign(getString(R.string.sign4_name), getString(R.string.sign4_description), "signs/most difficult.jpg");
 		signs.add(sign);
-		sign = new Sign("Dificultad experto", "signs/expert only.jpg");
+		sign = new Sign(getString(R.string.sign5_name), getString(R.string.sign5_description), "signs/expert only.jpg");
 		signs.add(sign);
-		sign = new Sign("Dificultad demente", "signs/insane difficult.jpg");
+		sign = new Sign(getString(R.string.sign6_name), getString(R.string.sign6_description), "signs/insane difficult.jpg");
 		signs.add(sign);
-		sign = new Sign("Ski patrol", "signs/ski patrol.jpg");
+		sign = new Sign(getString(R.string.sign7_name), getString(R.string.sign7_description), "signs/ski patrol.jpg");
 		signs.add(sign);
-		sign = new Sign("Terrain park", "signs/terrain park.jpg");
+		sign = new Sign(getString(R.string.sign8_name), getString(R.string.sign8_description), "signs/terrain park.jpg");
 		signs.add(sign);
-		sign = new Sign("Zona resbaladiza", "signs/zona resbaladiza.jpg");
+		sign = new Sign(getString(R.string.sign9_name), getString(R.string.sign9_description), "signs/zona resbaladiza.jpg");
 		signs.add(sign);
-		sign = new Sign("Caida de nieve", "signs/snow19.png");
+		sign = new Sign(getString(R.string.sign10_name), getString(R.string.sign10_description), "signs/snow19.png");
 		signs.add(sign);
+		sign = new Sign(getString(R.string.sign11_name), getString(R.string.sign11_description), "signs/ski slope.jpg");
+		signs.add(sign);
+		sign = new Sign(getString(R.string.sign12_name), getString(R.string.sign12_description), "signs/ice skiing.jpg");
+		signs.add(sign);
+		sign = new Sign(getString(R.string.sign13_name), getString(R.string.sign13_description), "signs/skiing.jpg");
+		signs.add(sign);
+		sign = new Sign(getString(R.string.sign14_name), getString(R.string.sign14_description), "signs/snowboarding.jpg");
+		signs.add(sign);
+		sign = new Sign(getString(R.string.sign15_name), getString(R.string.sign15_description), "signs/downhill skiing.jpg");
+		signs.add(sign);
+		sign = new Sign(getString(R.string.sign16_name), getString(R.string.sign16_description), "signs/ski jumping.jpg");
+		signs.add(sign);
+		sign = new Sign(getString(R.string.sign17_name), getString(R.string.sign17_description), "signs/tobogganing.jpg");
+		signs.add(sign);
+		sign = new Sign(getString(R.string.sign18_name), getString(R.string.sign18_description), "signs/snowmobiling.jpg");
+		signs.add(sign);
+		sign = new Sign(getString(R.string.sign19_name), getString(R.string.sign19_description), "signs/prohibido downhill skiing.jpg");
+		signs.add(sign);
+		sign = new Sign(getString(R.string.sign20_name), getString(R.string.sign20_description), "signs/prohibido ski jumping.jpg");
+		signs.add(sign);
+		sign = new Sign(getString(R.string.sign21_name), getString(R.string.sign21_description), "signs/prohibido tobogganing.jpg");
+		signs.add(sign);
+		sign = new Sign(getString(R.string.sign22_name), getString(R.string.sign22_description), "signs/prohibido snowmobiling.jpg");
+		signs.add(sign);
+
 			
 	}
 	

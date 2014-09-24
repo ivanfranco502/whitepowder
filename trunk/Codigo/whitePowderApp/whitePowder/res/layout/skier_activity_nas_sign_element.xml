@@ -19,7 +19,7 @@ android:layout_height="match_parent">
         android:paddingBottom="15dp"
         android:layout_gravity="bottom"
         android:textColor="@android:color/white"
-        android:background="#CC000000"
+        android:background="#AA000000"
         android:ellipsize="marquee"
         android:lines="1"
         />
