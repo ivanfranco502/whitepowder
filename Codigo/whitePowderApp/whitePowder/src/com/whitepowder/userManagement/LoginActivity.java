@@ -20,7 +20,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.example.whitepowder.R;
-import com.whitepowder.gcmModule.GCM;
 import com.whitepowder.skier.SkierActivity;
 import com.whitepowder.slopeRecognizer.SlopeRecognizerActivity;
 import com.whitepowder.storage.SyncThread;
@@ -42,8 +41,6 @@ public class LoginActivity extends Activity {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		checkSharedPreferences();
 		setContentView(R.layout.login);
-		
-		new GCM(mContext);
 		
 		final RelativeLayout butLogin = (RelativeLayout)findViewById(R.id.login_login_button);	
 		TextView butRegister = (TextView)findViewById(R.id.login_register_button);
@@ -189,11 +186,11 @@ public class LoginActivity extends Activity {
 		if (success){			
 			//Stores user and password
 			
-			SharedPreferences sharedPreferences = getSharedPreferences("WP_USER_SHARED_PREFERENCES", Context.MODE_PRIVATE);
+			SharedPreferences sharedPreferences = getSharedPreferences("WP_USER_SHARED_PREFERENCES", Context.MODE_MULTI_PROCESS);
 			Editor editor = sharedPreferences.edit();
 			editor.putString("_token", User.getUserInstance().getToken().toString());
 			editor.putString("role", User.getUserInstance().getRole().toString());
-			editor.apply();
+			editor.commit();
 			
 			progressDialogSync.dismiss();			
 			launchCorrespondngActivity();

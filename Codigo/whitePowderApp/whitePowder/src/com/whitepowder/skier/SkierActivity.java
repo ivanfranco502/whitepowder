@@ -20,6 +20,7 @@ import android.view.View.OnClickListener;
 import android.widget.ImageButton;
 import android.widget.Toast;
 import com.example.whitepowder.R;
+import com.whitepowder.gcmModule.GCM;
 import com.whitepowder.skier.basicInformation.BasicInformationActivity;
 import com.whitepowder.skier.basicInformation.BasicInformationForecastActivity;
 import com.whitepowder.skier.map.MapActivity;
@@ -62,6 +63,9 @@ public class SkierActivity extends Activity {
 		setContentView(R.layout.skier_activity_main);
 		mContext = this;
 		loadButtons();	
+		
+		//Enables GCM
+		new GCM(mContext);
 		
 		// Acquire reference to the LocationManager
 		if (null == (mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE))){
