@@ -48,7 +48,7 @@ class SkierController extends Controller {
             $coord->setCoorCreatedDate(new \DateTime(date('Y-m-d H:i:s')));
             $coord->setCoorX($coord_xy->x);
             $coord->setCoorY($coord_xy->y);
-            
+
             $userCoord->setUscoCoordinate($coord);
             $userCoord->setUscoSkiMode(1);
             $user = $extData->getExdaUser();
@@ -113,8 +113,8 @@ class SkierController extends Controller {
         return $response;
     }
 
-    //GET ALL SKIER POSITION
-    public function getAllPositionAction() {
+    //GET ALL SKIER
+    public function getAllAction() {
         $logger = $this->container->get('logger');
         $serializer = $this->container->get('jms_serializer');
         $apiResponse = new ApiResponse();
@@ -125,19 +125,23 @@ class SkierController extends Controller {
         $allPositions = $em->getRepository('TavrosDomainBundle:UserCoordinate')->findAllLastPosition();
 
         /* @var $userPosition \UserCoordinate */
-        $positionsDTO = Array();
+        $skiersDTO = Array();
         foreach ($allPositions as $userPosition) {
-            $positionDTO = Array();
             $userPositionObject = $em->getRepository('TavrosDomainBundle:UserCoordinate')->find($userPosition['usco_id']);
-            $positionDTO['username'] = $userPositionObject->getUscoUser()->getUsername();
+            $skierDTO = Array();
+            $skierDTO['id'] = $userPosition['usco_id'];
+            $skierDTO['username'] = $userPositionObject->getUscoUser()->getUsername();
+
+            $positionDTO = Array();
             $positionDTO['coor_X'] = $userPositionObject->getUscoCoordinate()->getCoorX();
             $positionDTO['coor_Y'] = $userPositionObject->getUscoCoordinate()->getCoorY();
+            $skierDTO['position'] = $positionDTO;
 
-            $positionsDTO[] = $positionDTO;
+            $skiersDTO[] = $skierDTO;
         }
 
         $apiResponse->setCode(200);
-        $apiResponse->setPayload($positionsDTO);
+        $apiResponse->setPayload($skiersDTO);
         $response->setContent($serializer->serialize($apiResponse, 'json'));
         return $response;
     }
@@ -216,9 +220,9 @@ class SkierController extends Controller {
 
         try {
             $lastPosition = $em->getRepository('TavrosDomainBundle:UserCoordinate')->findLastPosition($extData->getExdaUser());
-            
+
             $lastUserCoordinate = $em->getRepository('TavrosDomainBundle:UserCoordinate')->find($lastPosition["usco_id"]);
-            
+
             $lastUserCoordinate->setSkiMode(0);
             $em->persist($lastUserCoordinate);
             $em->flush();

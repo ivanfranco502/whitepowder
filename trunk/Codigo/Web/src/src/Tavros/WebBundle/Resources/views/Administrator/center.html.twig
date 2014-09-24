@@ -2,7 +2,7 @@
 
 {% block addHeadJs %}
     <script type="text/javascript"
-      src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDdetfv_9vJ-f9lAE0Fv5E6pmajk-ah5dY&sensor=true">
+            src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDdetfv_9vJ-f9lAE0Fv5E6pmajk-ah5dY&sensor=true">
     </script>
 {% endblock %}
 
@@ -13,11 +13,35 @@
             <div class="col-xs-12 col-md-8 full-height">
                 <div id="center-map" class="full-height"></div>
             </div>
+            <div class="col-xs-12 col-md-4">
+                <div class="panel panel-default">
+                    <!-- Default panel contents -->
+                    <div class="panel-heading">Panel heading</div>
+
+                    <!-- Table -->
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Nombre de usuario</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="GCM-list">
+                            {#<tr>
+                                <td>1</td>
+                                <td>Mark</td>
+                                <td><a class="glyphicon glyphicon-remove-sign"></a></td>
+                            </tr>#}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
     <label id="x_coordinate" hidden="true">{{ coordinate_x }}</label>
     <label id="y_coordinate" hidden="true">{{ coordinate_y }}</label>
-    
+
     <a id="send_message" href="{{path('tavros_send_gcm')}}">Send GCM to Android device</a>
 {% endblock %}
 
