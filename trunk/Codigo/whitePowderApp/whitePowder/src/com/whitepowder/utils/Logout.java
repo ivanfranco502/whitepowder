@@ -14,10 +14,10 @@ public class Logout {
 	public static void logout(Activity mActivity, boolean tokenError){
 		Context mContext = mActivity.getApplicationContext();
 		
-		SharedPreferences sharedPreferences = mContext.getSharedPreferences("WP_USER_SHARED_PREFERENCES", Context.MODE_PRIVATE);
+		SharedPreferences sharedPreferences = mContext.getSharedPreferences("WP_USER_SHARED_PREFERENCES", Context.MODE_MULTI_PROCESS);
 		Editor editor = sharedPreferences.edit();
 		editor.clear(); 
-		editor.apply();
+		editor.commit();
 		
 		Intent intent = new Intent(mContext, LoginActivity.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -32,10 +32,10 @@ public class Logout {
 	
 	public static void logout(Context mContext, boolean tokenError){
 		
-		SharedPreferences sharedPreferences = mContext.getSharedPreferences("WP_USER_SHARED_PREFERENCES", Context.MODE_PRIVATE);
+		SharedPreferences sharedPreferences = mContext.getSharedPreferences("WP_USER_SHARED_PREFERENCES", Context.MODE_MULTI_PROCESS);
 		Editor editor = sharedPreferences.edit();
 		editor.clear(); 
-		editor.apply();
+		editor.commit();
 		
 		Intent intent = new Intent(mContext, LoginActivity.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);

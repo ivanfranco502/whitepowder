@@ -1,17 +1,17 @@
 package com.whitepowder.storage;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.google.gson.Gson;
 import com.whitepowder.skier.basicInformation.BasicInformationForecastThread;
 import com.whitepowder.skier.basicInformation.BasicInformationResponse;
 import com.whitepowder.skier.basicInformation.BasicInformationThread;
-import com.whitepowder.skier.map.DrawableSlopeContainer;
 import com.whitepowder.skier.map.SlopeDownloaderThread;
 import com.whitepowder.slopeRecognizer.SimplifiedSlopeDownloaderThread;
-import com.whitepowder.slopeRecognizer.SimplifiedSlopeContainer;
 import com.whitepowder.utils.ApplicationError;
 import com.whitepowder.utils.Logout;
 import com.whitepowder.utils.ReadFile;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -94,6 +94,9 @@ public class SyncThread extends AsyncTask<Context, Void, Void> {
 			status=true;
 		}
 		else{
+			if(mError.getErrorCode()==801){
+				Logout.logout(mContext, true);
+			}
 			backup.restore();
 		}
 		
@@ -102,35 +105,35 @@ public class SyncThread extends AsyncTask<Context, Void, Void> {
 	};
 	
 	private void checkSimplifiedSlopeErrors(){
-		SimplifiedSlopeContainer slopeContainer = null;
-		
+		int code=0;
 		String simplifiedSlopeContainerText = sharedPrefs.getString(StorageConstants.SIMPLIFIED_SLOPES_KEY,null);
 		
 		if(simplifiedSlopeContainerText==null){
 			mError = new ApplicationError(800,"Error","Error en la sincronización");		
 		}
 		else{
-			slopeContainer = gson.fromJson(simplifiedSlopeContainerText, SimplifiedSlopeContainer.class);
-			
-			if(slopeContainer!=null){
-				if(slopeContainer.getCode()!=200){
-					if(slopeContainer.getCode()==110){
-						mError = new ApplicationError(801,"Error","Usuario no logueado");
-						Logout.logout(mContext, true);
-					}
-					else{
-						mError = new ApplicationError(800,"Error","Error en la sincronización");
-					};
-				};
-			}
-			else{
+			try {
+				JSONObject slopeContainer = new JSONObject(simplifiedSlopeContainerText);
+				code = slopeContainer.getInt("code");
+			} 
+			catch (JSONException e) {
 				mError = new ApplicationError(800,"Error","Error en la sincronización");
+			};
+			
+			if(code!=200){
+				if(code==110){
+					mError = new ApplicationError(801,"Error","Usuario no logueado");
+				}
+				else{
+					mError = new ApplicationError(800,"Error","Error en la sincronización");
+				};
 			};
 		};
 	};
 
 	
 	private void checkBasicInformationErrors() {
+		int code=0;
 		String basicInformationValue = sharedPrefs.getString(StorageConstants.BASIC_INFORMATION_KEY,null);
 		
 		if(basicInformationValue==null){
@@ -138,37 +141,35 @@ public class SyncThread extends AsyncTask<Context, Void, Void> {
     	}
 
     	else{
-    		final BasicInformationResponse basicInformationResponse;
-    		basicInformationResponse = gson.fromJson(basicInformationValue, BasicInformationResponse.class);
-    		
-    		if(basicInformationResponse!=null){
-				if(basicInformationResponse.getCode() != 200){
-		        	switch(basicInformationResponse.getCode()){
-		        		case 110:
-		        			mError = new ApplicationError(508,"Error","Token inválido en descarga de información básica");
-		        			Logout.logout(mContext, true);
-		        			break;
-		        		case 116:
-		        			mError = new ApplicationError(504, "Error", "No hay información básica en la base de datos");
-		        			break;
-	        			default:
-	        				mError = new ApplicationError(800,"Error","Error en la sincronización");
-	        				break;
-		        	};
-		        }
-				else{
-		        	launchForecastThread(basicInformationResponse);
-		        };
-    		}
-	        else{
-	        	mError = new ApplicationError(800,"Error","Error en la sincronización");
+			try {
+				JSONObject basicInformationResponse = new JSONObject(basicInformationValue);
+				code = basicInformationResponse.getInt("code");
+			} 
+			catch (JSONException e) {
+				mError = new ApplicationError(800,"Error","Error en la sincronización");
+			};
+    				
+			if(code != 200){
+	        	switch(code){
+	        		case 110:
+	        			mError = new ApplicationError(801,"Error","Usuario no logueado");
+	        			break;
+	        		case 116:
+	        			mError = new ApplicationError(504, "Error", "No hay información básica en la base de datos");
+	        			break;
+        			default:
+        				mError = new ApplicationError(800,"Error","Error en la sincronización");
+        				break;
+	        	};
+	        }
+			else{
+	        	launchForecastThread(gson.fromJson(basicInformationValue, BasicInformationResponse.class));
 	        };
-    	};
+		}
 	};
 	
 	private void checkSlopeErrors(){
-		
-		DrawableSlopeContainer drawableSlopeContainer = null;
+		int code =0;
 		
 		String drawableSlopeContainerText = ReadFile.read_file(mContext.getApplicationContext(), StorageConstants.DRAWABLE_SLOPES_FILE);	
 		
@@ -176,20 +177,22 @@ public class SyncThread extends AsyncTask<Context, Void, Void> {
 			mError = new ApplicationError(800,"Error","Error en la sincronización");		
 		}
 		else{
-			drawableSlopeContainer = gson.fromJson(drawableSlopeContainerText, DrawableSlopeContainer.class);
-			if(drawableSlopeContainer!=null){
-				if(drawableSlopeContainer.getCode()!=200){
-					if(drawableSlopeContainer.getCode()==110){
-						mError = new ApplicationError(801,"Error","Usuario no logueado");
-						Logout.logout(mContext, true);
-					}
-					else{
-						mError = new ApplicationError(800,"Error","Error en la sincronización");
-					};
-				};
-			}
-			else{
+			
+			try {
+				JSONObject drawableSlopeContainer = new JSONObject(drawableSlopeContainerText);
+				code = drawableSlopeContainer.getInt("code");
+			} 
+			catch (JSONException e) {
 				mError = new ApplicationError(800,"Error","Error en la sincronización");
+			};
+			
+			if(code!=200){
+				if(code==110){
+					mError = new ApplicationError(801,"Error","Usuario no logueado");
+				}
+				else{
+					mError = new ApplicationError(800,"Error","Error en la sincronización");
+				};
 			};
 
 		};
