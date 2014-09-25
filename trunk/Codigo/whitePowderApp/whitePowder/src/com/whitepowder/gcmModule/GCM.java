@@ -20,7 +20,7 @@ import com.whitepowder.utils.Logout;
 public class GCM {
 	
 	private int TIME_SLEEP_BEFORE_RETRY = 1000;
-	private final String SetRegistrationCode = BaseTavrosURI.getBaseURI()+"skier/setGCMRegistrationCode";
+	private final String SET_REGISTRATION_ID_URL = BaseTavrosURI.getBaseURI()+"skier/setGCMRegistrationCode";
 	Context mContext;
 	String SENDER_ID = "1025941805069";
 	GoogleCloudMessaging gcm;
@@ -42,7 +42,7 @@ public class GCM {
 					
 					while(registrationId==null){
 						try {
-							url = new URL(SetRegistrationCode);
+							url = new URL(SET_REGISTRATION_ID_URL);
 							registrationId = gcm.register(SENDER_ID);
 						} 
 						catch (MalformedURLException e1) {
@@ -89,34 +89,19 @@ public class GCM {
 								BufferedReader reader = new BufferedReader(new InputStreamReader(is));		
 								String response = reader.readLine();
 								
-								int retu = parseResponse(response);
-								
-								if(retu == 1){
-									success=true;
-								}
-								else if(retu==0){
-									break;
-								};
-								
-								if(!success){
-									Thread.sleep(TIME_SLEEP_BEFORE_RETRY);
-								};
-												
+								success = parseResponse(response);
+			
 						    }
 						    else{
 						    	new ApplicationError(1103, "Warining", "Error HTTP al informar registrationID en GCM");
 						    };
 						}
 						
-
 						catch (IOException e) {
 							new ApplicationError(1104, "Warining", "IO Exception al informar registrationID en GCM");
 						}
 						catch (JSONException e) {
 							new ApplicationError(1105, "Warining", "JSON Exception al informar registrationID en GCM");
-						}
-						catch (InterruptedException e) {
-							new ApplicationError(1106, "Warining", "InterruuptedException al informar registrationID en GCM");
 						}
 						
 						finally{
@@ -125,25 +110,36 @@ public class GCM {
 							};
 		
 						};
+						
+						if(success){
+							break;
+						}
+						else{
+							try {
+								Thread.sleep(TIME_SLEEP_BEFORE_RETRY);
+							} 
+							catch (InterruptedException e) {
+								new ApplicationError(1106, "Warining", "InterruuptedException al informar registrationID en GCM");
+							};
+						};
 					}
 				} 
 
 				
-				private int parseResponse(String response){
-					int ret=-1;
-					
-					
+				private Boolean parseResponse(String response){
+					Boolean ret=false;
+									
 					try {
 						JSONObject responseJO = new JSONObject(response);
 						int code = responseJO.getInt("code");
 						
 						if(code==200){
-							ret=1;
+							ret = true;
 						}
 						else if(code==110){
 		        			new ApplicationError(1107,"Error","Token inválido al informar registrationID en GCM");
 		        			Logout.logout(mContext, false);
-		        			ret=0;
+		        			ret=true;
 						}
 						else{
 							new ApplicationError(1108,"Warning","Mensaje inesperado al informar registrationID en GCM");

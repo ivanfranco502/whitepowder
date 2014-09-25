@@ -165,7 +165,7 @@ public class SkierActivity extends Activity {
 					
 				}
 				else{
-					stopSkierMode();
+					stopSkierMode();				
 				};
 				
 				
@@ -179,6 +179,8 @@ public class SkierActivity extends Activity {
 		butSkiermode.setSelected(false);
 		mBoundService = null;
 		serviceBroadcastReciever=null;
+		//Starts thread that notifies server
+		new SkierModeStopperThread(mContext).start();
 	}
 	
 	private void setupBasikcInformationButton(){
