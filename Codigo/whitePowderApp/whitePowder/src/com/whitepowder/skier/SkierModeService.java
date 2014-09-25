@@ -154,6 +154,7 @@ public class SkierModeService extends Service  {
 					InputStream is = connection.getInputStream();
 					BufferedReader reader = new BufferedReader(new InputStreamReader(is));		
 					String response = reader.readLine();
+					
 					success = parseResponse(response);
 									
 			    };
@@ -195,11 +196,12 @@ public class SkierModeService extends Service  {
 		PositionUploadResponse por = gson.fromJson(response, PositionUploadResponse.class);
 		
 		if(por.code==110){
-    		Logout.logout(mContext, true);
+    		Logout.logout(mContext, false);
+    		ret=true;
 		}
 		else if(por.code==200){
 			ret=true;
-		};
+		}
 		
 		return ret;
 	};
