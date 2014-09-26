@@ -123,10 +123,9 @@ public class SkierActivity extends Activity {
 
 			@Override
 			public void onServiceDisconnected(ComponentName className) {
-				mBoundService = null;
-				butSkiermode.setSelected(false);
+				
+				stopSkierMode();
 				Toast.makeText(mContext, "El modo esquiador ha sido desactivado.", Toast.LENGTH_SHORT).show();
-				unregisterReceiver(serviceBroadcastReciever);
 			};
 			
 		};
@@ -175,7 +174,11 @@ public class SkierActivity extends Activity {
 	
 	private void stopSkierMode(){
 		unbindService(mConnection);
-		unregisterReceiver(serviceBroadcastReciever);
+		
+		if(serviceBroadcastReciever!=null){
+			unregisterReceiver(serviceBroadcastReciever);	
+		};
+		
 		butSkiermode.setSelected(false);
 		mBoundService = null;
 		serviceBroadcastReciever=null;
