@@ -52,7 +52,7 @@ public class MapDisplayActivity extends Activity {
 			
 			//Setups map
 	        
-			mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+			mMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
 	        CameraUpdate cam = CameraUpdateFactory.newLatLngZoom(new LatLng(mSlope.coordinates.get(0).x,mSlope.coordinates.get(0).y),14);
 	        mMap.moveCamera(cam);
 	      
