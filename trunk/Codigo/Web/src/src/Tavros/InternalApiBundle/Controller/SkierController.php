@@ -129,7 +129,7 @@ class SkierController extends Controller {
         foreach ($allPositions as $userPosition) {
             $userPositionObject = $em->getRepository('TavrosDomainBundle:UserCoordinate')->find($userPosition['usco_id']);
             $skierDTO = Array();
-            $skierDTO['id'] = $userPosition['usco_id'];
+            $skierDTO['id'] = $userPosition['usco_user_id'];
             $skierDTO['username'] = $userPositionObject->getUscoUser()->getUsername();
 
             $positionDTO = Array();
@@ -220,10 +220,11 @@ class SkierController extends Controller {
 
         try {
             $lastPosition = $em->getRepository('TavrosDomainBundle:UserCoordinate')->findLastPosition($extData->getExdaUser());
+            
+            /* var @lastUserCoordinate \UserCoordinate */
+            $lastUserCoordinate = $em->getRepository('TavrosDomainBundle:UserCoordinate')->find($lastPosition[0]["usco_id"]);
 
-            $lastUserCoordinate = $em->getRepository('TavrosDomainBundle:UserCoordinate')->find($lastPosition["usco_id"]);
-
-            $lastUserCoordinate->setSkiMode(0);
+            $lastUserCoordinate->setUscoSkiMode(0);
             $em->persist($lastUserCoordinate);
             $em->flush();
         } catch (Exception $ex) {

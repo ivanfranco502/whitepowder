@@ -16,8 +16,10 @@ class UserCoordinateRepository extends EntityRepository {
     }
 
     public function findLastPosition($user) {
-        $sql = "select * from (select * from user_coordinate ORDER BY usco_update_date DESC) AS X GROUP BY usco_user_id where usco_user_id = "
-                . $user->getid();
+        $sql = "SELECT * FROM 
+                    (SELECT * FROM 
+                        (SELECT * FROM user_coordinate ORDER BY usco_update_date DESC ) AS X GROUP BY usco_user_id) AS Z
+                WHERE usco_user_id = " . $user->getid();
 
         $stmt = $this->getEntityManager()->getConnection()->prepare($sql);
         $stmt->execute();

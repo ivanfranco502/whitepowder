@@ -101,7 +101,7 @@ services:
     sonata.admin.generalinformation:
         class: Tavros\WebBundle\Admin\GeneralInformationAdmin
         tags:
-            - { name: sonata.admin, manager_type: orm, group: "Content", label: "General Information" }
+            - { name: sonata.admin, manager_type: orm, group: "Content", label: "Infomación General" }
         arguments:
             - ~
             - Tavros\DomainBundle\Entity\GeneralInformation
