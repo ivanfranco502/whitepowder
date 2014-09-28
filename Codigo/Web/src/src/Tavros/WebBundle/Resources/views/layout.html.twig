@@ -14,7 +14,7 @@
         #}        
         {% block addHeadJs %}
         {% endblock %}
-        
+
         <link rel="icon" href="{{ asset('bundles/tavrosweb/images/tavroslogo.png') }}">
 
         <title>White Powder by Tavros</title>
@@ -55,6 +55,11 @@
                                 <span class="glyphicon glyphicon-home"></span>&nbsp;&nbsp;Inicio
                             </a>
                         </li>
+                        <li class="//TODO how to active">
+                            <a href="{{path('generalinformation_edit', {'id':1})}}">
+                                Información General
+                            </a>
+                        </li>
                         <li class="{{ (about_active is defined) ? 'active': '' }}">
                             <a href="{{path('tavros_administrator_about')}}">Acerca de...</a>
                         </li>
@@ -75,7 +80,7 @@
 
         <script src="{{asset('bundles/tavrosweb/js/jquery.min.js')}}" type="text/javascript"></script>
         <script src="{{asset('bundles/tavrosweb/js/bootstrap.min.js')}}" type="text/javascript"></script>
-        <script src="{{asset('bundles/tavrosweb/js/main.js')}}" type="text/javascript"></script>
+
         {% block addJs %}
         {% endblock %}
     </body>

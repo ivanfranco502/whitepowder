@@ -48,7 +48,6 @@ class DefaultController extends Controller {
         $apiResponse->setPayload($generalInformationDTO[0]);
         $response->setContent($serializer->serialize($apiResponse, 'json'));
         return $response;
-        
     }
 
     public function numberVersionAction() {
@@ -88,6 +87,20 @@ class DefaultController extends Controller {
         $apiResponse->setPayload($version[0]);
         $response->setContent($serializer->serialize($apiResponse, 'json'));
         return $response;
-        
     }
+
+    public function allAlertsAction() {
+//        $serializer = $this->container->get('jms_serializer');
+//        $apiResponse = new ApiResponse();
+//        $response = new Response();
+//        $response->headers->set('Content-Type', 'application/json');
+//        $em = $this->container->get('Doctrine')->getManager();
+//        
+//
+//        $apiResponse->setCode(200);
+//        $apiResponse->setPayload();
+//        $response->setContent($serializer->serialize($apiResponse, 'json'));
+//        return $response;
+    }
+
 }
