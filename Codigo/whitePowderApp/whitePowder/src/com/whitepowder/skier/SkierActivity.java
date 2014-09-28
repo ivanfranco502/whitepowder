@@ -71,7 +71,10 @@ public class SkierActivity extends Activity {
 		if (null == (mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE))){
 			Toast.makeText(mContext, "Su dispositivo no posee GPS", Toast.LENGTH_SHORT ).show();
 		};
-	
+
+        //Create service connection
+        createServiceConnectionAndRegisterForBroadcast();
+		
 		//Setups buttons
 		
         setupPopupMenu();	    
@@ -80,23 +83,21 @@ public class SkierActivity extends Activity {
         setupForecastButton();
         setupSecurityButton();
         setupMapButton();
-        
-        //Create service connection
-        createServiceConnectionAndRegisterForBroadcast();
-		
+ 	
 	};
 	
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-
-		if(serviceBroadcastReciever!=null){
-			unregisterReceiver(serviceBroadcastReciever);	
-		};	
+		
 		if(syncFinishedBroadcastReciever!=null){
 			unregisterReceiver(syncFinishedBroadcastReciever);
 		};
+		
+		stopSkierMode();
+		
 	};
+
 	
 	private void createServiceConnectionAndRegisterForBroadcast(){
 		
@@ -113,12 +114,9 @@ public class SkierActivity extends Activity {
 			        	stopSkierMode();
 						Toast.makeText(mContext, "Por favor active el GPS para utilizar el modo esquiador.", Toast.LENGTH_SHORT).show();
 			        };
+			        	        
 			    };
-				
-				if(mBoundService!=null){
-					registerReceiver(serviceBroadcastReciever, new IntentFilter(mBoundService.getIntentStopSkierModeAction()));
-				};
-				
+			    registerReceiver(serviceBroadcastReciever, new IntentFilter(mBoundService.getIntentStopSkierModeAction()));
 			};
 
 			@Override
@@ -128,11 +126,7 @@ public class SkierActivity extends Activity {
 				Toast.makeText(mContext, "El modo esquiador ha sido desactivado.", Toast.LENGTH_SHORT).show();
 			};
 			
-		};
-		
-
-	    
-	    
+		};   
 	}
 
 	private void loadButtons(){
@@ -158,7 +152,8 @@ public class SkierActivity extends Activity {
 					}
 					else{
 						//Binds to service
-						bindService(new Intent(mContext, SkierModeService.class), mConnection, Context.BIND_AUTO_CREATE);
+						bindService(new Intent(mContext, SkierModeService.class), mConnection, Context.BIND_AUTO_CREATE);						
+
 						v.setSelected(true);
 					};			
 					
@@ -173,15 +168,16 @@ public class SkierActivity extends Activity {
 	}
 	
 	private void stopSkierMode(){
+
 		unbindService(mConnection);
 		
 		if(serviceBroadcastReciever!=null){
-			unregisterReceiver(serviceBroadcastReciever);	
+			unregisterReceiver(serviceBroadcastReciever);
+			serviceBroadcastReciever=null;
 		};
 		
 		butSkiermode.setSelected(false);
-		mBoundService = null;
-		serviceBroadcastReciever=null;
+
 		//Starts thread that notifies server
 		new SkierModeStopperThread(mContext).start();
 	}
