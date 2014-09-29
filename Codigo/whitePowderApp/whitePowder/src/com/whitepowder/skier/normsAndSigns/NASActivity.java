@@ -49,8 +49,6 @@ public class NASActivity extends Activity implements ActionBar.TabListener {
 		// Set up the action bar.
 		final ActionBar actionBar = getActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-		actionBar.setDisplayShowHomeEnabled(false);
-		actionBar.setDisplayShowTitleEnabled(false);
 
 		// Create the adapter that will return a fragment for each of the three
 		// primary sections of the activity.

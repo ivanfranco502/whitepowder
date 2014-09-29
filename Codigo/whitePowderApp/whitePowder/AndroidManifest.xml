@@ -91,23 +91,33 @@
             android:name="com.whitepowder.skier.basicInformation.BasicInformationActivity"
             android:configChanges="orientation"
             android:screenOrientation="nosensor"
-            android:theme="@style/AppTheme" />
+            android:label="Información Básica"
+            android:icon="@drawable/ic_basicinfo_inv"
+            android:theme="@style/BasicInfoTheme" />
         <activity
             android:name="com.whitepowder.skier.map.MapActivity"
             android:configChanges="orientation"
             android:screenOrientation="nosensor"
-            android:theme="@style/AppTheme" />
+            android:label="Mapa"
+            android:icon="@drawable/ic_map_inv"
+            android:theme="@style/MapTheme" />
         <activity
             android:name="com.whitepowder.skier.basicInformation.BasicInformationForecastActivity"
             android:configChanges="orientation"
-            android:label="@string/title_activity_basic_information_forecast"
-            android:screenOrientation="nosensor" >
+            android:screenOrientation="nosensor"
+            android:icon="@drawable/ic_clima_inv"
+            android:theme="@style/WeatherTheme"
+            android:label="@string/title_activity_basic_information_forecast">
         </activity>
 
         <service android:name="com.whitepowder.skier.SkierModeService" />
 
         <activity
             android:name="com.whitepowder.skier.normsAndSigns.NASActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="nosensor"
+            android:icon="@drawable/ic_security_inv"
+            android:theme="@style/NasaTheme"
             android:label="@string/title_activity_nas" >
         </activity>
         <activity

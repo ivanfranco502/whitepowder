@@ -1,171 +1,192 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent" 
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:background="@drawable/gr_background"
+    android:background="#ffffff"
+    android:weightSum="23"
     android:orientation="vertical" >
+    
+    <RelativeLayout
+        android:id="@+id/BasicRel1"
+        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_weight="20" >
 
-    <TextView
-        android:id="@+id/ski_center_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-    	android:paddingRight="@dimen/activity_horizontal_margin"
-        android:gravity="center"
-        android:textSize="20sp"
-        />
-    <TextView
-        android:id="@+id/ski_center_location"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-    	android:paddingRight="@dimen/activity_horizontal_margin"
-        android:layout_centerVertical="true"
-        android:gravity="center"
-        android:textSize="13sp"
-        android:layout_below="@id/ski_center_name"
-        />
-    <TextView
-        android:id="@+id/ski_center_amenities"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-    	android:paddingRight="@dimen/activity_horizontal_margin"
-        android:layout_centerVertical="true"
-        android:layout_below="@id/ski_center_location"
-        android:paddingTop="10dp"
-        />
-    <TextView
-        android:id="@+id/ski_center_minimum_height"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-    	android:paddingRight="@dimen/activity_horizontal_margin"
-        android:layout_centerVertical="true"
-        android:layout_below="@id/ski_center_amenities"
-        />
-    <TextView
-        android:id="@+id/ski_center_maximum_height"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-    	android:paddingRight="@dimen/activity_horizontal_margin"
-        android:layout_centerVertical="true"
-        android:layout_below="@id/ski_center_minimum_height"
-        />
-    <TextView
-        android:id="@+id/ski_center_season"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-    	android:paddingRight="@dimen/activity_horizontal_margin"
-        android:layout_centerVertical="true"
-        android:layout_below="@id/ski_center_maximum_height"
-        />
-    <ListView 
-        android:id="@+id/ski_center_schedule"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-    	android:paddingRight="@dimen/activity_horizontal_margin"
-        android:layout_below="@id/ski_center_season"
-        android:divider="@null"
-        />
-    <TextView
-        android:id="@+id/ski_center_details"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-    	android:paddingRight="@dimen/activity_horizontal_margin"
-        android:layout_centerVertical="true"
-        android:layout_below="@id/ski_center_schedule"
-        />
-     
-     <View
-        android:id="@+id/view1"
-	    android:layout_width="wrap_content"
-	    android:layout_height="3dp"
-	    android:background="#FFFFFF"
-	    android:layout_marginBottom="2dp"
-	    android:layout_marginTop="2dp"
-	    android:layout_below="@id/ski_center_details"
-	    />  
-     <!--
-    <RelativeLayout 
-        android:id="@+id/security_norms_container"
-	    android:layout_width="match_parent"
-	    android:layout_height="25dp"
-	    >
 	    <TextView
-	        android:id="@+id/security_norms"
+	        android:id="@+id/ski_center_name"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:paddingLeft="@dimen/activity_horizontal_margin"
+	    	android:paddingRight="@dimen/activity_horizontal_margin"
+	        android:gravity="center"
+	        android:textSize="20sp"
+	        />
+	    <TextView
+	        android:id="@+id/ski_center_location"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:paddingLeft="@dimen/activity_horizontal_margin"
+	    	android:paddingRight="@dimen/activity_horizontal_margin"
+	        android:layout_centerVertical="true"
+	        android:gravity="center"
+	        android:textSize="13sp"
+	        android:layout_below="@id/ski_center_name"
+	        />
+	    <TextView
+	        android:id="@+id/ski_center_amenities"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
+	        android:paddingLeft="@dimen/activity_horizontal_margin"
+	    	android:paddingRight="@dimen/activity_horizontal_margin"
 	        android:layout_centerVertical="true"
+	        android:layout_below="@id/ski_center_location"
+	        android:paddingTop="10dp"
 	        />
-    </RelativeLayout>
+	    <TextView
+	        android:id="@+id/ski_center_minimum_height"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:paddingLeft="@dimen/activity_horizontal_margin"
+	    	android:paddingRight="@dimen/activity_horizontal_margin"
+	        android:layout_centerVertical="true"
+	        android:layout_below="@id/ski_center_amenities"
+	        />
+	    <TextView
+	        android:id="@+id/ski_center_maximum_height"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:paddingLeft="@dimen/activity_horizontal_margin"
+	    	android:paddingRight="@dimen/activity_horizontal_margin"
+	        android:layout_centerVertical="true"
+	        android:layout_below="@id/ski_center_minimum_height"
+	        />
+	    <TextView
+	        android:id="@+id/ski_center_season"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:paddingLeft="@dimen/activity_horizontal_margin"
+	    	android:paddingRight="@dimen/activity_horizontal_margin"
+	        android:layout_centerVertical="true"
+	        android:layout_below="@id/ski_center_maximum_height"
+	        />
+	    <ListView 
+	        android:id="@+id/ski_center_schedule"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:paddingLeft="@dimen/activity_horizontal_margin"
+	    	android:paddingRight="@dimen/activity_horizontal_margin"
+	        android:layout_below="@id/ski_center_season"
+	        android:divider="@null"
+	        />
+	    <TextView
+	        android:id="@+id/ski_center_details"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:paddingLeft="@dimen/activity_horizontal_margin"
+	    	android:paddingRight="@dimen/activity_horizontal_margin"
+	        android:layout_centerVertical="true"
+	        android:layout_below="@id/ski_center_schedule"
+	        />
+	     
+	     <View
+	        android:id="@+id/view1"
+		    android:layout_width="wrap_content"
+		    android:layout_height="3dp"
+		    android:background="#FFFFFF"
+		    android:layout_marginBottom="2dp"
+		    android:layout_marginTop="2dp"
+		    android:layout_below="@id/ski_center_details"
+		    />  
+	     <!--
+	    <RelativeLayout 
+	        android:id="@+id/security_norms_container"
+		    android:layout_width="match_parent"
+		    android:layout_height="25dp"
+		    >
+		    <TextView
+		        android:id="@+id/security_norms"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_centerVertical="true"
+		        />
+	    </RelativeLayout>
+	    
+	    <View
+		    android:layout_width="match_parent"
+		    android:layout_height="1dp"
+		    android:background="#6DCAEC"
+		    android:layout_marginBottom="2dp"
+		    android:layout_marginTop="2dp"/>-->
+	    
+	    <TextView
+	        android:id="@+id/forecast_date"
+	        android:layout_width="wrap_content"
+	        android:layout_marginTop="5dp"
+	        android:layout_height="wrap_content"
+	        android:paddingLeft="@dimen/activity_horizontal_margin"
+	    	android:paddingRight="@dimen/activity_horizontal_margin"
+	        android:layout_below="@id/view1" />
+	    
+	     <TextView
+	        android:id="@+id/forecast_description"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:paddingLeft="@dimen/activity_horizontal_margin"
+	    	android:paddingRight="@dimen/activity_horizontal_margin"
+	        android:layout_below="@id/forecast_date" />
+	    
+	    <TextView
+	        android:id="@+id/forecast_min_temp"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:paddingLeft="@dimen/activity_horizontal_margin"
+	    	android:paddingRight="@dimen/activity_horizontal_margin"
+	        android:layout_below="@+id/forecast_description" />
+	    
+	    <TextView
+	        android:id="@+id/forecast_max_temp"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:paddingLeft="@dimen/activity_horizontal_margin"
+	    	android:paddingRight="@dimen/activity_horizontal_margin"
+	        android:layout_below="@+id/forecast_min_temp" />
+	        
+		<ImageView 
+	        android:id="@+id/forecast_icon"
+	        android:layout_width="90dp"
+	        android:layout_height="90dp"
+	        android:paddingLeft="@dimen/activity_horizontal_margin"
+	    	android:paddingRight="@dimen/activity_horizontal_margin"
+	        android:layout_centerVertical="true"
+	        android:layout_alignParentRight="true"
+	        android:layout_below="@id/view1"/>
+		
+		<TextView 
+		    android:id="@+id/forecast_see_extended"
+		    android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:paddingLeft="@dimen/activity_horizontal_margin"
+	    	android:paddingRight="@dimen/activity_horizontal_margin"
+	        android:layout_below="@+id/forecast_max_temp"
+	        android:gravity="center"
+	        android:text="@string/forecast_see_extended"
+		    />
     
-    <View
-	    android:layout_width="match_parent"
-	    android:layout_height="1dp"
-	    android:background="#6DCAEC"
-	    android:layout_marginBottom="2dp"
-	    android:layout_marginTop="2dp"/>-->
-    
-    <TextView
-        android:id="@+id/forecast_date"
-        android:layout_width="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_height="wrap_content"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-    	android:paddingRight="@dimen/activity_horizontal_margin"
-        android:layout_below="@id/view1" />
-    
-     <TextView
-        android:id="@+id/forecast_description"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-    	android:paddingRight="@dimen/activity_horizontal_margin"
-        android:layout_below="@id/forecast_date" />
-    
-    <TextView
-        android:id="@+id/forecast_min_temp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-    	android:paddingRight="@dimen/activity_horizontal_margin"
-        android:layout_below="@+id/forecast_description" />
-    
-    <TextView
-        android:id="@+id/forecast_max_temp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-    	android:paddingRight="@dimen/activity_horizontal_margin"
-        android:layout_below="@+id/forecast_min_temp" />
-        
-	<ImageView 
-        android:id="@+id/forecast_icon"
-        android:layout_width="90dp"
-        android:layout_height="90dp"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-    	android:paddingRight="@dimen/activity_horizontal_margin"
-        android:layout_centerVertical="true"
-        android:layout_alignParentRight="true"
-        android:layout_below="@id/view1"/>
+	</RelativeLayout>
 	
-	<TextView 
-	    android:id="@+id/forecast_see_extended"
-	    android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-    	android:paddingRight="@dimen/activity_horizontal_margin"
-        android:layout_below="@+id/forecast_max_temp"
-        android:gravity="center"
-        android:text="@string/forecast_see_extended"
-	    />
-    
-
-</RelativeLayout>
+    <RelativeLayout 
+	         android:id="@+id/BasicRel2"
+	         android:layout_width="match_parent"
+	         android:layout_height="0dp"
+	         android:layout_alignParentBottom="true"
+	         android:layout_weight="3"
+	         android:gravity="bottom">
+		        <ImageView
+			        android:id="@+id/emergency"
+			        android:contentDescription="Emergency"
+			        android:layout_width="match_parent"
+			        android:layout_height="match_parent"
+			        android:background="@drawable/gr_emergency"/>
+	       </RelativeLayout>
+		
+</LinearLayout>

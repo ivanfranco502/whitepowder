@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!--
         Base application theme for API 14+. This theme completely replaces
@@ -14,5 +14,73 @@
         <item name="android:windowActionBar">false</item>
 		<item name="android:windowTitleSize">0dp</item>
     </style>
+    
+    <style name="BasicInfoTheme" parent="AppBaseTheme">
+        <item name="android:actionBarStyle">@style/BasicInfoActionBar</item>
+        <item name="android:titleTextStyle">@style/BasicInfoTextAppearance</item>
+    </style>
 
+    <style name="BasicInfoActionBar" parent="Widget.AppCompat.Light.ActionBar.Solid.Inverse">
+        <item name="android:background">#038abe</item>
+    </style>
+ 
+    <style name="BasicInfoTextAppearance" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:drawablePadding">5dp</item>
+    </style>
+    
+    <style name="WeatherTheme" parent="AppBaseTheme">
+        <item name="android:actionBarStyle">@style/WeatherActionBar</item>
+        <item name="android:titleTextStyle">@style/WeatherTextAppearance</item>
+    </style>
+
+    <style name="WeatherActionBar" parent="Widget.AppCompat.Light.ActionBar.Solid.Inverse">
+        <item name="android:background">#ffd801</item>
+    </style>
+    
+        <style name="WeatherTextAppearance" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:drawablePadding">20dp</item>
+    </style>   
+    
+    <style name="NasaTheme" parent="AppBaseTheme">
+        <item name="android:actionBarStyle">@style/NasaActionBar</item>
+        <item name="android:titleTextStyle">@style/NasaTextAppearance</item>
+        <item name="android:actionBarTabTextStyle">@style/NasaTabText</item>
+    </style>
+  
+    <style name="NasaActionBar" parent="Widget.AppCompat.Light.ActionBar.Solid.Inverse">
+         <item name="android:background">#01a738</item>
+    </style>
+    
+    <style name="NasaTextAppearance" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:drawablePadding">20dp</item>
+    </style>
+    
+    <style name="NasaTabText" parent="@style/Widget.AppCompat.Light.ActionBar.TabText">
+    <item name="android:textColor">@android:color/white</item>
+	</style>    
+
+    <style name="MapTheme" parent="AppBaseTheme">
+        <item name="android:actionBarStyle">@style/MapActionBar</item>
+        <item name="android:titleTextStyle">@style/MapTextAppearance</item>
+    </style>
+
+    <style name="MapActionBar" parent="Widget.AppCompat.Light.ActionBar.Solid.Inverse">
+        <item name="android:background">#ff8a00</item>
+    </style>
+    
+        <style name="MapTextAppearance" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:drawablePadding">20dp</item>
+    </style>
+    
 </resources>
