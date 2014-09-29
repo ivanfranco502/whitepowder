@@ -32,6 +32,15 @@
                                 <div class="box-header">
                                     <h4 class="box-title">
                                         {{ admin.trans(name, {}, form_group.translation_domain) }}
+
+                                        {#                                        {% if ('Horarios' == name) %}
+                                                                                    {% block hoda_active %} active {% endblock %}
+                                                                                {% endif %}#}
+
+                                        {#                                        {% if ('Información General' == name) %}
+                                                                                    {% block gein_active %}active{% endblock %}
+                                                                                {% endif %}#}
+
                                     </h4>
                                 </div>
                                 {#<div class="box{% if loop.first %} in{% endif %}" id="{{ admin.uniqid }}_{{ loop.index }}">#}

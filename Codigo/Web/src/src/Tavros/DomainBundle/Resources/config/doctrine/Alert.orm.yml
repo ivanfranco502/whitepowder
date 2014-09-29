@@ -24,20 +24,10 @@ Tavros\DomainBundle\Entity\Alert:
             comment: ''
             column: aler_x_position
         alerYPosition:
-            type: string
+            type: float
             nullable: false
-            length: 45
-            fixed: false
+            precision: 10
+            scale: 0
             comment: ''
             column: aler_y_position
-    manyToOne:
-        alerMessage:
-            targetEntity: Message
-            cascade: {  }
-            mappedBy: null
-            inversedBy: null
-            joinColumns:
-                aler_message_id:
-                    referencedColumnName: mess_id
-            orphanRemoval: false
     lifecycleCallbacks: {  }

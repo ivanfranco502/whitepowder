@@ -101,7 +101,7 @@ services:
     sonata.admin.generalinformation:
         class: Tavros\WebBundle\Admin\GeneralInformationAdmin
         tags:
-            - { name: sonata.admin, manager_type: orm, group: "Content", label: "Infomación General" }
+            - { name: sonata.admin, manager_type: orm, group: "Content", label: "Información General" }
         arguments:
             - ~
             - Tavros\DomainBundle\Entity\GeneralInformation
@@ -111,7 +111,7 @@ services:
     sonata.admin.hourday:
         class: Tavros\WebBundle\Admin\HourDayAdmin
         tags:
-            - { name: sonata.admin, manager_type: orm, group: "Content", label: "Schedule" }
+            - { name: sonata.admin, manager_type: orm, group: "Content", label: "Horarios" }
         arguments:
             - ~
             - Tavros\DomainBundle\Entity\HourDay
