@@ -4,7 +4,7 @@
     <script type="text/javascript"
             src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDdetfv_9vJ-f9lAE0Fv5E6pmajk-ah5dY&sensor=true">
     </script>
-    <script src="{{asset('bundles/tavrosweb/js/center.js')}}" type="text/javascript"></script>
+    
 {% endblock %}
 
 
@@ -66,3 +66,6 @@
     <a id="send_message" href="{{path('tavros_send_gcm')}}">Send GCM to Android device</a>
 {% endblock %}
 
+{% block addJs %}
+    <script src="{{asset('bundles/tavrosweb/js/center.js')}}" type="text/javascript"></script>
+{% endblock %}

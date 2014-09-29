@@ -3,6 +3,7 @@ var skiers = [];
 var markers = {};
 var iterator = 0;
 var interval = 2000;
+var selected = [];
 
 function getMarkers() {
 
@@ -95,6 +96,8 @@ function setMarkers(map, locations) {
                             '<td><em class="glyphicon glyphicon-remove-sign remover" style="cursor:pointer;"></em></td>' +
                             "</tr>");
 
+                    checkAndAdd(selected, marker.metadata.id);
+
                     $("#alert-help").addClass("hidden-xs hidden-sm hidden-md hidden-lg");
                     var seen = {};
                     $('#GCM-list tr').each(function () {
@@ -105,7 +108,12 @@ function setMarkers(map, locations) {
                             seen[txt] = true;
                     });
                     $(".remover").on("click", function () {
+                        var toDelete;
+                        toDelete = selected.indexOf($(this).closest("tr td").prev().prev().text());
+
+                        selected.splice(toDelete, 1);
                         $(this).closest("tr").remove();
+
                         if ($('#GCM-list tr').length === 0) {
                             $("#alert-help").removeClass("hidden-xs hidden-sm hidden-md hidden-lg");
                         }
@@ -119,6 +127,15 @@ function setMarkers(map, locations) {
 }
 
 google.maps.event.addDomListener(window, 'load', initialize);
+
+function checkAndAdd(arr, id) {
+    var found = arr.some(function (el) {
+        return el === id;
+    });
+    if (!found) {
+        arr.push(id);
+    }
+}
 
 function prepareBroadcast() {
     $("#GCM-list").empty();

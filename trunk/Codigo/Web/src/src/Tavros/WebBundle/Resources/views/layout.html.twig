@@ -55,25 +55,45 @@
                                 <span class="glyphicon glyphicon-home"></span>&nbsp;&nbsp;Inicio
                             </a>
                         </li>
-                        <li class="//TODO how to active">
-                            <a href="{{path('generalinformation_edit', {'id':1})}}">
-                                Información General
-                            </a>
+                        <li class="{{ (center_active is defined) ? 'active': '' }}">
+                            <a href="{{path('tavros_administrator_center')}}">Mi Centro</a>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Administración<span class="caret"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li class="">
+                                    <a href="{{path('generalinformation_edit', {'id':1})}}">Información General</a>
+                                </li>
+                                <li class="" >
+                                    <a href="{{path('hourday_list')}}">Horarios</a>
+                                </li>
+                                <li>
+                                    <a href="{{path('slope_list')}}">Pistas</a>
+                                </li>
+                                <li>
+                                    <a href="{{path('notificationtype_list')}}">Notification Type</a>
+                                </li>
+                                <li>
+                                    <a href="{{path('slopedificulty_list')}}">Slope Dificulty</a>
+                                </li>
+                                {#                                
+                                <li><a href="#">Something else here</a></li>
+                                <li class="divider"></li>
+                                <li><a href="#">Separated link</a></li>
+                                <li class="divider"></li>
+                                <li><a href="#">One more separated link</a></li>
+                                #}
+                            </ul>
                         </li>
                         <li class="{{ (about_active is defined) ? 'active': '' }}">
                             <a href="{{path('tavros_administrator_about')}}">Acerca de...</a>
                         </li>
-                        <li><a href="{{path('hourday_list')}}">Schedule</a></li>
-                        <li><a href="{{path('notificationtype_list')}}">Notification Type</a></li>
-                        <li><a href="{{path('slope_list')}}">Slope</a></li>
-                        <li><a href="{{path('slopedificulty_list')}}">Slope Dificulty</a></li>
+
                         <li><a href="{{path('fos_user_security_logout')}}">Cerrar sesión</a></li>
                     </ul>
                 </div>
             </div>
         </div>
-
-
 
         {% block main_content %}
         {% endblock %}

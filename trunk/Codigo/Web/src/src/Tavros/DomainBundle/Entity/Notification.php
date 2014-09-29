@@ -20,11 +20,6 @@ class Notification
     private $notiDescription;
 
     /**
-     * @var \Tavros\DomainBundle\Entity\Message
-     */
-    private $notiMessage;
-
-    /**
      * @var \Doctrine\Common\Collections\Collection
      */
     private $nousUser;
@@ -73,29 +68,6 @@ class Notification
     public function getNotiDescription()
     {
         return $this->notiDescription;
-    }
-
-    /**
-     * Set notiMessage
-     *
-     * @param \Tavros\DomainBundle\Entity\Message $notiMessage
-     * @return Notification
-     */
-    public function setNotiMessage(\Tavros\DomainBundle\Entity\Message $notiMessage = null)
-    {
-        $this->notiMessage = $notiMessage;
-
-        return $this;
-    }
-
-    /**
-     * Get notiMessage
-     *
-     * @return \Tavros\DomainBundle\Entity\Message 
-     */
-    public function getNotiMessage()
-    {
-        return $this->notiMessage;
     }
 
     /**

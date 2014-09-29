@@ -27,15 +27,6 @@ Tavros\DomainBundle\Entity\Notification:
             comment: ''
             column: noti_description
     manyToOne:
-        notiMessage:
-            targetEntity: Message
-            cascade: {  }
-            mappedBy: null
-            inversedBy: null
-            joinColumns:
-                noti_message_id:
-                    referencedColumnName: mess_id
-            orphanRemoval: false
         notiNotificationType:
             targetEntity: NotificationType
             cascade: {  }

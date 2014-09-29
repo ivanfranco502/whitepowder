@@ -20,15 +20,9 @@ class Alert
     private $alerXPosition;
 
     /**
-     * @var string
+     * @var float
      */
     private $alerYPosition;
-
-    /**
-     * @var \Tavros\DomainBundle\Entity\Message
-     */
-    private $alerMessage;
-
 
     /**
      * Get alerId
@@ -66,7 +60,7 @@ class Alert
     /**
      * Set alerYPosition
      *
-     * @param string $alerYPosition
+     * @param float $alerYPosition
      * @return Alert
      */
     public function setAlerYPosition($alerYPosition)
@@ -79,33 +73,11 @@ class Alert
     /**
      * Get alerYPosition
      *
-     * @return string 
+     * @return float 
      */
     public function getAlerYPosition()
     {
         return $this->alerYPosition;
     }
-
-    /**
-     * Set alerMessage
-     *
-     * @param \Tavros\DomainBundle\Entity\Message $alerMessage
-     * @return Alert
-     */
-    public function setAlerMessage(\Tavros\DomainBundle\Entity\Message $alerMessage = null)
-    {
-        $this->alerMessage = $alerMessage;
-
-        return $this;
-    }
-
-    /**
-     * Get alerMessage
-     *
-     * @return \Tavros\DomainBundle\Entity\Message 
-     */
-    public function getAlerMessage()
-    {
-        return $this->alerMessage;
-    }
+    
 }
