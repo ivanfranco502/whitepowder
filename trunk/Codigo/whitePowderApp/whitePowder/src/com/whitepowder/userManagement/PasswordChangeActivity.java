@@ -6,9 +6,11 @@ import com.whitepowder.utils.Security;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.View.OnClickListener;
+import android.view.View.OnKeyListener;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,7 +27,8 @@ public class PasswordChangeActivity extends Activity {
 		setContentView(R.layout.password_change);
 		mContext = this;
 		
-		RelativeLayout butSend = (RelativeLayout)findViewById(R.id.pwd_change_change_button);
+		final RelativeLayout butSend = (RelativeLayout)findViewById(R.id.pwd_change_change_button);
+		TextView inputRepeatedNewPassword = (TextView) findViewById(R.id.pwd_change_repeat_new_password_input);
 		
 		butSend.setOnClickListener(new OnClickListener() {
 			@Override
@@ -53,6 +56,27 @@ public class PasswordChangeActivity extends Activity {
 				}
 			}
 		});
+		
+		
+		inputRepeatedNewPassword.setOnKeyListener(new OnKeyListener()
+		{
+		    public boolean onKey(View v, int keyCode, KeyEvent event)
+		    {
+		        if (event.getAction() == KeyEvent.ACTION_DOWN)
+		        {
+		            switch (keyCode)
+		            {
+		                case KeyEvent.KEYCODE_DPAD_CENTER:
+		                case KeyEvent.KEYCODE_ENTER:
+		                	butSend.performClick();
+		                    return true;
+		                default:
+		                    break;
+		            }
+		        }
+		        return false;
+		    }
+		});	
 	}
 	
 	private boolean validateInput(String currentPassword, String newPassword, String repeatedNewPassword){

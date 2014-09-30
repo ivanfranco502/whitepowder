@@ -59,8 +59,8 @@ public class SignsFragment extends Fragment {
 		signs.add(sign);
 		sign = new Sign(getString(R.string.sign5_name), getString(R.string.sign5_description), "signs/expert only.jpg");
 		signs.add(sign);
-		sign = new Sign(getString(R.string.sign6_name), getString(R.string.sign6_description), "signs/insane difficult.jpg");
-		signs.add(sign);
+		/*sign = new Sign(getString(R.string.sign6_name), getString(R.string.sign6_description), "signs/insane difficult.jpg");
+		signs.add(sign);*/
 		sign = new Sign(getString(R.string.sign7_name), getString(R.string.sign7_description), "signs/ski patrol.jpg");
 		signs.add(sign);
 		sign = new Sign(getString(R.string.sign8_name), getString(R.string.sign8_description), "signs/terrain park.jpg");
