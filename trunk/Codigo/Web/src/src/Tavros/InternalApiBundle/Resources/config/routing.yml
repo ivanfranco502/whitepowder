@@ -1,4 +1,8 @@
-info/basictavros_internalApi_user:
+tavros_internalApi_GCM:
+    resource: "@TavrosInternalApiBundle/Resources/config/routing-GCM.yml"
+    prefix:   /GCM
+
+tavros_internalApi_user:
     resource: "@TavrosInternalApiBundle/Resources/config/routing-user.yml"
     prefix:   /user
     

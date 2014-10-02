@@ -4,19 +4,21 @@
     <script type="text/javascript"
             src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDdetfv_9vJ-f9lAE0Fv5E6pmajk-ah5dY&sensor=true">
     </script>
-    
+
 {% endblock %}
 
 
 {% block main_content %}
-    <div class="container-fluid full-height">
+    <div class="center-page container-fluid full-height">
         <div class="row full-height">
             <div class="col-xs-12 col-md-8 full-height">
                 <div id="center-map" class="full-height"></div>
             </div>
             <div class="col-xs-12 col-md-4">
+                <div id="alert-danger" class="alert alert-danger hidden-xs hidden-sm hidden-md hidden-lg" role="alert">
+                </div>
                 <div id="alert-help" class="alert alert-info" role="alert">
-                    Ningun destinatario seleccionado. Haga doble click sobre él en el mapa, o presione seleccionar todos.
+                    Ningun destinatario seleccionado. Haga click sobre él en el mapa, o presione seleccionar todos.
                 </div>
                 <div class="panel panel-default">
                     <!-- Default panel contents -->
@@ -45,17 +47,17 @@
                     <div class="panel-body">
                         <div class="input-group col-xs-12">
                             <select class="form-control">
-                                <option value="volvo">Volvo</option>
-                                <option value="saab">Saab</option>
-                                <option value="mercedes">Mercedes</option>
-                                <option value="audi">Audi</option>
+                                <option value="X">Personalizado</option>
                             </select>
-
                         </div>
+                        <div class="input-group col-xs-12">
+                            <textarea id="alert-message" class="form-control"></textarea>
+                        </div>
+
                     </div>
                 </div>
 
-                <button disabled class="btn-danger btn btn-lg col-xs-12">Enviar alerta</button>
+                <button id="btn-send-alert" data-loading-text="Enviando..." class="btn-danger btn btn-lg col-xs-12" disabled >Enviar alerta</button>
 
             </div>
         </div>

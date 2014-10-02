@@ -79,3 +79,8 @@ body {
     border-color: #9743AC;
 }
 
+/*CENTER PAGE*/
+#alert-message{
+    resize: vertical;
+}
+

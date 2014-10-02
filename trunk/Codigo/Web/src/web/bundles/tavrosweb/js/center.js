@@ -4,6 +4,7 @@ var markers = {};
 var iterator = 0;
 var interval = 2000;
 var selected = [];
+var BASE_URL = "http://whitetavros.com/";
 
 function getMarkers() {
 
@@ -79,7 +80,7 @@ function setMarkers(map, locations) {
             var content = "<div style='padding: 5%; width: 80px;'>" + locations[i].id + ". " + locations[i].name + "</div>";
             var infowindow = new google.maps.InfoWindow();
 
-            google.maps.event.addListener(marker, 'click', (function (marker, content, infowindow) {
+            google.maps.event.addListener(marker, 'dblclick', (function (marker, content, infowindow) {
                 return function () {
                     infowindow.setContent(content);
                     infowindow.open(map, marker);
@@ -87,37 +88,33 @@ function setMarkers(map, locations) {
                 };
             })(marker, content, infowindow));
 
-            google.maps.event.addListener(marker, 'dblclick', (function (marker) {
+            google.maps.event.addListener(marker, 'click', (function (marker) {
                 return function () {
-                    $("#GCM-list").append(
-                            "<tr>" +
-                            "<td>" + marker.metadata.id + "</td>" +
-                            "<td>" + marker.title + "</td>" +
-                            '<td><em class="glyphicon glyphicon-remove-sign remover" style="cursor:pointer;"></em></td>' +
-                            "</tr>");
+                    if (selected[0] != "Broadcast") {
 
-                    checkAndAdd(selected, marker.metadata.id);
+                        $("#GCM-list").append(
+                                "<tr>" +
+                                "<td data-userID=" + marker.metadata.id + ">" + marker.metadata.id + "</td>" +
+                                "<td>" + marker.title + "</td>" +
+                                '<td><em class="glyphicon glyphicon-remove-sign remover" style="cursor:pointer;"></em></td>' +
+                                "</tr>");
 
-                    $("#alert-help").addClass("hidden-xs hidden-sm hidden-md hidden-lg");
-                    var seen = {};
-                    $('#GCM-list tr').each(function () {
-                        var txt = $(this).text();
-                        if (seen[txt])
-                            $(this).remove();
-                        else
-                            seen[txt] = true;
-                    });
-                    $(".remover").on("click", function () {
-                        var toDelete;
-                        toDelete = selected.indexOf($(this).closest("tr td").prev().prev().text());
+                        checkAndAdd(selected, marker.metadata.id);
+                        $("#btn-send-alert").removeAttr("disabled");
 
-                        selected.splice(toDelete, 1);
-                        $(this).closest("tr").remove();
-
-                        if ($('#GCM-list tr').length === 0) {
-                            $("#alert-help").removeClass("hidden-xs hidden-sm hidden-md hidden-lg");
-                        }
-                    });
+                        $("#alert-help").addClass("hidden-xs hidden-sm hidden-md hidden-lg");
+                        var seen = {};
+                        $('#GCM-list tr').each(function () {
+                            var txt = $(this).text();
+                            if (seen[txt])
+                                $(this).remove();
+                            else
+                                seen[txt] = true;
+                        });
+                    } else {
+                        $("#alert-danger").text('Mensaje Broadcast se encuentra seleccionado, este se enviará a todos los usuarios.');
+                        $("#alert-danger").removeClass("hidden-xs hidden-sm hidden-md hidden-lg");
+                    }
                 };
             })(marker));
 
@@ -135,6 +132,7 @@ function checkAndAdd(arr, id) {
     if (!found) {
         arr.push(id);
     }
+
 }
 
 function prepareBroadcast() {
@@ -146,6 +144,7 @@ function prepareBroadcast() {
             '<td><em class="glyphicon glyphicon-remove-sign remover" style="cursor:pointer;"></em></td>' +
             "</tr>");
 
+    selected = ["Broadcast"];
     $("#alert-help").addClass("hidden-xs hidden-sm hidden-md hidden-lg");
     var seen = {};
     $('#GCM-list tr').each(function () {
@@ -155,7 +154,14 @@ function prepareBroadcast() {
         else
             seen[txt] = true;
     });
+    $("#btn-send-alert").removeAttr("disabled");
     $(".remover").on("click", function () {
+        var toDelete;
+        toDelete = selected.indexOf($(this).closest("tr td").prev().prev().text());
+
+        selected = [];
+        $("#btn-send-alert").attr("disabled", "disabled");
+        $("#alert-danger").addClass("hidden-xs hidden-sm hidden-md hidden-lg");
         $(this).closest("tr").remove();
         if ($('#GCM-list tr').length === 0) {
             $("#alert-help").removeClass("hidden-xs hidden-sm hidden-md hidden-lg");
@@ -165,4 +171,39 @@ function prepareBroadcast() {
 
 $(document).ready(function () {
 
+    $("#GCM-list").on("click", ".remover", function () {
+        var toDelete;
+        toDelete = selected.indexOf($(this).closest("tr td").prev().prev().text());
+
+        selected.splice(toDelete, 1);
+        $(this).closest("tr").remove();
+
+        if ($('#GCM-list tr').length === 0) {
+            $("#alert-help").removeClass("hidden-xs hidden-sm hidden-md hidden-lg");
+        }
+
+        if (selected.length == 0) {
+            $("#btn-send-alert").attr("disabled", "disabled");
+        }
+    });
+
+    $("#btn-send-alert").on("click", function () {
+        var btn = $(this);
+        btn.button('loading');
+
+        $.ajax({
+            url: BASE_URL + "Sandbox/web/app_dev.php/internalApi/GCM/sendNotification",
+            dataType: "json",
+            type: "POST",
+            contentType: "application/json",
+            data: {
+                "_to": selected,
+                "body": $("#alert-message").val()
+            },
+            success: function () {
+                btn.button('reset');
+            }
+        });
+
+    });
 });
