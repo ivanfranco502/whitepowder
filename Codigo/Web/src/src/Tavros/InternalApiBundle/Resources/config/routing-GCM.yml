@@ -1,0 +1,3 @@
+tavros_internal_api_GCM_send_notification:
+    pattern:  /sendNotification
+    defaults: { _controller: TavrosInternalApiBundle:GCM:sendNotification }
