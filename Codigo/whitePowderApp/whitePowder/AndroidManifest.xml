@@ -65,46 +65,46 @@
         <activity
             android:name="com.whitepowder.slopeRecognizer.SlopeRecognizerActivity"
             android:configChanges="orientation"
-            android:screenOrientation="nosensor" />
+            android:screenOrientation="portrait" />
         <activity
             android:name="com.whitepowder.userManagement.RegisterActivity"
             android:configChanges="orientation"
-            android:screenOrientation="nosensor" />
+            android:screenOrientation="portrait" />
         <activity
             android:name="com.whitepowder.userManagement.PasswordResetActivity"
             android:configChanges="orientation"
-            android:screenOrientation="nosensor" />
+            android:screenOrientation="portrait" />
         <activity
             android:name="com.whitepowder.userManagement.PasswordChangeActivity"
             android:configChanges="orientation"
-            android:screenOrientation="nosensor" />
+            android:screenOrientation="portrait" />
         <activity
             android:name="com.whitepowder.slopeRecognizer.MapDisplayActivity"
             android:configChanges="orientation"
-            android:screenOrientation="nosensor" />
+            android:screenOrientation="portrait" />
         <activity
             android:name="com.whitepowder.skier.SkierActivity"
             android:configChanges="orientation"
-            android:screenOrientation="nosensor"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
             android:name="com.whitepowder.skier.basicInformation.BasicInformationActivity"
             android:configChanges="orientation"
-            android:screenOrientation="nosensor"
+            android:screenOrientation="portrait"
             android:label="Información Básica"
             android:icon="@drawable/ic_basicinfo_inv"
             android:theme="@style/BasicInfoTheme" />
         <activity
             android:name="com.whitepowder.skier.map.MapActivity"
             android:configChanges="orientation"
-            android:screenOrientation="nosensor"
+            android:screenOrientation="portrait"
             android:label="Mapa"
             android:icon="@drawable/ic_map_inv"
             android:theme="@style/MapTheme" />
         <activity
             android:name="com.whitepowder.skier.basicInformation.BasicInformationForecastActivity"
             android:configChanges="orientation"
-            android:screenOrientation="nosensor"
+            android:screenOrientation="portrait"
             android:icon="@drawable/ic_clima_inv"
             android:theme="@style/WeatherTheme"
             android:label="@string/title_activity_basic_information_forecast">
@@ -115,7 +115,7 @@
         <activity
             android:name="com.whitepowder.skier.normsAndSigns.NASActivity"
             android:configChanges="orientation"
-            android:screenOrientation="nosensor"
+            android:screenOrientation="portrait"
             android:icon="@drawable/ic_security_inv"
             android:theme="@style/NasaTheme"
             android:label="@string/title_activity_nas" >
