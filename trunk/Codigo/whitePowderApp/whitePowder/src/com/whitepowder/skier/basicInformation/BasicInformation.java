@@ -22,10 +22,10 @@ public class BasicInformation {
 		return gein_amenities;
 	}
 	public String getMaximumHeight(){
-		return "Altura máxima: " + gein_maximum_height + " m.s.n.m.";
+		return gein_maximum_height + "mts.";
 	}
 	public String getMinimumHeight(){
-		return "Altura mínima: " + gein_minimum_height + " m.s.n.m.";
+		return gein_minimum_height + " mts.";
 	}
 	public String getSeasonSince(){
 		return gein_season_since;
