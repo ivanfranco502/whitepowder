@@ -34,7 +34,8 @@ public class BasicInformationActivity extends Activity {
 	private TextView ski_center_amenities;
 	private TextView ski_center_minimum_height;
 	private TextView ski_center_maximum_height;
-	private TextView ski_center_season;
+	private TextView ski_center_season_since;
+	private TextView ski_center_season_upto;
 	private ListView ski_center_schedule;
 	private TextView ski_center_details;
 	
@@ -65,7 +66,8 @@ public class BasicInformationActivity extends Activity {
 			ski_center_amenities = (TextView) findViewById(R.id.ski_center_amenities);
 			ski_center_minimum_height = (TextView) findViewById(R.id.ski_center_minimum_height);
 			ski_center_maximum_height = (TextView) findViewById(R.id.ski_center_maximum_height);
-			ski_center_season = (TextView) findViewById(R.id.ski_center_season);
+			ski_center_season_since = (TextView) findViewById(R.id.ski_center_season_since);
+			ski_center_season_upto = (TextView) findViewById(R.id.ski_center_season_upto);
 			ski_center_schedule = (ListView) findViewById(R.id.ski_center_schedule);
 			ski_center_details = (TextView) findViewById(R.id.ski_center_details);
 			
@@ -97,15 +99,15 @@ public class BasicInformationActivity extends Activity {
     		final BasicInformationResponse basicInformationResponse;
     		basicInformationResponse = gson.fromJson(basicInformationValue, BasicInformationResponse.class);
 		
-			String skiCenterName = basicInformationResponse.getBasicInformation().getCenterName();
+			/*String skiCenterName = basicInformationResponse.getBasicInformation().getCenterName();
 			if(skiCenterName != null){
 				ski_center_name.setText(skiCenterName);
-			}
+			}*/
 			
-			String skiCenterLocation = basicInformationResponse.getBasicInformation().getLocation();
+			/*String skiCenterLocation = basicInformationResponse.getBasicInformation().getLocation();
 			if(skiCenterLocation != null){
 				ski_center_location.setText(skiCenterLocation);
-			}
+			}*/
 			
 			String skiCenterAmenities = basicInformationResponse.getBasicInformation().getAmenities();
 			if(skiCenterAmenities != null){
@@ -122,10 +124,15 @@ public class BasicInformationActivity extends Activity {
 				ski_center_maximum_height.setText(skiCenterMaximumHeight);
 			}
 			
-			String skiCenterSeason = basicInformationResponse.getBasicInformation().getSeason();
-			if(skiCenterSeason != null){
-				ski_center_season.setText(skiCenterSeason);
+			String skiCenterSeasonSince = basicInformationResponse.getBasicInformation().getSeasonSince();
+			if(skiCenterSeasonSince != null){
+				ski_center_season_since.setText(skiCenterSeasonSince);
 			}
+			
+			String skiCenterSeasonUpto = basicInformationResponse.getBasicInformation().getSeasonTill();
+			if(skiCenterSeasonUpto != null){
+				ski_center_season_upto.setText(skiCenterSeasonUpto);
+			}			
 			
 			
 			// Create The Adapter with passing ArrayList as 3rd parameter
