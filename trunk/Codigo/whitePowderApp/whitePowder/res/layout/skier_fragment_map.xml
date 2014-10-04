@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:weightSum="23"
+    android:weightSum="27"
     tools:context="com.example.actionbartest.MainActivity$PlaceholderFragment"
     android:orientation="vertical" >
 
@@ -11,7 +11,7 @@
         android:id="@+id/MapRel1"
         android:layout_height="0dp"
         android:layout_width="match_parent"
-        android:layout_weight="20" >
+        android:layout_weight="24" >
     	       
 		<fragment
 		    android:id="@+id/skier_map_fragment"
