@@ -18,6 +18,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
+import android.widget.SeekBar;
+import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.Toast;
 import com.example.whitepowder.R;
 import com.whitepowder.gcmModule.GCM;
@@ -56,6 +58,8 @@ public class SkierActivity extends Activity {
 	private ImageButton butMap;		
 	private ImageButton butSkiermode;
 	
+	private boolean seekBarProgress;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);	
@@ -83,6 +87,7 @@ public class SkierActivity extends Activity {
         setupForecastButton();
         setupSecurityButton();
         setupMapButton();
+        setupEmergencyButton();
  	
 	};
 	
@@ -224,6 +229,37 @@ public class SkierActivity extends Activity {
 			}
 		});
 	}
+	
+	private void setupEmergencyButton(){
+		SeekBar emergencySeekBar = (SeekBar) findViewById(R.id.emergency_seekBar);
+        
+		emergencySeekBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
+      
+			@Override
+		    public void onStopTrackingTouch(SeekBar seekBar) {
+				if(seekBarProgress == true){
+					if(seekBar.getProgress() >= 85 && seekBar.getProgress() <= 100){
+						//llamar emergencia
+					}
+				}
+				seekBar.setProgress(0);
+		    }
+		      
+		    @Override
+		    public void onStartTrackingTouch(SeekBar seekBar) {
+		    	if(seekBar.getProgress() >= 0 && seekBar.getProgress() <= 15){
+		    		seekBarProgress = false;
+				}else{
+					seekBarProgress = true;
+				}
+		    }
+		      
+			@Override
+			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {}
+			});
+    
+	}
+	
 	
 	private void setupPopupMenu(){
 		
