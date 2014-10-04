@@ -153,8 +153,107 @@
 	        android:id="@+id/BasicInfoContent2"
 	        android:layout_height="150dp"
 	        android:layout_width="match_parent"
-	        android:layout_below="@id/BasicInfoMargin2">	        
-         
+	        android:gravity="center_horizontal"
+	        android:layout_below="@id/BasicInfoMargin2">
+		    
+ 
+		            
+			<RelativeLayout
+	        android:id="@+id/RelCalendarSeason"
+	        android:layout_height="130dp"
+	        android:layout_width="110dp"
+	        android:layout_marginTop="10dp"
+	        android:layout_marginRight="150dp">
+            
+		    	<TextView
+			        android:id="@+id/SeasonComienzo"
+			        android:layout_width="match_parent"
+			        android:layout_height="wrap_content"
+			        android:gravity="center_horizontal"
+			        android:text="Comienzo:"
+			        android:textColor="#000000"
+			        android:textSize="15sp"/> 			    
+			    
+			    <ImageView
+			        android:id="@+id/CalendarFrom"
+			        android:layout_width="match_parent"
+			        android:layout_height="match_parent"
+			        android:src="@drawable/ic_calendar"
+			        android:scaleType="centerInside"
+			        android:layout_below="@id/SeasonComienzo"/>
+			    
+			    <TextView
+			        android:id="@+id/ski_center_season_since"
+			        android:layout_width="match_parent"
+			        android:layout_height="wrap_content"
+			        android:gravity="center_horizontal"
+			        android:layout_marginTop="10dp"
+			        android:textColor="#ffffff"
+		        	android:textSize="15sp"
+        		    android:layout_below="@id/SeasonComienzo"/>
+			    
+			    
+			    <TextView
+			        android:id="@+id/ski_center_season_since_num"
+			        android:layout_width="match_parent"
+			        android:layout_height="wrap_content"
+			        android:gravity="center_horizontal"
+			        android:layout_marginTop="0dp"
+			        android:textColor="#000000"
+		        	android:textSize="50sp"
+		        	android:text="15"
+        		    android:layout_below="@id/ski_center_season_since"/>			    	        
+         	
+			</RelativeLayout>
+			
+			<RelativeLayout
+	        android:id="@+id/RelCalendarSeasonUpto"
+	        android:layout_height="130dp"
+	        android:layout_width="110dp"
+	        android:layout_marginTop="10dp"
+	        android:layout_marginLeft="150dp">
+          
+		    	<TextView
+			        android:id="@+id/SeasonCierre"
+			        android:layout_width="match_parent"
+			        android:layout_height="wrap_content"
+			        android:gravity="center_horizontal"
+			        android:text="Cierre:"
+			        android:textColor="#000000"
+			        android:textSize="15sp"/> 			    
+			    
+			    <ImageView
+			        android:id="@+id/CalendarUpto"
+			        android:layout_width="match_parent"
+			        android:layout_height="match_parent"
+			        android:src="@drawable/ic_calendar"
+			        android:scaleType="centerInside"
+					android:layout_below="@id/SeasonCierre"/>
+			    
+			    <TextView
+			        android:id="@+id/ski_center_season_upto"
+			        android:layout_width="match_parent"
+			        android:layout_height="wrap_content"
+			        android:gravity="center_horizontal"
+			        android:layout_marginTop="10dp"
+			        android:textColor="#ffffff"
+		        	android:textSize="15sp"
+        		    android:layout_below="@id/SeasonCierre"/>
+			    
+			    <TextView
+			        android:id="@+id/ski_center_season_upto_num"
+			        android:layout_width="match_parent"
+			        android:layout_height="wrap_content"
+			        android:gravity="center_horizontal"
+			        android:layout_marginTop="0dp"
+			        android:textColor="#000000"
+		        	android:textSize="50sp"
+		        	android:text="15"
+        		    android:layout_below="@id/ski_center_season_upto"/>
+			    
+	        
+         	
+			</RelativeLayout>			
 
         </RelativeLayout>
         
@@ -223,23 +322,14 @@
 		        android:paddingTop="10dp"
 		        />
 
-		        />
-		    <TextView
-		        android:id="@+id/ski_center_season"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:paddingLeft="@dimen/activity_horizontal_margin"
-		    	android:paddingRight="@dimen/activity_horizontal_margin"
-		        android:layout_centerVertical="true"
-		        android:layout_below="@id/ski_center_amenities"
-		        />
+
 		    <ListView 
 		        android:id="@+id/ski_center_schedule"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
 		        android:paddingLeft="@dimen/activity_horizontal_margin"
 		    	android:paddingRight="@dimen/activity_horizontal_margin"
-		        android:layout_below="@id/ski_center_season"
+		        android:layout_below="@id/ski_center_amenities"
 		        android:divider="@null"
 		        />
 		    <TextView
@@ -285,7 +375,6 @@
 		    <TextView
 		        android:id="@+id/forecast_date"
 		        android:layout_width="wrap_content"
-		        android:layout_marginTop="5dp"
 		        android:layout_height="wrap_content"
 		        android:paddingLeft="@dimen/activity_horizontal_margin"
 		    	android:paddingRight="@dimen/activity_horizontal_margin"

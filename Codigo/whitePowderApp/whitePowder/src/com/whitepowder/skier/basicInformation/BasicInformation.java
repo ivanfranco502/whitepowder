@@ -28,10 +28,10 @@ public class BasicInformation {
 		return gein_minimum_height + " mts.";
 	}
 	public String getSeasonSince(){
-		return gein_season_since;
+		return gein_season_since.toUpperCase();
 	}
 	public String getSeasonTill(){
-		return gein_season_till;
+		return gein_season_till.toUpperCase();
 	}
 	public String getLocation(){
 		return gein_location;
