@@ -98,26 +98,32 @@ public class SkierModeStopperThread extends Thread {
 	private Boolean parseResponse(String response){
 		Boolean ret=false;
 		
-		try {
-			JSONObject responseJO = new JSONObject(response);
-			int code = responseJO.getInt("code");
-			
-			if(code==200){
-				ret = true;
-			}
-			else if(code==110){
-    			new ApplicationError(3,"Error","Token inválido al informar stop en el Skier Mode");
-    			Logout.logout(mContext, false);
-    			ret=true;
-			}
-			else{
-				new ApplicationError(1206,"Warning","Mensaje inesperado al informar stop en el Skier Mode");
+		if(response!=null){
+		
+			try {
+				JSONObject responseJO = new JSONObject(response);
+				int code = responseJO.getInt("code");
+				
+				if(code==200){
+					ret = true;
+				}
+				else if(code==110){
+	    			new ApplicationError(3,"Error","Token inválido al informar stop en el Skier Mode");
+	    			Logout.logout(mContext, false);
+	    			ret=true;
+				}
+				else{
+					new ApplicationError(1206,"Warning","Mensaje inesperado al informar stop en el Skier Mode");
+				};
+				
+	
+			} 
+			catch (JSONException e) {
+				new ApplicationError(1203, "Warining", "JSON Exception al informar stop en el Skier Mode");
 			};
-			
-
-		} 
-		catch (JSONException e) {
-			new ApplicationError(1203, "Warining", "JSON Exception al informar stop en el Skier Mode");
+		}
+		else{
+			new ApplicationError(1206,"Warning","Mensaje inesperado al informar stop en el Skier Mode");
 		};
 		
 		return ret;
