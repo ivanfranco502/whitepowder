@@ -124,6 +124,12 @@
             android:name="com.whitepowder.skier.normsAndSigns.SignActivity"
             android:label="@string/title_activity_sign" >
         </activity>
+        
+		<activity 
+            android:name="com.whitepowder.skier.statistics.StatisticsActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/title_activity_statistics" >
+        </activity>
     </application>
 
 </manifest>
