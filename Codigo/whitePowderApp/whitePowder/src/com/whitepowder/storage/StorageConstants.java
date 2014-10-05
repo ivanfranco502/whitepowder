@@ -3,7 +3,7 @@ package com.whitepowder.storage;
 public class StorageConstants{
 	
 	//Shared prefs file name
-	public static final String GENERAL_STORAGE_SHARED_PREFS = "simplified_slopes_container.file";	
+	public static final String GENERAL_STORAGE_SHARED_PREFS = "white_woder_general_storage";	
 	
 	//Shared prefs keys
 	public static final String SIMPLIFIED_SLOPES_KEY = "Simplified_Slopes";

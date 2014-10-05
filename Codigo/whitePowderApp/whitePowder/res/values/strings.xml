@@ -169,4 +169,8 @@
 	<string name="norm9_description">Todo esquiador y snowboarder debe prestar socorro. (La FIS espera que el delito de fuga en las pistas sea sancionado penalmente al igual que como sucede en las rutas viales). </string>
 	<string name="norm10_description">Todos los esquiadores o snowboarders que sean testigos de un accidente, sean o no responsables del mismo, deben identificarse e intercambiar nombres y direcciones.</string>
 	
+	
+	<!-- Sección de strings para las estadísticas -->
+	<string name="title_activity_statistics">Estadísticas</string>
+	
 </resources>

@@ -11,9 +11,9 @@ import java.net.URL;
 import java.util.Calendar;
 
 import com.google.gson.Gson;
+import com.whitepowder.skier.statistics.StatisticsManager;
 import com.whitepowder.storage.StorageConstants;
 import com.whitepowder.userManagement.User;
-import com.whitepowder.userManagement.UserStatistics;
 import com.whitepowder.utils.BaseTavrosURI;
 import com.whitepowder.utils.Logout;
 import android.app.Service;
@@ -41,22 +41,15 @@ public class SkierModeService extends Service  {
 	private Gson gson = new Gson();
 	private Context mContext;
 	
-	SharedPreferences sharedPrefs=null;
-	SharedPreferences.Editor editor = null;
-	UserStatistics userStats=null;
-	int count=0;
+	StatisticsManager userStats=null;
     
     @Override
     public void onCreate() {
     	
     	mContext = getApplicationContext();
-    	
-		//Gets Shared prefs file
-		sharedPrefs = mContext.getSharedPreferences(StorageConstants.GENERAL_STORAGE_SHARED_PREFS, Context.MODE_MULTI_PROCESS);
-		editor=sharedPrefs.edit();
 		
-		//Loads User Stadistics from file
-		loadStatsFromFile();
+		//Loads User Stadistics 
+		userStats = StatisticsManager.getInstance(mContext);
     	
 		// Acquire reference to the LocationManager
 		if (null == (mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE))){
@@ -114,7 +107,7 @@ public class SkierModeService extends Service  {
 					
 					@Override
 					public void run() {
-						refreshStats(loc);
+						userStats.updateStatistics(loc);
 						
 					};
 				}).start();				
@@ -147,7 +140,7 @@ public class SkierModeService extends Service  {
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		persistStatistics();
+		userStats.persistStatistics();
 		mLocationManager.removeUpdates(mLocationListener);
 	};
 	
@@ -234,59 +227,6 @@ public class SkierModeService extends Service  {
 		return ret;
 	};
 	
-	private void loadStatsFromFile(){
-		String statsText = sharedPrefs.getString(StorageConstants.USER_STATISTICS_KEY, null);
-		if(statsText!=null){
-			userStats = gson.fromJson(statsText, UserStatistics.class);
-		}
-		else{
-			userStats = UserStatistics.getInstance();
-		}
-	};
-	
-	public void refreshStats(Location loc){
-		if(userStats!=null){
-			
-			//Check and updates max speed
-			if(loc.getSpeed() > userStats.getMaxSpeed()){
-				userStats.setMaxSpeed(loc.getSpeed());
-				userStats.setMaxSpeedDate(Calendar.getInstance().getTime());
-			};
-			
-			//Check and updates max altitude
-			if(loc.getAltitude() > userStats.getMaxAltitude()){
-				userStats.setMaxAltitude(loc.getAltitude());
-				userStats.setMaxAltitudeDate(Calendar.getInstance().getTime());				
-			};
-			
-			//Updates average speed
-			float speed = loc.getSpeed()/1000*3600;
-			
-			if(speed>=10){
-				userStats.setAverageSpeed(((userStats.getAverageSpeed()*userStats.getSpeedMeditions())+speed)/userStats.getSpeedMeditions()+1);
-				userStats.setSpeedMeditions(userStats.getSpeedMeditions()+1);
-			};
-			
-			//Updates total distance
-			if(userStats.getLastKnownLocation()!=null){
-				userStats.setTotalDistance(userStats.getTotalDistance()+loc.distanceTo(userStats.getLastKnownLocation()));
-			};
-			
-			//Sometimes persist statistics
-			if((count%4)==0){
-				persistStatistics();
-				
-			};
-			count++;
-			
-		};
-		
-	};
-	
-	public void persistStatistics(){
-		editor.putString(StorageConstants.USER_STATISTICS_KEY, gson.toJson(userStats));
-		editor.commit();
-	};
 	
 	public String getIntentStopSkierModeAction(){
 		return IntentStopSkierModeAction;
