@@ -35,7 +35,7 @@
 		               android:layout_height="wrap_content"
 		               android:gravity="center_horizontal"
 		               android:textSize="20sp"
-		               android:text="Velocidad máxima" />
+		               android:text="@string/skier_statistics_max_speed_text" />
 		           
 		           <TextView
 		               android:id="@+id/skier_statistics_speed_record_value"
@@ -43,8 +43,9 @@
 		               android:layout_width="match_parent"
 		               android:layout_height="wrap_content"
 		               android:gravity="center_horizontal"
+		               android:textColor="#AFBDBD"
 		               android:textSize="20sp"
-		               android:text="N/A" />
+		               android:text="@string/skier_statistics_no_data" />
 		           
 					<TextView
 		               android:id="@+id/skier_statistics_speed_record_date"
@@ -53,7 +54,7 @@
 		               android:layout_height="wrap_content"
 		               android:gravity="center_horizontal"
 		               android:textSize="20sp"
-		               android:text="N/A" />
+		               android:text="" />
 		           
 	           </RelativeLayout>
 	        </LinearLayout>
@@ -79,7 +80,7 @@
 		               android:layout_height="wrap_content"
 		               android:gravity="center_horizontal"
 		               android:textSize="20sp"
-		               android:text="Altura máxima" />
+		               android:text="@string/skier_statistics_max_altitude_text" />
 		           
 					<TextView
 		               android:id="@+id/skier_statistics_height_record_value"
@@ -88,7 +89,8 @@
 		               android:layout_height="wrap_content"
 		               android:gravity="center_horizontal"
 		               android:textSize="20sp"
-		               android:text="N/A" />
+   		       		   android:textColor="#AFBDBD"
+		               android:text="@string/skier_statistics_no_data" />
 					
 					<TextView
 		               android:id="@+id/skier_statistics_height_record_date"
@@ -97,7 +99,7 @@
 		               android:layout_height="wrap_content"
 		               android:gravity="center_horizontal"
 		               android:textSize="20sp"
-		               android:text="N/A" />
+		               android:text="" />
 	           </RelativeLayout>
            </LinearLayout>
 	           
@@ -122,7 +124,7 @@
 		               android:layout_height="wrap_content"
 		               android:gravity="center_horizontal"
 		               android:textSize="20sp"
-		               android:text="Velocidad promedio"/>
+		               android:text="@string/skier_statistics_average_speed_text"/>
 		           
 					<TextView
 		               android:id="@+id/skier_statistics_average_speed_value"
@@ -131,7 +133,8 @@
 		               android:layout_height="wrap_content"
 		               android:gravity="center_horizontal"
 		               android:textSize="20sp"
-		               android:text="N/A"/>
+		               android:textColor="#AFBDBD"
+		               android:text="@string/skier_statistics_no_data" />
 	           </RelativeLayout>
 	        </LinearLayout>
 	        
@@ -156,7 +159,7 @@
 		               android:layout_height="wrap_content"
 		               android:gravity="center_horizontal"
 		               android:textSize="20sp"
-		               android:text="Distancia recorrida"/>
+		               android:text="@string/skier_statistics_total_distance_text"/>
 					
 					<TextView
 		               android:id="@+id/skier_statistics_total_distance_value"
@@ -165,7 +168,8 @@
 		               android:layout_height="wrap_content"
 		               android:gravity="center_horizontal"
 		               android:textSize="20sp"
-		               android:text="N/A"/>
+		               android:textColor="#AFBDBD"
+		               android:text="@string/skier_statistics_no_data" />
 	           </RelativeLayout>
 	        </LinearLayout>
 			
@@ -192,7 +196,7 @@
 	            android:layout_width="wrap_content"
 	            android:gravity="center"
 	            android:layout_centerInParent="true" 
-	            android:text="RESETEAR"/>
+	            android:text="@string/skier_statistics_reset_button_text"/>
 	        
 	    </RelativeLayout>	    
 	    
@@ -208,7 +212,7 @@
 	            android:layout_width="wrap_content"
 	            android:gravity="center"
 	            android:layout_centerInParent="true" 
-	            android:text="COMPARTIR"/>
+	            android:text="@string/skier_statistics_share_button_text"/>
 	    </RelativeLayout>    
 	    
 	</LinearLayout>

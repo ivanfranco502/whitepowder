@@ -172,5 +172,15 @@
 	
 	<!-- Sección de strings para las estadísticas -->
 	<string name="title_activity_statistics">Estadísticas</string>
+	<string name="skier_statistics_toast_no_stats">No posee ninguna estadística, para tomar sus estadísticas debe activar el modo esquiador.</string>
+	<string name="skier_statistics_errase_stats_alert_title">Descartar</string>
+	<string name="skier_statistics_errase_stats_alert_body">¿Esta seguro que desea descartar sus estadísticas?</string>
+	<string name="skier_statistics_max_speed_text">Velocidad máxima</string>
+	<string name="skier_statistics_max_altitude_text">Altura máxima</string>
+	<string name="skier_statistics_average_speed_text">Velocidad promedio</string>
+	<string name="skier_statistics_total_distance_text">Distancia recorrida</string>
+	<string name="skier_statistics_no_data">Sin datos</string>
+	<string name="skier_statistics_reset_button_text">RESETEAR</string>
+	<string name="skier_statistics_share_button_text">COMPARTIR</string>
 	
 </resources>

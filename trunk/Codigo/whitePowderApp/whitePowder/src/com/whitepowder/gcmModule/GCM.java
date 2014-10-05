@@ -128,27 +128,30 @@ public class GCM {
 				
 				private Boolean parseResponse(String response){
 					Boolean ret=false;
-									
-					try {
-						JSONObject responseJO = new JSONObject(response);
-						int code = responseJO.getInt("code");
-						
-						if(code==200){
-							ret = true;
-						}
-						else if(code==110){
-		        			new ApplicationError(1107,"Error","Token inválido al informar registrationID en GCM");
-		        			Logout.logout(mContext, false);
-		        			ret=true;
-						}
-						else{
-							new ApplicationError(1108,"Warning","Mensaje inesperado al informar registrationID en GCM");
+					if(response!=null){			
+						try {
+							JSONObject responseJO = new JSONObject(response);
+							int code = responseJO.getInt("code");
+							
+							if(code==200){
+								ret = true;
+							}
+							else if(code==110){
+			        			new ApplicationError(1107,"Error","Token inválido al informar registrationID en GCM");
+			        			Logout.logout(mContext, false);
+			        			ret=true;
+							}
+							else{
+								new ApplicationError(1108,"Warning","Mensaje inesperado al informar registrationID en GCM");
+							};
+							
+						} 
+						catch (JSONException e) {
+							new ApplicationError(1105, "Warining", "JSON Exception al informar registrationID en GCM");
 						};
-						
-
-					} 
-					catch (JSONException e) {
-						new ApplicationError(1105, "Warining", "JSON Exception al informar registrationID en GCM");
+					}
+					else{
+						new ApplicationError(1108,"Warning","Mensaje inesperado al informar registrationID en GCM");
 					};
 					return ret;
 					
