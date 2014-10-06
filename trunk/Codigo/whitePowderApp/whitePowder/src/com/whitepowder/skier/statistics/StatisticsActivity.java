@@ -41,7 +41,7 @@ public class StatisticsActivity extends Activity {
 		if(userStats.stats.getMaxSpeed()!=0){
 			TextView maxSpeed = (TextView) findViewById(R.id.skier_statistics_speed_record_value);
 			maxSpeed.setTextColor(Color.BLACK);
-			maxSpeed.setText(Float.toString(userStats.stats.getMaxSpeed())+" km/h");
+			maxSpeed.setText(String.format("%.2f", userStats.stats.getMaxSpeed())+" km/h");
 			gotStats=true;
 			
 			if(userStats.stats.getMaxSpeedDate()!=null){
@@ -57,7 +57,7 @@ public class StatisticsActivity extends Activity {
 		
 		if(userStats.stats.getMaxAltitude()!=0){
 			TextView maxAltitude = (TextView) findViewById(R.id.skier_statistics_height_record_value);
-			maxAltitude.setText(Double.toString(userStats.stats.getMaxAltitude())+" mts");
+			maxAltitude.setText(String.format("%.0f", userStats.stats.getMaxAltitude())+" mts");
 			maxAltitude.setTextColor(Color.BLACK);
 			gotStats=true;
 			
@@ -74,7 +74,7 @@ public class StatisticsActivity extends Activity {
 		
 		if(userStats.stats.getAverageSpeed()!=0){
 			TextView averageSpeed = (TextView) findViewById(R.id.skier_statistics_average_speed_value);
-			averageSpeed.setText(Double.toString(userStats.stats.getAverageSpeed())+" km/h");
+			averageSpeed.setText(String.format("%.3f", userStats.stats.getAverageSpeed())+" km/h");
 			averageSpeed.setTextColor(Color.BLACK);
 			gotStats=true;
 		};
@@ -82,8 +82,8 @@ public class StatisticsActivity extends Activity {
 		//Loads total distance
 		
 		if(userStats.stats.getTotalDistance()!=0){
-			TextView totalDist = (TextView) findViewById(R.id.skier_statistics_total_distance_text);
-			totalDist.setText(Double.toString(userStats.stats.getTotalDistance())+" km");
+			TextView totalDist = (TextView) findViewById(R.id.skier_statistics_total_distance_value);
+			totalDist.setText(String.format("%.3f", userStats.stats.getTotalDistance())+" km");
 			totalDist.setTextColor(Color.BLACK);
 			gotStats=true;
 		};

@@ -8,18 +8,14 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Calendar;
-
 import com.google.gson.Gson;
 import com.whitepowder.skier.statistics.StatisticsManager;
-import com.whitepowder.storage.StorageConstants;
 import com.whitepowder.userManagement.User;
 import com.whitepowder.utils.BaseTavrosURI;
 import com.whitepowder.utils.Logout;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
