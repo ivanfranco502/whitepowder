@@ -15,22 +15,22 @@ class SlopeDificultyAdmin extends Admin {
     // Fields to be shown on create/edit forms
     protected function configureFormFields(FormMapper $formMapper) {
         $formMapper
-                ->add('sldiDescription', 'text', array('label' => 'Description'))
+                ->add('sldiDescription', 'text', array('label' => 'Descripción'))
                 ->add('sldiColor', null, array('label' => 'Color'));
     }
 
     // Fields to be shown on filter forms
     protected function configureDatagridFilters(DatagridMapper $datagridMapper) {
         $datagridMapper
-                ->add('sldiDescription')
-                ->add('sldiColor');
+                ->add('sldiDescription',null, Array('label'=>'Descripción', 'sortable' => false))
+                ->add('sldiColor',null, Array('label'=>'Color', 'sortable' => false));
     }
 
     // Fields to be shown on lists
     protected function configureListFields(ListMapper $listMapper) {
         $listMapper
-                ->addIdentifier('sldiDescription')
-                ->add('sldiColor');
+                ->addIdentifier('sldiDescription',null, Array('label'=>'Descripción', 'sortable' => false))
+                ->add('sldiColor',null, Array('label'=>'Color', 'sortable' => false));
     }
 
 }

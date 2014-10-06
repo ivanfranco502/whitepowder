@@ -15,25 +15,25 @@ class SlopeAdmin extends Admin {
     // Fields to be shown on create/edit forms
     protected function configureFormFields(FormMapper $formMapper) {
         $formMapper
-                ->add('slopDescription', 'text', array('label' => 'Description'))
-                ->add('slopLength', 'text', array('label' => 'Length'))
-                ->add('slopDificulty', null, array('label' => 'Dificulty'));
+                ->add('slopDescription', 'text', array('label' => 'Descripción'))
+                ->add('slopLength', 'text', array('label' => 'Longitud'))
+                ->add('slopDificulty', null, array('label' => 'Dificultad'));
     }
 
     // Fields to be shown on filter forms
     protected function configureDatagridFilters(DatagridMapper $datagridMapper) {
         $datagridMapper
-                ->add('slopDescription')
-                ->add('slopLength')
-                ->add('slopDificulty');
+                ->add('slopDescription', null, Array('label' => 'Descripción', 'sortable' => false))
+                ->add('slopLength', null, Array('label' => 'Longitud', 'sortable' => false))
+                ->add('slopDificulty', null, Array('label' => 'Dificultad', 'sortable' => false));
     }
 
     // Fields to be shown on lists
     protected function configureListFields(ListMapper $listMapper) {
         $listMapper
-                ->addIdentifier('slopDescription')
-                ->add('slopLength')
-                ->add('slopDificulty');
+                ->addIdentifier('slopDescription', null, Array('label' => 'Descripción', 'sortable' => false))
+                ->add('slopLength', null, Array('label' => 'Longitud', 'sortable' => false))
+                ->add('slopDificulty', null, Array('label' => 'Dificultad', 'sortable' => false));
     }
 
 }
