@@ -1,16 +1,21 @@
+//CONSTANTES
+var BASE_URL = "http://whitetavros.com/";
+var MODE = "Sandbox";
+var PROFILER = "app_dev.php";
+//VARIABLES
 var map;
 var skiers = [];
 var markers = {};
 var iterator = 0;
 var interval = 2000;
 var selected = [];
-var BASE_URL = "http://whitetavros.com/";
+
 
 function getMarkers() {
 
     $.ajax({
         dataType: "json",
-        url: "http://whitetavros.com/Sandbox/web/app_dev.php/internalApi/skier/getAll",
+        url: BASE_URL + MODE + "/web/" + PROFILER + "/internalApi/skier/getAll",
         success: function (data, textStatus, jqXHR) {
             data.payload.forEach(function (skier) {
                 skiers.push({
@@ -112,8 +117,10 @@ function setMarkers(map, locations) {
                                 seen[txt] = true;
                         });
                     } else {
-                        $("#alert-danger").text('Mensaje Broadcast se encuentra seleccionado, este se enviará a todos los usuarios.');
-                        $("#alert-danger").removeClass("hidden-xs hidden-sm hidden-md hidden-lg");
+                        $("#alert-danger").html('<div class="alert alert-danger"><button type="button" class="close">×</button>Mensaje Broadcast se encuentra seleccionado, este se enviará a todos los usuarios.</div>');
+                        $('#alert-danger .close').on("click", function (e) {
+                            $(this).parent().fadeTo(300, 0).slideUp(300);
+                        });
                     }
                 };
             })(marker));
@@ -161,7 +168,6 @@ function prepareBroadcast() {
 
         selected = [];
         $("#btn-send-alert").attr("disabled", "disabled");
-        $("#alert-danger").addClass("hidden-xs hidden-sm hidden-md hidden-lg");
         $(this).closest("tr").remove();
         if ($('#GCM-list tr').length === 0) {
             $("#alert-help").removeClass("hidden-xs hidden-sm hidden-md hidden-lg");
@@ -188,22 +194,29 @@ $(document).ready(function () {
     });
 
     $("#btn-send-alert").on("click", function () {
-        var btn = $(this);
-        btn.button('loading');
+        if ($("#alert-message").val() == '') {
 
-        $.ajax({
-            url: BASE_URL + "Sandbox/web/app_dev.php/internalApi/GCM/sendNotification",
-            dataType: "json",
-            type: "POST",
-            contentType: "application/json",
-            data: {
-                "_to": selected,
-                "body": $("#alert-message").val()
-            },
-            success: function () {
-                btn.button('reset');
-            }
-        });
-
+            $("#alert-danger").html('<div class="alert alert-danger"><button type="button" class="close">×</button>La alerta debe contener un mensaje.</div>');
+            $('#alert-danger .close').on("click", function (e) {
+                $(this).parent().fadeTo(300, 0).slideUp(300);
+            });
+        } else {
+            var btn = $(this);
+            btn.button('loading');
+            $.ajax({
+                url: BASE_URL + MODE + "/web/" + PROFILER + "/internalApi/GCM/sendNotification",
+                dataType: "json",
+                type: "POST",
+                data: {
+                    "_to": JSON.stringify(selected),
+                    "body": $("#alert-message").val()
+                },
+                success: function () {
+                    $("#GCM-list").empty();
+                    $("#alert-message").val('');
+                    btn.button('reset');
+                }
+            });
+        }
     });
 });
