@@ -81,7 +81,7 @@ services:
     sonata.admin.slopedificulty:
         class: Tavros\WebBundle\Admin\SlopeDificultyAdmin
         tags:
-            - { name: sonata.admin, manager_type: orm, group: "Content", label: "Slope Dificulty" }
+            - { name: sonata.admin, manager_type: orm, group: "Content", label: "Dificultades" }
         arguments:
             - ~
             - Tavros\DomainBundle\Entity\SlopeDificulty
@@ -91,7 +91,7 @@ services:
     sonata.admin.slope:
         class: Tavros\WebBundle\Admin\SlopeAdmin
         tags:
-            - { name: sonata.admin, manager_type: orm, group: "Content", label: "Slope" }
+            - { name: sonata.admin, manager_type: orm, group: "Content", label: "Pistas" }
         arguments:
             - ~
             - Tavros\DomainBundle\Entity\Slope
