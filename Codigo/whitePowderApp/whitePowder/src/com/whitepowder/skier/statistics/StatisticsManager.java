@@ -17,7 +17,7 @@ public class StatisticsManager{
 	static Context mContext;
 	UserStatistics stats;
 
-	int count=0;
+	int count=1;
 
 	
 	private StatisticsManager() {
@@ -51,9 +51,13 @@ public class StatisticsManager{
 	
 	public void updateStatistics(Location loc){
 		
+		//Converts from m/s to km/h
+		float speed = loc.getSpeed()/1000*3600;
+	
+		
 		//Check and updates max speed
-		if(loc.getSpeed() > stats.getMaxSpeed()){
-			stats.setMaxSpeed(loc.getSpeed());
+		if(speed > stats.getMaxSpeed()){
+			stats.setMaxSpeed(speed);
 			stats.setMaxSpeedDate(Calendar.getInstance().getTime());
 		};
 		
@@ -64,10 +68,9 @@ public class StatisticsManager{
 		};
 		
 		//Updates average speed
-		float speed = loc.getSpeed()/1000*3600;
 		
 		if(speed>=10){
-			stats.setAverageSpeed(((stats.getAverageSpeed()*stats.getSpeedMeditions())+speed)/stats.getSpeedMeditions()+1);
+			stats.setAverageSpeed(((stats.getAverageSpeed()*stats.getSpeedMeditions())+speed)/(stats.getSpeedMeditions()+1));
 			stats.setSpeedMeditions(stats.getSpeedMeditions()+1);
 		};
 		
@@ -82,13 +85,11 @@ public class StatisticsManager{
 		//Sometimes persist statistics
 		if((count%4)==0){
 			persistStatistics();
+			count=1;
 			
 		};
 		count++;
-		
-		if(count>60000){
-			count=0;
-		};
+
 		
 	};
 	
