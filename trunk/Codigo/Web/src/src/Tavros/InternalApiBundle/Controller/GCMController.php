@@ -18,17 +18,26 @@ class GCMController extends Controller {
         $response->headers->set('Content-Type', 'application/json');
         $em = $this->container->get('Doctrine')->getManager();
 
-        $content = json_decode($this->container->get('request')->getContent());
+//        $content = json_decode($this->container->get('request')->getContent());
 
-        $users_ids = $content->_to;
-        $body = $content->body;
+        $users_ids = json_decode($this->container->get('request')->get('_to'));
+        $body = json_decode($this->container->get('request')->get('body'));
+
         $registration_ids = Array();
 
-        foreach ($users_ids as $id) {
-            $registration_ids[] = $em->getRepository('TavrosDomainBundle:ExternalData')->findByExdaUser(
-                            $em->getRepository('TavrosDomainBundle:Users')->find($id)
-                    )->getExdaRegistrationCode();
+        if ($users_ids[0] == "Broadcast") {
+            $pre = $em->getRepository('TavrosDomainBundle:ExternalData')->findAllRegistrationId();
+            foreach ($pre as $rc) {
+                $registration_ids[] = $rc['exda_registration_code'];
+            }
+        } else {
+            foreach ($users_ids as $id) {
+                $user = $em->getRepository('TavrosDomainBundle:Users')->find(intval($id));
+                $user_externals = $em->getRepository('TavrosDomainBundle:ExternalData')->findOneByExdaUser($user);
+                $registration_ids[] = $user_externals->getExdaRegistrationCode();
+            }
         }
+
         // lucas
 //        $registration_ids = array("APA91bEx-tzPcQj-bfl3TF9t9FqPCOIlK8ad6TWBnm0i49ZFnjyXMrv_4nF5fqGpHA_mMwQMyN04uji7PcKZUbmdqBoaEIXsrmICsAxQZ5XiIEqRX-Sv_aIx3l3BYnY-OU6jhu6o1837LqavDEHD9gDMWyn0TB_qxOFHUapoXHGq4HJiDkG3XaM");
         //alexa
@@ -73,10 +82,10 @@ class GCMController extends Controller {
 
         // Close connection
         curl_close($ch);
-//        echo $result;
 
         $apiResponse->setCode(200);
         $apiResponse->setPayload($result);
+
         $response->setContent($serializer->serialize($apiResponse, 'json'));
         return $response;
     }

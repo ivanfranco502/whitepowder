@@ -1,5 +1,6 @@
 Tavros\DomainBundle\Entity\ExternalData:
     type: entity
+    repositoryClass: Tavros\DomainBundle\Repositories\ExternalDataRepository
     table: external_data
     indexes:
         fk_user_id_idx:
