@@ -1,7 +1,10 @@
 package com.whitepowder.gcmModule;
 
 import com.example.whitepowder.R;
+import com.whitepowder.skier.SkierActivity;
+import android.app.Activity;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -15,23 +18,52 @@ public class GcmBroadcastReceiver extends BroadcastReceiver {
 	@Override
 	public void onReceive(Context context, Intent intent) {
 	
-		Alert alerta = new Alert();
-		alerta.setTitle(intent.getStringExtra("title"));
-		alerta.setBody(intent.getStringExtra("body"));
-		alerta.setUrgency(intent.getStringExtra("urgency"));
 		
-		NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context)
-			//	.setTicker(tickerText)
-				.setSmallIcon(R.drawable.ic_notif)
-				.setContentTitle(alerta.getTitle())
-				.setContentText(alerta.body)
-			//	.setContentIntent(mContentIntent).setSound(soundURI)
-				.setVibrate(mVibratePattern);
+		Intent notifyAppIntent = new Intent(SkierActivity.GCM_ALERT_INTENT_ACTION);
+		notifyAppIntent.putExtra("title", intent.getStringExtra("title"));
+		notifyAppIntent.putExtra("body", intent.getStringExtra("body"));
+		notifyAppIntent.putExtra("id", intent.getIntExtra("id", -1));
+		
+		context.sendOrderedBroadcast(
+				notifyAppIntent, 
+				null,
+				new BroadcastReceiver() {
 
-		// Pass the Notification to the NotificationManager:
-		NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-		
-		mNotificationManager.notify(MY_NOTIFICATION_ID, notificationBuilder.build());	
+					@Override
+					public void onReceive(Context context, Intent intent) {
+
+						if (getResultCode() != Activity.RESULT_OK) {
+							PendingIntent pendingIntent=null;
+							
+							Intent displayIntent = new Intent(context, AlertDisplayActivity.class);
+							displayIntent.putExtras(intent.getExtras());
+							
+							pendingIntent = PendingIntent.getActivity(context, 0, displayIntent, 0);
+							
+							NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context)
+								
+								.setSmallIcon(R.drawable.ic_notif)
+								.setContentTitle(intent.getStringExtra("title"))
+								.setContentText(intent.getStringExtra("body"))
+								.setContentIntent(pendingIntent)
+								.setAutoCancel(true)
+								.setVibrate(mVibratePattern);
+			
+						
+								//TODO set sound alert
+								//.setSound(soundURI)
+
+							// Pass the Notification to the NotificationManager:
+							NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);											
+							mNotificationManager.notify(MY_NOTIFICATION_ID, notificationBuilder.build());	
+							
+						}
+					}
+				}, 
+				null, 
+				0, 
+				null, 
+				null);
 
 	}
 }
