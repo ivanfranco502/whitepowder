@@ -213,8 +213,14 @@ $(document).ready(function () {
                 },
                 success: function () {
                     $("#GCM-list").empty();
+                    selected = [];
                     $("#alert-message").val('');
                     btn.button('reset');
+                    $("#alert-danger .close").parent().fadeTo(300, 0).slideUp(300);
+                    $("#alert-success").html('<div class="alert alert-success"><button type="button" class="close">×</button>La alerta se envió con éxito a todos los destinatarios.</div>');
+                    $('#alert-success .close').on("click", function (e) {
+                        $(this).parent().fadeTo(300, 0).slideUp(300);
+                    });
                 }
             });
         }
