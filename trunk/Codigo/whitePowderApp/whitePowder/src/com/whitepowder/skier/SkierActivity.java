@@ -22,6 +22,7 @@ import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.Toast;
 import com.example.whitepowder.R;
+import com.whitepowder.gcmModule.AlertDisplayActivity;
 import com.whitepowder.gcmModule.GCM;
 import com.whitepowder.skier.basicInformation.BasicInformationActivity;
 import com.whitepowder.skier.basicInformation.BasicInformationForecastActivity;
@@ -38,12 +39,16 @@ public class SkierActivity extends Activity {
 	
 	final int REGISTER_REQUEST_CODE = 1;
 	public final int PWD_CHANGE_REQUEST_CODE = 1;
+	public static String GCM_ALERT_INTENT_ACTION = "GCM_ALERT_INTENT_ACTION";
 	
 	//Location and communication with thread
 	private LocationManager mLocationManager;
 	private BroadcastReceiver serviceBroadcastReciever=null;
 	private SkierModeService mBoundService;
 	private ServiceConnection mConnection;
+	
+	//GCM Alerts
+	BroadcastReceiver mAlertReceiver=null;
 	
 	//Sync
 	private ProgressDialog progressDialogSync;
@@ -80,6 +85,9 @@ public class SkierActivity extends Activity {
         //Create service connection
         createServiceConnectionAndRegisterForBroadcast();
 		
+        //Register for GCM alerts
+        registerAlertBroadcastReciever();
+        
 		//Setups buttons
 		
         setupPopupMenu();	    
@@ -101,10 +109,38 @@ public class SkierActivity extends Activity {
 			unregisterReceiver(syncFinishedBroadcastReciever);
 		};
 		
+		if(mAlertReceiver!=null){
+			unregisterReceiver(mAlertReceiver);
+		};
+		
 		stopSkierMode();
 		
 	};
 
+	private void registerAlertBroadcastReciever(){
+
+		mAlertReceiver = new BroadcastReceiver() {
+			@Override
+			public void onReceive(Context context, Intent intent) {
+
+				if (isOrderedBroadcast()) {
+					setResultCode(RESULT_OK);
+					
+					//Starts Alert display activity
+					
+					Intent alertDisplay = new Intent(mContext,AlertDisplayActivity.class);
+					alertDisplay.putExtras(intent.getExtras());
+					startActivity(alertDisplay);
+
+				};
+			}
+		};
+		
+		registerReceiver(mAlertReceiver, new IntentFilter(SkierActivity.GCM_ALERT_INTENT_ACTION));
+		
+		
+	};
+	
 	
 	private void createServiceConnectionAndRegisterForBroadcast(){
 		
