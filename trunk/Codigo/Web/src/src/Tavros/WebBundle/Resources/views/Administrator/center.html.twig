@@ -19,6 +19,7 @@
                    {# <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>#}
 {#                    <p></p>#}
                 </div>
+                <div id="alert-success" role="alert"> </div>
                 <div id="alert-help" class="alert alert-info" role="alert">
                     Ningun destinatario seleccionado. Haga click sobre él en el mapa, o presione seleccionar todos.
                 </div>
@@ -67,7 +68,7 @@
     <label id="x_coordinate" hidden="true">{{ coordinate_x }}</label>
     <label id="y_coordinate" hidden="true">{{ coordinate_y }}</label>
 
-    <a id="send_message" href="{{path('tavros_send_gcm')}}">Send GCM to Android device</a>
+{#    <a id="send_message" href="{{path('tavros_send_gcm')}}">Send GCM to Android device</a>#}
 {% endblock %}
 
 {% block addJs %}
