@@ -80,4 +80,88 @@ class Alert
         return $this->alerYPosition;
     }
     
+    /**
+     * @var \Tavros\DomainBundle\Entity\Users
+     */
+    private $alerUser;
+
+
+    /**
+     * Set alerUser
+     *
+     * @param \Tavros\DomainBundle\Entity\Users $alerUser
+     * @return Alert
+     */
+    public function setAlerUser(\Tavros\DomainBundle\Entity\Users $alerUser = null)
+    {
+        $this->alerUser = $alerUser;
+
+        return $this;
+    }
+
+    /**
+     * Get alerUser
+     *
+     * @return \Tavros\DomainBundle\Entity\Users 
+     */
+    public function getAlerUser()
+    {
+        return $this->alerUser;
+    }
+    /**
+     * @var \DateTime
+     */
+    private $alerDate;
+
+    /**
+     * @var integer
+     */
+    private $alerRead;
+
+
+    /**
+     * Set alerDate
+     *
+     * @param \DateTime $alerDate
+     * @return Alert
+     */
+    public function setAlerDate($alerDate)
+    {
+        $this->alerDate = $alerDate;
+
+        return $this;
+    }
+
+    /**
+     * Get alerDate
+     *
+     * @return \DateTime 
+     */
+    public function getAlerDate()
+    {
+        return $this->alerDate;
+    }
+
+    /**
+     * Set alerRead
+     *
+     * @param integer $alerRead
+     * @return Alert
+     */
+    public function setAlerRead($alerRead)
+    {
+        $this->alerRead = $alerRead;
+
+        return $this;
+    }
+
+    /**
+     * Get alerRead
+     *
+     * @return integer 
+     */
+    public function getAlerRead()
+    {
+        return $this->alerRead;
+    }
 }

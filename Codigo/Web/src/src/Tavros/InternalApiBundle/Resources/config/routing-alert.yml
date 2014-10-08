@@ -1,0 +1,4 @@
+tavros_internalApi_alert_send:
+    pattern:  /send
+    defaults: { _controller: TavrosInternalApiBundle:Skier:send }
+
