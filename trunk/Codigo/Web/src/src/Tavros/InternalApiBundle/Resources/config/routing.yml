@@ -1,3 +1,7 @@
+tavros_internalApi_alert:
+    resource: "@TavrosInternalApiBundle/Resources/config/routing-alert.yml"
+    prefix:   /alert
+    
 tavros_internalApi_GCM:
     resource: "@TavrosInternalApiBundle/Resources/config/routing-GCM.yml"
     prefix:   /GCM

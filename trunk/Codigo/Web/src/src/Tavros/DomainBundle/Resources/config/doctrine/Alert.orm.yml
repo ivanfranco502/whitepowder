@@ -16,6 +16,11 @@ Tavros\DomainBundle\Entity\Alert:
             generator:
                 strategy: IDENTITY
     fields:
+        alerDate:
+            type: datetime
+            nullable: false
+            comment: ''
+            column: aler_date
         alerXPosition:
             type: float
             nullable: false
@@ -30,4 +35,18 @@ Tavros\DomainBundle\Entity\Alert:
             scale: 0
             comment: ''
             column: aler_y_position
+        alerRead:
+            type: integer
+            nullable: false
+            column: aler_read
+    manyToOne:
+        alerUser:
+            targetEntity: Users
+            cascade: {}
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                aler_user_id:
+                    rederencedColumnName: id
+            orphanRemoval: false
     lifecycleCallbacks: {  }

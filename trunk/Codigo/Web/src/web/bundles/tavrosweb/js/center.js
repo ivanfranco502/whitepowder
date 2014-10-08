@@ -196,7 +196,7 @@ $(document).ready(function () {
     $("#btn-send-alert").on("click", function () {
         if ($("#alert-message").val() == '') {
 
-            $("#alert-danger").html('<div class="alert alert-danger"><button type="button" class="close">×</button>La alerta debe contener un mensaje.</div>');
+            $("#alert-danger").html('<div class="alert alert-danger"><button type="button" class="close">×</button>La notificación debe contener un mensaje.</div>');
             $('#alert-danger .close').on("click", function (e) {
                 $(this).parent().fadeTo(300, 0).slideUp(300);
             });
@@ -217,7 +217,7 @@ $(document).ready(function () {
                     $("#alert-message").val('');
                     btn.button('reset');
                     $("#alert-danger .close").parent().fadeTo(300, 0).slideUp(300);
-                    $("#alert-success").html('<div class="alert alert-success"><button type="button" class="close">×</button>La alerta se envió con éxito a todos los destinatarios.</div>');
+                    $("#alert-success").html('<div class="alert alert-success"><button type="button" class="close">×</button>La notificación se envió con éxito a todos los destinatarios.</div>');
                     $('#alert-success .close').on("click", function (e) {
                         $(this).parent().fadeTo(300, 0).slideUp(300);
                     });
