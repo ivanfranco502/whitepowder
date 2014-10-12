@@ -114,7 +114,7 @@ class UserCoordinate {
         return $this->uscoSkiMode = $mode;
     }
 
-    public function getUscoSkiMode($mode) {
+    public function getUscoSkiMode() {
         return $this->uscoSkiMode;
     }
 

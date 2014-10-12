@@ -1,4 +1,12 @@
 tavros_internalApi_alert_send:
     pattern:  /send
-    defaults: { _controller: TavrosInternalApiBundle:Skier:send }
+    defaults: { _controller: TavrosInternalApiBundle:Alert:send }
+
+tavros_internalApi_alert_all:
+    pattern:  /all
+    defaults: { _controller: TavrosInternalApiBundle:Alert:all }
+
+tavros_internalApi_alert_read:
+    pattern:  /read/{id}
+    defaults: { _controller: TavrosInternalApiBundle:Alert:read }
 
