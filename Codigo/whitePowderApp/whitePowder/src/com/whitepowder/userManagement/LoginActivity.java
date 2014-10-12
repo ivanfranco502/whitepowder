@@ -20,6 +20,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.example.whitepowder.R;
+import com.whitepowder.rescuer.RescuerActivity;
 import com.whitepowder.skier.SkierActivity;
 import com.whitepowder.slopeRecognizer.SlopeRecognizerActivity;
 import com.whitepowder.storage.SyncThread;
@@ -206,7 +207,7 @@ public class LoginActivity extends Activity {
 	
 	private void launchCorrespondngActivity(){
 		Intent intent;
-		
+
 		if(User.getUserInstance().getRole().toString().equals("ROLE_SKIER")){
 			//Rol esquiador
 			intent = new Intent(mContext, SkierActivity.class);
@@ -216,6 +217,12 @@ public class LoginActivity extends Activity {
 		else if (User.getUserInstance().getRole().toString().equals("ROLE_RECON")){
 			//Rol reconocedor de pistas
 			intent = new Intent(mContext, SlopeRecognizerActivity.class);
+			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			this.startActivity(intent);
+		}
+		else if (User.getUserInstance().getRole().toString().equals("ROLE_RESCU")){
+			//Rol rescatista
+			intent = new Intent(mContext, RescuerActivity.class);
 			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			this.startActivity(intent);
 		};

@@ -91,24 +91,24 @@
         <activity
             android:name="com.whitepowder.skier.basicInformation.BasicInformationActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"
-            android:label="Información Básica"
             android:icon="@drawable/ic_basicinfo_inv"
+            android:label="Información Básica"
+            android:screenOrientation="portrait"
             android:theme="@style/BasicInfoTheme" />
         <activity
             android:name="com.whitepowder.skier.map.MapActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"
-            android:label="Mapa"
             android:icon="@drawable/ic_map_inv"
+            android:label="Mapa"
+            android:screenOrientation="portrait"
             android:theme="@style/MapTheme" />
         <activity
             android:name="com.whitepowder.skier.basicInformation.BasicInformationForecastActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"
             android:icon="@drawable/ic_clima_inv"
-            android:theme="@style/WeatherTheme"
-            android:label="@string/title_activity_basic_information_forecast">
+            android:label="@string/title_activity_basic_information_forecast"
+            android:screenOrientation="portrait"
+            android:theme="@style/WeatherTheme" >
         </activity>
 
         <service android:name="com.whitepowder.skier.SkierModeService" />
@@ -116,34 +116,37 @@
         <activity
             android:name="com.whitepowder.skier.normsAndSigns.NASActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"
             android:icon="@drawable/ic_security_inv"
-            android:theme="@style/NasaTheme"
-            android:label="@string/title_activity_nas" >
+            android:label="@string/title_activity_nas"
+            android:screenOrientation="portrait"
+            android:theme="@style/NasaTheme" >
         </activity>
         <activity
             android:name="com.whitepowder.skier.normsAndSigns.SignActivity"
-            android:label="@string/title_activity_sign"
             android:configChanges="orientation"
+            android:label="@string/title_activity_sign"
             android:screenOrientation="portrait" >
         </activity>
-        
-		<activity 
+        <activity
             android:name="com.whitepowder.skier.statistics.StatisticsActivity"
-            android:screenOrientation="portrait"
-            android:label="@string/title_activity_statistics" >
+            android:label="@string/title_activity_statistics"
+            android:screenOrientation="portrait" >
         </activity>
-        
-		<activity 
+        <activity
             android:name="com.whitepowder.gcmModule.AlertDisplayActivity"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait" >
         </activity>
-        
-		<receiver android:name=".MediaButtonIntentReceiver">
-        <intent-filter>
-            <action android:name="android.intent.action.MEDIA_BUTTON" />
-        </intent-filter>
+
+        <receiver android:name=".MediaButtonIntentReceiver" >
+            <intent-filter>
+                <action android:name="android.intent.action.MEDIA_BUTTON" />
+            </intent-filter>
         </receiver>
+
+        <activity
+            android:name="com.whitepowder.rescuer.RescuerActivity"
+            android:label="@string/title_activity_rescuer" >
+        </activity>
     </application>
 
 </manifest>
