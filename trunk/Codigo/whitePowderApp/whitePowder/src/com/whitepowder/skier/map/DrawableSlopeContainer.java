@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class DrawableSlopeContainer {
 	int code;
 	ArrayList<DrawableSlope> payload;
+	
 	public int getCode() {
 		return code;
 	}

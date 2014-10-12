@@ -1,9 +1,4 @@
-package com.whitepowder.skier.map;
-
-import android.app.Activity;
-import android.graphics.Color;
-import android.os.Bundle;
-import android.view.KeyEvent;
+package com.whitepowder.rescuer;
 
 import com.example.whitepowder.R;
 import com.google.android.gms.maps.CameraUpdate;
@@ -15,29 +10,32 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.gson.Gson;
 import com.whitepowder.skier.Coordinate;
-import com.whitepowder.skier.emergency.EmergencyPeripheral;
+import com.whitepowder.skier.map.DrawableSlope;
+import com.whitepowder.skier.map.DrawableSlopeContainer;
 import com.whitepowder.storage.StorageConstants;
 import com.whitepowder.utils.ReadFile;
 
-public class MapActivity extends Activity {
-	
+import android.app.Activity;
+import android.graphics.Color;
+import android.os.Bundle;
+
+public class RescuerActivity extends Activity {
+
 	private GoogleMap mMap=null;
-	private MapActivity mContext;
+	private RescuerActivity mContext;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-			super.onCreate(savedInstanceState);
-			setContentView(R.layout.skier_fragment_map);
-			mContext = this;
-			setupMap();
-			
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.rescuer_activity);
+		mContext = this;
+		setupMap();
 	}
-	
+
 	public void setupMap(){
 		
 		//Gets map
-		
-		mMap = ((com.google.android.gms.maps.MapFragment) getFragmentManager().findFragmentById(R.id.skier_map_fragment)).getMap();
+		mMap = ((com.google.android.gms.maps.MapFragment) getFragmentManager().findFragmentById(R.id.rescuer_map_fragment)).getMap();
 		mMap.setMyLocationEnabled(true);
 		mMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
 		
@@ -60,17 +58,16 @@ public class MapActivity extends Activity {
 	
 	private void drawSlopes(DrawableSlopeContainer dsc){
 	
-		if(dsc.code==200){
+		if(dsc.getCode()==200){
 			
-			for(DrawableSlope ds: dsc.payload){
+			for(DrawableSlope ds: dsc.getPayload()){
 				if(ds.getSlope_coordinates()!=null){
 					
 					PolylineOptions plo = new PolylineOptions();
 				    plo.width(6);
 				    plo.color(Color.parseColor("#"+ds.getSlope_difficulty_color()));
-				    
-				    
-					for(Coordinate c: ds.slope_coordinates){
+			
+					for(Coordinate c: ds.getSlope_coordinates()){
 						plo.add(new LatLng(c.x, c.y));
 					}
 					 
@@ -90,51 +87,33 @@ public class MapActivity extends Activity {
 					mMap.addMarker(new MarkerOptions()
 			        .position(new LatLng(ds.getSlope_coordinates().get(ds.getSlope_coordinates().size()-1).x, ds.getSlope_coordinates().get(ds.getSlope_coordinates().size()-1).y))
 			        .title("Fin de "+ds.getSlope_description())
-			        .icon(BitmapDescriptorFactory
-			        	.fromResource(R.drawable.slope_end)));				
-					
+					        .icon(BitmapDescriptorFactory
+					        	.fromResource(R.drawable.slope_end)));				
+							
 				};
 			};
 			
 		};
-		
-		
 	}
-	
+			
 	private LatLng determineCenter(DrawableSlopeContainer dsc){
 		double sumatoriaX=0;
 		double sumatoriaY=0;
 		int count=0;
 		
-		if(dsc.code==200){
-			
-			for(DrawableSlope ds: dsc.payload){
+		if(dsc.getCode()==200){
+			for(DrawableSlope ds: dsc.getPayload()){
 				if(ds.getSlope_coordinates()!=null){					
 					sumatoriaX += ds.getSlope_coordinates().get(0).x;
 					sumatoriaY += ds.getSlope_coordinates().get(0).y;
 					count ++;
 				};
 			};
-			
 			return new LatLng(sumatoriaX/count, sumatoriaY/count);
-			
 		}
 		else{
 			return new LatLng(0, 0);
 		}
 
 	}
-	
-	@Override
-    public boolean onKeyUp(int keyCode, KeyEvent event) {
-		if(keyCode == KeyEvent.KEYCODE_HEADSETHOOK){
-			EmergencyPeripheral.handlePeripheralEvent();
-	        return true;
-		}
-		else{
-			return super.onKeyUp(keyCode, event);
-		}
-	}
 }
-
-
