@@ -11,16 +11,7 @@ public class MyPosition {
 	};
 	
 }
-class Coordinate{
-	
-	double x;
-	double y;
-	
-	public Coordinate(double cx, double cy) {
-		x = cx;
-		y = cy;
-	};
-}
+
 
 class PositionUploadResponse{
 	int code;
