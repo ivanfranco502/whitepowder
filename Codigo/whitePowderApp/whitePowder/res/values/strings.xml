@@ -20,10 +20,11 @@
     <string name="alert_yes">Sí</string>
     <string name="alert_logout_title">Cerrar sesión</string>
     <string name="alert_logout_message">¿Estás seguro que deseas cerrar sesión?</string>
-    <string name="process_dialog_login">Iniciando sesión.</string>
-    <string name="process_dialog_pwd_reset">Reseteando contraseña.</string>
-    <string name="process_dialog_register">Registrando usuario.</string>
-    <string name="process_dialog_pwd_change">Cambiando contraseña.</string>
+    <string name="process_dialog_login">Iniciando sesión&#8230;</string>
+    <string name="process_dialog_pwd_reset">Reseteando contraseña&#8230;</string>
+    <string name="process_dialog_register">Registrando usuario&#8230;</string>
+    <string name="process_dialog_pwd_change">Cambiando contraseña&#8230;</string>
+    <string name="process_dialog_emergency">Enviando alerta de emergencia&#8230;</string>
     <string name="profile_view_personal_info">Datos Personales</string>
     <string name="profile_view_stats">Estadísticas</string>
     <string name="profile_skier_mode">Modo esquiador</string>
@@ -36,6 +37,8 @@
     <string name="submenu_sync">Sincronizar</string>
     <string name="sync_dialog_message">Sincronizando aplicación, por favor espere.</string>
     <string name="sync_toast_error">Se ha producido un error en la sincronización, por favor intente nuevamente más tarde</string>
+    <string name="emergency_success_toast">La alerta de emergencia ha sido recibida exitosamente por el centro de esquí.</string>
+    
 
 	
 	<!-- Sección de strings del login -->

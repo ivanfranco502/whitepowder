@@ -11,9 +11,11 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.location.LocationManager;
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v7.widget.PopupMenu;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -21,11 +23,14 @@ import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.Toast;
+
+import com.whitepowder.skier.MediaButtonIntentReceiver;
 import com.example.whitepowder.R;
 import com.whitepowder.gcmModule.AlertDisplayActivity;
 import com.whitepowder.gcmModule.GCM;
 import com.whitepowder.skier.basicInformation.BasicInformationActivity;
 import com.whitepowder.skier.basicInformation.BasicInformationForecastActivity;
+import com.whitepowder.skier.emergency.EmergencyThread;
 import com.whitepowder.skier.map.MapActivity;
 import com.whitepowder.skier.normsAndSigns.NASActivity;
 import com.whitepowder.skier.statistics.StatisticsActivity;
@@ -64,7 +69,16 @@ public class SkierActivity extends Activity {
 	private ImageButton butMap;		
 	private ImageButton butSkiermode;
 	
+	//SeekBar emergency
 	private boolean seekBarProgress;
+	
+	//Peripheral
+	private MediaButtonIntentReceiver r;
+	static final long TRIPLE_CLICK_DELAY = 1000;
+	static long firstPressTime  = 0; // oldValue
+	static long secondPressTime = 0; // oldValue
+	static long thirdPressTime  = System.currentTimeMillis();
+	static SkierActivity skierActivity;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -272,6 +286,17 @@ public class SkierActivity extends Activity {
 		});
 	}
 	
+	private void setupPeripheralIntegratorMasterManager(){
+		skierActivity = this;
+		IntentFilter filter = new IntentFilter(Intent.ACTION_MEDIA_BUTTON); //"android.intent.action.MEDIA_BUTTON"
+	    filter.setPriority(IntentFilter.SYSTEM_HIGH_PRIORITY + 1);
+		r = new MediaButtonIntentReceiver();
+	    registerReceiver(r, filter);
+	    ((AudioManager)getSystemService(AUDIO_SERVICE)).registerMediaButtonEventReceiver(new ComponentName(
+                this, MediaButtonIntentReceiver.class));
+	}
+	
+	
 	private void setupStatisticsButton(){
 		butStatistics.setOnClickListener(new OnClickListener() {			
 			@Override
@@ -290,9 +315,11 @@ public class SkierActivity extends Activity {
       
 			@Override
 		    public void onStopTrackingTouch(SeekBar seekBar) {
-				if(seekBarProgress == true){
+				if(seekBarProgress){
 					if(seekBar.getProgress() >= 85 && seekBar.getProgress() <= 100){
 						//llamar emergencia
+						EmergencyThread et = new EmergencyThread(SkierActivity.this, getApplicationContext());
+						et.execute();
 					}
 				}
 				seekBar.setProgress(0);
@@ -301,9 +328,9 @@ public class SkierActivity extends Activity {
 		    @Override
 		    public void onStartTrackingTouch(SeekBar seekBar) {
 		    	if(seekBar.getProgress() >= 0 && seekBar.getProgress() <= 15){
-		    		seekBarProgress = false;
+		    		seekBarProgress = true;
 				}else{
-					seekBarProgress = true;
+					seekBarProgress = false;
 				}
 		    }
 		      
@@ -465,6 +492,45 @@ public class SkierActivity extends Activity {
 		
 	};
 
+	@Override
+	public void onPause(){
+		super.onPause();
+		synchronized (this) {
+	        if(r != null){
+	            try{
+	            	unregisterReceiver(r);
+	            }
+	            catch(IllegalArgumentException e){	            	
+	            }
+	        }
+	    }
+	}
+	
+	@Override
+	public void onResume(){
+		super.onResume();
+		setupPeripheralIntegratorMasterManager();
+	}
+	
+	@Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+		if(keyCode == KeyEvent.KEYCODE_HEADSETHOOK){
+			SkierActivity.firstPressTime = SkierActivity.secondPressTime;
+	    	SkierActivity.secondPressTime = SkierActivity.thirdPressTime;
+	    	SkierActivity.thirdPressTime = System.currentTimeMillis();
+	        long delta1 = SkierActivity.thirdPressTime - SkierActivity.secondPressTime;
+	        long delta2 = SkierActivity.secondPressTime - SkierActivity.firstPressTime;
 
-
+	        // Case for triple click
+	        if(delta1 < SkierActivity.TRIPLE_CLICK_DELAY && delta2 < SkierActivity.TRIPLE_CLICK_DELAY){
+	            // Do something for triple click 
+	        	EmergencyThread et = new EmergencyThread(SkierActivity.skierActivity, SkierActivity.skierActivity.getApplicationContext());
+				et.execute();
+	        }
+	        return true;
+		}
+		else{
+			return super.onKeyUp(keyCode, event);
+		}
+	}
 }

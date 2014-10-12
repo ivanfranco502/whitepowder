@@ -27,6 +27,7 @@ import android.widget.TextView;
 public class SignsFragment extends Fragment {
 	
 	private List<Sign> signs;
+	boolean performClick;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -35,11 +36,16 @@ public class SignsFragment extends Fragment {
 		
 		GridView signsGrid = (GridView) inflater.inflate(R.layout.skier_activity_nas_sign_grid, container, false);
         signsGrid.setAdapter(new ImageAdapter(inflater));
+        
+        performClick = true;
         signsGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ImageView signPicture = (ImageView)view.findViewById(R.id.signPicture);
-                rotateElement(signPicture);
+                if(performClick){
+	            	ImageView signPicture = (ImageView)view.findViewById(R.id.signPicture);
+	                rotateElement(signPicture);
+                }
+                performClick = false;
             }
         });
         return signsGrid;
