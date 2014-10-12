@@ -191,7 +191,7 @@ class SkierController extends Controller {
         return $response;
     }
 
-    //SET GCM REGISTRATION CODE FOR SKIER ALERTS
+    //SET SKI MODE OFF
     public function offSkiModeAction() {
         $logger = $this->container->get('logger');
         $serializer = $this->container->get('jms_serializer');

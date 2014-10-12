@@ -8,6 +8,7 @@ use Tavros\InternalApiBundle\Entity\ApiResponse;
 
 class AlertController extends Controller {
 
+    //SEND ALERT TO SKI CENTER    
     public function sendAction() {
         $logger = $this->container->get('logger');
         $serializer = $this->container->get('jms_serializer');
@@ -34,15 +35,67 @@ class AlertController extends Controller {
         }
 
         /* @var $receivedAlert \Tavros\DomainBundle\Entity\Alert */
-        $receivedAlert = new Tavros\DomainBundle\Entity\Alert();
+        $receivedAlert = new \Tavros\DomainBundle\Entity\Alert;
 
-        $receivedAlert->setAlerUser($extData->getExdaUser());
-        $receivedAlert->setAlerXPosition($content->X);
-        $receivedAlert->setAlerYPosition($content->Y);
+        $user = $extData->getExdaUser();
+        $receivedAlert->setAlerUser($user);
+
+        $lastPosition = $em->getRepository('TavrosDomainBundle:UserCoordinate')->findLastPosition($user->getId());
+
+        $lastPositionObject = $em->getRepository('TavrosDomainBundle:UserCoordinate')->findOneBy(Array('uscoId' => $lastPosition[0]['usco_id']));
+
+        $lastPositionObject->setUscoSkiMode(1);
+
+        $receivedAlert->setAlerXPosition($content->coordinate->x);
+        $receivedAlert->setAlerYPosition($content->coordinate->y);
         $receivedAlert->setAlerRead(0);
         $receivedAlert->setAlerDate(new \DateTime(date('Y-m-d H:i:s')));
 
+        $em->persist($lastPositionObject);
         $em->persist($receivedAlert);
+        $em->flush();
+
+        $apiResponse->setCode(200);
+        $apiResponse->setPayload('');
+        $response->setContent($serializer->serialize($apiResponse, 'json'));
+        return $response;
+    }
+
+    //GET ALL ALERTS
+    public function allAction() {
+        $logger = $this->container->get('logger');
+        $serializer = $this->container->get('jms_serializer');
+        $apiResponse = new ApiResponse();
+        $response = new Response();
+        $response->headers->set('Content-Type', 'application/json');
+        $em = $this->container->get('Doctrine')->getManager();
+        //TODO VERIFICAR QUE SEA ADMINISITRADOR
+
+        $alerts = $em->getRepository('TavrosDomainBundle:Alert')->findBy(Array('alerRead' => '0'), Array('alerDate' => 'ASC'));
+        $count = count($alerts);
+        $apiResponse->setCode(200);
+
+        $content = Array();
+        $content['total'] = $count;
+        $content['last'] = array_slice($alerts, 0, 5);
+        $apiResponse->setPayload($content);
+        $response->setContent($serializer->serialize($apiResponse, 'json'));
+        return $response;
+    }
+
+    //READ ID ALERTS
+    public function readAction($id) {
+        $logger = $this->container->get('logger');
+        $serializer = $this->container->get('jms_serializer');
+        $apiResponse = new ApiResponse();
+        $response = new Response();
+        $response->headers->set('Content-Type', 'application/json');
+        $em = $this->container->get('Doctrine')->getManager();
+        //TODO VERIFICAR QUE SEA ADMINISITRADOR
+
+        $alert = $em->getRepository('TavrosDomainBundle:Alert')->find($id);
+        $alert->setAlerRead(1);
+        $em->persist($alert);
         $em->flush();
 
         $apiResponse->setCode(200);

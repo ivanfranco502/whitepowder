@@ -1,7 +1,3 @@
-//CONSTANTES
-var BASE_URL = "http://whitetavros.com/";
-var MODE = "Sandbox";
-var PROFILER = "app_dev.php";
 //VARIABLES
 var map;
 var skiers = [];
@@ -174,7 +170,6 @@ function prepareBroadcast() {
         }
     });
 }
-
 $(document).ready(function () {
 
     $("#GCM-list").on("click", ".remover", function () {
@@ -194,9 +189,9 @@ $(document).ready(function () {
     });
 
     $("#btn-send-alert").on("click", function () {
-        if ($("#alert-message").val() == '') {
+        if ($("#alert-message").val() == '' || selected.length == 0) {
 
-            $("#alert-danger").html('<div class="alert alert-danger"><button type="button" class="close">×</button>La notificación debe contener un mensaje.</div>');
+            $("#alert-danger").html('<div class="alert alert-danger"><button type="button" class="close">×</button>La notificación debe contener un mensaje y al menos un destinatario.</div>');
             $('#alert-danger .close').on("click", function (e) {
                 $(this).parent().fadeTo(300, 0).slideUp(300);
             });
@@ -209,7 +204,7 @@ $(document).ready(function () {
                 type: "POST",
                 data: {
                     "_to": JSON.stringify(selected),
-                    "body": $("#alert-message").val()
+                    "_body": $("#alert-message").val()
                 },
                 success: function () {
                     $("#GCM-list").empty();
@@ -221,6 +216,11 @@ $(document).ready(function () {
                     $('#alert-success .close').on("click", function (e) {
                         $(this).parent().fadeTo(300, 0).slideUp(300);
                     });
+                    //Solo para asegurar que se ejecute despues del reset del boton                    
+                    setTimeout(function () {
+                          $("#btn-send-alert").attr('disabled', 'disabled');
+                    }, 0);
+                  
                 }
             });
         }

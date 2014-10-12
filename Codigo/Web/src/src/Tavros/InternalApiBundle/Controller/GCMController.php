@@ -21,7 +21,7 @@ class GCMController extends Controller {
 //        $content = json_decode($this->container->get('request')->getContent());
 
         $users_ids = json_decode($this->container->get('request')->get('_to'));
-        $body = json_decode($this->container->get('request')->get('body'));
+        $body = json_decode($this->container->get('request')->get('_body'));
 
         $registration_ids = Array();
 
@@ -46,7 +46,8 @@ class GCMController extends Controller {
         $message = array(
             "id" => "1",
             "title" => "Alerta",
-            "body" => $body);
+            "body" => '' . $body . ''
+        );
 
         // Set POST variables
         $url = 'https://android.googleapis.com/gcm/send';
