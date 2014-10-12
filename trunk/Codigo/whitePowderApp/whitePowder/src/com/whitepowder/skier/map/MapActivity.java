@@ -3,6 +3,8 @@ package com.whitepowder.skier.map;
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.KeyEvent;
+
 import com.example.whitepowder.R;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -12,6 +14,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.gson.Gson;
+import com.whitepowder.skier.emergency.EmergencyPeripheral;
 import com.whitepowder.storage.StorageConstants;
 import com.whitepowder.utils.ReadFile;
 
@@ -118,6 +121,17 @@ public class MapActivity extends Activity {
 			return new LatLng(0, 0);
 		}
 
+	}
+	
+	@Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+		if(keyCode == KeyEvent.KEYCODE_HEADSETHOOK){
+			EmergencyPeripheral.handlePeripheralEvent();
+	        return true;
+		}
+		else{
+			return super.onKeyUp(keyCode, event);
+		}
 	}
 }
 

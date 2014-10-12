@@ -8,12 +8,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.example.whitepowder.R;
+import com.whitepowder.skier.emergency.EmergencyPeripheral;
 import com.whitepowder.storage.StorageConstants;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
@@ -98,5 +100,16 @@ public class BasicInformationForecastActivity extends Activity {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+	
+	@Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+		if(keyCode == KeyEvent.KEYCODE_HEADSETHOOK){
+			EmergencyPeripheral.handlePeripheralEvent();
+	        return true;
+		}
+		else{
+			return super.onKeyUp(keyCode, event);
+		}
 	}
 }
