@@ -4,12 +4,14 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import com.example.whitepowder.R;
+import com.whitepowder.skier.emergency.EmergencyPeripheral;
 import com.whitepowder.utils.ApplicationError;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
@@ -59,5 +61,16 @@ public class SignActivity extends Activity {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+	
+	@Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+		if(keyCode == KeyEvent.KEYCODE_HEADSETHOOK){
+			EmergencyPeripheral.handlePeripheralEvent();
+	        return true;
+		}
+		else{
+			return super.onKeyUp(keyCode, event);
+		}
 	}
 }

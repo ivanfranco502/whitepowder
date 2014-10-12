@@ -1,6 +1,7 @@
 package com.whitepowder.userManagement;
 
 import com.example.whitepowder.R;
+import com.whitepowder.skier.emergency.EmergencyPeripheral;
 import com.whitepowder.utils.ApplicationError;
 import com.whitepowder.utils.Security;
 
@@ -98,5 +99,16 @@ public class PasswordChangeActivity extends Activity {
 		
 		
 		return true;
+	}
+	
+	@Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+		if(keyCode == KeyEvent.KEYCODE_HEADSETHOOK){
+			EmergencyPeripheral.handlePeripheralEvent();
+	        return true;
+		}
+		else{
+			return super.onKeyUp(keyCode, event);
+		}
 	}
 }

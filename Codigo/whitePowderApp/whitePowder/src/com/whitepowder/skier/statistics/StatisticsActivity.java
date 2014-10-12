@@ -4,12 +4,15 @@ import java.text.SimpleDateFormat;
 import java.util.Locale;
 
 import com.example.whitepowder.R;
+import com.whitepowder.skier.emergency.EmergencyPeripheral;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.RelativeLayout;
@@ -120,6 +123,17 @@ public class StatisticsActivity extends Activity {
 			}
 		});
 		
+	}
+	
+	@Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+		if(keyCode == KeyEvent.KEYCODE_HEADSETHOOK){
+			EmergencyPeripheral.handlePeripheralEvent();
+	        return true;
+		}
+		else{
+			return super.onKeyUp(keyCode, event);
+		}
 	}
 	
 }

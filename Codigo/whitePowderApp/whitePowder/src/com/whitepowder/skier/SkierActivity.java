@@ -30,6 +30,7 @@ import com.whitepowder.gcmModule.AlertDisplayActivity;
 import com.whitepowder.gcmModule.GCM;
 import com.whitepowder.skier.basicInformation.BasicInformationActivity;
 import com.whitepowder.skier.basicInformation.BasicInformationForecastActivity;
+import com.whitepowder.skier.emergency.EmergencyPeripheral;
 import com.whitepowder.skier.emergency.EmergencyThread;
 import com.whitepowder.skier.map.MapActivity;
 import com.whitepowder.skier.normsAndSigns.NASActivity;
@@ -74,11 +75,7 @@ public class SkierActivity extends Activity {
 	
 	//Peripheral
 	private MediaButtonIntentReceiver r;
-	static final long TRIPLE_CLICK_DELAY = 1000;
-	static long firstPressTime  = 0; // oldValue
-	static long secondPressTime = 0; // oldValue
-	static long thirdPressTime  = System.currentTimeMillis();
-	static SkierActivity skierActivity;
+	static public SkierActivity skierActivity;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -112,6 +109,7 @@ public class SkierActivity extends Activity {
         setupMapButton();
         setupEmergencyButton();
         setupStatisticsButton();
+        setupPeripheralIntegratorMasterManager();
  	
 	};
 	
@@ -128,6 +126,16 @@ public class SkierActivity extends Activity {
 		};
 		
 		stopSkierMode();
+		
+		synchronized (this) {
+	        if(r != null){
+	            try{
+	            	unregisterReceiver(r);
+	            }
+	            catch(IllegalArgumentException e){	            	
+	            }
+	        }
+	    }
 		
 	};
 
@@ -515,18 +523,7 @@ public class SkierActivity extends Activity {
 	@Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
 		if(keyCode == KeyEvent.KEYCODE_HEADSETHOOK){
-			SkierActivity.firstPressTime = SkierActivity.secondPressTime;
-	    	SkierActivity.secondPressTime = SkierActivity.thirdPressTime;
-	    	SkierActivity.thirdPressTime = System.currentTimeMillis();
-	        long delta1 = SkierActivity.thirdPressTime - SkierActivity.secondPressTime;
-	        long delta2 = SkierActivity.secondPressTime - SkierActivity.firstPressTime;
-
-	        // Case for triple click
-	        if(delta1 < SkierActivity.TRIPLE_CLICK_DELAY && delta2 < SkierActivity.TRIPLE_CLICK_DELAY){
-	            // Do something for triple click 
-	        	EmergencyThread et = new EmergencyThread(SkierActivity.skierActivity, SkierActivity.skierActivity.getApplicationContext());
-				et.execute();
-	        }
+			EmergencyPeripheral.handlePeripheralEvent();
 	        return true;
 		}
 		else{

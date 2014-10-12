@@ -16,6 +16,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
@@ -24,6 +25,7 @@ import android.widget.TextView;
 
 import com.example.whitepowder.R;
 import com.google.gson.Gson;
+import com.whitepowder.skier.emergency.EmergencyPeripheral;
 import com.whitepowder.storage.StorageConstants;
 import com.whitepowder.utils.ApplicationError;
 
@@ -211,5 +213,16 @@ public class BasicInformationActivity extends Activity {
 				
 			
 		}
+	
+	@Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+		if(keyCode == KeyEvent.KEYCODE_HEADSETHOOK){
+			EmergencyPeripheral.handlePeripheralEvent();
+	        return true;
+		}
+		else{
+			return super.onKeyUp(keyCode, event);
+		}
+	}
 	
 }

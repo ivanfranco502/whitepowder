@@ -7,6 +7,7 @@ import com.example.whitepowder.R.id;
 import com.example.whitepowder.R.layout;
 import com.example.whitepowder.R.menu;
 import com.example.whitepowder.R.string;
+import com.whitepowder.skier.emergency.EmergencyPeripheral;
 
 import android.app.Activity;
 import android.app.ActionBar;
@@ -17,6 +18,7 @@ import android.support.v13.app.FragmentPagerAdapter;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -164,4 +166,15 @@ public class NASActivity extends Activity implements ActionBar.TabListener {
 		}
 	}
 
+	
+	@Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+		if(keyCode == KeyEvent.KEYCODE_HEADSETHOOK){
+			EmergencyPeripheral.handlePeripheralEvent();
+	        return true;
+		}
+		else{
+			return super.onKeyUp(keyCode, event);
+		}
+	}
 }
