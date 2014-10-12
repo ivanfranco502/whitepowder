@@ -1,6 +1,7 @@
 package com.whitepowder.gcmModule;
 
 import com.example.whitepowder.R;
+import com.whitepowder.skier.emergency.EmergencyPeripheral;
 import com.whitepowder.utils.ApplicationError;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -9,6 +10,7 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
 import android.os.Vibrator;
+import android.view.KeyEvent;
 
 public class AlertDisplayActivity extends Activity {
 	
@@ -55,6 +57,17 @@ public class AlertDisplayActivity extends Activity {
 			}
 		});
 		blder.create().show();
+	}
+	
+	@Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+		if(keyCode == KeyEvent.KEYCODE_HEADSETHOOK){
+			EmergencyPeripheral.handlePeripheralEvent();
+	        return true;
+		}
+		else{
+			return super.onKeyUp(keyCode, event);
+		}
 	}
 	
 }
