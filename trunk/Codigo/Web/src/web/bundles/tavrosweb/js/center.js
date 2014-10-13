@@ -3,7 +3,7 @@ var map;
 var skiers = [];
 var markers = {};
 var iterator = 0;
-var interval = 2000;
+//var interval = 2000;
 var selected = [];
 
 
@@ -17,7 +17,8 @@ function getMarkers() {
                 skiers.push({
                     id: skier.id,
                     name: skier.username,
-                    position: new google.maps.LatLng(parseFloat(skier.position.coor_X), parseFloat(skier.position.coor_Y))
+                    position: new google.maps.LatLng(parseFloat(skier.position.coor_X), parseFloat(skier.position.coor_Y)),
+                    alert: skier.alert
                 });
             });
             setMarkers(map, skiers);
@@ -65,13 +66,16 @@ function setMarkers(map, locations) {
 
         if (markers.hasOwnProperty(locations[i].name)) {
             markers[locations[i].name].setPosition(locations[i].position);
+            markers[locations[i].name].setIcon(
+                    locations[i].alert !== 0 ? 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png' : 'http://maps.google.com/mapfiles/ms/icons/red-dot.png');
         } else {
             var marker = new google.maps.Marker({
                 position: locations[i].position,
                 map: map,
                 draggable: false,
                 title: locations[i].name,
-                animation: google.maps.Animation.DROP
+                animation: google.maps.Animation.DROP,
+                icon: locations[i].alert !== 0 ? 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png' : 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'
             });
 
             marker.metadata = {

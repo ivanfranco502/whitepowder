@@ -9,7 +9,7 @@ function getAlerts() {
         success: function (data, textStatus, jqXHR) {
             alerts = data.payload.last;
             $('#alertsBadge').text(data.payload.total);
-            var lalal = setTimeout(getAlerts, 60000);
+            var lalal = setTimeout(getAlerts, interval);
             $('#alerts').empty();
             $('#alerts').append('<div id="alert-list" class="list-group"></div>');
             alerts.forEach(function (alert) {
