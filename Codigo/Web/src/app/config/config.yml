@@ -127,7 +127,17 @@ services:
             - Tavros\DomainBundle\Entity\NotificationType
             - ~
         calls:
-            - [ setTranslationDomain, [TavrosWebBundle]]         
+            - [ setTranslationDomain, [TavrosWebBundle]]    
+    sonata.admin.users:
+        class: Tavros\WebBundle\Admin\UsersAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Content", label: "Users" }
+        arguments:
+            - ~
+            - Tavros\DomainBundle\Entity\Users
+            - ~
+        calls:
+            - [ setTranslationDomain, [TavrosWebBundle]] 
             
 parameters:
 #    tavros_internal_api.example.class: Tavros\InternalApiBundle\Example

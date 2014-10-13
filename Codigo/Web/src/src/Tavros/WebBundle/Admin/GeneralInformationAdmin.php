@@ -27,8 +27,14 @@ class GeneralInformationAdmin extends Admin {
                 ->add('geinX', null, array('label' => 'Latitud'))
                 ->add('geinY', null, array('label' => 'Longitud'))
                 ->add('geinDetails', 'textarea', array('label' => 'Más Detalles'))
-                ->add('Schedules', null, array('label' => 'Horarios'))
-                ->add('Slopes', null, array('label' => 'Pistas'));
+                ->add('Schedules', 'sonata_type_collection', 
+                        array('label' => 'Horarios',
+                                "attr" => array("class" => "form-control")),
+                        array('edit' => 'inline',
+                            'inline' => 'table',
+                            'sortable'  => 'position'
+                        ))
+                ->add('Slopes', null, array('label' => 'Pistas', "attr" => array("class" => "form-control")));
     }
 
     // Fields to be shown on filter forms

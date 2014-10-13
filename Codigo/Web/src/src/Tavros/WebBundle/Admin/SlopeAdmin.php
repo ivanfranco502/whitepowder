@@ -17,7 +17,7 @@ class SlopeAdmin extends Admin {
         $formMapper
                 ->add('slopDescription', 'text', array('label' => 'Descripción'))
                 ->add('slopLength', 'text', array('label' => 'Longitud'))
-                ->add('slopDificulty', null, array('label' => 'Dificultad'));
+                ->add('slopDificulty', null, array('label' => 'Dificultad' , "attr" => array("class" => "form-control")));
     }
 
     // Fields to be shown on filter forms
