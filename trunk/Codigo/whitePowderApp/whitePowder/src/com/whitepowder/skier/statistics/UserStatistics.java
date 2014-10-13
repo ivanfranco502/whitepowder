@@ -2,6 +2,8 @@ package com.whitepowder.skier.statistics;
 
 import java.util.Date;
 
+import com.whitepowder.skier.Coordinate;
+
 import android.location.Location;
 
 public class UserStatistics {
@@ -11,7 +13,7 @@ public class UserStatistics {
 	Date maxAltitudeDate=null;
 	float averageSpeed=0;
 	int speedMeditions=0;
-	Location lastKnownLocation=null;
+	Coordinate lastKnownLocation=null;
 	float totalDistance=0;
 
 public float getMaxSpeed() {
@@ -70,12 +72,13 @@ public void setSpeedMeditions(int speedMeditions) {
 	this.speedMeditions = speedMeditions;
 }
 
-public Location getLastKnownLocation() {
+public Coordinate getLastKnownLocation() {
 	return lastKnownLocation;
 }
 
-public void setLastKnownLocation(Location lastKnownLocation) {
-	this.lastKnownLocation = lastKnownLocation;
+public void setLastKnownLocation(Location lkl) {
+	Coordinate lastKnownLoc = new Coordinate(lkl.getLatitude(), lkl.getLongitude());
+	this.lastKnownLocation = lastKnownLoc;
 };
 
 }

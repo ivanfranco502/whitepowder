@@ -76,7 +76,11 @@ public class StatisticsManager{
 		
 		//Updates total distance
 		if(stats.getLastKnownLocation()!=null){
-			stats.setTotalDistance(stats.getTotalDistance()+(loc.distanceTo(stats.getLastKnownLocation())/1000));
+			//create new location with last known location
+			Location lastLoc = new Location("");
+			lastLoc.setLatitude(stats.getLastKnownLocation().x);
+			lastLoc.setLongitude(stats.getLastKnownLocation().y);
+			stats.setTotalDistance(stats.getTotalDistance()+(loc.distanceTo(lastLoc)/1000));
 		};
 		
 		//Sets last known location

@@ -112,6 +112,7 @@
         </activity>
 
         <service android:name="com.whitepowder.skier.SkierModeService" />
+        <service android:name="com.whitepowder.rescuer.RescuerService" />
 
         <activity
             android:name="com.whitepowder.skier.normsAndSigns.NASActivity"
