@@ -50,33 +50,34 @@
             <section class="content-header">
                 {% block sonata_page_content_header %}
                     {% block sonata_page_content_nav %}
-                        {# {% if _tab_menu is not empty or _actions is not empty %}
+                         {% if  _actions is not empty %}
                             <nav class="navbar navbar-default" role="navigation">
-                                {% if _navbar_title is not empty %}
+{#                                {% if _navbar_title is not empty %}
                                     <div class="navbar-header">
                                         <span class="navbar-brand">{{ _navbar_title|raw }}</span>
                                     </div>
                                 {% endif %}
-                                <div class="container-fluid">
-                                    <div class="navbar-left">
+#}                                <div class="container-fluid">
+{#                                    <div class="navbar-left">
                                         {% if _tab_menu is not empty %}
                                             {{ _tab_menu|raw }}
                                         {% endif %}
                                     </div>
-
+#}
                                      {% if _actions is not empty %}
                                         <ul class="nav navbar-nav navbar-right">
-                                            <li class="dropdown sonata-actions">
-                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ 'link_actions'|trans({}, 'TavrosWebBundle') }} <b class="caret"></b></a>
+                                            {{ _actions|raw }}
+                                            {#<li class="dropdown sonata-actions">
+                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ 'link_actions'|trans() }} <b class="caret"></b></a>
                                                 <ul class="dropdown-menu" role="menu">
-                                                    {{ _actions|raw }}
+                                                    
                                                 </ul>
-                                            </li>
+                                            </li>#}
                                         </ul>
                                     {% endif %} 
                                 </div>
                             </nav>
-                        {% endif %}#}
+                        {% endif %}
                     {% endblock sonata_page_content_nav %}
 
                 {% endblock sonata_page_content_header %}
