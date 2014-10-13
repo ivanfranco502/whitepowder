@@ -136,8 +136,11 @@ class SkierController extends Controller {
             $positionDTO['coor_X'] = $userPositionObject->getUscoCoordinate()->getCoorX();
             $positionDTO['coor_Y'] = $userPositionObject->getUscoCoordinate()->getCoorY();
             $skierDTO['position'] = $positionDTO;
-            $skierDTO['alert'] = $userPositionObject->getUscoAlert()->getAlerRead();
-
+            if($userPositionObject->getUscoAlert() != null){
+                $skierDTO['alert'] = $userPositionObject->getUscoAlert()->getAlerRead();
+            }else{
+                $skierDTO['alert'] = null;
+            }
             $skiersDTO[] = $skierDTO;
         }
 
