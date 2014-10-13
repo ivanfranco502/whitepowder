@@ -37,6 +37,11 @@ class ClearMapCommand extends ContainerAwareCommand {
                 $output->writeln('mode: ' . $usco->getUscoSkiMode());
                 $output->writeln('user: ' . $usco->getUscoUser()->getId());
                 $usco->setUscoSkiMode(0);
+                $alert  = $em->getRepository('TavrosDomainBundle:Alert')->find($usco->getUscoAlert());
+                $alert->setAlerRead(1);
+                
+                $usco->setUscoAlert();
+                $em->persist($alert);
                 $em->persist($usco);
                 $em->flush();
             }

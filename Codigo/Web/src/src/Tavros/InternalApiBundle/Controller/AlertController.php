@@ -41,9 +41,12 @@ class AlertController extends Controller {
         $receivedAlert->setAlerUser($user);
 
         $lastPosition = $em->getRepository('TavrosDomainBundle:UserCoordinate')->findLastPosition($user->getId());
-
+        
+        /* @var $lastPositionObject \Tavros\DomainBundle\Entity\UserCoordinate */
         $lastPositionObject = $em->getRepository('TavrosDomainBundle:UserCoordinate')->findOneBy(Array('uscoId' => $lastPosition[0]['usco_id']));
-
+        
+        $lastPositionObject->getUscoCoordinate()->setCoorX($content->coordinate->x);
+        $lastPositionObject->getUscoCoordinate()->setCoorY($content->coordinate->y);
         $lastPositionObject->setUscoSkiMode(1);
 
         $receivedAlert->setAlerXPosition($content->coordinate->x);
@@ -51,8 +54,10 @@ class AlertController extends Controller {
         $receivedAlert->setAlerRead(0);
         $receivedAlert->setAlerDate(new \DateTime(date('Y-m-d H:i:s')));
 
-        $em->persist($lastPositionObject);
         $em->persist($receivedAlert);
+        
+        $lastPositionObject->setUscoAlert($receivedAlert);
+        $em->persist($lastPositionObject);
         $em->flush();
 
         $apiResponse->setCode(200);

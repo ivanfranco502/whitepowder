@@ -34,6 +34,11 @@ class UserCoordinate {
     private $uscoUser;
 
     /**
+     * @var \Tavros\DomainBundle\Entity\Alert
+     */
+    private $uscoAlert;
+
+    /**
      * @var integer
      */
     private $uscoSkiMode;
@@ -116,6 +121,27 @@ class UserCoordinate {
 
     public function getUscoSkiMode() {
         return $this->uscoSkiMode;
+    }
+
+    /**
+     * Set uscoAlert
+     *
+     * @param \Tavros\DomainBundle\Entity\Aler $uscoAlert
+     * @return UserCoordinate
+     */
+    public function setUscoAlert(\Tavros\DomainBundle\Entity\Alert $uscoAlert = null) {
+        $this->uscoAlert = $uscoAlert;
+
+        return $this;
+    }
+
+    /**
+     * Get uscoAlert
+     *
+     * @return \Tavros\DomainBundle\Entity\Alert 
+     */
+    public function getUscoAlert() {
+        return $this->uscoAlert;
     }
 
 }

@@ -124,7 +124,7 @@ class SkierController extends Controller {
         //TODO VERIFICAR QUE SEA ADMINISITRADOR
         $allPositions = $em->getRepository('TavrosDomainBundle:UserCoordinate')->findAllLastPosition();
 
-        /* @var $userPosition \UserCoordinate */
+        /* @var $userPositionObject \UserCoordinate */
         $skiersDTO = Array();
         foreach ($allPositions as $userPosition) {
             $userPositionObject = $em->getRepository('TavrosDomainBundle:UserCoordinate')->find($userPosition['usco_id']);
@@ -136,6 +136,7 @@ class SkierController extends Controller {
             $positionDTO['coor_X'] = $userPositionObject->getUscoCoordinate()->getCoorX();
             $positionDTO['coor_Y'] = $userPositionObject->getUscoCoordinate()->getCoorY();
             $skierDTO['position'] = $positionDTO;
+            $skierDTO['alert'] = $userPositionObject->getUscoAlert()->getAlerRead();
 
             $skiersDTO[] = $skierDTO;
         }
@@ -219,7 +220,7 @@ class SkierController extends Controller {
         }
 
         try {
-            $lastPosition = $em->getRepository('TavrosDomainBundle:UserCoordinate')->findLastPosition($extData->getExdaUser());
+            $lastPosition = $em->getRepository('TavrosDomainBundle:UserCoordinate')->findLastPosition($extData->getExdaUser()->getId());
             
             /* var @lastUserCoordinate \UserCoordinate */
             $lastUserCoordinate = $em->getRepository('TavrosDomainBundle:UserCoordinate')->find($lastPosition[0]["usco_id"]);
