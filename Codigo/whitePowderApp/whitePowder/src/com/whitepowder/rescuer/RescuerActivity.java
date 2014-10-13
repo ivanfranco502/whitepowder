@@ -10,26 +10,54 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.gson.Gson;
 import com.whitepowder.skier.Coordinate;
+import com.whitepowder.skier.SkierModeStopperThread;
 import com.whitepowder.skier.map.DrawableSlope;
 import com.whitepowder.skier.map.DrawableSlopeContainer;
 import com.whitepowder.storage.StorageConstants;
 import com.whitepowder.utils.ReadFile;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.ServiceConnection;
 import android.graphics.Color;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.IBinder;
+import android.widget.Toast;
 
 public class RescuerActivity extends Activity {
 
-	private GoogleMap mMap=null;
+	private GoogleMap mMap = null;
 	private RescuerActivity mContext;
+	private LocationManager mLocationManager;
+	private ServiceConnection mConnection;
+	private AlertDialog alertNoGPS = null;
+	private BroadcastReceiver serviceBroadcastReciever=null;
+	private RescuerService mBoundService;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.rescuer_activity);
 		mContext = this;
+		
 		setupMap();
+		
+		// Acquire reference to the LocationManager
+		if (null == (mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE))){
+			Toast.makeText(mContext, "Su dispositivo no posee GPS", Toast.LENGTH_SHORT ).show();
+		};		
+		
+		//Create service connection
+        createServiceConnectionAndRegisterForBroadcast();
+        
+		setupRescuerMode();
 	}
 
 	public void setupMap(){
@@ -114,6 +142,106 @@ public class RescuerActivity extends Activity {
 		else{
 			return new LatLng(0, 0);
 		}
+	}
+	
+	private void setupRescuerMode(){
+		if (!mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+			alertNoGps();
+		}
+		else{
+			//Binds to service
+			bindService(new Intent(mContext, RescuerService.class), mConnection, Context.BIND_AUTO_CREATE);			
+		};	
+	}
+	
+	private void alertNoGps() {
+		if (alertNoGPS == null){
+			final AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+			builder.setMessage("El sistema GPS está desactivado, debe activarlo para continuar.")
+				.setCancelable(false)
+		        .setPositiveButton("Activar GPS", new DialogInterface.OnClickListener() {
+		        	public void onClick(final DialogInterface dialog, final int id) {
+		        		startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+		        		
+		        	}
+		        });
+			alertNoGPS = builder.create();
+			alertNoGPS.show();
+		}
+		else if(!alertNoGPS.isShowing()){
+				final AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+				builder.setMessage("El sistema GPS está desactivado, debe activarlo para continuar.")
+					.setCancelable(false)
+			        .setPositiveButton("Activar GPS", new DialogInterface.OnClickListener() {
+			        	public void onClick(final DialogInterface dialog, final int id) {
+			        		startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+			        		
+			        	}
+			        });
+				alertNoGPS = builder.create();
+				alertNoGPS.show();
+			}
+	};
+	
+	@Override
+	public void onResume(){
+		super.onResume();
+		if (!mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+			alertNoGps();
+		}
+		else{
+			bindService(new Intent(mContext, RescuerService.class), mConnection, Context.BIND_AUTO_CREATE);	
+		}
+	}
+	
+	
+	private void createServiceConnectionAndRegisterForBroadcast(){
+		
+		mConnection = new ServiceConnection() {
+			@Override
+			public void onServiceConnected(ComponentName className, IBinder service) {
+				mBoundService = ((RescuerService.LocalBinder)service).getService();
+				
+				serviceBroadcastReciever = new BroadcastReceiver() {
 
+			        @Override
+			        public void onReceive(Context context, Intent intent) {
+			        	stopRescuer();
+			        	alertNoGps();			        };
+			        	        
+			    };
+			    registerReceiver(serviceBroadcastReciever, new IntentFilter(mBoundService.getIntentStopRescuerAction()));
+			};
+
+			@Override
+			public void onServiceDisconnected(ComponentName className) {
+				stopRescuer();
+				alertNoGps();
+			};
+			
+		};   
+	}
+	
+	private void stopRescuer(){
+
+		if(mBoundService!=null){
+			unbindService(mConnection);
+		};
+		
+		mBoundService = null;
+		
+		if(serviceBroadcastReciever!=null){
+			unregisterReceiver(serviceBroadcastReciever);
+			serviceBroadcastReciever=null;
+		};
+
+		//Starts thread that notifies server
+		new SkierModeStopperThread(mContext).start();
+	}
+	
+	@Override
+	public void onDestroy(){
+		super.onDestroy();
+		stopRescuer();
 	}
 }
