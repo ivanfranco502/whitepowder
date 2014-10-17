@@ -1,5 +1,8 @@
 package com.whitepowder.rescuer;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.example.whitepowder.R;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -9,7 +12,10 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.gson.Gson;
+import com.whitepowder.gcmModule.AlertDisplayActivity;
+import com.whitepowder.gcmModule.GCM;
 import com.whitepowder.skier.Coordinate;
+import com.whitepowder.skier.SkierActivity;
 import com.whitepowder.skier.SkierModeStopperThread;
 import com.whitepowder.skier.map.DrawableSlope;
 import com.whitepowder.skier.map.DrawableSlopeContainer;
@@ -41,11 +47,19 @@ public class RescuerActivity extends Activity {
 	private BroadcastReceiver serviceBroadcastReciever=null;
 	private RescuerService mBoundService;
 	
+	public static String GCM_ALERT_INTENT_ACTION = "GCM_ALERT_INTENT_ACTION";
+	public static String GCM_ACCIDENT_INTENT_ACTION = "GCM_ACCIDENT_INTENT_ACTION";
+	private BroadcastReceiver mAlertReceiver = null;
+	private BroadcastReceiver mAccidentReceiver = null;
+	
+	private List<Victim> accidents;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.rescuer_activity);
 		mContext = this;
+		accidents = new ArrayList();
 		
 		setupMap();
 		
@@ -58,6 +72,15 @@ public class RescuerActivity extends Activity {
         createServiceConnectionAndRegisterForBroadcast();
         
 		setupRescuerMode();
+		
+		//Enables GCM
+		new GCM(mContext);
+		
+		//Register for GCM alerts
+        registerAlertBroadcastReceiver();
+        registerAccidentBroadcastReceiver();
+        
+        
 	}
 
 	public void setupMap(){
@@ -191,7 +214,9 @@ public class RescuerActivity extends Activity {
 		}
 		else{
 			bindService(new Intent(mContext, RescuerService.class), mConnection, Context.BIND_AUTO_CREATE);	
-		}
+		};
+		
+		refreshMap();
 	}
 	
 	
@@ -242,6 +267,61 @@ public class RescuerActivity extends Activity {
 	@Override
 	public void onDestroy(){
 		super.onDestroy();
+		
 		stopRescuer();
+		
+		if(mAlertReceiver!=null){
+			unregisterReceiver(mAlertReceiver);
+		};
+		if(mAccidentReceiver!=null){
+			unregisterReceiver(mAccidentReceiver);
+		};
+	}
+	
+	private void registerAlertBroadcastReceiver(){
+		mAlertReceiver = new BroadcastReceiver() {
+			@Override
+			public void onReceive(Context context, Intent intent) {
+				if (isOrderedBroadcast()) {
+					setResultCode(RESULT_OK);
+					
+					//Starts Alert display activity		
+					Intent alertDisplay = new Intent(mContext,AlertDisplayActivity.class);
+					alertDisplay.putExtras(intent.getExtras());
+					startActivity(alertDisplay);
+				};
+			}
+		};
+		
+		registerReceiver(mAlertReceiver, new IntentFilter(RescuerActivity.GCM_ALERT_INTENT_ACTION));
+	};
+	
+	private void registerAccidentBroadcastReceiver(){
+		mAccidentReceiver = new BroadcastReceiver() {
+			@Override
+			public void onReceive(Context context, Intent intent) {
+				if (isOrderedBroadcast()) {
+					setResultCode(RESULT_OK);
+					
+					//Add the victim to the list and refresh the map	
+					addAccident(intent);
+					refreshMap();
+				};
+			}
+		};
+		
+		registerReceiver(mAccidentReceiver, new IntentFilter(RescuerActivity.GCM_ACCIDENT_INTENT_ACTION));
+	};
+	
+	public void addAccident(Intent intent){
+		//Obtener datos del intent
+		//Instanciar objeto Victim
+		//Add victim a la lista accidents
+	}
+	
+	private void refreshMap(){
+		//Limpiar viejos de la lista de accidents
+		//Remover viejos markers?
+		//Mostrar los markers en el mapa
 	}
 }
