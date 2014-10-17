@@ -39,6 +39,10 @@ function initialize() {
     map = new google.maps.Map(document.getElementById('center-map'),
             mapOptions);
 
+    if ($.isEmptyObject(markers)) {
+        $("#broadcast-btn").attr('disabled', 'disabled');
+    }
+
 }
 
 function setMarkers(map, locations) {
@@ -59,6 +63,9 @@ function setMarkers(map, locations) {
         if (found === 0) {
             markers[index].setMap(null);
             delete markers[index];
+            if ($.isEmptyObject(markers)) {
+                $("#broadcast-btn").attr('disabled', 'disabled');
+            }
         }
     }
 
@@ -126,6 +133,7 @@ function setMarkers(map, locations) {
             })(marker));
 
             markers[locations[i].name] = marker;
+            $("#broadcast-btn").removeAttr('disabled');
         }
     }
 }
@@ -222,9 +230,9 @@ $(document).ready(function () {
                     });
                     //Solo para asegurar que se ejecute despues del reset del boton                    
                     setTimeout(function () {
-                          $("#btn-send-alert").attr('disabled', 'disabled');
+                        $("#btn-send-alert").attr('disabled', 'disabled');
                     }, 0);
-                  
+
                 }
             });
         }
