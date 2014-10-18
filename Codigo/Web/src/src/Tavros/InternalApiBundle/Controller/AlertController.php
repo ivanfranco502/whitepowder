@@ -40,24 +40,27 @@ class AlertController extends Controller {
         $user = $extData->getExdaUser();
         $receivedAlert->setAlerUser($user);
 
-        $lastPosition = $em->getRepository('TavrosDomainBundle:UserCoordinate')->findLastPosition($user->getId());
-        
-        /* @var $lastPositionObject \Tavros\DomainBundle\Entity\UserCoordinate */
-        $lastPositionObject = $em->getRepository('TavrosDomainBundle:UserCoordinate')->findOneBy(Array('uscoId' => $lastPosition[0]['usco_id']));
-        
-        $lastPositionObject->getUscoCoordinate()->setCoorX($content->coordinate->x);
-        $lastPositionObject->getUscoCoordinate()->setCoorY($content->coordinate->y);
-        $lastPositionObject->setUscoSkiMode(1);
+//        $lastPosition = $em->getRepository('TavrosDomainBundle:UserCoordinate')->findLastPosition($user->getId());
+
+        /* @var $lastPosition \Tavros\DomainBundle\Entity\UserCoordinate */
+//        $lastPositionObject = $em->getRepository('TavrosDomainBundle:UserCoordinate')->findOneBy(Array('uscoId' => $lastPosition[0]['usco_id']));
+
+        $lastPosition = $em->getRepository('TavrosDomainBundle:UserCoordinate')->findOneByUscoUser($user);
+
+        $lastPosition->getUscoCoordinate()->setCoorX($content->coordinate->x);
+        $lastPosition->getUscoCoordinate()->setCoorY($content->coordinate->y);
+        $lastPosition->setUscoSkiMode(1);
 
         $receivedAlert->setAlerXPosition($content->coordinate->x);
         $receivedAlert->setAlerYPosition($content->coordinate->y);
         $receivedAlert->setAlerRead(0);
         $receivedAlert->setAlerDate(new \DateTime(date('Y-m-d H:i:s')));
 
+//        $this->notifyAllRescuer($receivedAlert);
+
         $em->persist($receivedAlert);
-        
-        $lastPositionObject->setUscoAlert($receivedAlert);
-        $em->persist($lastPositionObject);
+        $lastPosition->setUscoAlert($receivedAlert);
+        $em->persist($lastPosition);
         $em->flush();
 
         $apiResponse->setCode(200);
@@ -107,6 +110,33 @@ class AlertController extends Controller {
         $apiResponse->setPayload('');
         $response->setContent($serializer->serialize($apiResponse, 'json'));
         return $response;
+    }
+
+    private function notifyAllRescuer(\Tavros\DomainBundle\Entity\Alert $alert) {
+        $registration_ids = array();
+        $em = $this->container->get('Doctrine')->getManager();
+
+        $rescuers = $em->getRepository('TavrosDomainBundle:Users')->findAllRescuer();
+
+        foreach ($rescuers as $recuer) {
+            $user_externals = $em->getRepository('TavrosDomainBundle:ExternalData')->findOneByExdaUser($recuer);
+            $registration_ids[] = $user_externals->getExdaRegistrationCode();
+        }
+
+        $message = array(
+            "id" => "911",
+            "title" => "Accidente",
+            "body" => json_encode($alert)
+        );
+
+        try {
+            GCMController::sendGCM($message, $registration_ids);
+            $result = TRUE;
+        } catch (Exception $exc) {
+            $result = FALSE;
+        }
+
+        return $result;
     }
 
 }
