@@ -9,9 +9,6 @@ use Tavros\InternalApiBundle\Entity\ApiResponse;
 class GCMController extends Controller {
 
     public function sendNotificationAction() {
-        //Include the ApiKey
-        $apiKey = $this->container->getParameter('api_key');
-
         $serializer = $this->container->get('jms_serializer');
         $apiResponse = new ApiResponse();
         $response = new Response();
@@ -49,18 +46,33 @@ class GCMController extends Controller {
             "body" => '' . $body . ''
         );
 
+        $result = GCMController::sendGCM($message, $registration_ids);
+
+        $apiResponse->setCode(200);
+        $apiResponse->setPayload($result);
+
+        $response->setContent($serializer->serialize($apiResponse, 'json'));
+        return $response;
+    }
+
+    public static function sendGCM($message, $registration_ids) {
+        //Include the ApiKey
+        $apiKey = $this->container->getParameter('api_key');
+
         // Set POST variables
         $url = 'https://android.googleapis.com/gcm/send';
+
+        $headers = array(
+            'Authorization: key=' . $apiKey,
+            'Content-Type: application/json'
+        );
 
         $fields = array(
             'registration_ids' => $registration_ids,
             'data' => $message
         );
 
-        $headers = array(
-            'Authorization: key=' . $apiKey,
-            'Content-Type: application/json'
-        );
+
         // Open connection
         $ch = curl_init();
 
@@ -85,11 +97,7 @@ class GCMController extends Controller {
         // Close connection
         curl_close($ch);
 
-        $apiResponse->setCode(200);
-        $apiResponse->setPayload($result);
-
-        $response->setContent($serializer->serialize($apiResponse, 'json'));
-        return $response;
+        return $result;
     }
 
 }

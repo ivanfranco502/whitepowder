@@ -11,3 +11,4 @@ parameters:
     mailer_password: WhitePowder14
     locale: es
     secret: ThisTokenIsNotSoSecretChangeIt
+    api_key: AIzaSyDaFh7OglzVz3u5LCQ_OvR1BFusgxRWPrI

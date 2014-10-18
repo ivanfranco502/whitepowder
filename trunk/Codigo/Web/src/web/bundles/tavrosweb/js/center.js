@@ -1,7 +1,9 @@
 //VARIABLES
 var map;
 var skiers = [];
+var slopes = [];
 var markers = {};
+var counter = 0;
 var iterator = 0;
 //var interval = 2000;
 var selected = [];
@@ -18,7 +20,8 @@ function getMarkers() {
                     id: skier.id,
                     name: skier.username,
                     position: new google.maps.LatLng(parseFloat(skier.position.coor_X), parseFloat(skier.position.coor_Y)),
-                    alert: skier.alert
+                    alert: skier.alert,
+                    role: skier.role
                 });
             });
             setMarkers(map, skiers);
@@ -28,11 +31,44 @@ function getMarkers() {
     });
 }
 
+function getSlopes() {
+    $.ajax({
+        dataType: "json",
+        type: "POST",
+        url: BASE_URL + MODE + "/web/" + PROFILER + "/internalApi/slope/allPath",
+        data: JSON.stringify({
+            "_token": "a84b055999ea2b429490e4c642f64b57958aaf20"
+        }),
+        contentType: "application/json",
+        success: function (data, textStatus, jqXHR) {
+            data.payload.forEach(function (slope) {
+                var coordinates = [];
+                slope.slope_coordinates.forEach(function (coordinate) {
+                    coordinates.push(
+                            new google.maps.LatLng(parseFloat(coordinate.x), parseFloat(coordinate.y))
+                            );
+                });
+
+                slopes.push({
+                    id: slope.slope_id,
+                    name: slope.slope_description,
+                    color: '#' + slope.slope_difficulty_color,
+                    coordinates: coordinates
+                });
+            });
+            setSlopes(map, slopes);
+            slopes = [];
+//            window.setTimeout(getMarkers, interval);
+        }
+    });
+}
+
 function initialize() {
     getMarkers();
+    getSlopes();
     var centerLatlng = new google.maps.LatLng(parseFloat($('#x_coordinate').text()), parseFloat($('#y_coordinate').text()));
     var mapOptions = {
-        zoom: 4,
+        zoom: 12,
         center: centerLatlng,
         mapTypeId: google.maps.MapTypeId.TERRAIN
     };
@@ -44,7 +80,42 @@ function initialize() {
     }
 
 }
+function setSlopes(map, slopes) {
 
+    var startSymbol = {
+        path: google.maps.SymbolPath.CIRCLE,
+        scale: 4,
+        strokeColor: '#393'
+    };
+
+    var endSymbol = {
+        path: google.maps.SymbolPath.CIRCLE,
+        scale: 4,
+        strokeColor: '#393'
+    };
+
+    slopes.forEach(function (slope) {
+        var slopePath = new google.maps.Polyline({
+            path: slope.coordinates,
+            icons: [
+                {
+                    icon: startSymbol,
+                    offset: '0%'
+                }, {
+                    icon: endSymbol,
+                    offset: '100%'
+                }
+            ],
+            geodesic: true,
+            strokeColor: slope.color,
+            strokeOpacity: 1.0,
+            strokeWeight: 2
+        });
+
+        slopePath.setMap(map);
+    });
+
+}
 function setMarkers(map, locations) {
 
     var marker, i;
@@ -62,6 +133,8 @@ function setMarkers(map, locations) {
         }
         if (found === 0) {
             markers[index].setMap(null);
+            counter--;
+            $("#counter span").text(counter);
             delete markers[index];
             if ($.isEmptyObject(markers)) {
                 $("#broadcast-btn").attr('disabled', 'disabled');
@@ -82,7 +155,8 @@ function setMarkers(map, locations) {
                 draggable: false,
                 title: locations[i].name,
                 animation: google.maps.Animation.DROP,
-                icon: locations[i].alert !== 0 ? 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png' : 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'
+                icon: locations[i].role == 'ROLE_RESCU' ? 'http://maps.google.com/mapfiles/ms/icons/yellow-dot.png' :                     
+                        locations[i].alert !== 0 ? 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png' : 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'
             });
 
             marker.metadata = {
@@ -133,7 +207,9 @@ function setMarkers(map, locations) {
             })(marker));
 
             markers[locations[i].name] = marker;
+            counter++;
             $("#broadcast-btn").removeAttr('disabled');
+            $("#counter span").text(counter);
         }
     }
 }
@@ -184,6 +260,8 @@ function prepareBroadcast() {
 }
 $(document).ready(function () {
 
+
+
     $("#GCM-list").on("click", ".remover", function () {
         var toDelete;
         toDelete = selected.indexOf($(this).closest("tr td").prev().prev().text());
@@ -216,7 +294,7 @@ $(document).ready(function () {
                 type: "POST",
                 data: {
                     "_to": JSON.stringify(selected),
-                    "_body": $("#alert-message").val()
+                    "_body": JSON.stringify($("#alert-message").val())
                 },
                 success: function () {
                     $("#GCM-list").empty();

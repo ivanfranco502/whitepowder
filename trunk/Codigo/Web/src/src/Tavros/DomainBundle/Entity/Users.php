@@ -6,9 +6,10 @@ use FOS\UserBundle\Entity\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Tavros\DomainBundle\Repositories\UsersRepository")
  * @ORM\Table(name="fos_user")
  */
+
 class Users extends BaseUser {
 
     /**

@@ -178,7 +178,8 @@ class UserController extends Controller {
 
         try {
             $extData->setExdaToken($this->loginUser($user));
-
+            
+            /* @var $user FOS\UserBundle\Entity\User */
             $apiResponse->setCode(200);
             $roles = $user->getRoles();
 
@@ -201,6 +202,7 @@ class UserController extends Controller {
                 "role" => $role
             );
             $apiResponse->setPayload($payload);
+            $user->setLastlogin(new \DateTime(date('Y-m-d H:i:s')));
             $extData->setExdaUser($user);
             $em->persist($extData);
             $em->flush();

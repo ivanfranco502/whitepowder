@@ -7,9 +7,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Tavros\InternalApiBundle\Entity\ApiResponse;
 use Tavros\DomainBundle\Entity\Coordinate as Coordinate;
 use Tavros\DomainBundle\Entity\UserCoordinate as UserCoordinate;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
-use Symfony\Component\Security\Core\Authentication\Token\AnonymousToken;
-use \FOS\UserBundle\Entity\User as User;
+
+//use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+//use Symfony\Component\Security\Core\Authentication\Token\AnonymousToken;
+//use \FOS\UserBundle\Entity\User as User;
 
 class SkierController extends Controller {
 
@@ -42,8 +43,16 @@ class SkierController extends Controller {
 
         try {
             $coord_xy = $content->coordinate;
-            $coord = new Coordinate();
-            $userCoord = new UserCoordinate();
+
+            $userCoord = $em->getRepository('TavrosDomainBundle:UserCoordinate')->findOneByUscoUser($extData->getExdaUser());
+
+            if (!$userCoord) {
+                $coord = new Coordinate();
+                $userCoord = new UserCoordinate();
+            } else {
+                $coord = $userCoord->getUscoCoordinate();
+            }
+
             /* @var $userCoord \Tavros\DomainBundle\Entity\UserCoordinate */
             $coord->setCoorCreatedDate(new \DateTime(date('Y-m-d H:i:s')));
             $coord->setCoorX($coord_xy->x);
@@ -115,7 +124,7 @@ class SkierController extends Controller {
 
     //GET ALL SKIER
     public function getAllAction() {
-        $logger = $this->container->get('logger');
+//        $logger = $this->container->get('logger');
         $serializer = $this->container->get('jms_serializer');
         $apiResponse = new ApiResponse();
         $response = new Response();
@@ -136,11 +145,28 @@ class SkierController extends Controller {
             $positionDTO['coor_X'] = $userPositionObject->getUscoCoordinate()->getCoorX();
             $positionDTO['coor_Y'] = $userPositionObject->getUscoCoordinate()->getCoorY();
             $skierDTO['position'] = $positionDTO;
-            if($userPositionObject->getUscoAlert() != null){
+            if ($userPositionObject->getUscoAlert() != null) {
                 $skierDTO['alert'] = $userPositionObject->getUscoAlert()->getAlerRead();
-            }else{
+            } else {
                 $skierDTO['alert'] = null;
             }
+
+            $roles = $userPositionObject->getUscoUser()->getRoles();
+            foreach ($roles as $r) {
+                if ($r === 'ROLE_SKIER') {
+                    $role = 'ROLE_SKIER';
+                    break;
+                } elseif ($r === 'ROLE_RECON') {
+                    $role = 'ROLE_RECON';
+                    break;
+                } else {
+                    $role = 'ROLE_RESCU';
+                    break;
+                }
+            }
+
+            $skierDTO['role'] = $role;
+
             $skiersDTO[] = $skierDTO;
         }
 
@@ -224,7 +250,7 @@ class SkierController extends Controller {
 
         try {
             $lastPosition = $em->getRepository('TavrosDomainBundle:UserCoordinate')->findLastPosition($extData->getExdaUser()->getId());
-            
+
             /* var @lastUserCoordinate \UserCoordinate */
             $lastUserCoordinate = $em->getRepository('TavrosDomainBundle:UserCoordinate')->find($lastPosition[0]["usco_id"]);
 
