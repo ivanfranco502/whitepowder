@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.example.whitepowder.R;
 import com.google.gson.Gson;
+import com.whitepowder.skier.SkierActivity;
 import com.whitepowder.storage.StorageConstants;
 import com.whitepowder.storage.SyncThread;
 import com.whitepowder.userManagement.PasswordChangeActivity;
@@ -24,11 +25,13 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.v7.widget.PopupMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -50,7 +53,10 @@ public class SlopeRecognizerActivity extends Activity{
 	private boolean activeFlag = false;
 	private boolean accurateFlag = false;
 	private ProgressDialog progressDialog;
-	private SlopeRecognizerActivity mContext = this; 
+	private SlopeRecognizerActivity mContext = this;
+	
+	//Buttons
+	private ImageButton butSubmenuSlope;
 	
 	//Sync
 	private ProgressDialog progressDialogSync;
@@ -64,10 +70,7 @@ public class SlopeRecognizerActivity extends Activity{
 		//Sets general
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.slope_recognition);
-		
-		ActionBar ab = getActionBar();
-		ab.setTitle("White Powder");
-		ab.setSubtitle("Reconocedor");
+		butSubmenuSlope = (ImageButton) findViewById(R.id.bt_submenu_slope);
 		
 		//Generates hint option in slope spinner
 		spinner = (Spinner) findViewById(R.id.slope_recognition_spinner);
@@ -108,6 +111,7 @@ public class SlopeRecognizerActivity extends Activity{
 		
 		//Setup buttons
 		
+        setupPopupMenu();	
 		setupStartButton(btnStart,btnStop);
 		setupStopButton(btnStop,btnStart);
 	
@@ -371,50 +375,67 @@ public class SlopeRecognizerActivity extends Activity{
 	    
 	}
 	
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-	  switch (item.getItemId()) {
-	  case R.id.slope_recon_menu_logout:
-		  
-			new AlertDialog.Builder(this)
-	        .setTitle(getString(R.string.alert_exit_title))
-	        .setMessage(getString(R.string.alert_exit_message))
-	        .setNegativeButton(getString(R.string.alert_no), null)
-	        .setPositiveButton(getString(R.string.alert_yes), new DialogInterface.OnClickListener() {
+private void setupPopupMenu(){
+		
+		//Setups options menu
+		butSubmenuSlope.setOnClickListener(new OnClickListener() {  
+			@Override  
+			public void onClick(View v) {  
+	         	 
+				PopupMenu popup = new PopupMenu(SlopeRecognizerActivity.this, butSubmenuSlope);  
+				popup.getMenuInflater().inflate(R.menu.popup_menu_submenu, popup.getMenu());  
 
-	            public void onClick(DialogInterface arg0, int arg1) {
-	            	
-	      		  Logout.logout(mContext, false);		  
-	            }
-	        }).create().show();
-			break;
-		 
-          
-	  case R.id.slope_recon_menu_change_password:
-		  Intent intent = new Intent(mContext, PasswordChangeActivity.class);
-		  this.startActivity(intent);
-		  break;
-		  
-	  case R.id.submenu_sync:
- 			
-			//Stats sync dialog
-			progressDialogSync = new ProgressDialog(mContext);
-			progressDialogSync.setMessage(getResources().getString(R.string.sync_dialog_message));
-			progressDialogSync.setCancelable(false);
-			progressDialogSync.setIndeterminate(true);
-			progressDialogSync.show();
-						
-			//Starts sync task
-			sth = new SyncThread();
-			setupOnSyncFinishedListener();
-			sth.execute(mContext);
-						
-			break;
-	  default:
-	    break;
-	  }
-	  
-	  return true;
+				//registering popup with OnMenuItemClickListener  
+				popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {  
+					public boolean onMenuItemClick(MenuItem item) {
+						switch (item.getItemId()) {
+						case R.id.submenu_logout:      			  
+							new AlertDialog.Builder(SlopeRecognizerActivity.this)
+							.setTitle(getString(R.string.alert_exit_title))
+	         			  	.setMessage(getString(R.string.alert_exit_message))
+	         			  	.setNegativeButton(getString(R.string.alert_no), null)
+	         			  	.setPositiveButton(getString(R.string.alert_yes), new DialogInterface.OnClickListener() {
+
+	         			  		public void onClick(DialogInterface arg0, int arg1) {
+	         		            	
+	         			  			Logout.logout(mContext, false);		  
+	         			  		}
+	         			  	}).create().show();
+							break;
+	         				
+						case R.id.submenu_change_password:
+	         			  
+							Intent intent = new Intent(mContext, PasswordChangeActivity.class);
+							startActivity(intent);
+							break;
+							
+						case R.id.submenu_sync:
+		         			
+							//Stats sync dialog
+							progressDialogSync = new ProgressDialog(mContext);
+							progressDialogSync.setMessage(getResources().getString(R.string.sync_dialog_message));
+							progressDialogSync.setCancelable(false);
+							progressDialogSync.setIndeterminate(true);
+							progressDialogSync.show();
+							
+							//Starts sync task
+							sth = new SyncThread();
+							setupOnSyncFinishedListener();
+							sth.execute(mContext);
+							
+							break;
+	         			 
+						default:
+							break;
+						}
+	         		  
+						return true;  
+					}  
+				});  
+				
+				popup.show(); 
+			}  
+		});
 	};
 	
 	@Override
