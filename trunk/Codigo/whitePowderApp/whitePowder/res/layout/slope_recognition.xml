@@ -1,76 +1,137 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/slope_recognition_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#6DCAEC"
-    tools:ignore="MergeRootFrame">
-
-    <TextView 
-        android:id="@+id/slope_recognition_text"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:layout_centerHorizontal="true"
-	    android:layout_marginTop="25dp"
-	    android:text="@string/slope_recognition_text"
-	    android:textSize="20sp" />
-    
-    <Spinner
-        android:id="@+id/slope_recognition_spinner"
-        android:layout_below="@id/slope_recognition_text"
-        android:background="#FFFFFF"
+    android:background="@drawable/gr_background"
+    tools:context="com.example.actionbartest.SkierActivity" >
+     
+	       
+	         <ImageButton
+		        android:id="@+id/bt_submenu_slope"
+		        style="?android:attr/buttonBarButtonStyle"
+		        android:contentDescription="Submenu"
+		    	android:layout_width="35dp"
+		    	android:layout_height="15dp"
+		    	android:layout_marginTop="16dp"
+		    	android:layout_marginLeft="20dp"
+		    	android:layout_alignParentLeft="true"
+		    	android:background="@drawable/ic_submenu"
+		    	/>
+	         
+	<LinearLayout
+        android:id="@+id/SlopeRecogLin1"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="35dp"/>
+        android:layout_height="match_parent"
+        android:layout_below="@id/bt_submenu"
+        android:layout_marginTop="35dp"
+        android:orientation="vertical"
+        android:weightSum="6">
+	    
+	    <ImageView
+	        android:id="@+id/logowp_slope"
+	        android:contentDescription="Logowp"
+	        android:layout_width="match_parent"
+	        android:layout_height="0dp"
+	        android:layout_below="@id/bt_submenu"
+	        android:layout_weight="3"
+	        android:src="@drawable/ic_bannerwp"/>
+	    
+	    <LinearLayout
+	         android:id="@+id/SlopeRecogLin2"
+	         android:layout_width="match_parent"
+	         android:layout_height="0dp"
+	         android:layout_weight="3"
+	         android:layout_below="@id/logowp_slope"
+	         android:orientation="vertical">
+	         
+		<RelativeLayout
+	        android:id="@+id/SlopeRecMargin1"
+	        android:layout_height="5dp"
+	        android:layout_width="match_parent"
+	        android:background="#055777"/>
 
-    <RelativeLayout
-	     android:id="@+id/slope_recognition_start_button_container"
-	     android:layout_width="match_parent"
-	     android:layout_height="50dp"
-	     android:layout_marginTop="25dp"
-	     android:gravity="center"
-	     android:layout_below="@+id/slope_recognition_spinner"
-	     android:background="#7caf00" >
-	     	
-	        <TextView
-	            android:id="@+id/slope_recognition_start_buton_text"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:text="@string/slope_recognition_start_text"
-	           	android:textSize="20sp"
-	            android:textColor="#FFFFFF" /> 
-	  
-	                
-	  </RelativeLayout>
-	  
-      <RelativeLayout
-	     android:id="@+id/slope_recognition_stop_button_container"
-	     android:layout_width="match_parent"
-	     android:layout_height="50dp"
-	     android:layout_marginTop="25dp"
-	     android:gravity="center"
-	     android:layout_below="@+id/slope_recognition_spinner"
-	     android:background="#DA4545"
-	     android:clickable="false"
-	     android:visibility="invisible">
-	     	
-	        <TextView
-	            android:id="@+id/slope_recognition_stop_buton_text"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:text="@string/slope_recognition_stop_text"
-	           	android:textSize="20sp"
-	            android:textColor="#FFFFFF" /> 		
-    
-    </RelativeLayout>
-    
-    <TextView 
-        android:id="@+id/slope_recognition_points"
-        android:layout_below="@id/slope_recognition_stop_button_container"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:layout_centerHorizontal="true"
-	    android:layout_marginTop="25dp"
-	    android:textSize="20sp" />
-    
+        <RelativeLayout
+	        android:id="@+id/SlopeRecBan1"
+	        android:layout_height="30dp"
+	        android:layout_width="match_parent"
+	        android:background="#038abe">	        
+         
+		    <TextView
+		        android:id="@+id/SelectTrackBan"
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:gravity="center"
+		        android:text="@string/slope_recognition_text"
+		        android:textColor="#ffffff"
+		        android:textSize="20sp"/>   
+            	        
+        </RelativeLayout>
+        <RelativeLayout
+	        android:id="@+id/SlopeRecMargin2"
+	        android:layout_height="5dp"
+	        android:layout_width="match_parent"
+	        android:background="#055777"
+	        android:layout_below="@id/BasicInfoBan1"/>
+		    
+		    <Spinner
+		        android:id="@+id/slope_recognition_spinner"
+		        android:layout_below="@id/SlopeRecMargin1"
+		        android:background="#FFFFFF"
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:layout_marginTop="35dp"/>
+		
+		    <RelativeLayout
+			     android:id="@+id/slope_recognition_start_button_container"
+			     android:layout_width="match_parent"
+			     android:layout_height="50dp"
+			     android:layout_marginTop="25dp"
+			     android:gravity="center"
+			     android:layout_below="@+id/slope_recognition_spinner"
+			     android:background="#7caf00" >
+			     	
+			        <TextView
+			            android:id="@+id/slope_recognition_start_buton_text"
+			            android:layout_width="wrap_content"
+			            android:layout_height="wrap_content"
+			            android:text="@string/slope_recognition_start_text"
+			           	android:textSize="20sp"
+			            android:textColor="#FFFFFF" /> 
+			  
+			                
+			  </RelativeLayout>
+			  
+		      <RelativeLayout
+			     android:id="@+id/slope_recognition_stop_button_container"
+			     android:layout_width="match_parent"
+			     android:layout_height="50dp"
+			     android:layout_marginTop="25dp"
+			     android:gravity="center"
+			     android:layout_below="@+id/slope_recognition_spinner"
+			     android:background="#DA4545"
+			     android:clickable="false"
+			     android:visibility="invisible">
+			     	
+			        <TextView
+			            android:id="@+id/slope_recognition_stop_buton_text"
+			            android:layout_width="wrap_content"
+			            android:layout_height="wrap_content"
+			            android:text="@string/slope_recognition_stop_text"
+			           	android:textSize="20sp"
+			            android:textColor="#FFFFFF" /> 		
+		    
+		    </RelativeLayout>
+		    
+		    <TextView 
+		        android:id="@+id/slope_recognition_points"
+		        android:layout_below="@id/slope_recognition_stop_button_container"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_centerHorizontal="true"
+			    android:layout_marginTop="25dp"
+			    android:textSize="20sp" />
+		    
+		</LinearLayout>
+	</LinearLayout>
 </RelativeLayout>
+		

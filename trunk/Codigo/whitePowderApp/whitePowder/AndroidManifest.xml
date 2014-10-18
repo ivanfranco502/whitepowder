@@ -75,7 +75,8 @@
         <activity
             android:name="com.whitepowder.slopeRecognizer.SlopeRecognizerActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
         <activity
             android:name="com.whitepowder.userManagement.RegisterActivity"
             android:configChanges="orientation"
