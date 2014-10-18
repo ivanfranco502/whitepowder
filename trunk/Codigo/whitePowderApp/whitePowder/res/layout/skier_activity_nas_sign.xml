@@ -1,37 +1,63 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
+    android:layout_height="match_parent" 
+    android:background="#ffffff"
+    android:weightSum="27"
+    android:orientation="vertical" >
 	
-	<LinearLayout 
-	    android:paddingBottom="@dimen/activity_vertical_margin"
-	    android:paddingLeft="@dimen/activity_horizontal_margin"
-	    android:paddingRight="@dimen/activity_horizontal_margin"
-	    android:paddingTop="@dimen/activity_vertical_margin"
-	    android:orientation="vertical"
-	    android:layout_width="match_parent"
-    	android:layout_height="wrap_content"
-	    tools:context="com.whitepowder.skier.normsAndSigns.SignActivity" >
+    <ScrollView
+		android:id="@+id/ScrollviewSign"
+        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_weight="24" >
+    
+		<LinearLayout 
+		    android:paddingBottom="@dimen/activity_vertical_margin"
+		    android:paddingLeft="@dimen/activity_horizontal_margin"
+		    android:paddingRight="@dimen/activity_horizontal_margin"
+		    android:paddingTop="@dimen/activity_vertical_margin"
+		    android:orientation="vertical"
+		    android:layout_width="match_parent"
+	    	android:layout_height="wrap_content"
+		    tools:context="com.whitepowder.skier.normsAndSigns.SignActivity" >
+		
+		    <TextView
+		        android:id="@+id/sign_name"
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:gravity="center"
+		        android:textSize="30sp" />
+		    <com.whitepowder.skier.normsAndSigns.SquareImageView
+		        android:id="@+id/signPicture"
+		        android:layout_width="match_parent"
+		        android:layout_height="match_parent"
+		        android:scaleType="fitCenter"
+		        />
+		    <TextView
+		        android:id="@+id/sign_description"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:textSize="18sp" />
+		
+		</LinearLayout>
 	
-	    <TextView
-	        android:id="@+id/sign_name"
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
-	        android:gravity="center"
-	        android:textSize="30sp" />
-	    <com.whitepowder.skier.normsAndSigns.SquareImageView
-	        android:id="@+id/signPicture"
-	        android:layout_width="match_parent"
-	        android:layout_height="match_parent"
-	        android:scaleType="fitCenter"
-	        />
-	    <TextView
-	        android:id="@+id/sign_description"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:textSize="18sp" />
+	</ScrollView>
 	
-	</LinearLayout>
-
-</ScrollView>
+        <RelativeLayout 
+	         android:id="@+id/SignRel2"
+	         android:layout_width="match_parent"
+	         android:layout_height="0dp"
+	         android:layout_alignParentBottom="true"
+	         android:layout_weight="3"
+	         android:gravity="bottom">
+		        <ImageView
+			        android:id="@+id/emergency"
+			        android:contentDescription="Emergency"
+			        android:layout_width="match_parent"
+			        android:layout_height="match_parent"
+			        android:background="@drawable/gr_emergency"/>
+	  </RelativeLayout>
+	  
+</LinearLayout>        

@@ -134,13 +134,19 @@
         <activity
             android:name="com.whitepowder.skier.normsAndSigns.SignActivity"
             android:configChanges="orientation"
+            android:icon="@drawable/ic_security_inv"
             android:label="@string/title_activity_sign"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait"
+            android:theme="@style/NasaTheme"
+             >
         </activity>
         <activity
             android:name="com.whitepowder.skier.statistics.StatisticsActivity"
+            android:configChanges="orientation"
+            android:icon="@drawable/ic_statistics_inv"
             android:label="@string/title_activity_statistics"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait"
+            android:theme="@style/SecurityTheme" >
         </activity>
         <activity
             android:name="com.whitepowder.gcmModule.AlertDisplayActivity"

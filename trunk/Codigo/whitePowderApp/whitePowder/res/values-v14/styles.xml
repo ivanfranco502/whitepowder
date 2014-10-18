@@ -67,6 +67,22 @@
     <item name="android:textColor">@android:color/white</item>
 	</style>    
 
+    <style name="SecurityTheme" parent="AppBaseTheme">
+        <item name="android:actionBarStyle">@style/SecurityActionBar</item>
+        <item name="android:titleTextStyle">@style/SecurityTextAppearance</item>
+    </style>
+
+    <style name="SecurityActionBar" parent="Widget.AppCompat.Light.ActionBar.Solid.Inverse">
+        <item name="android:background">#545454</item>
+    </style>
+    
+        <style name="SecurityTextAppearance" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:drawablePadding">20dp</item>
+    </style>    
+    
     <style name="MapTheme" parent="AppBaseTheme">
         <item name="android:actionBarStyle">@style/MapActionBar</item>
         <item name="android:titleTextStyle">@style/MapTextAppearance</item>
