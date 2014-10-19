@@ -9,6 +9,9 @@ use Tavros\InternalApiBundle\Entity\ApiResponse;
 class GCMController extends Controller {
 
     public function sendNotificationAction() {
+        //Include the ApiKey
+        $apiKey = $this->container->getParameter('api_key');
+
         $serializer = $this->container->get('jms_serializer');
         $apiResponse = new ApiResponse();
         $response = new Response();
@@ -46,7 +49,7 @@ class GCMController extends Controller {
             "body" => '' . $body . ''
         );
 
-        $result = GCMController::sendGCM($message, $registration_ids);
+        $result = GCMController::sendGCM($apiKey, $message, $registration_ids);
 
         $apiResponse->setCode(200);
         $apiResponse->setPayload($result);
@@ -55,10 +58,7 @@ class GCMController extends Controller {
         return $response;
     }
 
-    public static function sendGCM($message, $registration_ids) {
-        //Include the ApiKey
-        $apiKey = $this->container->getParameter('api_key');
-
+    public static function sendGCM($apiKey, $message, $registration_ids) {
         // Set POST variables
         $url = 'https://android.googleapis.com/gcm/send';
 

@@ -146,7 +146,7 @@ function setMarkers(map, locations) {
 
         if (markers.hasOwnProperty(locations[i].name)) {
             markers[locations[i].name].setPosition(locations[i].position);
-            markers[locations[i].name].setIcon(
+            markers[locations[i].name].setIcon(locations[i].role == 'ROLE_RESCU' ? 'http://maps.google.com/mapfiles/ms/icons/yellow-dot.png' :
                     locations[i].alert !== 0 ? 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png' : 'http://maps.google.com/mapfiles/ms/icons/red-dot.png');
         } else {
             var marker = new google.maps.Marker({
@@ -155,7 +155,7 @@ function setMarkers(map, locations) {
                 draggable: false,
                 title: locations[i].name,
                 animation: google.maps.Animation.DROP,
-                icon: locations[i].role == 'ROLE_RESCU' ? 'http://maps.google.com/mapfiles/ms/icons/yellow-dot.png' :                     
+                icon: locations[i].role == 'ROLE_RESCU' ? 'http://maps.google.com/mapfiles/ms/icons/yellow-dot.png' :
                         locations[i].alert !== 0 ? 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png' : 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'
             });
 
