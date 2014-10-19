@@ -38,14 +38,21 @@ class ClearMapCommand extends ContainerAwareCommand {
 //                $output->writeln('mode: ' . $usco->getUscoSkiMode());
 //                $output->writeln('user: ' . $usco->getUscoUser()->getId());
                 $userPosition->setUscoSkiMode(0);
-                $alert = $em->getRepository('TavrosDomainBundle:Alert')->find($userPosition->getUscoAlert());
 
-                if ($alert) {
-                    $alert->setAlerRead(1);
-                    $userPosition->setUscoAlert();
+                if ($userPosition->getUscoAlert()) {
+                    $userPosition->getUscoAlert()->setAlerRead(1);
                 }
 
-                $em->persist($alert);
+                $userPosition->setUscoAlert();
+
+
+//                if ($userPosition->getUscoAlert() !== NULL) {
+//                    $alert = $em->getRepository('TavrosDomainBundle:Alert')->find($userPosition->getUscoAlert());
+//                    $alert->setAlerRead(1);
+//                    $userPosition->setUscoAlert(NULL);
+//                }
+
+//                $em->persist($alert);
                 $em->persist($userPosition);
                 $em->flush();
             }

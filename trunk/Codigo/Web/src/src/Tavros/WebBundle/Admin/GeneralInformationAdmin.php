@@ -27,14 +27,13 @@ class GeneralInformationAdmin extends Admin {
                 ->add('geinX', null, array('label' => 'Latitud'))
                 ->add('geinY', null, array('label' => 'Longitud'))
                 ->add('geinDetails', 'textarea', array('label' => 'Más Detalles'))
-                ->add('Schedules', 'sonata_type_collection', 
-                        array('label' => 'Horarios',
-                                "attr" => array("class" => "form-control")),
-                        array('edit' => 'inline',
-                            'inline' => 'table',
-                            'sortable'  => 'position'
-                        ))
-                ->add('Slopes', null, array('label' => 'Pistas', "attr" => array("class" => "form-control")));
+                ->add('Schedules', 'sonata_type_collection', array('label' => 'Horarios',
+                    "attr" => array("class" => "form-control")), array('edit' => 'inline',
+                    'inline' => 'table',
+                    'sortable' => 'position'
+                ))
+                ->add('Slopes', 'sonata_type_model', array('label' => 'Pistas', 'multiple' => true, 'by_reference' => false, "attr" => array("class" => "form-control")));
+//                ->add('Slopes', null, array('label' => 'Pistas', "attr" => array("class" => "form-control")));
     }
 
     // Fields to be shown on filter forms
@@ -70,7 +69,7 @@ class GeneralInformationAdmin extends Admin {
         // OR remove all route except named ones
         $collection->clearExcept(array('edit', 'show'));
     }
-    
+
     public function __toString() {
         return 'Información General';
     }
