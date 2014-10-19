@@ -17,32 +17,36 @@ class ClearMapCommand extends ContainerAwareCommand {
     }
 
     protected function execute(InputInterface $input, OutputInterface $output) {
+        date_default_timezone_set('America/Argentina/Buenos_Aires');
         $em = $this->getContainer()->get('doctrine')->getManager();
 
-        $allPositions = $em->getRepository('TavrosDomainBundle:UserCoordinate')->findAllLastPosition();
+        $allPositions = $em->getRepository('TavrosDomainBundle:UserCoordinate')->findAll();
 
         foreach ($allPositions as $userPosition) {
 
             $today = new \DateTime('now');
-            $userPositionDate = new \DateTime($userPosition['usco_update_date']);
-            
+            $userPositionDate = $userPosition->getUscoUpdateDate();
+
             $interval = date_diff($today, $userPositionDate);
 
             $difference = $this->toMinutes($interval);
 
             $output->writeln('diference: ' . $difference);
-            if ($difference > 30) {
-                $usco = $em->getRepository('TavrosDomainBundle:UserCoordinate')->find($userPosition['usco_id']);
-                $output->writeln('userArr: ' . $userPosition['usco_user_id']);
-                $output->writeln('mode: ' . $usco->getUscoSkiMode());
-                $output->writeln('user: ' . $usco->getUscoUser()->getId());
-                $usco->setUscoSkiMode(0);
-                $alert  = $em->getRepository('TavrosDomainBundle:Alert')->find($usco->getUscoAlert());
-                $alert->setAlerRead(1);
-                
-                $usco->setUscoAlert();
+            if (intval($difference) > 30) {
+//                $usco = $em->getRepository('TavrosDomainBundle:UserCoordinate')->find($userPosition['usco_id']);
+//                $output->writeln('userArr: ' . $userPosition['usco_user_id']);
+//                $output->writeln('mode: ' . $usco->getUscoSkiMode());
+//                $output->writeln('user: ' . $usco->getUscoUser()->getId());
+                $userPosition->setUscoSkiMode(0);
+                $alert = $em->getRepository('TavrosDomainBundle:Alert')->find($userPosition->getUscoAlert());
+
+                if ($alert) {
+                    $alert->setAlerRead(1);
+                    $userPosition->setUscoAlert();
+                }
+
                 $em->persist($alert);
-                $em->persist($usco);
+                $em->persist($userPosition);
                 $em->flush();
             }
         }

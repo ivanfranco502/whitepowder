@@ -10,6 +10,9 @@ class AlertController extends Controller {
 
     //SEND ALERT TO SKI CENTER    
     public function sendAction() {
+        //Include the ApiKey
+        $apiKey = $this->container->getParameter('api_key');
+
         $logger = $this->container->get('logger');
         $serializer = $this->container->get('jms_serializer');
         $apiResponse = new ApiResponse();
@@ -56,7 +59,7 @@ class AlertController extends Controller {
         $receivedAlert->setAlerRead(0);
         $receivedAlert->setAlerDate(new \DateTime(date('Y-m-d H:i:s')));
 
-//        $this->notifyAllRescuer($receivedAlert);
+        $this->notifyAllRescuer($receivedAlert, $apiKey);
 
         $em->persist($receivedAlert);
         $lastPosition->setUscoAlert($receivedAlert);
@@ -112,15 +115,32 @@ class AlertController extends Controller {
         return $response;
     }
 
-    private function notifyAllRescuer(\Tavros\DomainBundle\Entity\Alert $alert) {
+    private function notifyAllRescuer(\Tavros\DomainBundle\Entity\Alert $alert, $apiKey) {
         $registration_ids = array();
         $em = $this->container->get('Doctrine')->getManager();
 
-        $rescuers = $em->getRepository('TavrosDomainBundle:Users')->findAllRescuer();
+        $users = $em->getRepository('TavrosDomainBundle:Users')->findAll();
 
-        foreach ($rescuers as $recuer) {
-            $user_externals = $em->getRepository('TavrosDomainBundle:ExternalData')->findOneByExdaUser($recuer);
-            $registration_ids[] = $user_externals->getExdaRegistrationCode();
+        foreach ($users as $user) {
+
+            $roles = $user->getRoles();
+            foreach ($roles as $r) {
+                if ($r === 'ROLE_SKIER') {
+                    $role = 'ROLE_SKIER';
+                    break;
+                } elseif ($r === 'ROLE_RECON') {
+                    $role = 'ROLE_RECON';
+                    break;
+                } else {
+                    $role = 'ROLE_RESCU';
+                    break;
+                }
+            }
+
+            if ($role == 'ROLE_RESCU') {
+                $user_externals = $em->getRepository('TavrosDomainBundle:ExternalData')->findOneByExdaUser($users);
+                $registration_ids[] = $user_externals->getExdaRegistrationCode();
+            }
         }
 
         $message = array(
@@ -130,8 +150,7 @@ class AlertController extends Controller {
         );
 
         try {
-            GCMController::sendGCM($message, $registration_ids);
-            $result = TRUE;
+            $result = GCMController::sendGCM($apiKey, $message, $registration_ids);
         } catch (Exception $exc) {
             $result = FALSE;
         }
