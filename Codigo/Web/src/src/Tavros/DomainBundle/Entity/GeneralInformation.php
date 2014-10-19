@@ -365,6 +365,7 @@ class GeneralInformation
     public function addSlope(\Tavros\DomainBundle\Entity\Slope $slopes)
     {
         $this->Slopes[] = $slopes;
+        $slopes->setSlopGeneralInformation($this);
 
         return $this;
     }
@@ -377,6 +378,7 @@ class GeneralInformation
     public function removeSlope(\Tavros\DomainBundle\Entity\Slope $slopes)
     {
         $this->Slopes->removeElement($slopes);
+        $slopes->setSlopGeneralInformation();
     }
 
     /**
