@@ -45,7 +45,7 @@ class UsersAdmin extends Admin {
                 ->add('email', null, array('label' => 'E-mail'))
                 ->add('enabled', null, array('label' => 'Habilitado'))
                 ->add('lastLogin', null, array('label' => 'Último login'))
-                ->add('roles', null, array('label' => 'Roles'));
+                ->add('rolesAsString', null, array('label' => 'Roles'));
     }
 
     protected function configureRoutes(RouteCollection $collection) {
