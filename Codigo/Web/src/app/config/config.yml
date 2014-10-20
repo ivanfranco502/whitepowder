@@ -137,7 +137,7 @@ services:
             - Tavros\DomainBundle\Entity\Users
             - ~
         calls:
-            - [ setTranslationDomain, [TavrosWebBundle]] 
+            - [ setTranslationDomain, [TavrosWebBundle]]
             
 parameters:
 #    tavros_internal_api.example.class: Tavros\InternalApiBundle\Example

@@ -42,11 +42,11 @@ class GCMController extends Controller {
 //        $registration_ids = array("APA91bEx-tzPcQj-bfl3TF9t9FqPCOIlK8ad6TWBnm0i49ZFnjyXMrv_4nF5fqGpHA_mMwQMyN04uji7PcKZUbmdqBoaEIXsrmICsAxQZ5XiIEqRX-Sv_aIx3l3BYnY-OU6jhu6o1837LqavDEHD9gDMWyn0TB_qxOFHUapoXHGq4HJiDkG3XaM");
         //alexa
 //        $registration_ids = array("APA91bHxstSG9Xk-kBcARfJfj77gvqcwGy3EwhjoqNEdSzE-LaGfJzsBQdYPRSXpBII7YD8mZiFRgdjsdFMHtHoHBcpntzMK0FTtFK4Esu2T8fh3jh_k9u1sGDRUz74pfuHcYgNFXcOE1EWXgRFeUy9mY-33al_asi6qszNLc8sBg-BD_Y7S3gM");
-
+        
         $message = array(
             "id" => "1",
             "title" => "Alerta",
-            "body" => '' . $body . ''
+            "body" => ''.$body.''
         );
 
         $result = GCMController::sendGCM($apiKey, $message, $registration_ids);
