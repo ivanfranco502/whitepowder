@@ -51,6 +51,11 @@ public class SignsFragment extends Fragment {
         return signsGrid;
 	}
 	
+	@Override
+	public void onResume(){
+		super.onResume();
+		performClick = true;
+	}
 	
 	private void getAllSigns(){
 		signs = new ArrayList();
