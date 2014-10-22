@@ -6,7 +6,6 @@
     
     <ScrollView 
         android:layout_weight="4"
-       	android:layout_margin="20dp"
         android:layout_width="match_parent"
         android:layout_height="0dp">
         
@@ -14,11 +13,43 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+ 
+        <RelativeLayout
+	        android:id="@+id/StatsMargin1"
+	        android:layout_height="1dp"
+	        android:layout_width="match_parent"
+	        android:background="#ffffff"/>               
+            
+        <RelativeLayout
+	        android:id="@+id/StatsBan1"
+	        android:layout_height="30dp"
+	        android:layout_width="match_parent"
+	        android:background="#545454">	        
+         
+		    <TextView
+		        android:id="@+id/MaxSpeedBan"
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:gravity="center"
+		        android:text="@string/skier_statistics_max_speed_text"
+		        android:textColor="#ffffff"
+		        android:textSize="20sp"/>   
+            	        
+        </RelativeLayout>
+        <RelativeLayout
+	        android:id="@+id/StatsMargin2"
+	        android:layout_height="5dp"
+	        android:layout_width="match_parent"
+	        android:background="#000000"/>            
         
 	        <LinearLayout 
 	            android:orientation="horizontal"
 	            android:layout_width="match_parent"
-	            android:layout_height="wrap_content">
+	            android:layout_height="wrap_content"
+	            android:layout_marginLeft="20dp"
+	            android:layout_marginRight="20dp"
+	            android:layout_marginTop="15dp"
+	            android:layout_marginBottom="15dp">
 	            
 	            <ImageView
 	                android:layout_width="80dp"
@@ -30,18 +61,10 @@
 	               android:layout_height="match_parent" >
 	
 		           <TextView
-		               android:id="@+id/skier_statistics_speed_record_text"
-		               android:layout_width="match_parent"
-		               android:layout_height="wrap_content"
-		               android:gravity="center_horizontal"
-		               android:textSize="20sp"
-		               android:text="@string/skier_statistics_max_speed_text" />
-		           
-		           <TextView
 		               android:id="@+id/skier_statistics_speed_record_value"
-		               android:layout_below="@+id/skier_statistics_speed_record_text"
 		               android:layout_width="match_parent"
 		               android:layout_height="wrap_content"
+		               android:layout_marginBottom="10dp"
 		               android:gravity="center_horizontal"
 		               android:textColor="#AFBDBD"
 		               android:textSize="20sp"
@@ -59,11 +82,36 @@
 	           </RelativeLayout>
 	        </LinearLayout>
 	        
+        <RelativeLayout
+	        android:id="@+id/StatsBan2"
+	        android:layout_height="30dp"
+	        android:layout_width="match_parent"
+	        android:background="#545454">	        
+         
+		    <TextView
+		        android:id="@+id/MaxHeightBan"
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:gravity="center"
+		        android:text="@string/skier_statistics_max_altitude_text"
+		        android:textColor="#ffffff"
+		        android:textSize="20sp"/>   
+            	        
+        </RelativeLayout>
+        <RelativeLayout
+	        android:id="@+id/StatsMargin3"
+	        android:layout_height="5dp"
+	        android:layout_width="match_parent"
+	        android:background="#000000"/>  	        
+	        
 	 		<LinearLayout 
 	            android:orientation="horizontal"
 	            android:layout_width="match_parent"
 	            android:layout_height="wrap_content"
-	            android:layout_marginTop="15dp">
+	            android:layout_marginLeft="20dp"
+	            android:layout_marginRight="20dp"
+	            android:layout_marginTop="15dp"
+	            android:layout_marginBottom="15dp">
 	            
 	            <ImageView
 	                android:layout_width="80dp"
@@ -74,19 +122,11 @@
 	               android:layout_width="match_parent"
 	               android:layout_height="match_parent" >
 	
-		           <TextView
-		               android:id="@+id/skier_statistics_height_record_text"
-		               android:layout_width="match_parent"
-		               android:layout_height="wrap_content"
-		               android:gravity="center_horizontal"
-		               android:textSize="20sp"
-		               android:text="@string/skier_statistics_max_altitude_text" />
-		           
 					<TextView
 		               android:id="@+id/skier_statistics_height_record_value"
-		               android:layout_below="@+id/skier_statistics_height_record_text"
 		               android:layout_width="match_parent"
 		               android:layout_height="wrap_content"
+		               android:layout_marginBottom="10dp"
 		               android:gravity="center_horizontal"
 		               android:textSize="20sp"
    		       		   android:textColor="#AFBDBD"
@@ -102,12 +142,37 @@
 		               android:text="" />
 	           </RelativeLayout>
            </LinearLayout>
-	           
+	        
+	        <RelativeLayout
+		        android:id="@+id/StatsBan4"
+		        android:layout_height="30dp"
+		        android:layout_width="match_parent"
+		        android:background="#545454">	        
+	         
+			    <TextView
+			        android:id="@+id/AvgSpeedBan"
+			        android:layout_width="match_parent"
+			        android:layout_height="wrap_content"
+			        android:gravity="center"
+			        android:text="@string/skier_statistics_average_speed_text"
+			        android:textColor="#ffffff"
+			        android:textSize="20sp"/>   
+	            	        
+	        </RelativeLayout>
+	        <RelativeLayout
+		        android:id="@+id/StatsMargin4"
+		        android:layout_height="5dp"
+		        android:layout_width="match_parent"
+		        android:background="#000000"/>  		 		
+	 		
 			<LinearLayout 
 	            android:orientation="horizontal"
 	            android:layout_width="match_parent"
 	            android:layout_height="wrap_content"
-	            android:layout_marginTop="15dp">
+	            android:layout_marginLeft="20dp"
+	            android:layout_marginRight="20dp"
+	            android:layout_marginTop="15dp"
+	            android:layout_marginBottom="15dp">
 	            
 	            <ImageView
 	                android:layout_width="80dp"
@@ -117,32 +182,49 @@
 	           <RelativeLayout
 	               android:layout_width="match_parent"
 	               android:layout_height="match_parent" >
-	
-		           <TextView
-		               android:id="@+id/skier_statistics_average_speed_text"
-		               android:layout_width="match_parent"
-		               android:layout_height="wrap_content"
-		               android:gravity="center_horizontal"
-		               android:textSize="20sp"
-		               android:text="@string/skier_statistics_average_speed_text"/>
-		           
+			           
 					<TextView
 		               android:id="@+id/skier_statistics_average_speed_value"
-		               android:layout_below="@+id/skier_statistics_average_speed_text"
 		               android:layout_width="match_parent"
 		               android:layout_height="wrap_content"
+		               android:layout_marginTop="10dp"
 		               android:gravity="center_horizontal"
-		               android:textSize="20sp"
+		               android:textSize="30sp"
 		               android:textColor="#AFBDBD"
 		               android:text="@string/skier_statistics_no_data" />
 	           </RelativeLayout>
 	        </LinearLayout>
 	        
+	        <RelativeLayout
+		        android:id="@+id/StatsBan5"
+		        android:layout_height="30dp"
+		        android:layout_width="match_parent"
+		        android:background="#545454">	        
+	         
+			    <TextView
+			        android:id="@+id/TotDistBan"
+			        android:layout_width="match_parent"
+			        android:layout_height="wrap_content"
+			        android:gravity="center"
+			        android:text="@string/skier_statistics_total_distance_text"
+			        android:textColor="#ffffff"
+			        android:textSize="20sp"/>   
+	            	        
+	        </RelativeLayout>
+	        <RelativeLayout
+		        android:id="@+id/StatsMargin5"
+		        android:layout_height="5dp"
+		        android:layout_width="match_parent"
+		        android:background="#000000"/>  			
+	        
 			<LinearLayout 
 	            android:orientation="horizontal"
 	            android:layout_width="match_parent"
 	            android:layout_height="wrap_content"
-	            android:layout_marginTop="15dp">
+	            android:layout_marginLeft="20dp"
+		        android:layout_marginRight="20dp"
+		        android:layout_marginTop="15dp"
+		        android:layout_marginBottom="15dp">
 	            
 	            <ImageView
 	                android:layout_width="80dp"
@@ -152,22 +234,14 @@
 	           <RelativeLayout
 	               android:layout_width="match_parent"
 	               android:layout_height="match_parent" >
-	
-		           <TextView
-		               android:id="@+id/skier_statistics_total_distance_text"
-		               android:layout_width="match_parent"
-		               android:layout_height="wrap_content"
-		               android:gravity="center_horizontal"
-		               android:textSize="20sp"
-		               android:text="@string/skier_statistics_total_distance_text"/>
-					
+						
 					<TextView
 		               android:id="@+id/skier_statistics_total_distance_value"
-		               android:layout_below="@+id/skier_statistics_total_distance_text"
 		               android:layout_width="match_parent"
 		               android:layout_height="wrap_content"
+		               android:layout_marginTop="10dp"
 		               android:gravity="center_horizontal"
-		               android:textSize="20sp"
+		               android:textSize="30sp"
 		               android:textColor="#AFBDBD"
 		               android:text="@string/skier_statistics_no_data" />
 	           </RelativeLayout>
