@@ -25,9 +25,7 @@ public class SignActivity extends Activity {
 		setContentView(R.layout.skier_activity_nas_sign);
 		
 		Sign sign = (Sign) getIntent().getSerializableExtra("SELECTED_SIGN");
-		
-		TextView signName = (TextView) findViewById(R.id.sign_name);
-		signName.setText(sign.getName());
+
 		setTitle(sign.getName());
 		
 		SquareImageView signPicture = (SquareImageView) findViewById(R.id.signPicture);

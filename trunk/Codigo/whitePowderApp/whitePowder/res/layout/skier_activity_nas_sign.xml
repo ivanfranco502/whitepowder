@@ -23,12 +23,6 @@
 	    	android:layout_height="wrap_content"
 		    tools:context="com.whitepowder.skier.normsAndSigns.SignActivity" >
 		
-		    <TextView
-		        android:id="@+id/sign_name"
-		        android:layout_width="match_parent"
-		        android:layout_height="wrap_content"
-		        android:gravity="center"
-		        android:textSize="30sp" />
 		    <com.whitepowder.skier.normsAndSigns.SquareImageView
 		        android:id="@+id/signPicture"
 		        android:layout_width="match_parent"

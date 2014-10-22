@@ -21,11 +21,15 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.SeekBar;
+import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
 import com.example.whitepowder.R;
 import com.google.gson.Gson;
+import com.whitepowder.skier.SkierActivity;
 import com.whitepowder.skier.emergency.EmergencyPeripheral;
+import com.whitepowder.skier.emergency.EmergencyThread;
 import com.whitepowder.storage.StorageConstants;
 import com.whitepowder.utils.ApplicationError;
 
@@ -48,7 +52,11 @@ public class BasicInformationActivity extends Activity {
 	private ImageView forecast_icon;
 	private TextView forecast_see_extended;
 	
-	private BasicInformationActivity mContext;
+	static public SkierActivity skierActivity;
+	//SeekBar emergency
+	private boolean seekBarProgress;
+	
+	BasicInformationActivity mContext;
 	
 	public BasicInformationForecast[] basicInformationForecast;
 	
@@ -82,6 +90,8 @@ public class BasicInformationActivity extends Activity {
 			
 			
 			mContext.basicInformationForecast = new BasicInformationForecast[7];
+			
+	        setupEmergencyButton();
 			
 			
 			fillUIFields();
@@ -223,6 +233,38 @@ public class BasicInformationActivity extends Activity {
 		else{
 			return super.onKeyUp(keyCode, event);
 		}
+	}
+
+	private void setupEmergencyButton(){
+		SeekBar emergencySeekBar = (SeekBar) findViewById(R.id.emergency_seekBar);
+		
+		emergencySeekBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
+      
+			@Override
+		    public void onStopTrackingTouch(SeekBar seekBar) {
+				if(seekBarProgress){
+					if(seekBar.getProgress() >= 85 && seekBar.getProgress() <= 100){
+						//llamar emergencia
+						EmergencyThread et = new EmergencyThread(skierActivity.skierActivity, getApplicationContext());
+						et.execute();
+					}
+				}
+				seekBar.setProgress(0);
+		    }
+		      
+		    @Override
+		    public void onStartTrackingTouch(SeekBar seekBar) {
+		    	if(seekBar.getProgress() >= 0 && seekBar.getProgress() <= 15){
+		    		seekBarProgress = true;
+				}else{
+					seekBarProgress = false;
+				}
+		    }
+		      
+			@Override
+			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {}
+			});
+    
 	}
 	
 }
