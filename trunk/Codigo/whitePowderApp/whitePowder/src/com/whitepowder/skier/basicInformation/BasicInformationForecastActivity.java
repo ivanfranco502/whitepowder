@@ -8,7 +8,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.example.whitepowder.R;
+import com.whitepowder.skier.SkierActivity;
 import com.whitepowder.skier.emergency.EmergencyPeripheral;
+import com.whitepowder.skier.emergency.EmergencyThread;
 import com.whitepowder.storage.StorageConstants;
 
 import android.app.Activity;
@@ -20,6 +22,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
 import android.widget.ListView;
+import android.widget.SeekBar;
+import android.widget.SeekBar.OnSeekBarChangeListener;
 
 public class BasicInformationForecastActivity extends Activity {
 
@@ -28,6 +32,10 @@ public class BasicInformationForecastActivity extends Activity {
 	double coorX;
 	double coorY;
 	private BasicInformationForecast[] basicInformationForecast;
+	
+	static public SkierActivity skierActivity;
+	//SeekBar emergency
+	private boolean seekBarProgress;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +89,8 @@ public class BasicInformationForecastActivity extends Activity {
 		forecastListAdapter = new BasicInformationForecastAdapter(this, basicInformationForecast);
 		
 		listViewForecast.setAdapter(forecastListAdapter);
+		
+		setupEmergencyButton();
 	}
 
 	@Override
@@ -112,4 +122,37 @@ public class BasicInformationForecastActivity extends Activity {
 			return super.onKeyUp(keyCode, event);
 		}
 	}
+	
+	private void setupEmergencyButton(){
+		SeekBar emergencySeekBar = (SeekBar) findViewById(R.id.emergency_seekBar);
+		
+		emergencySeekBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
+      
+			@Override
+		    public void onStopTrackingTouch(SeekBar seekBar) {
+				if(seekBarProgress){
+					if(seekBar.getProgress() >= 85 && seekBar.getProgress() <= 100){
+						//llamar emergencia
+						EmergencyThread et = new EmergencyThread(skierActivity.skierActivity, getApplicationContext());
+						et.execute();
+					}
+				}
+				seekBar.setProgress(0);
+		    }
+		      
+		    @Override
+		    public void onStartTrackingTouch(SeekBar seekBar) {
+		    	if(seekBar.getProgress() >= 0 && seekBar.getProgress() <= 15){
+		    		seekBarProgress = true;
+				}else{
+					seekBarProgress = false;
+				}
+		    }
+		      
+			@Override
+			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {}
+			});
+    
+	}
+	
 }

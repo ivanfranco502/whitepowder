@@ -4,7 +4,9 @@ import java.text.SimpleDateFormat;
 import java.util.Locale;
 
 import com.example.whitepowder.R;
+import com.whitepowder.skier.SkierActivity;
 import com.whitepowder.skier.emergency.EmergencyPeripheral;
+import com.whitepowder.skier.emergency.EmergencyThread;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -16,14 +18,20 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.RelativeLayout;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.SeekBar.OnSeekBarChangeListener;
 
 public class StatisticsActivity extends Activity {
 
 	Context mContext =null;
 	StatisticsManager userStats=null;
 	Boolean gotStats=false;
+	
+	static public SkierActivity skierActivity;
+	//SeekBar emergency
+	private boolean seekBarProgress;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +102,8 @@ public class StatisticsActivity extends Activity {
 		if(!gotStats){
 			Toast.makeText(mContext, R.string.skier_statistics_toast_no_stats, Toast.LENGTH_LONG).show();
 		};
+		
+		setupEmergencyButton();
 	
 	};
 	
@@ -135,5 +145,37 @@ public class StatisticsActivity extends Activity {
 			return super.onKeyUp(keyCode, event);
 		}
 	}
+	
+	private void setupEmergencyButton(){
+		SeekBar emergencySeekBar = (SeekBar) findViewById(R.id.emergency_seekBar);
+		
+		emergencySeekBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
+      
+			@Override
+		    public void onStopTrackingTouch(SeekBar seekBar) {
+				if(seekBarProgress){
+					if(seekBar.getProgress() >= 85 && seekBar.getProgress() <= 100){
+						//llamar emergencia
+						EmergencyThread et = new EmergencyThread(skierActivity.skierActivity, getApplicationContext());
+						et.execute();
+					}
+				}
+				seekBar.setProgress(0);
+		    }
+		      
+		    @Override
+		    public void onStartTrackingTouch(SeekBar seekBar) {
+		    	if(seekBar.getProgress() >= 0 && seekBar.getProgress() <= 15){
+		    		seekBarProgress = true;
+				}else{
+					seekBarProgress = false;
+				}
+		    }
+		      
+			@Override
+			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {}
+			});
+    
+	}	
 	
 }

@@ -2,10 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:weightSum="27"
     android:orientation="vertical" >
     
     <ScrollView 
-        android:layout_weight="4"
+        android:layout_weight="24"
         android:layout_width="match_parent"
         android:layout_height="0dp">
         
@@ -247,10 +248,6 @@
 	           </RelativeLayout>
 	        </LinearLayout>
 			
-        </LinearLayout>
-    
-    </ScrollView>
-    
    	<LinearLayout
 	    android:layout_width="match_parent"
 	    android:layout_height="50dp"
@@ -289,5 +286,40 @@
 	            android:text="@string/skier_statistics_share_button_text"/>
 	    </RelativeLayout>    
 	    
-	</LinearLayout>
+	</LinearLayout>			
+			
+        </LinearLayout>
+    
+    </ScrollView>
+    
+	<RelativeLayout 
+      android:id="@+id/RelativeLayout3"
+      android:layout_width="match_parent"
+      android:layout_height="0dp"
+      android:layout_weight="3"
+      android:gravity="bottom">
+
+      <ImageView
+          android:id="@+id/emergency_background"
+          android:layout_width="match_parent"
+          android:layout_height="60dp"
+          android:padding="0dp"
+          android:scaleType="fitXY"
+          android:src="@drawable/slider_primary" />
+      
+      <SeekBar
+          android:id="@+id/emergency_seekBar"
+          android:layout_width="match_parent"
+          android:layout_height="60dp"
+          android:minHeight="60dp"
+          android:maxHeight="60dp"
+          android:indeterminate="false"
+          android:paddingLeft="11dp"
+          android:paddingRight="11dp"
+          android:progressDrawable="@android:color/transparent"
+          android:thumb="@drawable/thumb_emergency"
+          android:thumbOffset="9dp" />
+
+     </RelativeLayout>
+
 </LinearLayout>
