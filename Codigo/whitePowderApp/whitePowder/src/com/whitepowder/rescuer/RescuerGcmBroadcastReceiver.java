@@ -10,6 +10,7 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v4.app.NotificationCompat;
 
 public class RescuerGcmBroadcastReceiver extends BroadcastReceiver {
@@ -22,8 +23,17 @@ public class RescuerGcmBroadcastReceiver extends BroadcastReceiver {
 	
 	@Override
 	public void onReceive(Context context, Intent intent) {
+		String role=null;
+		if(User.getUserInstance().getRole()==null){		
+			SharedPreferences sharedPreferences = context.getSharedPreferences("WP_USER_SHARED_PREFERENCES", Context.MODE_PRIVATE);
+			role = sharedPreferences.getString("role", "UNKNOWN");
+
+		}
+		else{
+			role=User.getUserInstance().getRole();
+		};
 		
-		if(User.getUserInstance().getRole().toString().equals("ROLE_RESCU")){
+		if(role.equals("ROLE_RESCU")){
 		
 			mContext =  context;
 			mIntent = intent;

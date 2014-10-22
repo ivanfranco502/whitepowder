@@ -10,6 +10,7 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v4.app.NotificationCompat;
 
 public class GcmBroadcastReceiver extends BroadcastReceiver {
@@ -19,8 +20,18 @@ public class GcmBroadcastReceiver extends BroadcastReceiver {
 	
 	@Override
 	public void onReceive(Context context, Intent intent) {
-	
-		if(User.getUserInstance().getRole().toString().equals("ROLE_SKIER")){
+		String role=null;
+		if(User.getUserInstance().getRole()==null){		
+			SharedPreferences sharedPreferences = context.getSharedPreferences("WP_USER_SHARED_PREFERENCES", Context.MODE_PRIVATE);
+			role = sharedPreferences.getString("role", "UNKNOWN");
+
+		}
+		else{
+			role=User.getUserInstance().getRole();
+		};
+			
+		if((role.equals("ROLE_SKIER"))||(role.equals("UNKNOWN"))){
+			
 			Intent notifyAppIntent = new Intent(SkierActivity.GCM_ALERT_INTENT_ACTION);
 			notifyAppIntent.putExtra("title", intent.getStringExtra("title"));
 			notifyAppIntent.putExtra("body", intent.getStringExtra("body"));

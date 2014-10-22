@@ -152,6 +152,7 @@ public class SkierActivity extends Activity {
 					
 					Intent alertDisplay = new Intent(mContext,AlertDisplayActivity.class);
 					alertDisplay.putExtras(intent.getExtras());
+					alertDisplay.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 					startActivity(alertDisplay);
 
 				};

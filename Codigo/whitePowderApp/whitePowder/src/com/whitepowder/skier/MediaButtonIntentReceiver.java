@@ -1,14 +1,10 @@
 package com.whitepowder.skier;
 
 import com.whitepowder.skier.emergency.EmergencyPeripheral;
-import com.whitepowder.skier.emergency.EmergencyThread;
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Handler;
 import android.view.KeyEvent;
-import android.widget.Toast;
 
 public class MediaButtonIntentReceiver extends BroadcastReceiver{
 	public MediaButtonIntentReceiver() {
