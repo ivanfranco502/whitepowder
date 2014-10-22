@@ -7,7 +7,9 @@ import com.example.whitepowder.R.id;
 import com.example.whitepowder.R.layout;
 import com.example.whitepowder.R.menu;
 import com.example.whitepowder.R.string;
+import com.whitepowder.skier.SkierActivity;
 import com.whitepowder.skier.emergency.EmergencyPeripheral;
+import com.whitepowder.skier.emergency.EmergencyThread;
 
 import android.app.Activity;
 import android.app.ActionBar;
@@ -25,7 +27,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.SeekBar.OnSeekBarChangeListener;
 
 public class NASActivity extends Activity implements ActionBar.TabListener {
 
@@ -37,6 +41,10 @@ public class NASActivity extends Activity implements ActionBar.TabListener {
 	 * {@link android.support.v13.app.FragmentStatePagerAdapter}.
 	 */
 	SectionsPagerAdapter mSectionsPagerAdapter;
+	
+	static public SkierActivity skierActivity;
+	//SeekBar emergency
+	private boolean seekBarProgress;
 
 	/**
 	 * The {@link ViewPager} that will host the section contents.
@@ -81,6 +89,8 @@ public class NASActivity extends Activity implements ActionBar.TabListener {
 					.setText(mSectionsPagerAdapter.getPageTitle(i))
 					.setTabListener(this));
 		}
+		
+		setupEmergencyButton();
 	}
 
 	@Override
@@ -176,5 +186,37 @@ public class NASActivity extends Activity implements ActionBar.TabListener {
 		else{
 			return super.onKeyUp(keyCode, event);
 		}
+	}
+	
+	private void setupEmergencyButton(){
+		SeekBar emergencySeekBar = (SeekBar) findViewById(R.id.emergency_seekBar);
+		
+		emergencySeekBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
+      
+			@Override
+		    public void onStopTrackingTouch(SeekBar seekBar) {
+				if(seekBarProgress){
+					if(seekBar.getProgress() >= 85 && seekBar.getProgress() <= 100){
+						//llamar emergencia
+						EmergencyThread et = new EmergencyThread(skierActivity.skierActivity, getApplicationContext());
+						et.execute();
+					}
+				}
+				seekBar.setProgress(0);
+		    }
+		      
+		    @Override
+		    public void onStartTrackingTouch(SeekBar seekBar) {
+		    	if(seekBar.getProgress() >= 0 && seekBar.getProgress() <= 15){
+		    		seekBarProgress = true;
+				}else{
+					seekBarProgress = false;
+				}
+		    }
+		      
+			@Override
+			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {}
+			});
+    
 	}
 }

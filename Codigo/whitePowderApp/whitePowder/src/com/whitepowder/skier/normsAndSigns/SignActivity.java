@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import com.example.whitepowder.R;
+import com.whitepowder.skier.SkierActivity;
 import com.whitepowder.skier.emergency.EmergencyPeripheral;
+import com.whitepowder.skier.emergency.EmergencyThread;
 import com.whitepowder.utils.ApplicationError;
 
 import android.app.Activity;
@@ -15,10 +17,17 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
+import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.SeekBar.OnSeekBarChangeListener;
 
 public class SignActivity extends Activity {
 
+	static public SkierActivity skierActivity;
+	//SeekBar emergency
+	private boolean seekBarProgress;
+	
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -40,6 +49,8 @@ public class SignActivity extends Activity {
 		
 		TextView signDescription = (TextView) findViewById(R.id.sign_description);
 		signDescription.setText(sign.getDescription());
+		
+		setupEmergencyButton();
 	}
 
 	@Override
@@ -70,5 +81,37 @@ public class SignActivity extends Activity {
 		else{
 			return super.onKeyUp(keyCode, event);
 		}
+	}
+	
+	private void setupEmergencyButton(){
+		SeekBar emergencySeekBar = (SeekBar) findViewById(R.id.emergency_seekBar);
+		
+		emergencySeekBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
+      
+			@Override
+		    public void onStopTrackingTouch(SeekBar seekBar) {
+				if(seekBarProgress){
+					if(seekBar.getProgress() >= 85 && seekBar.getProgress() <= 100){
+						//llamar emergencia
+						EmergencyThread et = new EmergencyThread(skierActivity.skierActivity, getApplicationContext());
+						et.execute();
+					}
+				}
+				seekBar.setProgress(0);
+		    }
+		      
+		    @Override
+		    public void onStartTrackingTouch(SeekBar seekBar) {
+		    	if(seekBar.getProgress() >= 0 && seekBar.getProgress() <= 15){
+		    		seekBarProgress = true;
+				}else{
+					seekBarProgress = false;
+				}
+		    }
+		      
+			@Override
+			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {}
+			});
+    
 	}
 }
