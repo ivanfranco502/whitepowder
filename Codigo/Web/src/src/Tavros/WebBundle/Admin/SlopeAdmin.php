@@ -17,7 +17,9 @@ class SlopeAdmin extends Admin {
         $formMapper
                 ->add('slopDescription', 'text', array('label' => 'Descripción'))
                 ->add('slopLength', 'text', array('label' => 'Longitud'))
-                ->add('slopDificulty', null, array('label' => 'Dificultad', "attr" => array("class" => "form-control")));
+                ->add('slopDificulty', 'sonata_type_model', array('label' => 'Pistas', 'multiple' => false, 'by_reference' => false, "attr" => array("class" => "form-control")));
+//                ->add('slopDificulty', null, array('label' => 'Dificultad', "attr" => array("class" => "form-control")));
+        
     }
 
     // Fields to be shown on filter forms

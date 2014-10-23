@@ -15,19 +15,19 @@ class NotificationTypeAdmin extends Admin {
     // Fields to be shown on create/edit forms
     protected function configureFormFields(FormMapper $formMapper) {
         $formMapper
-                ->add('notyDescription', 'text', array('label' => 'Description'));
+                ->add('notyDescription', 'text', array('label' => 'Notificación'));
     }
 
     // Fields to be shown on filter forms
     protected function configureDatagridFilters(DatagridMapper $datagridMapper) {
         $datagridMapper
-                ->add('notyDescription');
+                ->add('notyDescription', null, array('label' => 'Notificación'));
     }
 
     // Fields to be shown on lists
     protected function configureListFields(ListMapper $listMapper) {
         $listMapper
-                ->addIdentifier('notyDescription');
+                ->addIdentifier('notyDescription', null, array('label' => 'Notificación'));
     }
 
 }

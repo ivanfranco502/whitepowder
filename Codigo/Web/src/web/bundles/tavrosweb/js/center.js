@@ -37,11 +37,11 @@ function getSlopes() {
         type: "POST",
         url: BASE_URL + MODE + "/web/" + PROFILER + "/internalApi/slope/allPath",
         data: JSON.stringify({
-            "_token": "a84b055999ea2b429490e4c642f64b57958aaf20"
+            '_token': "a84b055999ea2b429490e4c642f64b57958aaf20"
         }),
         contentType: "application/json",
-        success: function (data, textStatus, jqXHR) {
-            data.payload.forEach(function (slope) {
+        success: function (path, textStatus, jqXHR) {
+            path.payload.forEach(function (slope) {
                 var coordinates = [];
                 slope.slope_coordinates.forEach(function (coordinate) {
                     coordinates.push(
@@ -260,7 +260,36 @@ function prepareBroadcast() {
 }
 $(document).ready(function () {
 
-
+//    $.ajax({
+//        dataType: "json",
+//        type: "POST",
+//        url: BASE_URL + MODE + "/web/" + PROFILER + "/internalApi/notification/allPreset",
+////        data: JSON.stringify({
+////            "_token": "a84b055999ea2b429490e4c642f64b57958aaf20"
+////        }),
+//        contentType: "application/json",
+//        success: function (data, textStatus, jqXHR) {
+//            data.payload.forEach(function (slope) {
+//                var coordinates = [];
+//                slope.slope_coordinates.forEach(function (coordinate) {
+//                    coordinates.push(
+//                            new google.maps.LatLng(parseFloat(coordinate.x), parseFloat(coordinate.y))
+//                            );
+//                });
+//
+//                slopes.push({
+//                    id: slope.slope_id,
+//                    name: slope.slope_description,
+//                    color: '#' + slope.slope_difficulty_color,
+//                    coordinates: coordinates
+//                });
+//            });
+//            setSlopes(map, slopes);
+//            slopes = [];
+////            window.setTimeout(getMarkers, interval);
+//        }
+//    });
+//
 
     $("#GCM-list").on("click", ".remover", function () {
         var toDelete;

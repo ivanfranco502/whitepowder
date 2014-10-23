@@ -121,7 +121,7 @@ services:
     sonata.admin.notificationtype:
         class: Tavros\WebBundle\Admin\NotificationTypeAdmin
         tags:
-            - { name: sonata.admin, manager_type: orm, group: "Content", label: "Notification Type" }
+            - { name: sonata.admin, manager_type: orm, group: "Content", label: "Notificaciones" }
         arguments:
             - ~
             - Tavros\DomainBundle\Entity\NotificationType
