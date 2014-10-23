@@ -72,7 +72,7 @@ public class MapActivity extends Activity {
 		if(dsc.code==200){
 			
 			for(DrawableSlope ds: dsc.payload){
-				if(ds.getSlope_coordinates()!=null){
+				if(ds.getSlope_coordinates()!=null && ds.getSlope_coordinates().size() > 0){
 					
 					PolylineOptions plo = new PolylineOptions();
 				    plo.width(6);
@@ -118,7 +118,7 @@ public class MapActivity extends Activity {
 		if(dsc.code==200){
 			
 			for(DrawableSlope ds: dsc.payload){
-				if(ds.getSlope_coordinates()!=null){					
+				if(ds.getSlope_coordinates()!=null && ds.getSlope_coordinates().size() > 0){					
 					sumatoriaX += ds.getSlope_coordinates().get(0).x;
 					sumatoriaY += ds.getSlope_coordinates().get(0).y;
 					count ++;
