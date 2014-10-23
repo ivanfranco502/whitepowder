@@ -89,18 +89,19 @@ class DefaultController extends Controller {
         return $response;
     }
 
-    public function allAlertsAction() {
-//        $serializer = $this->container->get('jms_serializer');
-//        $apiResponse = new ApiResponse();
-//        $response = new Response();
-//        $response->headers->set('Content-Type', 'application/json');
-//        $em = $this->container->get('Doctrine')->getManager();
-//        
-//
-//        $apiResponse->setCode(200);
-//        $apiResponse->setPayload();
-//        $response->setContent($serializer->serialize($apiResponse, 'json'));
-//        return $response;
+    public function allPresetNotificationsAction() {
+        $serializer = $this->container->get('jms_serializer');
+        $apiResponse = new ApiResponse();
+        $response = new Response();
+        $response->headers->set('Content-Type', 'application/json');
+        $em = $this->container->get('Doctrine')->getManager();
+        
+        $notifications = $em->getRepository("TavrosDomainBundle:NotificationType")->findAll();
+
+        $apiResponse->setCode(200);
+        $apiResponse->setPayload($notifications);
+        $response->setContent($serializer->serialize($apiResponse, 'json'));
+        return $response;
     }
 
 }

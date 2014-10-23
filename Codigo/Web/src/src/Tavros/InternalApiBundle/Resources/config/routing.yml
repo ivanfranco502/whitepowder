@@ -25,3 +25,8 @@ tavros_internal_api_basic_information:
 tavros_internal_api_number_version:
     pattern:  /version/number
     defaults: { _controller: TavrosInternalApiBundle:Default:numberVersion }
+    
+tavros_internal_api_notifications_allPreset:
+    pattern:  /notifications/allPreset
+    defaults: { _controller: TavrosInternalApiBundle:Default:allPresetNotifications }
+
