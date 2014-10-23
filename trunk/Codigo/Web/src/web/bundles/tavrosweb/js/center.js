@@ -80,6 +80,7 @@ function initialize() {
     }
 
 }
+
 function setSlopes(map, slopes) {
 
     var startSymbol = {
@@ -116,6 +117,7 @@ function setSlopes(map, slopes) {
     });
 
 }
+
 function setMarkers(map, locations) {
 
     var marker, i;
@@ -258,38 +260,34 @@ function prepareBroadcast() {
         }
     });
 }
+
 $(document).ready(function () {
 
-//    $.ajax({
-//        dataType: "json",
-//        type: "POST",
-//        url: BASE_URL + MODE + "/web/" + PROFILER + "/internalApi/notification/allPreset",
-////        data: JSON.stringify({
-////            "_token": "a84b055999ea2b429490e4c642f64b57958aaf20"
-////        }),
-//        contentType: "application/json",
-//        success: function (data, textStatus, jqXHR) {
-//            data.payload.forEach(function (slope) {
-//                var coordinates = [];
-//                slope.slope_coordinates.forEach(function (coordinate) {
-//                    coordinates.push(
-//                            new google.maps.LatLng(parseFloat(coordinate.x), parseFloat(coordinate.y))
-//                            );
-//                });
-//
-//                slopes.push({
-//                    id: slope.slope_id,
-//                    name: slope.slope_description,
-//                    color: '#' + slope.slope_difficulty_color,
-//                    coordinates: coordinates
-//                });
-//            });
-//            setSlopes(map, slopes);
-//            slopes = [];
-////            window.setTimeout(getMarkers, interval);
-//        }
-//    });
-//
+    $.ajax({
+        dataType: "json",
+        type: "POST",
+        url: BASE_URL + MODE + "/web/" + PROFILER + "/internalApi/notifications/allPreset",
+//        data: JSON.stringify({
+//            "_token": "a84b055999ea2b429490e4c642f64b57958aaf20"
+//        }),
+        contentType: "application/json",
+        success: function (data, textStatus, jqXHR) {
+            $.each(data.payload, function (index, item) { // Iterates through a collection
+                $("#notification").append(
+                        "<option value=" + item.noty_id + ">" + item.noty_description + "</option>");
+            });
+        }
+    });
+
+    $("#notification").change(function () {
+        if ($(this).val() !== 'X') {
+            $("#alert-message").attr('disabled', 'disabled');
+            $("#alert-message").val($("#notification option[value='" + $(this).val() +"']").text());
+        } else {
+            $("#alert-message").removeAttr('disabled', 'disabled');
+            $("#alert-message").val('');
+        }
+    });
 
     $("#GCM-list").on("click", ".remover", function () {
         var toDelete;
