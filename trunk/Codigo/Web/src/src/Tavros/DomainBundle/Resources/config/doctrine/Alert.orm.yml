@@ -1,5 +1,6 @@
 Tavros\DomainBundle\Entity\Alert:
     type: entity
+    repositoryClass: Tavros\DomainBundle\Repositories\AlertRepository
     table: alert
     indexes:
         FK_alert_message_idx:

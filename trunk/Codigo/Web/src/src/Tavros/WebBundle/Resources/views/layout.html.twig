@@ -66,9 +66,9 @@
                                 <li class="">
                                     <a href="{{path('generalinformation_edit', {'id':1})}}">Información General</a>
                                 </li>
-                          {#      <li class="" >
-                                    <a href="{{path('hourday_list')}}">Horarios</a>
-                                </li>#}
+                                {#      <li class="" >
+                                          <a href="{{path('hourday_list')}}">Horarios</a>
+                                      </li>#}
                                 <li>
                                     <a href="{{path('slope_list')}}">Pistas</a>
                                 </li>
@@ -99,12 +99,18 @@
 
                         <li><a href="{{path('fos_user_security_logout')}}">Cerrar sesión</a></li>
                     </ul>
+                    <div class="nav navbar-nav navbar-right">
+                        <button class="btn btn-default dropdown-toggle" type="button" id="markAllRead" onClick="markAllRead();">
+                            <span class="glyphicon glyphicon-thumbs-up"></span>
+                        </button>
+                    </div>
                     <div class="dropdown  nav navbar-nav navbar-right">
                         <button class="btn btn-default dropdown-toggle" type="button" id="alertDropdown" data-toggle="dropdown">
                             Alertas <span id="alertsBadge" class="badge"></span>
                         </button>
                         <ul id="alerts" class="dropdown-menu" role="menu" aria-labelledby="alertDropdown"></ul>
                     </div>
+                    
                 </div>
             </div>
         </div>

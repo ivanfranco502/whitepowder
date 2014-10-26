@@ -5,7 +5,6 @@ var slopes = [];
 var markers = {};
 var counter = 0;
 var iterator = 0;
-//var interval = 2000;
 var selected = [];
 
 
@@ -26,7 +25,7 @@ function getMarkers() {
             });
             setMarkers(map, skiers);
             skiers = [];
-            window.setTimeout(getMarkers, interval);
+            window.setTimeout(getMarkers, intervalSkiers);
         }
     });
 }

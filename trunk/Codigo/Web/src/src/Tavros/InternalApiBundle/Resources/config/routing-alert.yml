@@ -10,3 +10,7 @@ tavros_internalApi_alert_read:
     pattern:  /read/{id}
     defaults: { _controller: TavrosInternalApiBundle:Alert:read }
 
+tavros_internalApi_alert_read:
+    pattern:  /read/all
+    defaults: { _controller: TavrosInternalApiBundle:Alert:readAll }
+
