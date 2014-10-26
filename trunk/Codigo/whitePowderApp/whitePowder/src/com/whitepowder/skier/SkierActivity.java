@@ -301,6 +301,7 @@ public class SkierActivity extends Activity {
 	    filter.setPriority(IntentFilter.SYSTEM_HIGH_PRIORITY + 1);
 		r = new MediaButtonIntentReceiver();
 	    registerReceiver(r, filter);
+	    
 	    ((AudioManager)getSystemService(AUDIO_SERVICE)).registerMediaButtonEventReceiver(new ComponentName(
                 this, MediaButtonIntentReceiver.class));
 	}
@@ -354,7 +355,7 @@ public class SkierActivity extends Activity {
 		
 		//Setups options menu
 		butSubmenu.setOnClickListener(new OnClickListener() {  
-			@Override  
+			@Override 
 			public void onClick(View v) {  
 	         	 
 				PopupMenu popup = new PopupMenu(SkierActivity.this, butSubmenu);  
@@ -518,7 +519,7 @@ public class SkierActivity extends Activity {
 	@Override
 	public void onResume(){
 		super.onResume();
-		setupPeripheralIntegratorMasterManager();
+		//setupPeripheralIntegratorMasterManager();
 	}
 	
 	@Override
