@@ -94,7 +94,7 @@ class AlertController extends Controller {
         return $response;
     }
 
-    //READ ID ALERTS
+    //MARK READ ALERT BY ID
     public function readAction($id) {
         $logger = $this->container->get('logger');
         $serializer = $this->container->get('jms_serializer');
@@ -115,6 +115,25 @@ class AlertController extends Controller {
         return $response;
     }
 
+    //MARK ALL ALERT AS READ
+    public function readAllAction() {
+        $logger = $this->container->get('logger');
+        $serializer = $this->container->get('jms_serializer');
+        $apiResponse = new ApiResponse();
+        $response = new Response();
+        $response->headers->set('Content-Type', 'application/json');
+        $em = $this->container->get('Doctrine')->getManager();
+        //TODO VERIFICAR QUE SEA ADMINISITRADOR
+
+        $em->getRepository('TavrosDomainBundle:Alert')->markAllAsRead();
+        
+        $apiResponse->setCode(200);
+        $apiResponse->setPayload('');
+        $response->setContent($serializer->serialize($apiResponse, 'json'));
+        return $response;
+    }
+
+    //NOTIFY TO ALL RESCUER
     private function notifyAllRescuer(\Tavros\DomainBundle\Entity\Alert $alert, $apiKey) {
         $registration_ids = array();
         $em = $this->container->get('Doctrine')->getManager();

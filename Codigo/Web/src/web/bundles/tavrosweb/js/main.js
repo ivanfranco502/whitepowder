@@ -9,12 +9,12 @@ function getAlerts() {
         success: function (data, textStatus, jqXHR) {
             alerts = data.payload.last;
             $('#alertsBadge').text(data.payload.total);
-            var lalal = setTimeout(getAlerts, interval);
+            var lalal = setTimeout(getAlerts, intervalAlerts);
             $('#alerts').empty();
             $('#alerts').append('<div id="alert-list" class="list-group"></div>');
             alerts.forEach(function (alert) {
                 $('#alerts #alert-list').append(
-                        '<a href="' + BASE_URL + MODE + "/web/" + PROFILER + '/administrator/center" class="list-group-item" data-item-id="' + alert.aler_id +'">'
+                        '<a href="' + BASE_URL + MODE + "/web/" + PROFILER + '/administrator/center" class="list-group-item" data-item-id="' + alert.aler_id + '">'
                         + '<h4 class = "list-group-item-heading">' + alert.aler_user.username + '</h4>'
                         + '<p class = "list-group-item-text">Lat:' + alert.aler_x_position + '</p>'
                         + '<p class = "list-group-item-text">Long:' + alert.aler_y_position + '</p></a>');
@@ -38,6 +38,18 @@ function markRead(id) {
     });
 }
 
+function markAllRead() {
+    $.ajax({
+        url: BASE_URL + MODE + "/web/" + PROFILER + "/internalApi/alert/read/all",
+        dataType: "json",
+        type: "POST",
+        data: {
+        },
+        success: function (data, textStatus, jqXHR) {
+            location.reload();
+        }
+    });
+}
 $(document).ready(function () {
     getAlerts();
 });
