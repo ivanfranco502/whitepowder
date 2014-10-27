@@ -2,6 +2,10 @@ parameters:
 #    tavros_web.example.class: Tavros\WebBundle\Example
 
 services:
+    tavros_help_user.registration.form.type:
+        class: Tavros\HelpUserBundle\Form\Type\RegistrationFormType
+        tags:
+            - { name: form.type, alias: tavros_help_user_registration }
 #    tavros_web.example:
 #        class: %tavros_web.example.class%
 #        arguments: [@service_id, "plain_value", %parameter%]

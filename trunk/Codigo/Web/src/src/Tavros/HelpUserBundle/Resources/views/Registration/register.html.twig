@@ -1,5 +1,9 @@
-{% extends "FOSUserBundle::layout.html.twig" %}
+{% extends "TavrosWebBundle::layout.html.twig" %}
 
-{% block content %}
-{% include "FOSUserBundle:Registration:register_content.html.twig" %}
-{% endblock content %}
+{% block main_content %}
+    {% include "FOSUserBundle:Registration:register_content.html.twig" %}
+{% endblock main_content %}
+
+{% block addJs %}
+    <script src="{{asset('bundles/tavrosweb/js/sha1.js')}}" type="text/javascript"></script>
+{% endblock addJs %}

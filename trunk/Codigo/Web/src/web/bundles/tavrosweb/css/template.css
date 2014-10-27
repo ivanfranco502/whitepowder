@@ -83,4 +83,9 @@ body {
 #alert-message{
     resize: vertical;
 }
+/*REGISTER USER*/
+.register input{
+    text-align: right;
+}
+
 

@@ -44,7 +44,7 @@ class GCMController extends Controller {
 //        $registration_ids = array("APA91bHxstSG9Xk-kBcARfJfj77gvqcwGy3EwhjoqNEdSzE-LaGfJzsBQdYPRSXpBII7YD8mZiFRgdjsdFMHtHoHBcpntzMK0FTtFK4Esu2T8fh3jh_k9u1sGDRUz74pfuHcYgNFXcOE1EWXgRFeUy9mY-33al_asi6qszNLc8sBg-BD_Y7S3gM");
         
         $message = array(
-            "id" => "1",
+            "id" => 1,
             "title" => "Alerta",
             "body" => ''.$body.''
         );
