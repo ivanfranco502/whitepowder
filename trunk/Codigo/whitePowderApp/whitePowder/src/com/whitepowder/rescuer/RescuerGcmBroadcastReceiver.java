@@ -38,7 +38,7 @@ public class RescuerGcmBroadcastReceiver extends BroadcastReceiver {
 			mContext =  context;
 			mIntent = intent;
 			
-			if(intent.getIntExtra("id",	-1) == 100){
+			if((Integer.parseInt(intent.getStringExtra("id")))==100){
 				//It's an accident! OMG!
 				processAccident();
 			}
@@ -54,7 +54,7 @@ public class RescuerGcmBroadcastReceiver extends BroadcastReceiver {
 		Intent notifyAppIntent = new Intent(RescuerActivity.GCM_ALERT_INTENT_ACTION);
 		notifyAppIntent.putExtra("title", mIntent.getStringExtra("title"));
 		notifyAppIntent.putExtra("body", mIntent.getStringExtra("body"));
-		notifyAppIntent.putExtra("id", mIntent.getIntExtra("id", -1));
+		notifyAppIntent.putExtra("id", Integer.parseInt(mIntent.getStringExtra("id")));
 		
 		mContext.sendOrderedBroadcast(notifyAppIntent, null,	
 			new BroadcastReceiver() {
