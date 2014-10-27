@@ -50,6 +50,16 @@ function markAllRead() {
         }
     });
 }
+
 $(document).ready(function () {
     getAlerts();
+
+    $("#fos_user_registration_form_plainPassword_first").change(function () {
+        $(this).val(sha1($(this).val()));
+    });
+
+    $("#fos_user_registration_form_plainPassword_second").change(function () {
+        $(this).val(sha1($(this).val()));
+    });
+
 });

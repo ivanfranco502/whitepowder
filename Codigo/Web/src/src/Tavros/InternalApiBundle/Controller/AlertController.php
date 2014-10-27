@@ -59,15 +59,24 @@ class AlertController extends Controller {
         $receivedAlert->setAlerRead(0);
         $receivedAlert->setAlerDate(new \DateTime(date('Y-m-d H:i:s')));
 
-        $this->notifyAllRescuer($receivedAlert, $apiKey);
-
+        
+        $alertDTO = Array();
+        $alertDTO['date'] = $receivedAlert->getAlerDate();
+        $alertDTO['x'] = $content->coordinate->x;
+        $alertDTO['y'] = $content->coordinate->y;
+        
         $em->persist($receivedAlert);
+        
+        
+        $result = $this->notifyAllRescuer($alertDTO, $apiKey);
+
+//        $em->persist($receivedAlert);
         $lastPosition->setUscoAlert($receivedAlert);
         $em->persist($lastPosition);
         $em->flush();
 
         $apiResponse->setCode(200);
-        $apiResponse->setPayload('');
+        $apiResponse->setPayload($result);
         $response->setContent($serializer->serialize($apiResponse, 'json'));
         return $response;
     }
@@ -134,7 +143,7 @@ class AlertController extends Controller {
     }
 
     //NOTIFY TO ALL RESCUER
-    private function notifyAllRescuer(\Tavros\DomainBundle\Entity\Alert $alert, $apiKey) {
+    private function notifyAllRescuer($alert, $apiKey) {
         $registration_ids = array();
         $em = $this->container->get('Doctrine')->getManager();
 
@@ -157,13 +166,13 @@ class AlertController extends Controller {
             }
 
             if ($role == 'ROLE_RESCU') {
-                $user_externals = $em->getRepository('TavrosDomainBundle:ExternalData')->findOneByExdaUser($users);
+                $user_externals = $em->getRepository('TavrosDomainBundle:ExternalData')->findOneByExdaUser($user);
                 $registration_ids[] = $user_externals->getExdaRegistrationCode();
             }
         }
 
         $message = array(
-            "id" => "911",
+            "id" => 100,
             "title" => "Accidente",
             "body" => json_encode($alert)
         );
