@@ -1,0 +1,81 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/gr_background"
+    tools:context="com.example.actionbartest.SkierActivity" >
+     
+	       
+	<ImageButton
+		android:id="@+id/bt_submenu_rescu"
+      	style="?android:attr/buttonBarButtonStyle"
+     	android:contentDescription="Submenu"
+     	android:layout_width="35dp"
+ 		android:layout_height="15dp"
+ 		android:layout_marginTop="16dp"
+ 		android:layout_marginLeft="20dp"
+ 		android:layout_alignParentLeft="true"
+ 		android:background="@drawable/ic_submenu" />
+	      
+	<LinearLayout
+        android:id="@+id/RescuerLin1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/bt_submenu_rescu"
+        android:layout_marginTop="35dp"
+        android:orientation="vertical"
+        android:weightSum="6">
+	    
+	    <ImageView
+	        android:id="@+id/logowp_slope"
+	        android:contentDescription="Logowp"
+	        android:layout_width="match_parent"
+	        android:layout_height="0dp"
+	        android:layout_below="@id/bt_submenu_rescu"
+	        android:layout_weight="3"
+	        android:src="@drawable/ic_bannerwp"/>
+	    
+	    <RelativeLayout
+	         android:id="@+id/RescuerLin2"
+	         android:layout_width="match_parent"
+	         android:layout_height="0dp"
+	         android:layout_weight="3"
+	         android:layout_below="@id/logowp_slope"
+	         android:orientation="vertical">
+	         
+			<RelativeLayout
+		        android:id="@+id/RescuerMargin1"
+		        android:layout_height="5dp"
+		        android:layout_width="match_parent"
+		        android:background="#055777"/>
+	
+	        <RelativeLayout
+		        android:id="@+id/SlopeRecBan1"
+		        android:layout_height="30dp"
+		        android:layout_width="match_parent"
+		        android:layout_below="@id/RescuerMargin1"
+		        android:background="#038abe">	        
+	         
+			    <TextView
+			        android:id="@+id/SelectTrackBan"
+			        android:layout_width="match_parent"
+			        android:layout_height="wrap_content"
+			        android:gravity="center"
+			        android:text="RESCATISTA"
+			        android:textColor="#ffffff"
+			        android:textSize="20sp"/>   
+	            	        
+	        </RelativeLayout>
+
+		    <ListView
+		        android:id="@+id/rescuer_inbox_list"
+		        android:layout_below="@+id/SlopeRecBan1"
+		        android:layout_width="match_parent"
+		        android:layout_height="match_parent" >
+		       
+		    </ListView>
+	            
+       </RelativeLayout> 
+	</LinearLayout>
+</RelativeLayout>
+		

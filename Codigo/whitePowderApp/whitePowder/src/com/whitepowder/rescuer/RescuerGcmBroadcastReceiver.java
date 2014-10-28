@@ -88,9 +88,8 @@ public class RescuerGcmBroadcastReceiver extends BroadcastReceiver {
 	
 	private void processAccident(){
 		Intent notifyAppIntent = new Intent(RescuerActivity.GCM_ACCIDENT_INTENT_ACTION);
-		/*notifyAppIntent.putExtra("title", mIntent.getStringExtra("title"));
+		notifyAppIntent.putExtra("title", mIntent.getStringExtra("title"));
 		notifyAppIntent.putExtra("body", mIntent.getStringExtra("body"));
-		notifyAppIntent.putExtra("id", mIntent.getIntExtra("id", -1));*/
 		
 		mContext.sendOrderedBroadcast(notifyAppIntent, null,	
 			new BroadcastReceiver() {
