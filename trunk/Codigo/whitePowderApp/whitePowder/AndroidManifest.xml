@@ -163,7 +163,13 @@
         <activity
             android:name="com.whitepowder.rescuer.RescuerActivity"
             android:label="@string/title_activity_rescuer"
-            android:launchMode="singleTask" >"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" />
+            
+		<activity
+            android:name="com.whitepowder.rescuer.RescuerMap"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" >
         </activity>
     </application>
 

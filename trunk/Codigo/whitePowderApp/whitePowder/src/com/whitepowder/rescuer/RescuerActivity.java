@@ -1,27 +1,14 @@
 package com.whitepowder.rescuer;
 
 import java.util.ArrayList;
-import java.util.List;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import com.example.whitepowder.R;
-import com.google.android.gms.maps.CameraUpdate;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.PolylineOptions;
-import com.google.gson.Gson;
 import com.whitepowder.gcmModule.AlertDisplayActivity;
 import com.whitepowder.gcmModule.GCM;
-import com.whitepowder.skier.Coordinate;
-import com.whitepowder.skier.SkierActivity;
 import com.whitepowder.skier.SkierModeStopperThread;
-import com.whitepowder.skier.map.DrawableSlope;
-import com.whitepowder.skier.map.DrawableSlopeContainer;
-import com.whitepowder.storage.StorageConstants;
-import com.whitepowder.utils.ReadFile;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
@@ -31,16 +18,19 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
-import android.graphics.Color;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ListView;
 import android.widget.Toast;
 
 public class RescuerActivity extends Activity {
 
-	private GoogleMap mMap = null;
-	private RescuerActivity mContext;
+	private Context mContext;
 	private LocationManager mLocationManager;
 	private ServiceConnection mConnection;
 	private AlertDialog alertNoGPS = null;
@@ -52,16 +42,21 @@ public class RescuerActivity extends Activity {
 	private BroadcastReceiver mAlertReceiver = null;
 	private BroadcastReceiver mAccidentReceiver = null;
 	
-	private List<Victim> accidents;
+	private ArrayList<Victim> accidents;
+	private InboxAdapter adapter;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.rescuer_activity);
-		mContext = this;
-		accidents = new ArrayList();
+		setContentView(R.layout.rescuer_inbox);
 		
-		setupMap();
+		mContext = getApplicationContext();
+		
+		accidents = new ArrayList<Victim>();
+		adapter = new InboxAdapter(this, R.layout.rescuer_inbox_item, accidents);
+		
+		//Setups list view
+		setupListView();
 		
 		// Acquire reference to the LocationManager
 		if (null == (mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE))){
@@ -82,91 +77,69 @@ public class RescuerActivity extends Activity {
         
         
 	}
+	
 
-	public void setupMap(){
+	private void setupListView(){
+		ListView la = (ListView) findViewById(R.id.rescuer_inbox_list);			
+		View footer = ((LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.rescuer_inbox_footer,null, false);
+		la.addFooterView(footer);
+		la.setAdapter(adapter);
 		
-		//Gets map
-		mMap = ((com.google.android.gms.maps.MapFragment) getFragmentManager().findFragmentById(R.id.rescuer_map_fragment)).getMap();
-		mMap.setMyLocationEnabled(true);
-		mMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
-		
-		//Find points
-		
-		Gson gson = new Gson();
-		String data = ReadFile.read_file(mContext.getApplicationContext(), StorageConstants.DRAWABLE_SLOPES_FILE);	
-		
-		if((data!=null)||(data!="")){
-			DrawableSlopeContainer dsc = gson.fromJson(data, DrawableSlopeContainer.class);
-			drawSlopes(dsc);	
+		la.setOnItemClickListener(new OnItemClickListener() {
 			
-			//Setups zoom and center
-	        
-	        CameraUpdate cam = CameraUpdateFactory.newLatLngZoom(determineCenter(dsc),13);
-	        mMap.moveCamera(cam);
-		};
-	
-	}
-	
-	private void drawSlopes(DrawableSlopeContainer dsc){
-	
-		if(dsc.getCode()==200){
-			
-			for(DrawableSlope ds: dsc.getPayload()){
-				if(ds.getSlope_coordinates()!=null && ds.getSlope_coordinates().size() > 0){
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View v, int position,	long arg3) {
+				JSONObject mensaje = new JSONObject();
+				JSONArray array = new JSONArray();
+				
+				if(position<accidents.size()){
+					JSONObject accidente = new JSONObject();
 					
-					PolylineOptions plo = new PolylineOptions();
-				    plo.width(6);
-				    plo.color(Color.parseColor("#"+ds.getSlope_difficulty_color()));
-			
-					for(Coordinate c: ds.getSlope_coordinates()){
-						plo.add(new LatLng(c.x, c.y));
+					Victim item = adapter.getItem(position);
+				
+					try {
+						accidente.put("username", item.getUsername());
+						accidente.put("x", item.getLocation().x);
+						accidente.put("y", item.getLocation().y);
+						array.put(accidente);
+						mensaje.put("accidentes",array);
+					} 
+	
+					catch (JSONException e) {
+						//TODO handle error
+					};
+					
+				}
+				else{
+
+					try {				
+						for (Victim victim : accidents) {
+	
+							JSONObject accidente = new JSONObject();
+							accidente.put("username", victim.getUsername());
+							accidente.put("x", victim.getLocation().x);
+							accidente.put("y", victim.getLocation().y);
+							array.put(accidente);								
+	
+						};
+						mensaje.put("accidentes", array);
 					}
-					 
-					mMap.addPolyline(plo);
-					
-					//Adds start marker
-					
-					mMap.addMarker(new MarkerOptions()
-			        .position(new LatLng(ds.getSlope_coordinates().get(0).x, ds.getSlope_coordinates().get(0).y))
-			        .title("Pista: "+ds.getSlope_description())
-			        .snippet("Longitud: "+Integer.toString(ds.getSlope_length())+" metros")
-			        .icon(BitmapDescriptorFactory
-			            .fromResource(R.drawable.slope_start)));
-					
-					//Adds end marker
-					
-					mMap.addMarker(new MarkerOptions()
-			        .position(new LatLng(ds.getSlope_coordinates().get(ds.getSlope_coordinates().size()-1).x, ds.getSlope_coordinates().get(ds.getSlope_coordinates().size()-1).y))
-			        .title("Fin de "+ds.getSlope_description())
-					        .icon(BitmapDescriptorFactory
-					        	.fromResource(R.drawable.slope_end)));				
-							
+					catch(JSONException e){
+						//TODO handle error
+					};
 				};
-			};
-			
-		};
-	}
-			
-	private LatLng determineCenter(DrawableSlopeContainer dsc){
-		double sumatoriaX=0;
-		double sumatoriaY=0;
-		int count=0;
+				
+				if(array.length()!=0){
+					Intent intent = new Intent(RescuerActivity.this, RescuerMap.class);
+					intent.putExtra("accidentes",mensaje.toString());
+					startActivity(intent);
+				};
 		
-		if(dsc.getCode()==200){
-			for(DrawableSlope ds: dsc.getPayload()){
-				if(ds.getSlope_coordinates()!=null && ds.getSlope_coordinates().size() > 0){					
-					sumatoriaX += ds.getSlope_coordinates().get(0).x;
-					sumatoriaY += ds.getSlope_coordinates().get(0).y;
-					count ++;
-				};
-			};
-			return new LatLng(sumatoriaX/count, sumatoriaY/count);
-		}
-		else{
-			return new LatLng(0, 0);
-		}
-	}
-	
+			}
+		});
+		
+	};
+
 	private void setupRescuerMode(){
 		if (!mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
 			alertNoGps();
@@ -216,7 +189,6 @@ public class RescuerActivity extends Activity {
 			bindService(new Intent(mContext, RescuerService.class), mConnection, Context.BIND_AUTO_CREATE);	
 		};
 		
-		refreshMap();
 	}
 	
 	
@@ -232,7 +204,8 @@ public class RescuerActivity extends Activity {
 			        @Override
 			        public void onReceive(Context context, Intent intent) {
 			        	stopRescuer();
-			        	alertNoGps();			        };
+			        	alertNoGps();			        
+			        };
 			        	        
 			    };
 			    registerReceiver(serviceBroadcastReciever, new IntentFilter(mBoundService.getIntentStopRescuerAction()));
@@ -303,25 +276,24 @@ public class RescuerActivity extends Activity {
 				if (isOrderedBroadcast()) {
 					setResultCode(RESULT_OK);
 					
-					//Add the victim to the list and refresh the map	
-					addAccident(intent);
-					refreshMap();
+					//Add the victim to the accident list	
+					String mensaje = intent.getExtras().getString("body");				
+					
+					try {
+						Victim victima=null;
+						JSONObject mje = new JSONObject(mensaje);
+						victima = new Victim(mje.getString("username"), mje.getDouble("x"),mje.getDouble("y"));
+						adapter.add(victima);
+					} 
+					catch (JSONException e) {
+						//TODO raise error
+					};				
+					
 				};
 			}
 		};
 		
 		registerReceiver(mAccidentReceiver, new IntentFilter(RescuerActivity.GCM_ACCIDENT_INTENT_ACTION));
 	};
-	
-	public void addAccident(Intent intent){
-		//Obtener datos del intent
-		//Instanciar objeto Victim
-		//Add victim a la lista accidents
-	}
-	
-	private void refreshMap(){
-		//Limpiar viejos de la lista de accidents
-		//Remover viejos markers?
-		//Mostrar los markers en el mapa
-	}
+
 }
