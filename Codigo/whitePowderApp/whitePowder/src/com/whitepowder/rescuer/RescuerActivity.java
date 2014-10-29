@@ -8,9 +8,15 @@ import org.json.JSONObject;
 import com.example.whitepowder.R;
 import com.whitepowder.gcmModule.AlertDisplayActivity;
 import com.whitepowder.gcmModule.GCM;
+import com.whitepowder.skier.SkierModeService;
 import com.whitepowder.skier.SkierModeStopperThread;
+import com.whitepowder.storage.SyncThread;
+import com.whitepowder.userManagement.PasswordChangeActivity;
+import com.whitepowder.utils.Logout;
+
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -21,10 +27,14 @@ import android.content.ServiceConnection;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.support.v7.widget.PopupMenu;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 public class RescuerActivity extends Activity {
@@ -34,7 +44,8 @@ public class RescuerActivity extends Activity {
 	private ServiceConnection mConnection;
 	private AlertDialog alertNoGPS = null;
 	private BroadcastReceiver serviceBroadcastReciever=null;
-	private RescuerService mBoundService;
+	private SkierModeService mBoundService;
+	private ImageButton butSubmenu;
 	
 	public static String GCM_ALERT_INTENT_ACTION = "GCM_ALERT_INTENT_ACTION";
 	public static String GCM_ACCIDENT_INTENT_ACTION = "GCM_ACCIDENT_INTENT_ACTION";
@@ -44,11 +55,17 @@ public class RescuerActivity extends Activity {
 	private ArrayList<Victim> accidents;
 	private InboxAdapter adapter;
 	
+	//Sync
+	private ProgressDialog progressDialogSync;
+	private BroadcastReceiver syncFinishedBroadcastReciever=null;
+	private SyncThread sth;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.rescuer_inbox);
 		getActionBar().hide();
+		butSubmenu = (ImageButton) findViewById(R.id.bt_submenu_rescu);
 		
 		mContext = getApplicationContext();
 		
@@ -66,7 +83,12 @@ public class RescuerActivity extends Activity {
 		//Create service connection
         createServiceConnectionAndRegisterForBroadcast();
         
-		setupRescuerMode();
+		//Setups rescuer mode
+        setupRescuerMode();
+		
+        //setups popup menu
+        
+		setupPopupMenu();
 		
 		//Enables GCM
 		new GCM(mContext);
@@ -174,7 +196,8 @@ public class RescuerActivity extends Activity {
 		}
 		else{
 			//Binds to service
-			bindService(new Intent(mContext, RescuerService.class), mConnection, Context.BIND_AUTO_CREATE);			
+			//TODO estoy tocando aca
+			bindService(new Intent(mContext, SkierModeService.class), mConnection, Context.BIND_AUTO_CREATE);			
 		};	
 	}
 	
@@ -208,7 +231,7 @@ public class RescuerActivity extends Activity {
 				alertNoGPS.dismiss();
 				alertNoGPS=null;
 			};
-			bindService(new Intent(mContext, RescuerService.class), mConnection, Context.BIND_AUTO_CREATE);	
+			bindService(new Intent(mContext, SkierModeService.class), mConnection, Context.BIND_AUTO_CREATE);	
 		};
 		
 	}
@@ -219,7 +242,7 @@ public class RescuerActivity extends Activity {
 		mConnection = new ServiceConnection() {
 			@Override
 			public void onServiceConnected(ComponentName className, IBinder service) {
-				mBoundService = ((RescuerService.LocalBinder)service).getService();
+				mBoundService = ((SkierModeService.LocalBinder)service).getService();
 				
 				serviceBroadcastReciever = new BroadcastReceiver() {
 
@@ -230,7 +253,7 @@ public class RescuerActivity extends Activity {
 			        };
 			        	        
 			    };
-			    registerReceiver(serviceBroadcastReciever, new IntentFilter(mBoundService.getIntentStopRescuerAction()));
+			    registerReceiver(serviceBroadcastReciever, new IntentFilter(mBoundService.getIntentStopSkierModeAction()));
 			};
 
 			@Override
@@ -265,6 +288,9 @@ public class RescuerActivity extends Activity {
 		
 		stopRescuer();
 		
+		if(syncFinishedBroadcastReciever!=null){
+			unregisterReceiver(syncFinishedBroadcastReciever);
+		};		
 		if(mAlertReceiver!=null){
 			unregisterReceiver(mAlertReceiver);
 		};
@@ -317,5 +343,111 @@ public class RescuerActivity extends Activity {
 		
 		registerReceiver(mAccidentReceiver, new IntentFilter(RescuerActivity.GCM_ACCIDENT_INTENT_ACTION));
 	};
+	
+	@Override
+	public void onBackPressed() {
+		new AlertDialog.Builder(this)
+	        .setTitle(getString(R.string.alert_exit_title))
+	        .setMessage(getString(R.string.alert_exit_message))
+	        .setNegativeButton(getString(R.string.alert_no), null)
+	        .setPositiveButton(getString(R.string.alert_yes), new DialogInterface.OnClickListener() {
+
+	            public void onClick(DialogInterface arg0, int arg1) {
+	            	
+	            	RescuerActivity.this.finish();
+	            }
+	        }).create().show();
+	};
+	
+	public void onSyncFinished(boolean success){
+		if (success){			
+			//Closes dialog			
+			progressDialogSync.dismiss();			
+		}
+		else{	
+			progressDialogSync.dismiss();
+			Toast.makeText(mContext, getResources().getString(R.string.sync_toast_error), Toast.LENGTH_SHORT).show();
+			
+		};
+		
+	};
+	
+	public void setupOnSyncFinishedListener(){
+		
+		syncFinishedBroadcastReciever = new BroadcastReceiver() {
+
+	        @Override
+	        public void onReceive(Context context, Intent intent) {
+				Boolean success = intent.getExtras().getBoolean("success");
+				onSyncFinished(success);
+	        };
+	    };
+		
+		registerReceiver(syncFinishedBroadcastReciever, new IntentFilter(sth.getIntentOnSyncFinishedAction()));
+	};
+	
+	private void setupPopupMenu(){
+		
+		//Setups options menu
+		butSubmenu.setOnClickListener(new OnClickListener() {  
+			@Override 
+			public void onClick(View v) {  
+	         	 
+				PopupMenu popup = new PopupMenu(RescuerActivity.this, butSubmenu);  
+				popup.getMenuInflater().inflate(R.menu.popup_menu_submenu, popup.getMenu());  
+
+				//registering popup with OnMenuItemClickListener  
+				popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {  
+					public boolean onMenuItemClick(MenuItem item) {
+						switch (item.getItemId()) {
+						case R.id.submenu_logout:      			  
+							new AlertDialog.Builder(RescuerActivity.this)
+							.setTitle(getString(R.string.alert_exit_title))
+	         			  	.setMessage(getString(R.string.alert_exit_message))
+	         			  	.setNegativeButton(getString(R.string.alert_no), null)
+	         			  	.setPositiveButton(getString(R.string.alert_yes), new DialogInterface.OnClickListener() {
+
+	         			  		public void onClick(DialogInterface arg0, int arg1) {
+	         		            	
+	         			  			Logout.logout(mContext, false);		  
+	         			  		}
+	         			  	}).create().show();
+							break;
+	         				
+						case R.id.submenu_change_password:
+	         			  
+							Intent intent = new Intent(mContext, PasswordChangeActivity.class);
+							startActivity(intent);
+							break;
+							
+						case R.id.submenu_sync:
+		         			
+							//Starts sync dialog
+							progressDialogSync = new ProgressDialog(RescuerActivity.this);
+							progressDialogSync.setMessage(getResources().getString(R.string.sync_dialog_message));
+							progressDialogSync.setCancelable(false);
+							progressDialogSync.setIndeterminate(true);
+							progressDialogSync.show();
+							
+							//Starts sync task
+							sth = new SyncThread();
+							setupOnSyncFinishedListener();
+							sth.execute(mContext);
+							
+							break;
+	         			 
+						default:
+							break;
+						}
+	         		  
+						return true;  
+					}  
+				});  
+				
+				popup.show(); 
+			}  
+		});
+	};
+	
 
 }

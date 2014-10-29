@@ -74,7 +74,7 @@ public class SkierModeService extends Service  {
     
 	
     public class LocalBinder extends Binder {
-        SkierModeService getService() {
+        public SkierModeService getService() {
             return SkierModeService.this;
         }
     };

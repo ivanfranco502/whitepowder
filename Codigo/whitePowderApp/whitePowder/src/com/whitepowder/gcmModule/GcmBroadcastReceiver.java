@@ -1,6 +1,7 @@
 package com.whitepowder.gcmModule;
 
 import com.example.whitepowder.R;
+import com.whitepowder.rescuer.RescuerActivity;
 import com.whitepowder.skier.SkierActivity;
 import com.whitepowder.userManagement.User;
 
@@ -17,6 +18,7 @@ public class GcmBroadcastReceiver extends BroadcastReceiver {
 
 	private long[] mVibratePattern = { 0, 200, 200, 300 };
 	private int MY_NOTIFICATION_ID = 1;
+	private int ACCIDENT_NOTIFICATION_ID = 2;
 	
 	@Override
 	public void onReceive(Context context, Intent intent) {
@@ -29,54 +31,98 @@ public class GcmBroadcastReceiver extends BroadcastReceiver {
 		else{
 			role=User.getUserInstance().getRole();
 		};
-			
-		if((role.equals("ROLE_SKIER"))||(role.equals("UNKNOWN"))){
-			
-			Intent notifyAppIntent = new Intent(SkierActivity.GCM_ALERT_INTENT_ACTION);
-			notifyAppIntent.putExtra("title", intent.getStringExtra("title"));
-			notifyAppIntent.putExtra("body", intent.getStringExtra("body"));
-			notifyAppIntent.putExtra("id", intent.getIntExtra("id", -1));
-			
-			context.sendOrderedBroadcast(
-					notifyAppIntent, 
-					null,
-					new BroadcastReceiver() {
-	
-						@Override
-						public void onReceive(Context context, Intent intent) {
-	
-							if (getResultCode() != Activity.RESULT_OK) {
-								PendingIntent pendingIntent=null;
-								
-								Intent displayIntent = new Intent(context, AlertDisplayActivity.class);
-								displayIntent.putExtras(intent.getExtras());
-								
-								pendingIntent = PendingIntent.getActivity(context, 0, displayIntent, 0);
-								
-								NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context)
-									
-									.setSmallIcon(R.drawable.ic_notif)
-									.setContentTitle(intent.getStringExtra("title"))
-									.setContentText(intent.getStringExtra("body"))
-									.setContentIntent(pendingIntent)
-									.setAutoCancel(true)
-									.setVibrate(mVibratePattern);
-				
-							
-									//TODO set sound alert
-									//.setSound(soundURI)
-	
-								// Pass the Notification to the NotificationManager:
-								NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);											
-								mNotificationManager.notify(MY_NOTIFICATION_ID, notificationBuilder.build());	
-								
-							}
-						}
-					}, 
-					null, 
-					0, 
-					null, 
-					null);
+		
+		if((Integer.parseInt(intent.getStringExtra("id")))==100){
+			//It's an accident! OMG!
+			if(role.equals("ROLE_RESCU")){
+				processAccident(context, intent);
+			};
 		}
-	}
+		else{
+			procesAlert(context, intent);
+		}
+
+	};
+	
+	private void processAccident(Context context, Intent intent){
+		Intent notifyAppIntent = new Intent(RescuerActivity.GCM_ACCIDENT_INTENT_ACTION);
+		notifyAppIntent.putExtra("title", intent.getStringExtra("title"));
+		notifyAppIntent.putExtra("body", intent.getStringExtra("body"));
+		
+		context.sendOrderedBroadcast(notifyAppIntent, null,	
+			new BroadcastReceiver() {
+				@Override
+				public void onReceive(Context context, Intent intent) {
+					if (getResultCode() != Activity.RESULT_OK) {
+						PendingIntent pendingIntent=null;
+						
+						Intent displayIntent = new Intent(context, RescuerActivity.class);
+						displayIntent.putExtras(intent.getExtras());
+						pendingIntent = PendingIntent.getActivity(context, 0, displayIntent, 0);
+						NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context)
+							.setSmallIcon(R.drawable.ic_accident)
+							/*.setContentTitle(intent.getStringExtra("title"))
+							.setContentText(intent.getStringExtra("body"))*/
+							.setContentIntent(pendingIntent)
+							.setAutoCancel(true)
+							.setVibrate(mVibratePattern);
+		
+					
+							//TODO set sound alert
+							//.setSound(soundURI)
+
+						// Pass the Notification to the NotificationManager:
+						NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);											
+						mNotificationManager.notify(ACCIDENT_NOTIFICATION_ID, notificationBuilder.build());
+					}
+				}
+			}, null, 0, null, null);
+	};
+	
+	private void procesAlert(Context context, Intent intent){
+		Intent notifyAppIntent = new Intent(SkierActivity.GCM_ALERT_INTENT_ACTION);
+		notifyAppIntent.putExtra("title", intent.getStringExtra("title"));
+		notifyAppIntent.putExtra("body", intent.getStringExtra("body"));
+		notifyAppIntent.putExtra("id", intent.getIntExtra("id", -1));
+		
+		context.sendOrderedBroadcast(
+				notifyAppIntent, 
+				null,
+				new BroadcastReceiver() {
+
+					@Override
+					public void onReceive(Context context, Intent intent) {
+
+						if (getResultCode() != Activity.RESULT_OK) {
+							PendingIntent pendingIntent=null;
+							
+							Intent displayIntent = new Intent(context, AlertDisplayActivity.class);
+							displayIntent.putExtras(intent.getExtras());
+							
+							pendingIntent = PendingIntent.getActivity(context, 0, displayIntent, 0);
+							
+							NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context)
+								
+								.setSmallIcon(R.drawable.ic_notif)
+								.setContentTitle(intent.getStringExtra("title"))
+								.setContentText(intent.getStringExtra("body"))
+								.setContentIntent(pendingIntent)
+								.setAutoCancel(true)
+								.setVibrate(mVibratePattern);
+			
+						
+								//TODO set sound alert
+								//.setSound(soundURI)
+
+							// Pass the Notification to the NotificationManager:
+							NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);											
+							mNotificationManager.notify(MY_NOTIFICATION_ID, notificationBuilder.build());	
+							
+						}
+					}
+				}, null, 0, null, null);
+	};
+		
+		
+
 }
