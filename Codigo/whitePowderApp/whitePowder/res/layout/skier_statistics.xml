@@ -292,34 +292,88 @@
     
     </ScrollView>
     
-	<RelativeLayout 
-      android:id="@+id/RelativeLayout3"
-      android:layout_width="match_parent"
-      android:layout_height="0dp"
-      android:layout_weight="3"
-      android:gravity="bottom">
-
-      <ImageView
+	       <RelativeLayout 
+		       android:id="@+id/RelativeLayout3"
+		       android:layout_width="match_parent"
+		       android:layout_height="0dp"
+		       android:layout_weight="3"
+		       android:gravity="bottom">
+	           
+		<RelativeLayout
           android:id="@+id/emergency_background"
           android:layout_width="match_parent"
           android:layout_height="60dp"
-          android:padding="0dp"
-          android:scaleType="fitXY"
-          android:src="@drawable/slider_primary" />
-      
-      <SeekBar
-          android:id="@+id/emergency_seekBar"
-          android:layout_width="match_parent"
-          android:layout_height="60dp"
-          android:minHeight="60dp"
-          android:maxHeight="60dp"
-          android:indeterminate="false"
-          android:paddingLeft="11dp"
-          android:paddingRight="11dp"
-          android:progressDrawable="@android:color/transparent"
-          android:thumb="@drawable/thumb_emergency"
-          android:thumbOffset="9dp" />
+          android:background="@drawable/gr_emergency">
 
-     </RelativeLayout>
+         <RelativeLayout
+		  android:id="@+id/LinearLayout4"
+	      android:layout_width="match_parent"
+	      android:layout_height="match_parent"
+	      android:orientation="horizontal"
+	      android:gravity="center" >
+         
+         <ImageView
+             android:id="@+id/progressBar1"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:layout_centerVertical="true"
+             android:src="@drawable/ic_progressbar3"
+             android:scaleType="centerInside"
+             android:layout_marginRight="140dp"/>
+         
+		 <TextView
+	        android:id="@+id/help"
+	        android:layout_width="match_parent"
+	        android:layout_height="match_parent"
+	        android:layout_centerVertical="true"
+	        android:text="AYUDA"
+	        android:alpha="0.5"
+	        android:gravity="center"
+	        android:textColor="#ffffff"
+	        android:textSize="20dp"/>
+         
+		<ImageView
+             android:id="@+id/progressBar2"
+             android:layout_width="match_parent"
+             android:layout_height="60dp"
+			 android:layout_centerVertical="true"
+             android:src="@drawable/ic_progressbar3"
+             android:scaleType="centerInside"
+			 android:layout_marginLeft="140dp"/>
+
+		</RelativeLayout>
+		
+        <RelativeLayout
+		  android:id="@+id/RelativeLayout5"
+	      android:layout_width="match_parent"
+	      android:layout_height="60dp"
+	      android:gravity="right" >
+         
+         <ImageView
+             android:id="@+id/mountainBar"
+             android:layout_height="60dp"
+             android:layout_width="60dp"
+             android:layout_marginRight="10dp"
+             android:src="@drawable/ic_emerg_bar3"
+             android:scaleType="centerInside"/>
+
+		</RelativeLayout>         
+      
+	       <SeekBar
+	           android:id="@+id/emergency_seekBar"
+	           android:layout_width="fill_parent"
+	           android:layout_height="60dp"
+	           android:indeterminate="false"
+	           android:minHeight="60dp"
+	           android:maxHeight="60dp"
+	           android:paddingLeft="20dp"
+	           android:paddingRight="15dp"
+	           android:progressDrawable="@android:color/transparent"
+	           android:thumb="@drawable/thumb_emergency"
+	           android:thumbOffset="9dp" />
+
+	       </RelativeLayout>
+	       
+		</RelativeLayout>
 
 </LinearLayout>
