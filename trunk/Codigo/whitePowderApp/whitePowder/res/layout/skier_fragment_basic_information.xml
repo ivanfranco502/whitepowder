@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" 
     android:background="#ffffff"
-    android:weightSum="32"
+    android:weightSum="27"
     android:orientation="vertical" >
     
         
@@ -11,7 +11,7 @@
         android:id="@+id/ScrollviewBasicInfo"
         android:layout_height="0dp"
         android:layout_width="match_parent"
-        android:layout_weight="28"  >
+        android:layout_weight="24"  >
     <RelativeLayout
         android:id="@+id/BasicRel1"
         android:layout_height="match_parent"
@@ -359,13 +359,18 @@
 	</RelativeLayout>
 	</ScrollView>
 	
-     <RelativeLayout 
-      android:id="@+id/RelativeLayout3"
-      android:layout_width="match_parent"
-      android:layout_height="0dp"
-      android:layout_weight="4"
-      android:background="@drawable/gr_emergency"
-      android:gravity="bottom">
+	       <RelativeLayout 
+		       android:id="@+id/RelativeLayout3"
+		       android:layout_width="match_parent"
+		       android:layout_height="0dp"
+		       android:layout_weight="3"
+		       android:gravity="bottom">
+	           
+		<RelativeLayout
+          android:id="@+id/emergency_background"
+          android:layout_width="match_parent"
+          android:layout_height="60dp"
+          android:background="@drawable/gr_emergency">
 
          <RelativeLayout
 		  android:id="@+id/LinearLayout4"
@@ -377,9 +382,9 @@
          <ImageView
              android:id="@+id/progressBar1"
              android:layout_width="match_parent"
-             android:layout_height="40dp"
+             android:layout_height="match_parent"
              android:layout_centerVertical="true"
-             android:src="@drawable/ic_progressbar"
+             android:src="@drawable/ic_progressbar3"
              android:scaleType="centerInside"
              android:layout_marginRight="140dp"/>
          
@@ -392,14 +397,14 @@
 	        android:alpha="0.5"
 	        android:gravity="center"
 	        android:textColor="#ffffff"
-	        android:textSize="15dp"/>
+	        android:textSize="20dp"/>
          
 		<ImageView
              android:id="@+id/progressBar2"
              android:layout_width="match_parent"
-             android:layout_height="40dp"
+             android:layout_height="60dp"
 			 android:layout_centerVertical="true"
-             android:src="@drawable/ic_progressbar"
+             android:src="@drawable/ic_progressbar3"
              android:scaleType="centerInside"
 			 android:layout_marginLeft="140dp"/>
 
@@ -413,10 +418,10 @@
          
          <ImageView
              android:id="@+id/mountainBar"
-             android:layout_height="match_parent"
-             android:layout_width="70dp"
-             android:paddingTop="5dp"
-             android:src="@drawable/ic_emerg_bar"
+             android:layout_height="60dp"
+             android:layout_width="60dp"
+             android:layout_marginRight="10dp"
+             android:src="@drawable/ic_emerg_bar3"
              android:scaleType="centerInside"/>
 
 		</RelativeLayout>         
@@ -424,16 +429,18 @@
 	       <SeekBar
 	           android:id="@+id/emergency_seekBar"
 	           android:layout_width="fill_parent"
-	           android:layout_height="wrap_content"
+	           android:layout_height="60dp"
 	           android:indeterminate="false"
 	           android:minHeight="60dp"
 	           android:maxHeight="60dp"
-	           android:paddingLeft="15dp"
+	           android:paddingLeft="20dp"
 	           android:paddingRight="15dp"
 	           android:progressDrawable="@android:color/transparent"
 	           android:thumb="@drawable/thumb_emergency"
 	           android:thumbOffset="9dp" />
 
-     </RelativeLayout>
+	       </RelativeLayout>
+	       
+		</RelativeLayout>
 		
 </LinearLayout>
