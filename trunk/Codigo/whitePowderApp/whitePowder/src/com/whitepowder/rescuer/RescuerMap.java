@@ -39,9 +39,12 @@ public class RescuerMap extends Activity {
 		mContext = getApplicationContext();
 		
 		setContentView(R.layout.rescuer_activity);
-		accidents = parseVictims(getIntent().getExtras().getString("accidentes"));
-		setupMap();
+		getActionBar().hide();
 		
+		accidents = parseVictims(getIntent().getExtras().getString("accidentes"));
+		
+		setupMap();
+		drawAccidents();
 		
 	};
 	
@@ -63,7 +66,7 @@ public class RescuerMap extends Activity {
 		
 		
 		return victims;
-	}
+	};
 	
 	private void setupMap(){
 		
@@ -88,7 +91,7 @@ public class RescuerMap extends Activity {
 	        mMap.moveCamera(cam);
 		};
 	
-	}
+	};
 	
 	private void drawSlopes(DrawableSlopeContainer dsc){
 	
@@ -148,6 +151,18 @@ public class RescuerMap extends Activity {
 		else{
 			return new LatLng(0, 0);
 		}
-	}
+	};
+	
+	private void drawAccidents(){
+		
+		for (Victim accident : accidents) {
+			mMap.addMarker(new MarkerOptions()
+	        .position(new LatLng(accident.getLocation().x,accident.getLocation().y))
+	        .title(accident.getUsername())
+	        	.icon(BitmapDescriptorFactory
+			    .fromResource(R.drawable.marker_accident)));	
+		};	
+		
+	};
 
 }

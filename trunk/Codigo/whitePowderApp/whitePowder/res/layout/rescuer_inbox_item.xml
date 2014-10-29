@@ -7,6 +7,9 @@
         android:id="@+id/rescuer_inbox_item_title"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_centerInParent="true" />
-
+        android:textSize="20sp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+       	android:gravity="center"/> 
+        
 </RelativeLayout>
