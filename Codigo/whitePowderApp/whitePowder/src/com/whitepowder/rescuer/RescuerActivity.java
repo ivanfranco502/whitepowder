@@ -27,7 +27,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.Toast;
-
 public class RescuerActivity extends Activity {
 
 	private Context mContext;
@@ -49,6 +48,7 @@ public class RescuerActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.rescuer_inbox);
+		getActionBar().hide();
 		
 		mContext = getApplicationContext();
 		
@@ -84,6 +84,34 @@ public class RescuerActivity extends Activity {
 		View footer = ((LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.rescuer_inbox_footer,null, false);
 		la.addFooterView(footer);
 		la.setAdapter(adapter);
+		
+		//Setup Swipe adapter
+		
+		SwipeDismissListViewTouchListener touchListener =
+	                new SwipeDismissListViewTouchListener(
+	                        la,
+	                        new SwipeDismissListViewTouchListener.DismissCallbacks() {
+	                            @Override
+	                            public boolean canDismiss(int position) {
+	                            	if(position==accidents.size()){
+	                            		return false;
+	                            	}
+	                            	else{
+	                            		return true;
+	                            	}
+	                                
+	                            };
+
+	                            @Override
+	                            public void onDismiss(ListView listView, int[] reverseSortedPositions) {
+	                                for (int position : reverseSortedPositions) {
+	                                    adapter.remove(adapter.getItem(position));
+	                                }
+	                                adapter.notifyDataSetChanged();
+	                            }
+	                        });
+		la.setOnTouchListener(touchListener);		
+		la.setOnScrollListener(touchListener.makeScrollListener());	
 		
 		la.setOnItemClickListener(new OnItemClickListener() {
 			
@@ -152,7 +180,7 @@ public class RescuerActivity extends Activity {
 	
 	private void alertNoGps() {
 		if (alertNoGPS == null){
-			final AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+			final AlertDialog.Builder builder = new AlertDialog.Builder(RescuerActivity.this);
 			builder.setMessage("El sistema GPS está desactivado, debe activarlo para continuar.")
 				.setCancelable(false)
 		        .setPositiveButton("Activar GPS", new DialogInterface.OnClickListener() {
@@ -164,19 +192,9 @@ public class RescuerActivity extends Activity {
 			alertNoGPS = builder.create();
 			alertNoGPS.show();
 		}
-		else if(!alertNoGPS.isShowing()){
-				final AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-				builder.setMessage("El sistema GPS está desactivado, debe activarlo para continuar.")
-					.setCancelable(false)
-			        .setPositiveButton("Activar GPS", new DialogInterface.OnClickListener() {
-			        	public void onClick(final DialogInterface dialog, final int id) {
-			        		startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
-			        		
-			        	}
-			        });
-				alertNoGPS = builder.create();
-				alertNoGPS.show();
-			}
+		else{
+			alertNoGPS.show();
+		};
 	};
 	
 	@Override
@@ -186,6 +204,10 @@ public class RescuerActivity extends Activity {
 			alertNoGps();
 		}
 		else{
+			if(alertNoGPS!=null){
+				alertNoGPS.dismiss();
+				alertNoGPS=null;
+			};
 			bindService(new Intent(mContext, RescuerService.class), mConnection, Context.BIND_AUTO_CREATE);	
 		};
 		
