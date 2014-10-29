@@ -17,12 +17,8 @@ import android.content.Context;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.AsyncTask;
-import android.os.Bundle;
 import android.widget.Toast;
-
 import com.example.whitepowder.R;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.gson.Gson;
 import com.whitepowder.skier.Coordinate;
 import com.whitepowder.skier.MyPosition;

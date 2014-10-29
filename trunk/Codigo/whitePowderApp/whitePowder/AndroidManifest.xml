@@ -50,16 +50,6 @@
                 <category android:name="com.example.whitepowder" />
             </intent-filter>
         </receiver>
-        
-        <receiver
-            android:name="com.whitepowder.rescuer.RescuerGcmBroadcastReceiver"
-            android:exported="true"
-            android:permission="com.google.android.c2dm.permission.SEND" >
-            <intent-filter>
-                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-                <category android:name="com.example.whitepowder" />
-            </intent-filter>
-        </receiver>
 
         <activity
             android:name="com.whitepowder.userManagement.LoginActivity"

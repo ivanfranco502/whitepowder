@@ -20,7 +20,6 @@ import com.whitepowder.skier.map.DrawableSlope;
 import com.whitepowder.skier.map.DrawableSlopeContainer;
 import com.whitepowder.storage.StorageConstants;
 import com.whitepowder.utils.ReadFile;
-
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
