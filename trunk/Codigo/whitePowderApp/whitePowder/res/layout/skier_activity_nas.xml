@@ -40,7 +40,7 @@
           android:paddingRight="11dp"
           android:progressDrawable="@android:color/transparent"
           android:thumb="@drawable/thumb_emergency"
-          android:thumbOffset="9dp" />
+          android:thumbOffset="0dp" />
 
      </RelativeLayout>
 		
