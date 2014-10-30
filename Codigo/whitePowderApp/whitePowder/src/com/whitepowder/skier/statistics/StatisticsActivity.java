@@ -1,5 +1,7 @@
 package com.whitepowder.skier.statistics;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
@@ -12,12 +14,20 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Bitmap.CompressFormat;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,6 +52,7 @@ public class StatisticsActivity extends Activity {
 		
 		//Setups buttons
 		setupClearStatsButton();
+		setupShareStatsButton();
 		
 		//Loads user stats
 		
@@ -107,6 +118,51 @@ public class StatisticsActivity extends Activity {
 	
 	};
 	
+	private void setupShareStatsButton() {
+		RelativeLayout butCompartir = (RelativeLayout) findViewById(R.id.skier_statistics_share_button);
+		
+		butCompartir.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				
+				ScrollView content = (ScrollView) findViewById(R.id.scroll_view);
+				int totalHeight = content.getChildAt(0).getHeight();
+			    int totalWidth = content.getChildAt(0).getWidth();
+
+			    Bitmap bitmap = getBitmapFromView(content,totalHeight,totalWidth);
+				
+			    File file = null;
+			    String file_path = null;
+				if (android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED)) {  
+					file_path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/ScreenStats";
+					File dir = new File(file_path);
+				         if(!dir.exists()){
+				        	 dir.mkdirs();				        
+				        	 } 
+				    file = new File(dir, "screenStats" + ".png");
+				}
+				try{
+					FileOutputStream ostream = new FileOutputStream(file);                                   
+					bitmap.compress(CompressFormat.PNG, 10, ostream);
+					ostream.close();	
+				}
+				catch(Exception e){
+					
+				}
+				
+				if(file != null){
+					Intent shareIntent = new Intent(Intent.ACTION_SEND);
+				    shareIntent.setType("image/png");
+				    shareIntent.putExtra(Intent.EXTRA_TEXT, "¡Mirá mis estadísticas esquiando a través de White Powder!");
+				    shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
+				    startActivity(Intent.createChooser(shareIntent, "Compartir estadísticas"));
+				}
+				
+			};
+		});
+	}
+
 	private void setupClearStatsButton(){
 		RelativeLayout butClearStats = (RelativeLayout) findViewById(R.id.skier_statistics_reset_button);
 		
@@ -177,5 +233,18 @@ public class StatisticsActivity extends Activity {
 			});
     
 	}	
+	
+	public Bitmap getBitmapFromView(View view, int totalHeight, int totalWidth) {
+
+	    Bitmap returnedBitmap = Bitmap.createBitmap(totalWidth, totalHeight, Bitmap.Config.ARGB_8888);
+	    Canvas canvas = new Canvas(returnedBitmap);
+	    Drawable bgDrawable = view.getBackground();
+	    if (bgDrawable != null)
+	        bgDrawable.draw(canvas);
+	    else
+	        canvas.drawColor(Color.WHITE);
+	    view.draw(canvas);
+	    return returnedBitmap;
+	}
 	
 }
