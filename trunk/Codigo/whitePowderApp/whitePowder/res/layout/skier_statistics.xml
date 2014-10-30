@@ -6,6 +6,7 @@
     android:orientation="vertical" >
     
     <ScrollView 
+        android:id="@+id/scroll_view"
         android:layout_weight="24"
         android:layout_width="match_parent"
         android:layout_height="0dp">
@@ -248,7 +249,13 @@
 	           </RelativeLayout>
 	        </LinearLayout>
 			
-   	<LinearLayout
+   			
+			
+        </LinearLayout>
+    
+    </ScrollView>
+    
+    <LinearLayout
 	    android:layout_width="match_parent"
 	    android:layout_height="50dp"
 	    android:baselineAligned="false"
@@ -286,11 +293,7 @@
 	            android:text="@string/skier_statistics_share_button_text"/>
 	    </RelativeLayout>    
 	    
-	</LinearLayout>			
-			
-        </LinearLayout>
-    
-    </ScrollView>
+	</LinearLayout>	
     
 	       <RelativeLayout 
 		       android:id="@+id/RelativeLayout3"
