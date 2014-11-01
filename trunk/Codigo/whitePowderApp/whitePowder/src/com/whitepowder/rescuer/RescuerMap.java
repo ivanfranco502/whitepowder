@@ -2,10 +2,6 @@ package com.whitepowder.rescuer;
 
 import java.util.ArrayList;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import com.example.whitepowder.R;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -15,6 +11,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.whitepowder.skier.Coordinate;
 import com.whitepowder.skier.map.DrawableSlope;
 import com.whitepowder.skier.map.DrawableSlopeContainer;
@@ -30,11 +27,13 @@ public class RescuerMap extends Activity {
 	private GoogleMap mMap = null;
 	Context mContext;
 	ArrayList<Victim> accidents=null;
+	Gson gson;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
+		gson = new Gson();
 		mContext = getApplicationContext();
 		
 		setContentView(R.layout.rescuer_activity);
@@ -43,25 +42,15 @@ public class RescuerMap extends Activity {
 		accidents = parseVictims(getIntent().getExtras().getString("accidentes"));
 		
 		setupMap();
-		drawAccidents();
+		drawAccidents();	 
 		
 	};
 	
 
 	private ArrayList<Victim> parseVictims(String mensaje){
 		ArrayList<Victim> victims = new ArrayList<Victim>();
-		try {
-			JSONObject msg = new JSONObject(mensaje);
-			JSONArray array = msg.getJSONArray("accidentes");
-			
-			for(int i=0;i<array.length();i++){
-				JSONObject accidente = array.getJSONObject(i);
-				victims.add(new Victim(accidente.getString("username"), accidente.getDouble("x"), accidente.getDouble("x")));
-			}
-		} 
-		catch (JSONException e) {
-			// TODO manage errors
-		};
+
+		victims = gson.fromJson(mensaje,new TypeToken<ArrayList<Victim>>(){}.getType());
 		
 		
 		return victims;
@@ -156,7 +145,7 @@ public class RescuerMap extends Activity {
 		
 		for (Victim accident : accidents) {
 			mMap.addMarker(new MarkerOptions()
-	        .position(new LatLng(accident.getLocation().x,accident.getLocation().y))
+	        .position(new LatLng(accident.getX(),accident.getY()))
 	        .title(accident.getUsername())
 	        	.icon(BitmapDescriptorFactory
 			    .fromResource(R.drawable.marker_accident)));	

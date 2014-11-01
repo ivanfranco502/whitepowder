@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    
+    <item  
+        android:id="@+id/submenu_change_password"  
+        android:title="@string/submenu_change_password"
+        android:menuCategory="system" 
+        android:showAsAction="always" />  
+    
+    <item  
+        android:id="@+id/submenu_logout"  
+        android:title="@string/submenu_logout"
+        android:menuCategory="system" 
+        android:showAsAction="always" />  
+        
+	<item  	
+		android:id="@+id/submenu_sync"  
+		android:title="@string/submenu_sync"
+		android:menuCategory="system" 
+		android:showAsAction="always" />
+	
+	<item  	
+		android:id="@+id/submenu_update_inbox"  
+		android:title="@string/submenu_update_inbox"
+		android:menuCategory="system" 
+		android:showAsAction="always" />  
+  
+
+</menu>
