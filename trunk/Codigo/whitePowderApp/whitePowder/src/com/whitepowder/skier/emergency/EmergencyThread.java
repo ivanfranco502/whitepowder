@@ -109,26 +109,32 @@ public class EmergencyThread extends AsyncTask<Void, Void, Void> {
 					InputStream is = connection.getInputStream();
 					BufferedReader reader = new BufferedReader(new InputStreamReader(is));		
 					String response = reader.readLine();
-					try {
-						JSONObject jsonObject = new JSONObject(response);
-						
-						//Gets data from json
-				        int code = jsonObject.getInt("code");	               
-				        
-				        if(code==200){
-				        	//Emergencia recibida exitosamente
-					        success = true;	        	
-				        }
-				        else {							
-							if(code==110){
-								mError = new ApplicationError(1200,"Warning","Token inválido en alerta de emergencia");
-							}
-							else{
-								mError = new ApplicationError(1201,"Error","Respuesta inesperada en response en alerta de emergencia");
-							};			
-				        };
+					if(response != null){
+						try {
+							JSONObject jsonObject = new JSONObject(response);
+							
+							//Gets data from json
+					        int code = jsonObject.getInt("code");	               
+					        
+					        if(code==200){
+					        	//Emergencia recibida exitosamente
+						        success = true;	        	
+					        }
+					        else {							
+								if(code==110){
+									mError = new ApplicationError(1200,"Warning","Token inválido en alerta de emergencia");
+								}
+								else{
+									mError = new ApplicationError(1201,"Error","Respuesta inesperada en response en alerta de emergencia");
+								};			
+					        };
+						}
+						catch(JSONException e){
+							mError = new ApplicationError(1202,"Warning","JSONException en alerta de emergencia");
+						};
+					}else{
+						mError = new ApplicationError(100,"Error","Error en la conexión con el Servidor");
 					}
-					catch(JSONException e){};
 			    }
 			    else{
 			    	mError = new ApplicationError(100,"Error","Error en la conexión con el Servidor");

@@ -1,5 +1,7 @@
 package com.whitepowder.skier;
 
+import android.animation.Animator;
+import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -19,7 +21,10 @@ import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.Toast;
@@ -331,11 +336,17 @@ public class SkierActivity extends Activity {
 						EmergencyThread et = new EmergencyThread(SkierActivity.this, getApplicationContext());
 						et.execute();
 					}
+					else{
+						ImageView emergencyImage = (ImageView) findViewById(R.id.emergencyAnimation);
+						animateSkier(emergencyImage);
+					}
 				}
 				seekBar.setProgress(0);
 		    }
 		      
-		    @Override
+		    
+
+			@Override
 		    public void onStartTrackingTouch(SeekBar seekBar) {
 		    	if(seekBar.getProgress() >= 0 && seekBar.getProgress() <= 15){
 		    		seekBarProgress = true;
@@ -348,6 +359,15 @@ public class SkierActivity extends Activity {
 			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {}
 			});
     
+	}
+	
+	private void animateSkier(final ImageView emergencyImage) {
+		TranslateAnimation moveLeftToRight = new TranslateAnimation(0, 200, 0, 0);
+    	moveLeftToRight.setDuration(2000);
+    	emergencyImage.setVisibility(View.VISIBLE);
+    	emergencyImage.startAnimation(moveLeftToRight);
+    	emergencyImage.setVisibility(View.INVISIBLE);
+		
 	}
 	
 	
