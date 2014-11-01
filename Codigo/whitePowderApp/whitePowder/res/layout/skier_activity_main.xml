@@ -139,6 +139,8 @@
 		       android:layout_weight="1"
 		       android:gravity="bottom">
 	           
+	           
+	           
 		<RelativeLayout
           android:id="@+id/emergency_background"
           android:layout_width="match_parent"
@@ -195,6 +197,22 @@
              android:layout_width="60dp"
              android:layout_marginRight="10dp"
              android:src="@drawable/ic_emerg_bar3"
+             android:scaleType="centerInside"/>
+         </RelativeLayout>  
+         
+         <RelativeLayout
+		  android:id="@+id/RelativeLayout6"
+	      android:layout_width="match_parent"
+	      android:layout_height="60dp"
+	      android:gravity="left" >
+         
+         <ImageView
+             android:id="@+id/emergencyAnimation"
+             android:layout_height="60dp"
+             android:layout_width="60dp"
+             android:layout_marginLeft ="5dp"
+             android:visibility="invisible"
+             android:src="@drawable/thumb_emergency"
              android:scaleType="centerInside"/>
 
 		</RelativeLayout>         
