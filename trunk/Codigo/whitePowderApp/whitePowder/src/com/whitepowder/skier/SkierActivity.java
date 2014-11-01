@@ -12,11 +12,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.graphics.Point;
 import android.location.LocationManager;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v7.widget.PopupMenu;
+import android.view.Display;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,6 +29,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.whitepowder.skier.MediaButtonIntentReceiver;
@@ -337,8 +340,7 @@ public class SkierActivity extends Activity {
 						et.execute();
 					}
 					else{
-						ImageView emergencyImage = (ImageView) findViewById(R.id.emergencyAnimation);
-						animateSkier(emergencyImage);
+						animateSkier();
 					}
 				}
 				seekBar.setProgress(0);
@@ -361,12 +363,26 @@ public class SkierActivity extends Activity {
     
 	}
 	
-	private void animateSkier(final ImageView emergencyImage) {
-		TranslateAnimation moveLeftToRight = new TranslateAnimation(0, 200, 0, 0);
+	private void animateSkier() {
+		ImageView emergencyImage = (ImageView) findViewById(R.id.emergencyAnimation);
+		ImageView progressBar1 = (ImageView) findViewById(R.id.progressBar1);
+		ImageView progressBar2 = (ImageView) findViewById(R.id.progressBar2);
+		TextView help = (TextView) findViewById(R.id.help);
+		
+		Point size = new Point();
+		getWindowManager().getDefaultDisplay().getSize(size);
+		TranslateAnimation moveLeftToRight = new TranslateAnimation(0, size.x, 0, 0);
     	moveLeftToRight.setDuration(2000);
+    	
     	emergencyImage.setVisibility(View.VISIBLE);
+    	progressBar1.setVisibility(View.VISIBLE);
+    	progressBar2.setVisibility(View.VISIBLE);
+    	help.setVisibility(View.VISIBLE);
     	emergencyImage.startAnimation(moveLeftToRight);
     	emergencyImage.setVisibility(View.INVISIBLE);
+    	progressBar1.setVisibility(View.INVISIBLE);
+    	progressBar2.setVisibility(View.INVISIBLE);
+    	help.setVisibility(View.INVISIBLE);
 		
 	}
 	
