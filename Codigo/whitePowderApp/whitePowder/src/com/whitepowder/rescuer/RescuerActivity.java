@@ -65,6 +65,10 @@ public class RescuerActivity extends Activity {
 		gson = new Gson();
 		setContentView(R.layout.rescuer_inbox);
 		getActionBar().hide();
+		
+		//Initializate inbox
+		new AccidentDownloaderThread(this).execute();
+		
 		butSubmenu = (ImageButton) findViewById(R.id.bt_submenu_rescu);
 		
 		mContext = getApplicationContext();
@@ -96,8 +100,7 @@ public class RescuerActivity extends Activity {
 		//Register for GCM alerts
         registerAlertBroadcastReceiver();
         registerAccidentBroadcastReceiver();
-        
-        
+               
 	}
 	
 
@@ -207,27 +210,19 @@ public class RescuerActivity extends Activity {
 			bindService(new Intent(mContext, SkierModeService.class), mConnection, Context.BIND_AUTO_CREATE);	
 		};
 		
-		new AccidentDownloaderThread(this).execute();
-		
 	};
+	
+	public void removeFromList(Victim victim){
+		adapter.remove(victim);
+		adapter.notifyDataSetChanged();
+	}
 	
 	public void addToList(Victim victim){
-		if(!existsInList(victim)){
+		if(!accidents.contains(victim)){
 			adapter.add(victim);
+			adapter.notifyDataSetChanged();
 		};
 	};
-	
-	public Boolean existsInList(Victim victim){
-		
-		for (Victim vict : accidents) {
-			if(vict.getId()==victim.getId()){
-				return true;
-			};	
-		};
-		
-		return false;
-	}
-
 	
 	private void createServiceConnectionAndRegisterForBroadcast(){
 		
@@ -316,13 +311,30 @@ public class RescuerActivity extends Activity {
 				if (isOrderedBroadcast()) {
 					setResultCode(RESULT_OK);
 					
-					//Add the victim to the accident list	
-					String mensaje = intent.getExtras().getString("body");				
-					Victim victima = gson.fromJson(mensaje, Victim.class);
+					String action = intent.getExtras().getString("action");
+					String mensaje = intent.getExtras().getString("body");
 					
-					if((victima.getId()!=-1)&&(victima.getX()!=null)&&(victima.getY()!=null)&&(victima.getUsername()!=null)){
-						addToList(victima);
-					};							
+					if(action.equals("add")){
+						//Add the victim to the accident list	
+						
+						Victim victima = gson.fromJson(mensaje, Victim.class);
+						
+						if((victima.getId()!=-1)&&(victima.getX()!=null)&&(victima.getY()!=null)&&(victima.getUsername()!=null)){
+							addToList(victima);
+						};		
+					}
+					
+					else if(action.equals("remove")){
+
+						int id = Integer.parseInt(mensaje);
+						
+						for (Victim vict : accidents) {
+							if(vict.getId()==id){
+								removeFromList(vict);
+							};
+						};
+						
+					}			
 					
 				};
 			}

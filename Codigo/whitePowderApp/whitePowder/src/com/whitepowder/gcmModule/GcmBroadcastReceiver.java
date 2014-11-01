@@ -33,7 +33,9 @@ public class GcmBroadcastReceiver extends BroadcastReceiver {
 			role=User.getUserInstance().getRole();
 		};
 		
-		if((Integer.parseInt(intent.getStringExtra("id")))==100){
+		int code = Integer.parseInt(intent.getStringExtra("id"));
+		
+		if((code==100)||(code==101)){
 			//It's an accident! OMG!
 			if(role.equals("ROLE_RESCU")){
 				processAccident(context, intent);
@@ -41,14 +43,24 @@ public class GcmBroadcastReceiver extends BroadcastReceiver {
 		}
 		else{
 			procesAlert(context, intent);
-		}
+		};
 
 	};
 	
 	private void processAccident(Context context, Intent intent){
+		int code = Integer.parseInt(intent.getStringExtra("id"));
+		
 		Intent notifyAppIntent = new Intent(RescuerActivity.GCM_ACCIDENT_INTENT_ACTION);
 		notifyAppIntent.putExtra("title", intent.getStringExtra("title"));
-		notifyAppIntent.putExtra("body", intent.getStringExtra("body"));
+		notifyAppIntent.putExtra("body", intent.getStringExtra("body"));		
+		
+		if(code==100){
+			notifyAppIntent.putExtra("action","add");
+		}
+		else if(code==101){
+			notifyAppIntent.putExtra("action", "remove");
+		};
+		
 		
 		context.sendOrderedBroadcast(notifyAppIntent, null,	
 			new BroadcastReceiver() {
