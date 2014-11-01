@@ -1,29 +1,33 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/login_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/gr_background"
+    android:weightSum="8"
+    android:orientation="vertical"
     tools:context="com.whitepowder.userManagement.LoginActivity"
     tools:ignore="MergeRootFrame">
     
  <ImageView
      android:id="@+id/login_logo_WhitePowder"
      android:layout_width="match_parent"
-     android:layout_height="wrap_content"
+     android:layout_height="0dp"
      android:layout_alignParentTop="true"
      android:contentDescription="@string/whitePowder_logo_description"
+     android:layout_weight="4"
      android:layout_marginTop="15dp"
      android:layout_centerHorizontal="true"
+     android:scaleType="centerInside"
      android:src="@drawable/ic_bannerwp" />
     
  <RelativeLayout
      android:id="@+id/login_username_container"
      android:layout_width="match_parent"
-     android:layout_height="65dp"
+     android:layout_height="0dp"
+     android:layout_weight="1"
      android:layout_centerVertical="true"
-     android:layout_below="@+id/login_logo_WhitePowder"
-     android:background="#FFFFFF">
+     android:layout_below="@+id/login_logo_WhitePowder">
 
      <EditText
          android:id="@+id/login_username_input"
@@ -43,10 +47,10 @@
   <RelativeLayout
      android:id="@+id/login_password_container"
      android:layout_width="match_parent"
-     android:layout_height="65dp"
+     android:layout_height="0dp"
+     android:layout_weight="1"
      android:layout_marginTop="10dp"
-     android:layout_below="@+id/login_username_container"
-     android:background="#FFFFFF">
+     android:layout_below="@+id/login_username_container">
 
       <EditText
           android:id="@+id/login_password_input"
@@ -65,7 +69,8 @@
     <RelativeLayout
      android:id="@+id/login_login_button"
      android:layout_width="match_parent"
-     android:layout_height="50dp"
+     android:layout_height="0dp"
+     android:layout_weight="1"
      android:layout_marginTop="10dp"
      android:gravity="center"
      android:layout_below="@+id/login_password_container"
@@ -81,12 +86,13 @@
   </RelativeLayout>
    
    <LinearLayout
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
+       android:layout_width="match_parent"
+       android:layout_height="0dp"
+       android:layout_weight="1"
        android:layout_below="@+id/login_login_button"
        android:orientation="horizontal"
        android:layout_marginTop="15dp"
-       android:layout_centerHorizontal="true" >
+       android:gravity="center_horizontal" >
 
 	   <TextView 
 	      android:id="@+id/login_register_button"
@@ -105,4 +111,4 @@
    
    </LinearLayout>
      
-</RelativeLayout>
+</LinearLayout>

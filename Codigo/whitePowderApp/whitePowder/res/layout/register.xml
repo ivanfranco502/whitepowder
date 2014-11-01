@@ -1,29 +1,76 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/register_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="7"
     android:background="@drawable/gr_background"
     tools:context="com.whitepowder.userManagement.RegisterActivity"
     tools:ignore="MergeRootFrame">
 
-	<TextView
-	    android:id="@+id/register_registry_text"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:layout_centerHorizontal="true"
-	    android:layout_marginTop="25dp"
-	    android:text="@string/register_registry_text"
-	    android:textSize="20sp" />
+<RelativeLayout 
+    android:id="@+id/RegisterTextLayout"
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:layout_weight="2"
+    >
     
+    <RelativeLayout
+	        android:id="@+id/StartMargin1"
+	        android:layout_height="1dp"
+	        android:layout_width="match_parent"
+	        android:background="#ffffff"/>	    
+    
+        <RelativeLayout
+	        android:id="@+id/RegisterBan1"
+	        android:layout_height="30dp"
+	        android:layout_width="match_parent"
+	        android:background="#038abe"
+	        android:layout_below="@id/StartMargin1">	        
+         
+		    <TextView
+		        android:id="@+id/altitudeBan"
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:gravity="center"
+		        android:text="Registro"
+		        android:textColor="#ffffff"
+		        android:textSize="20sp"/>   
+            	        
+        </RelativeLayout>
+        <RelativeLayout
+	        android:id="@+id/RegisterMargin1"
+	        android:layout_height="5dp"
+	        android:layout_width="match_parent"
+	        android:background="#055777"
+	        android:layout_below="@id/RegisterBan1"/>
+        
+        <TextView 
+            android:id="@+id/register_indications"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/register_indications_text"
+            android:textColor="#ffffff"
+            android:textSize="18sp"
+            android:paddingLeft="10dp"
+			android:paddingRight="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_below="@id/RegisterMargin1"
+            android:gravity="center_horizontal"
+            />	
+	
+    
+      </RelativeLayout>  
+        
 	 <RelativeLayout
 	     android:id="@+id/register_username_container"
 	     android:layout_width="match_parent"
-	     android:layout_height="65dp"
+	     android:layout_height="0dp"
+	     android:layout_weight="1"
 	     android:layout_centerVertical="true"
-	     android:layout_below="@id/register_registry_text"
-	     android:layout_marginTop="25dp"
-	     android:background="#FFFFFF">
+	     android:layout_below="@id/RegisterMargin1"
+	     android:layout_marginTop="40dp">
 	     	
 	     <EditText
 	         android:id="@+id/register_username_input"
@@ -41,10 +88,10 @@
      <RelativeLayout
 	     android:id="@+id/register_password_container"
 	     android:layout_width="match_parent"
-	     android:layout_height="65dp"
+	     android:layout_height="0dp"
+	     android:layout_weight="1"
 	     android:layout_marginTop="10dp"
-	     android:layout_below="@+id/register_username_container"
-	     android:background="#FFFFFF">
+	     android:layout_below="@+id/register_username_container">
 	
 	      <EditText
 	          android:id="@+id/register_password_input"
@@ -61,10 +108,10 @@
     <RelativeLayout
 	     android:id="@+id/register_repeat_password_container"
 	     android:layout_width="match_parent"
-	     android:layout_height="65dp"
+	     android:layout_height="0dp"
+	     android:layout_weight="1"	     
 	     android:layout_marginTop="10dp"
-	     android:layout_below="@+id/register_password_container"
-	     android:background="#FFFFFF">
+	     android:layout_below="@+id/register_password_container">
 	
 	      <EditText
 	          android:id="@+id/register_repeat_password_input"
@@ -83,11 +130,11 @@
     <RelativeLayout
 	     android:id="@+id/register_email_container"
 	     android:layout_width="match_parent"
-	     android:layout_height="65dp"
+	     android:layout_height="0dp"
+	     android:layout_weight="1"	     
 	     android:layout_centerVertical="true"
 	     android:layout_below="@id/register_repeat_password_container"
-	     android:layout_marginTop="10dp"
-	     android:background="#FFFFFF">
+	     android:layout_marginTop="10dp">
 	     	
 	     <EditText
 	         android:id="@+id/register_email_input"
@@ -103,8 +150,8 @@
 	 <RelativeLayout
 	     android:id="@+id/register_register_button"
 	     android:layout_width="match_parent"
-	     android:layout_height="50dp"
-	     android:layout_marginTop="20dp"
+	     android:layout_height="0dp"
+	     android:layout_weight="1"
 	     android:gravity="center"
 	     android:layout_below="@+id/register_email_container"
 	     android:background="#7caf00" >
@@ -118,4 +165,4 @@
 	                
 	  </RelativeLayout>		  
 	     
-</RelativeLayout>
+</LinearLayout>

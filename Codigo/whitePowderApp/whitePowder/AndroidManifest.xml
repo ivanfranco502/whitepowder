@@ -70,11 +70,18 @@
         <activity
             android:name="com.whitepowder.userManagement.RegisterActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:icon="@drawable/ic_logowp"
+            android:label="White Powder"
+			android:theme="@style/BasicInfoTheme"
+             />
         <activity
             android:name="com.whitepowder.userManagement.PasswordResetActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:icon="@drawable/ic_logowp"
+            android:label="White Powder"
+			android:theme="@style/BasicInfoTheme"/>
         <activity
             android:name="com.whitepowder.userManagement.PasswordChangeActivity"
             android:configChanges="orientation"
