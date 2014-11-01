@@ -22,6 +22,16 @@ public class Victim {
 	public Double getY() {
 		return y;
 	};
+	
+	@Override
+	public boolean equals(Object o) {
+		Victim vic = (Victim)o;
+		if(vic.getId()==this.getId()){
+			return true;
+		};
+		
+		return false;
+	}
 
 
 }

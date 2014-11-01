@@ -210,15 +210,18 @@ public class SkierModeService extends Service  {
 	private Boolean parseResponse(String response){
 		Boolean ret=false;
 		
-		PositionUploadResponse por = gson.fromJson(response, PositionUploadResponse.class);
+		if(response!=null){
 		
-		if(por.code==110){
-    		Logout.logout(mContext, false);
-    		ret=true;
-		}
-		else if(por.code==200){
-			ret=true;
-		}
+			PositionUploadResponse por = gson.fromJson(response, PositionUploadResponse.class);
+			
+			if(por.code==110){
+	    		Logout.logout(mContext, false);
+	    		ret=true;
+			}
+			else if(por.code==200){
+				ret=true;
+			};
+		};
 		
 		return ret;
 	};

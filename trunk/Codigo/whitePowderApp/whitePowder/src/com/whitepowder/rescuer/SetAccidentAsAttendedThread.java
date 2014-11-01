@@ -21,7 +21,7 @@ public class SetAccidentAsAttendedThread extends Thread {
 
 	private Context mContext;
 	private int alertId=-1;
-	private String SetAccidentAsAttendedURL = BaseTavrosURI.getBaseURI()+"/alert/read/";
+	private String SetAccidentAsAttendedURL = BaseTavrosURI.getBaseURI()+"alert/read/";
 	private Boolean success = false;
 	private int TIME_SLEEP_BEFORE_RETRY = 1500;
 	
@@ -33,18 +33,18 @@ public class SetAccidentAsAttendedThread extends Thread {
 	@Override
 	public void run() {
 		super.run();
-		SetAccidentAsAttendedURL +=Integer.toString(alertId);
+		SetAccidentAsAttendedURL +=alertId;
 		HttpURLConnection connection=null;	
 		
-		for(int i=0;((success!=true)&&(i<10));){
+		for(int i=0;((success!=true)&&(i<10));i++){
 			
 			try {
 				JSONObject request = new JSONObject();
 				request.put("_token", User.getUserInstance().getToken());
 				URL url = new URL(SetAccidentAsAttendedURL);
-				connection = (HttpURLConnection)url.openConnection();
-			    connection.setRequestMethod("POST");
+				connection = (HttpURLConnection)url. openConnection();
 				
+				connection.setRequestMethod("POST");			
 			    connection.setUseCaches (false);
 			    connection.setDoInput(true);
 			    connection.setDoOutput(true);
@@ -104,11 +104,11 @@ public class SetAccidentAsAttendedThread extends Thread {
 			if(response!=null){
 				JSONObject msj = new JSONObject(response);	
 				if(msj.getInt("code")==200){
-					success=true;
 				}
 				else if(msj.getInt("code")==110){
 					Logout.logout(mContext, false);
 				};
+				success=true;
 
 			};
 
