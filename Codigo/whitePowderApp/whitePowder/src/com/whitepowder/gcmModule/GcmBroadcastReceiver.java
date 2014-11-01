@@ -12,6 +12,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 
 public class GcmBroadcastReceiver extends BroadcastReceiver {
@@ -99,6 +100,20 @@ public class GcmBroadcastReceiver extends BroadcastReceiver {
 							
 							pendingIntent = PendingIntent.getActivity(context, 0, displayIntent, 0);
 							
+							Uri soundUri = null;
+							switch(intent.getIntExtra("id", -1)){
+							case 1:
+								soundUri = Uri.parse("android.resource://" + context.getPackageName() + "/" + R.raw.storm);
+								break;
+							case 2:
+								soundUri = Uri.parse("android.resource://" + context.getPackageName() + "/" + R.raw.avalanche);
+								break;
+							case 3:
+								soundUri = Uri.parse("android.resource://" + context.getPackageName() + "/" + R.raw.clown);
+								break;
+							};
+							
+							
 							NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context)
 								
 								.setSmallIcon(R.drawable.ic_notif)
@@ -107,10 +122,9 @@ public class GcmBroadcastReceiver extends BroadcastReceiver {
 								.setContentIntent(pendingIntent)
 								.setAutoCancel(true)
 								.setVibrate(mVibratePattern);
-			
-						
-								//TODO set sound alert
-								//.setSound(soundURI)
+							if(soundUri != null){
+								notificationBuilder.setSound(soundUri);
+							}
 
 							// Pass the Notification to the NotificationManager:
 							NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);											
