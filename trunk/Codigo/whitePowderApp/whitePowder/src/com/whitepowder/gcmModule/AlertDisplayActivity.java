@@ -65,43 +65,50 @@ public class AlertDisplayActivity extends Activity {
 		blder.create().show();
 	}
 	
-	private void playSound(int id) {
-		final AudioManager am = (AudioManager) this.getSystemService(Context.AUDIO_SERVICE);
-		
-		OnAudioFocusChangeListener afChangeListener = new OnAudioFocusChangeListener() {
-		    public void onAudioFocusChange(int focusChange) {
-		        
-		    }
-		};
+	private void playSound(final int id) {
+		new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				final AudioManager am = (AudioManager) getApplicationContext().getSystemService(Context.AUDIO_SERVICE);
+				
+				OnAudioFocusChangeListener afChangeListener = new OnAudioFocusChangeListener() {
+				    public void onAudioFocusChange(int focusChange) {
+				        
+				    }
+				};
 
-		//Request audio focus for playback
-		int result = am.requestAudioFocus(afChangeListener,
-		                                 // Use the music stream.
-		                                 AudioManager.STREAM_MUSIC,
-		                                 // Request permanent focus.
-		                                 AudioManager.AUDIOFOCUS_GAIN);
-		   
-		if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
-		    // Start playback.
-			MediaPlayer mediaPlayer = null;
-			switch(id){
-			case 1:
-				mediaPlayer = MediaPlayer.create(this, R.raw.storm);
-				break;
-			case 2:
-				mediaPlayer = MediaPlayer.create(this, R.raw.avalanche);
-				break;
-			case 3:
-				mediaPlayer = MediaPlayer.create(this, R.raw.clown);
-				break;
+				//Request audio focus for playback
+				int result = am.requestAudioFocus(afChangeListener,
+				                                 // Use the music stream.
+				                                 AudioManager.STREAM_MUSIC,
+				                                 // Request permanent focus.
+				                                 AudioManager.AUDIOFOCUS_GAIN);
+				   
+				if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
+				    // Start playback.
+					MediaPlayer mediaPlayer = null;
+					switch(id){
+					case 1:
+						mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.storm);
+						break;
+					case 2:
+						mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.avalanche);
+						break;
+					case 3:
+						mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.clown);
+						break;
+					}
+					if(mediaPlayer != null){
+						mediaPlayer.start(); // no need to call prepare(); create() does that for you
+						while(mediaPlayer.isPlaying());
+						mediaPlayer.release();
+						mediaPlayer = null;
+					}
+				}
 			}
-			if(mediaPlayer != null){
-				mediaPlayer.start(); // no need to call prepare(); create() does that for you
-				while(mediaPlayer.isPlaying());
-				mediaPlayer.release();
-				mediaPlayer = null;
-			}
-		}
+		}).start();
+
 		
 	}
 

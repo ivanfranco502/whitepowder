@@ -42,7 +42,10 @@ public class GcmBroadcastReceiver extends BroadcastReceiver {
 			};
 		}
 		else{
-			procesAlert(context, intent);
+			if(role.equals("ROLE_RESCU")||(role.equals("ROLE_SKIER"))){
+				procesAlert(context, intent);
+			};
+			
 		};
 
 	};
@@ -52,7 +55,7 @@ public class GcmBroadcastReceiver extends BroadcastReceiver {
 		
 		Intent notifyAppIntent = new Intent(RescuerActivity.GCM_ACCIDENT_INTENT_ACTION);
 		notifyAppIntent.putExtra("title", intent.getStringExtra("title"));
-		notifyAppIntent.putExtra("body", intent.getStringExtra("body"));		
+		notifyAppIntent.putExtra("body", intent.getStringExtra("body"));
 		
 		if(code==100){
 			notifyAppIntent.putExtra("action","add");
@@ -66,6 +69,7 @@ public class GcmBroadcastReceiver extends BroadcastReceiver {
 			new BroadcastReceiver() {
 				@Override
 				public void onReceive(Context context, Intent intent) {
+					
 					if (getResultCode() != Activity.RESULT_OK) {
 						PendingIntent pendingIntent=null;
 						
@@ -91,10 +95,11 @@ public class GcmBroadcastReceiver extends BroadcastReceiver {
 	};
 	
 	private void procesAlert(Context context, Intent intent){
+		final int code = Integer.parseInt(intent.getStringExtra("id"));
 		Intent notifyAppIntent = new Intent(SkierActivity.GCM_ALERT_INTENT_ACTION);
 		notifyAppIntent.putExtra("title", intent.getStringExtra("title"));
 		notifyAppIntent.putExtra("body", intent.getStringExtra("body"));
-		notifyAppIntent.putExtra("id", intent.getIntExtra("id", -1));
+		notifyAppIntent.putExtra("id",code);
 		
 		context.sendOrderedBroadcast(
 				notifyAppIntent, 
@@ -113,7 +118,7 @@ public class GcmBroadcastReceiver extends BroadcastReceiver {
 							pendingIntent = PendingIntent.getActivity(context, 0, displayIntent, 0);
 							
 							Uri soundUri = null;
-							switch(intent.getIntExtra("id", -1)){
+							switch(code){
 							case 1:
 								soundUri = Uri.parse("android.resource://" + context.getPackageName() + "/" + R.raw.storm);
 								break;
