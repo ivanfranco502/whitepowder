@@ -64,7 +64,8 @@
     <string name="register_indications_text">Por favor, complete los siguientes campos:</string>
 
     <!-- Sección de strings del cambio de contraseña -->
-    <string name="pwd_change_text">CAMBIAR CONTRASEÑA</string>
+    <string name="pwd_change_text">Cambio de contraseña</string>
+    <string name="pwd_change_instructions_text">Para el cambio de contraseña se requieren tanto la contraseña actual como la nueva. </string>
     <string name="pwd_change_hint_current_password">Contraseña actual</string>
     <string name="pwd_change_hint_new_password">Nueva contraseña</string>
     <string name="pwd_change_hint_repeat_new_password">Repetir nueva contraseña</string>
