@@ -375,14 +375,14 @@ public class SkierActivity extends Activity {
     	moveLeftToRight.setDuration(2000);
     	
     	emergencyImage.setVisibility(View.VISIBLE);
-    	progressBar1.setVisibility(View.VISIBLE);
-    	progressBar2.setVisibility(View.VISIBLE);
-    	help.setVisibility(View.VISIBLE);
-    	emergencyImage.startAnimation(moveLeftToRight);
-    	emergencyImage.setVisibility(View.INVISIBLE);
     	progressBar1.setVisibility(View.INVISIBLE);
     	progressBar2.setVisibility(View.INVISIBLE);
     	help.setVisibility(View.INVISIBLE);
+    	emergencyImage.startAnimation(moveLeftToRight);
+    	emergencyImage.setVisibility(View.INVISIBLE);
+    	progressBar1.setVisibility(View.VISIBLE);
+    	progressBar2.setVisibility(View.VISIBLE);
+    	help.setVisibility(View.VISIBLE);
 		
 	}
 	
