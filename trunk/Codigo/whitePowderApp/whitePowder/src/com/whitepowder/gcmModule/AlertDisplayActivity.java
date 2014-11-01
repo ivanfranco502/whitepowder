@@ -8,6 +8,9 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.media.AudioManager.OnAudioFocusChangeListener;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.view.KeyEvent;
@@ -22,6 +25,9 @@ public class AlertDisplayActivity extends Activity {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.skier_alert_display);
+		
+		playSound(getIntent().getExtras().getInt("id"));
+		
 		vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 		
 		vibratorThread = new Thread(new Runnable() {
@@ -59,6 +65,46 @@ public class AlertDisplayActivity extends Activity {
 		blder.create().show();
 	}
 	
+	private void playSound(int id) {
+		final AudioManager am = (AudioManager) this.getSystemService(Context.AUDIO_SERVICE);
+		
+		OnAudioFocusChangeListener afChangeListener = new OnAudioFocusChangeListener() {
+		    public void onAudioFocusChange(int focusChange) {
+		        
+		    }
+		};
+
+		//Request audio focus for playback
+		int result = am.requestAudioFocus(afChangeListener,
+		                                 // Use the music stream.
+		                                 AudioManager.STREAM_MUSIC,
+		                                 // Request permanent focus.
+		                                 AudioManager.AUDIOFOCUS_GAIN);
+		   
+		if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
+		    // Start playback.
+			MediaPlayer mediaPlayer = null;
+			switch(id){
+			case 1:
+				mediaPlayer = MediaPlayer.create(this, R.raw.storm);
+				break;
+			case 2:
+				mediaPlayer = MediaPlayer.create(this, R.raw.avalanche);
+				break;
+			case 3:
+				mediaPlayer = MediaPlayer.create(this, R.raw.clown);
+				break;
+			}
+			if(mediaPlayer != null){
+				mediaPlayer.start(); // no need to call prepare(); create() does that for you
+				while(mediaPlayer.isPlaying());
+				mediaPlayer.release();
+				mediaPlayer = null;
+			}
+		}
+		
+	}
+
 	@Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
 		if(keyCode == KeyEvent.KEYCODE_HEADSETHOOK){
