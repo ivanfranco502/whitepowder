@@ -374,7 +374,7 @@ public class SkierActivity extends Activity {
 		getWindowManager().getDefaultDisplay().getSize(size);
 		TranslateAnimation moveLeftToRight = new TranslateAnimation(0, size.x, 0, 0);
     	moveLeftToRight.setDuration(2000);
-    	moveLeftToRight.setRepeatCount(3);
+    	moveLeftToRight.setRepeatCount(2);
     	moveLeftToRight.setAnimationListener(new AnimationListener(){
     	    public void onAnimationStart(Animation a){
     	    	emergencyImage.setVisibility(View.VISIBLE);
