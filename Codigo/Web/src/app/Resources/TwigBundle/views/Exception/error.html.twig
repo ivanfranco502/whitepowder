@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>An Error Occurred: {{ status_text }}</title>
+        
+{#        <link href="{{ asset('bundles/tavrosweb/css/bootstrap-yeti.min.css') }}" rel="stylesheet">#}
+    </head>
+    <body>
+        
+        <h1>Oops! Alguíen se ha caido.</h1>
+        <h2>{{ status_code }} {{ status_text }}</h2>
+
+        
+        <img src="{{ asset('bundles/tavrosweb/images/accident.png')}}" />
+        
+        <div>
+            Something is broken. Please e-mail us at [email] and let us know
+            what you were doing when this error occurred. We will fix it as soon
+            as possible. Sorry for any inconvenience caused.
+        </div>
+    </body>
+</html>
+
