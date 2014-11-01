@@ -61,8 +61,6 @@ public class GcmBroadcastReceiver extends BroadcastReceiver {
 						pendingIntent = PendingIntent.getActivity(context, 0, displayIntent, 0);
 						NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context)
 							.setSmallIcon(R.drawable.ic_accident)
-							/*.setContentTitle(intent.getStringExtra("title"))
-							.setContentText(intent.getStringExtra("body"))*/
 							.setContentIntent(pendingIntent)
 							.setAutoCancel(true)
 							.setVibrate(mVibratePattern);

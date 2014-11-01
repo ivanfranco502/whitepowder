@@ -4,14 +4,11 @@ import java.util.ArrayList;
 
 import com.example.whitepowder.R;
 import com.google.gson.Gson;
-import com.whitepowder.skier.SkierActivity;
 import com.whitepowder.storage.StorageConstants;
 import com.whitepowder.storage.SyncThread;
 import com.whitepowder.userManagement.PasswordChangeActivity;
 import com.whitepowder.utils.ApplicationError;
 import com.whitepowder.utils.Logout;
-
-import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;

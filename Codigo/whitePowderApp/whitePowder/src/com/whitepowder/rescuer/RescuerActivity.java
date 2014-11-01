@@ -2,10 +2,8 @@ package com.whitepowder.rescuer;
 
 import java.util.ArrayList;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 import com.example.whitepowder.R;
+import com.google.gson.Gson;
 import com.whitepowder.gcmModule.AlertDisplayActivity;
 import com.whitepowder.gcmModule.GCM;
 import com.whitepowder.skier.SkierModeService;
@@ -53,7 +51,8 @@ public class RescuerActivity extends Activity {
 	private BroadcastReceiver mAccidentReceiver = null;
 	
 	private ArrayList<Victim> accidents;
-	private InboxAdapter adapter;
+	public InboxAdapter adapter;
+	private Gson gson;
 	
 	//Sync
 	private ProgressDialog progressDialogSync;
@@ -63,6 +62,7 @@ public class RescuerActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		gson = new Gson();
 		setContentView(R.layout.rescuer_inbox);
 		getActionBar().hide();
 		butSubmenu = (ImageButton) findViewById(R.id.bt_submenu_rescu);
@@ -127,7 +127,8 @@ public class RescuerActivity extends Activity {
 	                            @Override
 	                            public void onDismiss(ListView listView, int[] reverseSortedPositions) {
 	                                for (int position : reverseSortedPositions) {
-	                                    adapter.remove(adapter.getItem(position));
+	                                	new SetAccidentAsAttendedThread(adapter.getItem(position).getId(), getApplicationContext()).start();
+	                                    adapter.remove(adapter.getItem(position));	                                    
 	                                }
 	                                adapter.notifyDataSetChanged();
 	                            }
@@ -139,51 +140,24 @@ public class RescuerActivity extends Activity {
 			
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View v, int position,	long arg3) {
-				JSONObject mensaje = new JSONObject();
-				JSONArray array = new JSONArray();
+				String mensaje=null;
 				
 				if(position<accidents.size()){
-					JSONObject accidente = new JSONObject();
-					
-					Victim item = adapter.getItem(position);
 				
-					try {
-						accidente.put("username", item.getUsername());
-						accidente.put("x", item.getLocation().x);
-						accidente.put("y", item.getLocation().y);
-						array.put(accidente);
-						mensaje.put("accidentes",array);
-					} 
-	
-					catch (JSONException e) {
-						//TODO handle error
-					};
+					Victim item = adapter.getItem(position);
+					ArrayList<Victim> items = new ArrayList<Victim>();
+					items.add(item);
+					mensaje = gson.toJson(items);
 					
 				}
 				else{
 
-					try {				
-						for (Victim victim : accidents) {
-	
-							JSONObject accidente = new JSONObject();
-							accidente.put("username", victim.getUsername());
-							accidente.put("x", victim.getLocation().x);
-							accidente.put("y", victim.getLocation().y);
-							array.put(accidente);								
-	
-						};
-						mensaje.put("accidentes", array);
-					}
-					catch(JSONException e){
-						//TODO handle error
-					};
+					mensaje = gson.toJson(accidents);
 				};
 				
-				if(array.length()!=0){
-					Intent intent = new Intent(RescuerActivity.this, RescuerMap.class);
-					intent.putExtra("accidentes",mensaje.toString());
-					startActivity(intent);
-				};
+				Intent intent = new Intent(RescuerActivity.this, RescuerMap.class);
+				intent.putExtra("accidentes",mensaje.toString());
+				startActivity(intent);
 		
 			}
 		});
@@ -196,7 +170,6 @@ public class RescuerActivity extends Activity {
 		}
 		else{
 			//Binds to service
-			//TODO estoy tocando aca
 			bindService(new Intent(mContext, SkierModeService.class), mConnection, Context.BIND_AUTO_CREATE);			
 		};	
 	}
@@ -234,8 +207,27 @@ public class RescuerActivity extends Activity {
 			bindService(new Intent(mContext, SkierModeService.class), mConnection, Context.BIND_AUTO_CREATE);	
 		};
 		
-	}
+		new AccidentDownloaderThread(this).execute();
+		
+	};
 	
+	public void addToList(Victim victim){
+		if(!existsInList(victim)){
+			adapter.add(victim);
+		};
+	};
+	
+	public Boolean existsInList(Victim victim){
+		
+		for (Victim vict : accidents) {
+			if(vict.getId()==victim.getId()){
+				return true;
+			};	
+		};
+		
+		return false;
+	}
+
 	
 	private void createServiceConnectionAndRegisterForBroadcast(){
 		
@@ -326,16 +318,11 @@ public class RescuerActivity extends Activity {
 					
 					//Add the victim to the accident list	
 					String mensaje = intent.getExtras().getString("body");				
+					Victim victima = gson.fromJson(mensaje, Victim.class);
 					
-					try {
-						Victim victima=null;
-						JSONObject mje = new JSONObject(mensaje);
-						victima = new Victim(mje.getString("username"), mje.getDouble("x"),mje.getDouble("y"));
-						adapter.add(victima);
-					} 
-					catch (JSONException e) {
-						//TODO raise error
-					};				
+					if((victima.getId()!=-1)&&(victima.getX()!=null)&&(victima.getY()!=null)&&(victima.getUsername()!=null)){
+						addToList(victima);
+					};							
 					
 				};
 			}
@@ -384,7 +371,7 @@ public class RescuerActivity extends Activity {
 	    };
 		
 		registerReceiver(syncFinishedBroadcastReciever, new IntentFilter(sth.getIntentOnSyncFinishedAction()));
-	};
+	};	
 	
 	private void setupPopupMenu(){
 		
@@ -394,7 +381,7 @@ public class RescuerActivity extends Activity {
 			public void onClick(View v) {  
 	         	 
 				PopupMenu popup = new PopupMenu(RescuerActivity.this, butSubmenu);  
-				popup.getMenuInflater().inflate(R.menu.popup_menu_submenu, popup.getMenu());  
+				popup.getMenuInflater().inflate(R.menu.popup_menu_submenu_rescuer, popup.getMenu());  
 
 				//registering popup with OnMenuItemClickListener  
 				popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {  
@@ -419,6 +406,12 @@ public class RescuerActivity extends Activity {
 							Intent intent = new Intent(mContext, PasswordChangeActivity.class);
 							startActivity(intent);
 							break;
+							
+						case R.id.submenu_update_inbox:
+							  
+							new AccidentDownloaderThread(RescuerActivity.this).execute();
+							break;
+							
 							
 						case R.id.submenu_sync:
 		         			
