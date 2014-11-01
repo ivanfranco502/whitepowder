@@ -1,0 +1,41 @@
+{#{% extends 'TwigBundle::layout.html.twig' %}#}
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>Oops: {{ status_code }} =(</title>
+        
+        <link href="{{ asset('bundles/tavrosweb/css/bootstrap-yeti.min.css') }}" rel="stylesheet">
+    </head>
+    <body class="container">
+        
+        <h1 class="page-header">Oops! Alguíen se ha caido.</h1>
+        <h2>{{ status_code }} Página no encontrada</h2>
+
+        <div class="col-lg-4 col-md-3 col-sm-3 hidden-xs"></div>
+        <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+            <img class="img-responsive" src="{{ asset('bundles/tavrosweb/images/accident.png')}}" />
+        </div>        
+        <div class="col-lg-4 col-md-3 col-sm-3 hidden-xs"></div>
+    </body>
+</html>
+
+
+{#
+
+
+
+
+{% block head %}
+    <link href="{{ asset('bundles/framework/css/exception.css') }}" rel="stylesheet" type="text/css" media="all" />
+{% endblock %}
+
+{% block title %}
+    {{ exception.message }} ({{ status_code }} {{ status_text }})
+{% endblock %}
+
+{% block body %}
+    {% include 'TwigBundle:Exception:exception.html.twig' %}
+{% endblock %}
+#}

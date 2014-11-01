@@ -59,15 +59,15 @@ class AlertController extends Controller {
         $receivedAlert->setAlerRead(0);
         $receivedAlert->setAlerDate(new \DateTime(date('Y-m-d H:i:s')));
 
-        
+        $em->persist($receivedAlert);
+        $em->flush();
         $alertDTO = Array();
-        $alertDTO['date'] = $receivedAlert->getAlerDate();
+        $alertDTO['id'] = $receivedAlert->getAlerId();
+        $alertDTO['username'] = $user->getUsername();
+//        $alertDTO['date'] = $receivedAlert->getAlerDate();
         $alertDTO['x'] = $content->coordinate->x;
         $alertDTO['y'] = $content->coordinate->y;
-        
-        $em->persist($receivedAlert);
-        
-        
+
         $result = $this->notifyAllRescuer($alertDTO, $apiKey);
 
 //        $em->persist($receivedAlert);
@@ -98,6 +98,56 @@ class AlertController extends Controller {
         $content = Array();
         $content['total'] = $count;
         $content['last'] = array_slice($alerts, 0, 5);
+        $apiResponse->setPayload($content);
+        $response->setContent($serializer->serialize($apiResponse, 'json'));
+        return $response;
+    }
+
+    public function allUnreadAction() {
+
+        $logger = $this->container->get('logger');
+        $serializer = $this->container->get('jms_serializer');
+        $apiResponse = new ApiResponse();
+        $response = new Response();
+        $response->headers->set('Content-Type', 'application/json');
+        $em = $this->container->get('Doctrine')->getManager();
+
+        if (!$this->container->get('request')->getMethod() == 'POST') {
+            $apiResponse->setCode(404);
+            $response->setContent($serializer->serialize($apiResponse, 'json'));
+            return $response;
+        }
+
+        $content = json_decode($this->container->get('request')->getContent());
+
+        /* @var $extData \Tavros\DomainBundle\Entity\ExternalData */
+        $extData = $em->getRepository('TavrosDomainBundle:ExternalData')->findOneByExdaToken($content->_token);
+
+        if (!$extData) {
+            $apiResponse->setCode(110);
+            $response->setContent($serializer->serialize($apiResponse, 'json'));
+            return $response;
+        }
+
+        /* @var $alert \Tavros\DomainBundle\Entity\Alert */
+        $alerts = $em->getRepository('TavrosDomainBundle:Alert')->findBy(Array('alerRead' => '0'), Array('alerDate' => 'ASC'));
+
+        $content = Array();
+        $content['total'] = 0;
+        foreach ($alerts as $alert) {
+            if ($alert->getAlerRead() == 0) {
+                $alertDTO = Array();
+                $alertDTO['id'] = $alert->getAlerId();
+                $alertDTO['username'] = $alert->getAlerUser()->getUsername();
+                $alertDTO['x'] = $alert->getAlerXPosition();
+                $alertDTO['y'] = $alert->getAlerYPosition();
+
+                $content['total'] += 1;
+                $content['alerts'][] = $alertDTO;
+            }
+        }
+
+        $apiResponse->setCode(200);
         $apiResponse->setPayload($content);
         $response->setContent($serializer->serialize($apiResponse, 'json'));
         return $response;
@@ -135,7 +185,7 @@ class AlertController extends Controller {
         //TODO VERIFICAR QUE SEA ADMINISITRADOR
 
         $em->getRepository('TavrosDomainBundle:Alert')->markAllAsRead();
-        
+
         $apiResponse->setCode(200);
         $apiResponse->setPayload('');
         $response->setContent($serializer->serialize($apiResponse, 'json'));
