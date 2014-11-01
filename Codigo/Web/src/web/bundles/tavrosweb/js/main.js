@@ -1,7 +1,7 @@
 var alerts = [];
 function getAlerts() {
     $.ajax({
-        url: BASE_URL + MODE + "/web/" + PROFILER + "/internalApi/alert/all",
+        url: BASE_URL +  "/internalApi/alert/all",
         dataType: "json",
         type: "POST",
         data: {
@@ -14,7 +14,7 @@ function getAlerts() {
             $('#alerts').append('<div id="alert-list" class="list-group"></div>');
             alerts.forEach(function (alert) {
                 $('#alerts #alert-list').append(
-                        '<a href="' + BASE_URL + MODE + "/web/" + PROFILER + '/administrator/center" class="list-group-item" data-item-id="' + alert.aler_id + '">'
+                        '<a href="' + BASE_URL +  '/administrator/center" class="list-group-item" data-item-id="' + alert.aler_id + '">'
                         + '<h4 class = "list-group-item-heading">' + alert.aler_user.username + '</h4>'
                         + '<p class = "list-group-item-text">Lat:' + alert.aler_x_position + '</p>'
                         + '<p class = "list-group-item-text">Long:' + alert.aler_y_position + '</p></a>');
@@ -28,7 +28,7 @@ function getAlerts() {
 }
 function markRead(id) {
     $.ajax({
-        url: BASE_URL + MODE + "/web/" + PROFILER + "/internalApi/alert/read/" + id,
+        url: BASE_URL +  "/internalApi/alert/read/" + id,
         dataType: "json",
         type: "POST",
         data: {
@@ -40,7 +40,7 @@ function markRead(id) {
 
 function markAllRead() {
     $.ajax({
-        url: BASE_URL + MODE + "/web/" + PROFILER + "/internalApi/alert/read/all",
+        url: BASE_URL +  "/internalApi/alert/read/all",
         dataType: "json",
         type: "POST",
         data: {
