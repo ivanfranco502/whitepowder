@@ -251,6 +251,7 @@ class SlopeController extends Controller {
 
         $apiResponse->setCode(200);
         $apiResponse->setPayload($minSlopes);
+        
         $response->setContent($serializer->serialize($apiResponse, 'json'));
         return $response;
     }

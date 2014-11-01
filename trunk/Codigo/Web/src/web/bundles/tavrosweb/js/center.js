@@ -12,7 +12,7 @@ function getMarkers() {
 
     $.ajax({
         dataType: "json",
-        url: BASE_URL + MODE + "/web/" + PROFILER + "/internalApi/skier/getAll",
+        url: BASE_URL +  "/internalApi/skier/getAll",
         success: function (data, textStatus, jqXHR) {
             data.payload.forEach(function (skier) {
                 skiers.push({
@@ -34,7 +34,7 @@ function getSlopes() {
     $.ajax({
         dataType: "json",
         type: "POST",
-        url: BASE_URL + MODE + "/web/" + PROFILER + "/internalApi/slope/allPath",
+        url: BASE_URL +  "/internalApi/slope/allPath",
         data: JSON.stringify({
             '_token': "a84b055999ea2b429490e4c642f64b57958aaf20"
         }),
@@ -69,7 +69,8 @@ function initialize() {
     var mapOptions = {
         zoom: 12,
         center: centerLatlng,
-        mapTypeId: google.maps.MapTypeId.TERRAIN
+        mapTypeId: google.maps.MapTypeId.TERRAIN,
+        streetViewControl: false
     };
     map = new google.maps.Map(document.getElementById('center-map'),
             mapOptions);
@@ -265,7 +266,7 @@ $(document).ready(function () {
     $.ajax({
         dataType: "json",
         type: "POST",
-        url: BASE_URL + MODE + "/web/" + PROFILER + "/internalApi/notifications/allPreset",
+        url: BASE_URL +  "/internalApi/notifications/allPreset",
 //        data: JSON.stringify({
 //            "_token": "a84b055999ea2b429490e4c642f64b57958aaf20"
 //        }),
@@ -315,11 +316,12 @@ $(document).ready(function () {
             var btn = $(this);
             btn.button('loading');
             $.ajax({
-                url: BASE_URL + MODE + "/web/" + PROFILER + "/internalApi/GCM/sendNotification",
+                url: BASE_URL +  "/internalApi/GCM/sendNotification",
                 dataType: "json",
                 type: "POST",
                 data: {
                     "_to": JSON.stringify(selected),
+                    "_notification_id": JSON.stringify($("#notification").val()), 
                     "_body": JSON.stringify($("#alert-message").val())
                 },
                 success: function () {

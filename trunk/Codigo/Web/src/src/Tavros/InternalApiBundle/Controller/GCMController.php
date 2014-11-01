@@ -22,6 +22,7 @@ class GCMController extends Controller {
 
         $users_ids = json_decode($this->container->get('request')->get('_to'));
         $body = json_decode($this->container->get('request')->get('_body'));
+        $notification_id = json_decode($this->container->get('request')->get('_notification_id'));
 
         $registration_ids = Array();
 
@@ -44,7 +45,7 @@ class GCMController extends Controller {
 //        $registration_ids = array("APA91bHxstSG9Xk-kBcARfJfj77gvqcwGy3EwhjoqNEdSzE-LaGfJzsBQdYPRSXpBII7YD8mZiFRgdjsdFMHtHoHBcpntzMK0FTtFK4Esu2T8fh3jh_k9u1sGDRUz74pfuHcYgNFXcOE1EWXgRFeUy9mY-33al_asi6qszNLc8sBg-BD_Y7S3gM");
         
         $message = array(
-            "id" => 1,
+            "id" => intval($notification_id),
             "title" => "Alerta",
             "body" => ''.$body.''
         );

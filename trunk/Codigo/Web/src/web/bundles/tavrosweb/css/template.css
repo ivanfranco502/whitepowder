@@ -73,7 +73,11 @@ body {
 .team.pager h2{
     color: white;
 }
-
+.alert-sonata_flash_success{
+    background-color: #43ac6a;
+    border-color: #3c9a5f;
+    color: #ffffff;
+}
 .alert-purple{
     background-color: #9743AC;
     border-color: #9743AC;

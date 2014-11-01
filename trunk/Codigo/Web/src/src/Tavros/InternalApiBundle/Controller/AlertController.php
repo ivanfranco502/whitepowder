@@ -155,6 +155,9 @@ class AlertController extends Controller {
 
     //MARK READ ALERT BY ID
     public function readAction($id) {
+        //Include the ApiKey
+        $apiKey = $this->container->getParameter('api_key');
+
         $logger = $this->container->get('logger');
         $serializer = $this->container->get('jms_serializer');
         $apiResponse = new ApiResponse();
@@ -164,9 +167,48 @@ class AlertController extends Controller {
         //TODO VERIFICAR QUE SEA ADMINISITRADOR
 
         $alert = $em->getRepository('TavrosDomainBundle:Alert')->find($id);
-        $alert->setAlerRead(1);
-        $em->persist($alert);
-        $em->flush();
+
+        if ($alert->getAlerRead() == 0) {
+            $alert->setAlerRead(1);
+            $em->persist($alert);
+            $em->flush();
+
+            $users = $em->getRepository('TavrosDomainBundle:Users')->findAll();
+
+            foreach ($users as $user) {
+
+                $roles = $user->getRoles();
+                foreach ($roles as $r) {
+                    if ($r === 'ROLE_SKIER') {
+                        $role = 'ROLE_SKIER';
+                        break;
+                    } elseif ($r === 'ROLE_RECON') {
+                        $role = 'ROLE_RECON';
+                        break;
+                    } else {
+                        $role = 'ROLE_RESCU';
+                        break;
+                    }
+                }
+
+                if ($role == 'ROLE_RESCU') {
+                    $user_externals = $em->getRepository('TavrosDomainBundle:ExternalData')->findOneByExdaUser($user);
+                    $registration_ids[] = $user_externals->getExdaRegistrationCode();
+                }
+            }
+
+            $message = array(
+                "id" => 101,
+                "title" => "Accidente Leido",
+                "body" => $id
+            );
+
+            try {
+                $result = GCMController::sendGCM($apiKey, $message, $registration_ids);
+            } catch (Exception $exc) {
+                $result = FALSE;
+            }
+        }
 
         $apiResponse->setCode(200);
         $apiResponse->setPayload('');
