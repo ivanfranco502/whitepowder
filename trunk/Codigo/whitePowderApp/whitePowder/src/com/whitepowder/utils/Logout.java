@@ -2,6 +2,7 @@ package com.whitepowder.utils;
 
 import com.example.whitepowder.R;
 import com.whitepowder.userManagement.LoginActivity;
+import com.whitepowder.userManagement.User;
 
 import android.app.Activity;
 import android.content.Context;
@@ -18,6 +19,8 @@ public class Logout {
 		Editor editor = sharedPreferences.edit();
 		editor.clear(); 
 		editor.commit();
+		
+		User.getUserInstance().setRole("UNKNOWN");
 		
 		Intent intent = new Intent(mContext, LoginActivity.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -36,6 +39,8 @@ public class Logout {
 		Editor editor = sharedPreferences.edit();
 		editor.clear(); 
 		editor.commit();
+		
+		User.getUserInstance().setRole("UNKNOWN");
 		
 		Intent intent = new Intent(mContext, LoginActivity.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
