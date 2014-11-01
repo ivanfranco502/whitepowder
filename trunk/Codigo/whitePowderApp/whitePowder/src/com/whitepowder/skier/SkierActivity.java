@@ -24,6 +24,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -364,27 +365,37 @@ public class SkierActivity extends Activity {
 	}
 	
 	private void animateSkier() {
-		ImageView emergencyImage = (ImageView) findViewById(R.id.emergencyAnimation);
-		ImageView progressBar1 = (ImageView) findViewById(R.id.progressBar1);
-		ImageView progressBar2 = (ImageView) findViewById(R.id.progressBar2);
-		TextView help = (TextView) findViewById(R.id.help);
+		final ImageView emergencyImage = (ImageView) findViewById(R.id.emergencyAnimation);
+		final ImageView progressBar1 = (ImageView) findViewById(R.id.progressBar1);
+		final ImageView progressBar2 = (ImageView) findViewById(R.id.progressBar2);
+		final TextView help = (TextView) findViewById(R.id.help);
 		
 		Point size = new Point();
 		getWindowManager().getDefaultDisplay().getSize(size);
 		TranslateAnimation moveLeftToRight = new TranslateAnimation(0, size.x, 0, 0);
     	moveLeftToRight.setDuration(2000);
     	
-    	emergencyImage.setVisibility(View.VISIBLE);
-    	progressBar1.setVisibility(View.INVISIBLE);
-    	progressBar2.setVisibility(View.INVISIBLE);
-    	help.setVisibility(View.INVISIBLE);
+    	moveLeftToRight.setAnimationListener(new AnimationListener(){
+    	    public void onAnimationStart(Animation a){
+    	    	emergencyImage.setVisibility(View.VISIBLE);
+    	    	progressBar1.setVisibility(View.INVISIBLE);
+    	    	progressBar2.setVisibility(View.INVISIBLE);
+    	    	help.setVisibility(View.INVISIBLE);
+    	    }
+    	    public void onAnimationRepeat(Animation a){}
+    	    public void onAnimationEnd(Animation a){
+    	    	emergencyImage.setVisibility(View.INVISIBLE);
+    	    	progressBar1.setVisibility(View.VISIBLE);
+    	    	progressBar2.setVisibility(View.VISIBLE);
+    	    	help.setVisibility(View.VISIBLE);
+    	    }
+    	});
+    	
+    
     	emergencyImage.startAnimation(moveLeftToRight);
     	emergencyImage.startAnimation(moveLeftToRight);
     	emergencyImage.startAnimation(moveLeftToRight);
-    	emergencyImage.setVisibility(View.INVISIBLE);
-    	progressBar1.setVisibility(View.VISIBLE);
-    	progressBar2.setVisibility(View.VISIBLE);
-    	help.setVisibility(View.VISIBLE);
+    	
 		
 	}
 	
