@@ -11,6 +11,6 @@
         android:layout_marginBottom="5dp"
         android:gravity="center"
         android:textSize="20sp"
-        android:text="Mostrar mapa" />
+        android:text="@string/rescuer_inbox_footer_text" />
 
 </RelativeLayout>

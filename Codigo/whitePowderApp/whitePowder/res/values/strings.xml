@@ -176,5 +176,12 @@
     <string name="skier_statistics_share_button_text">COMPARTIR</string>
     <string name="title_activity_rescuer">RescuerActivity</string>
     <string name="hello_world">Hello world!</string>
-
+    
+    <!-- Sección de strings rescuer-->
+    <string name="rescuer_title_string">RESCATISTA</string>
+    <string name="rescuer_no_gps_alert_text">El sistema GPS está desactivado, debe activarlo para continuar.</string>
+    <string name="rescuer_set_nursed_button">AVISAR ATENDIDO</string>
+    <string name="rescuer_set_nursed_confirmation_title">Accidente atendido</string>
+    <string name="rescuer_inbox_footer_text">Mostrar mapa</string>
+	<string name="rescuer_set_nursed_confirmation_body">¿Está seguro que desea marcar el accidente como atendido?</string>
 </resources>

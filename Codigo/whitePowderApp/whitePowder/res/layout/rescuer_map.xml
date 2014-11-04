@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+       android:background="#6DCAEC"
+       android:orientation="vertical"
+       android:layout_width="match_parent"
+       android:layout_height="match_parent" xmlns:tools="http://schemas.android.com/tools">
+       
+	<fragment
+	    android:id="@+id/rescuer_map_fragment"
+	    android:name="com.google.android.gms.maps.MapFragment"
+	    android:layout_width="match_parent"
+	    android:layout_height="0dp"
+	    android:layout_weight="9" />
+	  
+    
+   	<RelativeLayout
+   	    android:id="@+id/rescuer_map_nursed_button"
+   	    android:layout_width="match_parent"
+   	    android:layout_height="50dp"
+   	    android:background="#7caf00"
+   	    android:visibility="gone"
+   	    tools:ignore="NestedWeights" >
+        
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:gravity="center"
+            android:layout_centerInParent="true" 
+            android:text="@string/rescuer_set_nursed_button"/>
+        
+    </RelativeLayout>	    
+	   
+</LinearLayout>

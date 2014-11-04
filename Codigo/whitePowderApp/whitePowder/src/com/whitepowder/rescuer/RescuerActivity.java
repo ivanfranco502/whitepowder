@@ -25,6 +25,7 @@ import android.content.ServiceConnection;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.os.Vibrator;
 import android.support.v7.widget.PopupMenu;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -37,6 +38,11 @@ import android.widget.ListView;
 import android.widget.Toast;
 public class RescuerActivity extends Activity {
 
+	
+	public static String GCM_ALERT_INTENT_ACTION = "GCM_ALERT_INTENT_ACTION";
+	public static String GCM_ACCIDENT_INTENT_ACTION = "GCM_ACCIDENT_INTENT_ACTION";
+	private static int RESCUER_MAP_ACTIVITY_REQUEST_CODE = 1004;
+	
 	private Context mContext;
 	private LocationManager mLocationManager;
 	private ServiceConnection mConnection;
@@ -44,9 +50,7 @@ public class RescuerActivity extends Activity {
 	private BroadcastReceiver serviceBroadcastReciever=null;
 	private SkierModeService mBoundService;
 	private ImageButton butSubmenu;
-	
-	public static String GCM_ALERT_INTENT_ACTION = "GCM_ALERT_INTENT_ACTION";
-	public static String GCM_ACCIDENT_INTENT_ACTION = "GCM_ACCIDENT_INTENT_ACTION";
+
 	private BroadcastReceiver mAlertReceiver = null;
 	private BroadcastReceiver mAccidentReceiver = null;
 	
@@ -58,6 +62,9 @@ public class RescuerActivity extends Activity {
 	private ProgressDialog progressDialogSync;
 	private BroadcastReceiver syncFinishedBroadcastReciever=null;
 	private SyncThread sth;
+	
+	//Vibrator
+	Vibrator mVibrator=null;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -96,6 +103,9 @@ public class RescuerActivity extends Activity {
 		
 		//Enables GCM
 		new GCM(mContext);
+		
+		//Initializates vibrator
+		mVibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 		
 		//Register for GCM alerts
         registerAlertBroadcastReceiver();
@@ -160,13 +170,14 @@ public class RescuerActivity extends Activity {
 				
 				Intent intent = new Intent(RescuerActivity.this, RescuerMap.class);
 				intent.putExtra("accidentes",mensaje.toString());
-				startActivity(intent);
+				startActivityForResult(intent, RESCUER_MAP_ACTIVITY_REQUEST_CODE);
 		
 			}
 		});
 		
 	};
-
+	
+	
 	private void setupRescuerMode(){
 		if (!mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
 			alertNoGps();
@@ -175,12 +186,25 @@ public class RescuerActivity extends Activity {
 			//Binds to service
 			bindService(new Intent(mContext, SkierModeService.class), mConnection, Context.BIND_AUTO_CREATE);			
 		};	
+	};
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		
+		if((requestCode == RESCUER_MAP_ACTIVITY_REQUEST_CODE)&&(resultCode==RESULT_OK)){
+			int nursedAccidentId = data.getExtras().getInt("rescued_id");			
+			Victim vict = new Victim();
+			vict.setId(nursedAccidentId);
+			removeFromList(vict);
+			
+		};
 	}
 	
 	private void alertNoGps() {
 		if (alertNoGPS == null){
 			final AlertDialog.Builder builder = new AlertDialog.Builder(RescuerActivity.this);
-			builder.setMessage("El sistema GPS está desactivado, debe activarlo para continuar.")
+			builder.setMessage(getString(R.string.rescuer_no_gps_alert_text))
 				.setCancelable(false)
 		        .setPositiveButton("Activar GPS", new DialogInterface.OnClickListener() {
 		        	public void onClick(final DialogInterface dialog, final int id) {
@@ -321,7 +345,20 @@ public class RescuerActivity extends Activity {
 						
 						if((victima.getId()!=-1)&&(victima.getX()!=null)&&(victima.getY()!=null)&&(victima.getUsername()!=null)){
 							addToList(victima);
-						};		
+						};
+						
+						//Vibrate and display toast
+						
+						Toast.makeText(RescuerActivity.this, "White Powder ha recibido un nuevo accidente", Toast.LENGTH_SHORT).show();
+						
+						new Thread(new Runnable() {
+							
+							@Override
+							public void run() {
+								mVibrator.vibrate(500);
+								
+							}
+						}).start();					
 					}
 					
 					else if(action.equals("remove")){
