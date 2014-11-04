@@ -23,6 +23,10 @@ public class Victim {
 		return y;
 	};
 	
+	public void setId(int acc_id){
+		this.id = acc_id;
+	};
+	
 	@Override
 	public boolean equals(Object o) {
 		Victim vic = (Victim)o;
@@ -31,7 +35,7 @@ public class Victim {
 		};
 		
 		return false;
-	}
+	};
 
 
 }

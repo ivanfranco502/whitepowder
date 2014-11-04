@@ -3,6 +3,7 @@ package com.whitepowder.gcmModule;
 import com.example.whitepowder.R;
 import com.whitepowder.rescuer.RescuerActivity;
 import com.whitepowder.skier.SkierActivity;
+import com.whitepowder.userManagement.LoginActivity;
 import com.whitepowder.userManagement.User;
 
 import android.app.Activity;
@@ -73,15 +74,16 @@ public class GcmBroadcastReceiver extends BroadcastReceiver {
 					if (getResultCode() != Activity.RESULT_OK) {
 						PendingIntent pendingIntent=null;
 						
-						Intent displayIntent = new Intent(context, RescuerActivity.class);
+						Intent displayIntent = new Intent(context, LoginActivity.class);
 						displayIntent.putExtras(intent.getExtras());
 						pendingIntent = PendingIntent.getActivity(context, 0, displayIntent, 0);
 						NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context)
 							.setSmallIcon(R.drawable.ic_accident)
 							.setContentIntent(pendingIntent)
 							.setAutoCancel(true)
-							.setVibrate(mVibratePattern);
-		
+							.setContentTitle("White Powder - Accidentes")
+							.setContentText("Tienes accidentes sin atender.")
+							.setVibrate(mVibratePattern);		
 					
 							//TODO set sound alert
 							//.setSound(soundURI)
