@@ -1,19 +1,22 @@
 package com.whitepowder.gcmModule;
 
-import com.example.whitepowder.R;
-import com.whitepowder.skier.emergency.EmergencyPeripheral;
-import com.whitepowder.utils.ApplicationError;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
 import android.media.AudioManager;
-import android.media.MediaPlayer;
 import android.media.AudioManager.OnAudioFocusChangeListener;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.view.KeyEvent;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.Window;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import com.example.whitepowder.R;
+import com.whitepowder.skier.emergency.EmergencyPeripheral;
+import com.whitepowder.utils.ApplicationError;
 
 public class AlertDisplayActivity extends Activity {
 	
@@ -21,10 +24,20 @@ public class AlertDisplayActivity extends Activity {
 	Boolean isStopped=false;
 	Vibrator vibrator=null;
 	
+	AlertDisplayActivity mContext;
+	
+	private TextView alert_title;
+	private TextView alert_body;
+	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.skier_alert_display);
+		mContext = this;
+		
+		final RelativeLayout butSend = (RelativeLayout)findViewById(R.id.discardButton);
+		alert_title = (TextView) findViewById(R.id.alertSign);
+		alert_body = (TextView) findViewById(R.id.alertBody);
 		
 		playSound(getIntent().getExtras().getInt("id"));
 		
@@ -48,21 +61,33 @@ public class AlertDisplayActivity extends Activity {
 		});
 		
 		vibratorThread.start();
-
-		AlertDialog.Builder blder = new AlertDialog.Builder(this);
-		blder.setCancelable(false);
-	    blder.setTitle(getIntent().getExtras().getString("title"));
-	    blder.setMessage(getIntent().getExtras().getString("body"));
-	    blder.setPositiveButton("DESCARTAR", new OnClickListener() {
-			
+		
+		alert_title.setText(getIntent().getExtras().getString("title"));
+		alert_body.setText(getIntent().getExtras().getString("body"));		
+		
+		butSend.setOnClickListener(new OnClickListener() {
 			@Override
-			public void onClick(DialogInterface dialog, int which) {
+			public void onClick(View v) {
 				isStopped=true;
 				finish();
 				
 			}
 		});
-		blder.create().show();
+
+		//AlertDialog.Builder blder = new AlertDialog.Builder(this);
+		//blder.setCancelable(false);
+	    //blder.setTitle(getIntent().getExtras().getString("title"));
+	    //blder.setMessage(getIntent().getExtras().getString("body"));
+	    //blder.setPositiveButton("DESCARTAR", new OnClickListener() {
+			
+			//@Override
+			//public void onClick(DialogInterface dialog, int which) {
+				//isStopped=true;
+				//finish();
+				
+			//}
+		//});
+		//blder.create().show();
 	}
 	
 	private void playSound(final int id) {

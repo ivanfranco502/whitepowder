@@ -1,8 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FC0D19" >
+    android:orientation="vertical"
+    android:weightSum="7"
+    android:background="#000000">
+    
+	<RelativeLayout
+	        android:id="@+id/RelativeAlertTitle"
+	        android:layout_height="0dp"
+	        android:layout_width="match_parent"
+	        android:layout_weight="1"
+	        android:background="#c3000a"
+	        android:gravity="center">	        
+         
+			    <TextView
+			        android:id="@+id/alertSign"
+			        android:layout_width="match_parent"
+			        android:layout_height="wrap_content"
+			        android:gravity="center"
+			        android:text="ALERTA"
+			        android:textColor="#ffffff"
+			        android:textSize="40sp"/>   
+            
+
+		    	        
+      </RelativeLayout>
+      
+	  
+      
+	<RelativeLayout
+	        android:id="@+id/RelativeAlertIcon"
+	        android:layout_height="0dp"
+	        android:layout_width="match_parent"
+	        android:layout_weight="3"
+	        android:gravity="center">
+			    
+	    	<RelativeLayout
+		        android:id="@+id/BasicInfoMargin1"
+		        android:layout_height="5dp"
+		        android:layout_width="match_parent"
+		        android:background="#ffffff"/>
+		    
+	    	<ImageView
+			        android:id="@+id/AlertIcon"
+			        android:layout_width="match_parent"
+			        android:layout_height="match_parent"
+			        android:layout_marginTop="20dp"
+			        android:src="@drawable/ic_alert"
+			        android:scaleType="centerInside"/>
+	 </RelativeLayout>
+	    
+	
+		<LinearLayout
+	        android:id="@+id/RelativeAlertMsg"
+	        android:layout_height="0dp"
+	        android:layout_width="match_parent"
+	        android:layout_weight="2"
+	        android:orientation="vertical"
+	        android:gravity="center">
+	    	
+    
+			    
+			    <TextView
+			        android:id="@+id/alertBody"
+			        android:layout_width="match_parent"
+			        android:layout_height="wrap_content"
+			        android:gravity="center_horizontal"
+			        android:layout_marginTop="0dp"
+			        android:textColor="#ffffff"
+		        	android:textSize="30sp"/>		
+		    
+		    
+		</LinearLayout>
+		
+		
+		<RelativeLayout
+	     android:id="@+id/discardButton"
+	     android:layout_width="match_parent"
+	     android:layout_height="0dp"
+	     android:layout_weight="1"	     
+	     android:gravity="center"
+	     android:background="#c3000a" >
+	     	
+	        <TextView
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="DESCARTAR"
+	           	android:textSize="30sp"
+	            android:textColor="#FFFFFF" /> 
+	                
+	  </RelativeLayout>		 	 
     
 
-</RelativeLayout>
+</LinearLayout>
