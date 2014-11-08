@@ -1,7 +1,5 @@
 package com.whitepowder.skier;
 
-import android.animation.Animator;
-import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -12,13 +10,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.graphics.Point;
 import android.location.LocationManager;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v7.widget.PopupMenu;
-import android.view.Display;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
@@ -32,7 +30,6 @@ import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.whitepowder.skier.MediaButtonIntentReceiver;
 import com.example.whitepowder.R;
 import com.whitepowder.gcmModule.AlertDisplayActivity;
@@ -46,6 +43,7 @@ import com.whitepowder.skier.normsAndSigns.NASActivity;
 import com.whitepowder.skier.statistics.StatisticsActivity;
 import com.whitepowder.storage.SyncThread;
 import com.whitepowder.userManagement.PasswordChangeActivity;
+import com.whitepowder.userManagement.User;
 import com.whitepowder.utils.Logout;
 
 public class SkierActivity extends Activity {
@@ -88,7 +86,23 @@ public class SkierActivity extends Activity {
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);	
+		super.onCreate(savedInstanceState);
+		
+		//Si no tengo el perfil cargado, lo cargo
+		
+		if(User.getUserInstance().getToken()==null){			
+			SharedPreferences sharedPreferences = getSharedPreferences("WP_USER_SHARED_PREFERENCES", Context.MODE_PRIVATE);
+			String role = sharedPreferences.getString("role", "UNKNOWN");
+			String token = sharedPreferences.getString("_token", "UNKNOWN");
+			if(role != "UNKNOWN" && token != "UNKNOWN"){
+				User.getUserInstance().setRole(role);
+				User.getUserInstance().setToken(token);
+				
+				if(User.getUserInstance().getToken().equals("UNKNOWN")||(User.getUserInstance().getRole().equals("UNKNOWN"))){
+					Logout.logout(this, false);
+				};	
+			};
+		};
 		
 		setContentView(R.layout.skier_activity_main);
 		mContext = this;
@@ -118,7 +132,13 @@ public class SkierActivity extends Activity {
         setupMapButton();
         setupEmergencyButton();
         setupStatisticsButton();
-        setupPeripheralIntegratorMasterManager();
+        setupPeripheralIntegratorMasterManager(); 
+        
+        if(savedInstanceState!=null){
+        	if(savedInstanceState.getBoolean("skierModeFlag",false)){
+        		startSkierMode();
+        	};
+        }
  	
 	};
 	
@@ -147,6 +167,12 @@ public class SkierActivity extends Activity {
 	    }
 		
 	};
+	
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putBoolean("skierModeFlag", butSkiermode.isSelected());
+	}
 
 	private void registerAlertBroadcastReciever(){
 
@@ -197,6 +223,7 @@ public class SkierActivity extends Activity {
 			@Override
 			public void onServiceDisconnected(ComponentName className) {
 				
+				mBoundService = null;
 				stopSkierMode();
 				Toast.makeText(mContext, "El modo esquiador ha sido desactivado.", Toast.LENGTH_SHORT).show();
 			};
@@ -226,10 +253,7 @@ public class SkierActivity extends Activity {
 						alertNoGps();
 					}
 					else{
-						//Binds to service
-						bindService(new Intent(mContext, SkierModeService.class), mConnection, Context.BIND_AUTO_CREATE);						
-
-						v.setSelected(true);
+						startSkierMode();
 					};			
 					
 				}
@@ -242,13 +266,19 @@ public class SkierActivity extends Activity {
 		});
 	}
 	
+	private void startSkierMode(){
+		//Binds to service
+		bindService(new Intent(mContext, SkierModeService.class), mConnection, Context.BIND_AUTO_CREATE);						
+		butSkiermode.setSelected(true);
+	}
+	
 	private void stopSkierMode(){
 
 		if(mBoundService!=null){
 			unbindService(mConnection);
+			mBoundService = null;
 		};
-		
-		mBoundService = null;
+	
 		
 		if(serviceBroadcastReciever!=null){
 			unregisterReceiver(serviceBroadcastReciever);
@@ -305,7 +335,7 @@ public class SkierActivity extends Activity {
 	}
 	
 	private void setupPeripheralIntegratorMasterManager(){
-		skierActivity = this;
+
 		IntentFilter filter = new IntentFilter(Intent.ACTION_MEDIA_BUTTON); //"android.intent.action.MEDIA_BUTTON"
 	    filter.setPriority(IntentFilter.SYSTEM_HIGH_PRIORITY + 1);
 		r = new MediaButtonIntentReceiver();
@@ -565,7 +595,7 @@ public class SkierActivity extends Activity {
 	@Override
 	public void onResume(){
 		super.onResume();
-		//setupPeripheralIntegratorMasterManager();
+		setupPeripheralIntegratorMasterManager();
 	}
 	
 	@Override
