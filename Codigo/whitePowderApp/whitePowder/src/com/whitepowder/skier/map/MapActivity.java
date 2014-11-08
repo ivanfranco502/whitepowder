@@ -57,7 +57,9 @@ public class MapActivity extends Activity {
 		
 		if((data!=null)||(data!="")){
 			DrawableSlopeContainer dsc = gson.fromJson(data, DrawableSlopeContainer.class);
-			drawSlopes(dsc);	
+			if(dsc!=null){
+				drawSlopes(dsc);
+			};
 			
 			//Setups zoom and center
 	        
@@ -72,36 +74,40 @@ public class MapActivity extends Activity {
 		if(dsc.code==200){
 			
 			for(DrawableSlope ds: dsc.payload){
-				if(ds.getSlope_coordinates()!=null && ds.getSlope_coordinates().size() > 0){
-					
-					PolylineOptions plo = new PolylineOptions();
-				    plo.width(6);
-				    plo.color(Color.parseColor("#"+ds.getSlope_difficulty_color()));
-				    
-				    
-					for(Coordinate c: ds.slope_coordinates){
-						plo.add(new LatLng(c.x, c.y));
-					}
-					 
-					mMap.addPolyline(plo);
-					
-					//Adds start marker
-					
-					mMap.addMarker(new MarkerOptions()
-			        .position(new LatLng(ds.getSlope_coordinates().get(0).x, ds.getSlope_coordinates().get(0).y))
-			        .title("Pista: "+ds.getSlope_description())
-			        .snippet("Longitud: "+Integer.toString(ds.getSlope_length())+" metros")
-			        .icon(BitmapDescriptorFactory
-			            .fromResource(R.drawable.slope_start)));
-					
-					//Adds end marker
-					
-					mMap.addMarker(new MarkerOptions()
-			        .position(new LatLng(ds.getSlope_coordinates().get(ds.getSlope_coordinates().size()-1).x, ds.getSlope_coordinates().get(ds.getSlope_coordinates().size()-1).y))
-			        .title("Fin de "+ds.getSlope_description())
-			        .icon(BitmapDescriptorFactory
-			        	.fromResource(R.drawable.slope_end)));				
-					
+				if(ds!=null){
+					if(ds.getSlope_coordinates()!=null){
+						if(ds.getSlope_coordinates().size() > 0){
+				
+							PolylineOptions plo = new PolylineOptions();
+						    plo.width(6);
+						    plo.color(Color.parseColor("#"+ds.getSlope_difficulty_color()));
+						    
+						    
+							for(Coordinate c: ds.slope_coordinates){
+								
+								plo.add(new LatLng(c.x, c.y));
+							}
+							 
+							mMap.addPolyline(plo);
+							
+							//Adds start marker
+							
+							mMap.addMarker(new MarkerOptions()
+					        .position(new LatLng(ds.getSlope_coordinates().get(0).x, ds.getSlope_coordinates().get(0).y))
+					        .title("Pista: "+ds.getSlope_description())
+					        .snippet("Longitud: "+Integer.toString(ds.getSlope_length())+" metros")
+					        .icon(BitmapDescriptorFactory
+					            .fromResource(R.drawable.slope_start)));
+							
+							//Adds end marker
+							
+							mMap.addMarker(new MarkerOptions()
+					        .position(new LatLng(ds.getSlope_coordinates().get(ds.getSlope_coordinates().size()-1).x, ds.getSlope_coordinates().get(ds.getSlope_coordinates().size()-1).y))
+					        .title("Fin de "+ds.getSlope_description())
+					        .icon(BitmapDescriptorFactory
+					        	.fromResource(R.drawable.slope_end)));				
+						};
+					};
 				};
 			};
 			
@@ -115,22 +121,28 @@ public class MapActivity extends Activity {
 		double sumatoriaY=0;
 		int count=0;
 		
-		if(dsc.code==200){
-			
-			for(DrawableSlope ds: dsc.payload){
-				if(ds.getSlope_coordinates()!=null && ds.getSlope_coordinates().size() > 0){					
-					sumatoriaX += ds.getSlope_coordinates().get(0).x;
-					sumatoriaY += ds.getSlope_coordinates().get(0).y;
-					count ++;
+		if(dsc!=null){	
+			if(dsc.code==200){		
+				for(DrawableSlope ds: dsc.payload){
+					if(ds.getSlope_coordinates()!=null){		
+						if(ds.getSlope_coordinates().size() > 0){
+							sumatoriaX += ds.getSlope_coordinates().get(0).x;
+							sumatoriaY += ds.getSlope_coordinates().get(0).y;
+							count ++;
+						}
+					};
 				};
-			};
+				
+				if(count ==0){
+					return new LatLng(0, 0);
+				};
+				
+				return new LatLng(sumatoriaX/count, sumatoriaY/count);
+				
+			}
 			
-			return new LatLng(sumatoriaX/count, sumatoriaY/count);
-			
-		}
-		else{
-			return new LatLng(0, 0);
-		}
+		};
+		return new LatLng(0, 0);
 
 	}
 	

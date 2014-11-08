@@ -10,6 +10,7 @@ import com.whitepowder.skier.SkierModeService;
 import com.whitepowder.skier.SkierModeStopperThread;
 import com.whitepowder.storage.SyncThread;
 import com.whitepowder.userManagement.PasswordChangeActivity;
+import com.whitepowder.userManagement.User;
 import com.whitepowder.utils.Logout;
 
 import android.app.Activity;
@@ -22,6 +23,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -69,6 +71,23 @@ public class RescuerActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		//Si no tengo el perfil cargado, lo cargo
+		
+		if(User.getUserInstance().getToken()==null){			
+			SharedPreferences sharedPreferences = getSharedPreferences("WP_USER_SHARED_PREFERENCES", Context.MODE_PRIVATE);
+			String role = sharedPreferences.getString("role", "UNKNOWN");
+			String token = sharedPreferences.getString("_token", "UNKNOWN");
+			if(role != "UNKNOWN" && token != "UNKNOWN"){
+				User.getUserInstance().setRole(role);
+				User.getUserInstance().setToken(token);
+				
+				if(User.getUserInstance().getToken().equals("UNKNOWN")||(User.getUserInstance().getRole().equals("UNKNOWN"))){
+					Logout.logout(this, false);
+				};	
+			};
+		};
+		
 		gson = new Gson();
 		setContentView(R.layout.rescuer_inbox);
 		getActionBar().hide();

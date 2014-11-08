@@ -7,6 +7,7 @@ import com.google.gson.Gson;
 import com.whitepowder.storage.StorageConstants;
 import com.whitepowder.storage.SyncThread;
 import com.whitepowder.userManagement.PasswordChangeActivity;
+import com.whitepowder.userManagement.User;
 import com.whitepowder.utils.ApplicationError;
 import com.whitepowder.utils.Logout;
 import android.app.Activity;
@@ -66,6 +67,23 @@ public class SlopeRecognizerActivity extends Activity{
 		
 		//Sets general
 		super.onCreate(savedInstanceState);
+		
+		//Si no tengo el perfil cargado, lo cargo
+		
+		if(User.getUserInstance().getToken()==null){			
+			SharedPreferences sharedPreferences = getSharedPreferences("WP_USER_SHARED_PREFERENCES", Context.MODE_PRIVATE);
+			String role = sharedPreferences.getString("role", "UNKNOWN");
+			String token = sharedPreferences.getString("_token", "UNKNOWN");
+			if(role != "UNKNOWN" && token != "UNKNOWN"){
+				User.getUserInstance().setRole(role);
+				User.getUserInstance().setToken(token);
+				
+				if(User.getUserInstance().getToken().equals("UNKNOWN")||(User.getUserInstance().getRole().equals("UNKNOWN"))){
+					Logout.logout(this, false);
+				};	
+			};
+		};
+		
 		setContentView(R.layout.slope_recognition);
 		butSubmenuSlope = (ImageButton) findViewById(R.id.bt_submenu_slope);
 		

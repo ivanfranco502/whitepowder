@@ -35,8 +35,8 @@ public class SkierModeStopperThread extends Thread {
 			
 			try {
 				url = new URL(STOP_SKIER_MODE_URL);
+				JSONObject request = new JSONObject();				
 				
-				JSONObject request = new JSONObject();
 				request.put("_token", User.getUserInstance().getToken());
 				
 				connection = (HttpURLConnection)url.openConnection();
@@ -58,7 +58,6 @@ public class SkierModeStopperThread extends Thread {
 					InputStream is = connection.getInputStream();
 					BufferedReader reader = new BufferedReader(new InputStreamReader(is));		
 					String response = reader.readLine();
-					
 					success = parseResponse(response);
 
 			    }
