@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import com.example.whitepowder.R;
-import com.whitepowder.skier.SkierActivity;
 import com.whitepowder.skier.emergency.EmergencyPeripheral;
 import com.whitepowder.skier.emergency.EmergencyThread;
 import com.whitepowder.utils.ApplicationError;
@@ -16,22 +15,23 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.Window;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 
 public class SignActivity extends Activity {
 
-	static public SkierActivity skierActivity;
 	//SeekBar emergency
 	private boolean seekBarProgress;
+	SignActivity mActivity;
 	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.skier_activity_nas_sign);
+		
+		mActivity = this;
 		
 		Sign sign = (Sign) getIntent().getSerializableExtra("SELECTED_SIGN");
 
@@ -93,7 +93,7 @@ public class SignActivity extends Activity {
 				if(seekBarProgress){
 					if(seekBar.getProgress() >= 85 && seekBar.getProgress() <= 100){
 						//llamar emergencia
-						EmergencyThread et = new EmergencyThread(skierActivity.skierActivity, getApplicationContext());
+						EmergencyThread et = new EmergencyThread(mActivity, getApplicationContext());
 						et.execute();
 					}
 				}

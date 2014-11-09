@@ -41,10 +41,10 @@ public class NASActivity extends Activity implements ActionBar.TabListener {
 	 * {@link android.support.v13.app.FragmentStatePagerAdapter}.
 	 */
 	SectionsPagerAdapter mSectionsPagerAdapter;
-	
-	static public SkierActivity skierActivity;
+
 	//SeekBar emergency
 	private boolean seekBarProgress;
+	NASActivity mActivity;
 
 	/**
 	 * The {@link ViewPager} that will host the section contents.
@@ -56,6 +56,8 @@ public class NASActivity extends Activity implements ActionBar.TabListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.skier_activity_nas);
 
+		mActivity = this;
+		
 		// Set up the action bar.
 		final ActionBar actionBar = getActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
@@ -198,7 +200,7 @@ public class NASActivity extends Activity implements ActionBar.TabListener {
 				if(seekBarProgress){
 					if(seekBar.getProgress() >= 85 && seekBar.getProgress() <= 100){
 						//llamar emergencia
-						EmergencyThread et = new EmergencyThread(skierActivity.skierActivity, getApplicationContext());
+						EmergencyThread et = new EmergencyThread(mActivity, getApplicationContext());
 						et.execute();
 					}
 				}

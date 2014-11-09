@@ -12,6 +12,7 @@ import java.net.URL;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.location.Location;
@@ -33,32 +34,32 @@ public class EmergencyThread extends AsyncTask<Void, Void, Void> {
 	
 	private ProgressDialog progressDialog;
 	private Context mContext;
-	private SkierActivity mSkierActivity;
+	private Activity mActivity;
 	private final String EmergencyURL = BaseTavrosURI.getBaseURI()+"alert/send";
 	private final Gson gson = new Gson();
 	private ApplicationError mError = null;
 	private LocationManager mLocationManager;
 	private boolean sendTried = false;
 	
-	public EmergencyThread(SkierActivity skierActivity, Context ctxt) {		
+	public EmergencyThread(Activity activity, Context ctxt) {		
 		mContext = ctxt;
-		mSkierActivity = skierActivity;
+		mActivity = activity;
 	}
 	
 	@Override
 	protected void onPreExecute() {
 	// NOTE: You can call UI Element here.   
-		if (null == (mLocationManager = (LocationManager) mSkierActivity.getSystemService(Context.LOCATION_SERVICE))){
+		if (null == (mLocationManager = (LocationManager) mActivity.getSystemService(Context.LOCATION_SERVICE))){
 			Toast.makeText(mContext, "Su dispositivo no posee GPS", Toast.LENGTH_SHORT ).show();
 			this.cancel(true);
 		};		
 		
-		if (null == (mLocationManager = (LocationManager) mSkierActivity.getSystemService(Context.LOCATION_SERVICE))){
+		if (null == (mLocationManager = (LocationManager) mActivity.getSystemService(Context.LOCATION_SERVICE))){
 			Toast.makeText(mContext, "No es posible obtener su posición.", Toast.LENGTH_SHORT ).show();
 			this.cancel(true);
 		};
 		
-		progressDialog = new ProgressDialog(mSkierActivity);
+		progressDialog = new ProgressDialog(mActivity);
 		progressDialog.setMessage(mContext.getString(R.string.process_dialog_emergency));
 		progressDialog.setCancelable(false);
 		progressDialog.setIndeterminate(true);
@@ -164,7 +165,7 @@ public class EmergencyThread extends AsyncTask<Void, Void, Void> {
 		
     	if(mError==null){
     		if(sendTried){
-    		Toast.makeText(mContext, mSkierActivity.getResources().getString(R.string.emergency_success_toast), Toast.LENGTH_SHORT).show();
+    		Toast.makeText(mContext, mActivity.getResources().getString(R.string.emergency_success_toast), Toast.LENGTH_SHORT).show();
     		}
     		else{
         		Toast.makeText(mContext, "No es posible enviar la alerta de emergencia en este momento.", Toast.LENGTH_SHORT).show();

@@ -33,14 +33,16 @@ public class BasicInformationForecastActivity extends Activity {
 	double coorY;
 	private BasicInformationForecast[] basicInformationForecast;
 	
-	static public SkierActivity skierActivity;
 	//SeekBar emergency
 	private boolean seekBarProgress;
+	BasicInformationForecastActivity mActivity;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.skier_fragment_basic_information_forecast);
+		
+		mActivity = this;
 		
 		listViewForecast=(ListView)findViewById(R.id.listViewForecast);
 		
@@ -133,7 +135,7 @@ public class BasicInformationForecastActivity extends Activity {
 				if(seekBarProgress){
 					if(seekBar.getProgress() >= 85 && seekBar.getProgress() <= 100){
 						//llamar emergencia
-						EmergencyThread et = new EmergencyThread(skierActivity.skierActivity, getApplicationContext());
+						EmergencyThread et = new EmergencyThread(mActivity, getApplicationContext());
 						et.execute();
 					}
 				}
