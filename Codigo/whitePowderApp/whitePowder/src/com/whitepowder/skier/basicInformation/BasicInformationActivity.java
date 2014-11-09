@@ -51,9 +51,9 @@ public class BasicInformationActivity extends Activity {
 	private ImageView forecast_icon;
 	private TextView forecast_see_extended;*/
 	
-	static public SkierActivity skierActivity;
 	//SeekBar emergency
 	private boolean seekBarProgress;
+	
 	
 	BasicInformationActivity mContext;
 	
@@ -180,7 +180,7 @@ public class BasicInformationActivity extends Activity {
 				if(seekBarProgress){
 					if(seekBar.getProgress() >= 85 && seekBar.getProgress() <= 100){
 						//llamar emergencia
-						EmergencyThread et = new EmergencyThread(skierActivity.skierActivity, getApplicationContext());
+						EmergencyThread et = new EmergencyThread(mContext, getApplicationContext());
 						et.execute();
 					}
 				}

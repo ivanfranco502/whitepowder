@@ -6,7 +6,6 @@ import java.text.SimpleDateFormat;
 import java.util.Locale;
 
 import com.example.whitepowder.R;
-import com.whitepowder.skier.SkierActivity;
 import com.whitepowder.skier.emergency.EmergencyPeripheral;
 import com.whitepowder.skier.emergency.EmergencyThread;
 
@@ -38,8 +37,8 @@ public class StatisticsActivity extends Activity {
 	Context mContext =null;
 	StatisticsManager userStats=null;
 	Boolean gotStats=false;
+	StatisticsActivity mStatisticsActivity = null;
 	
-	static public SkierActivity skierActivity;
 	//SeekBar emergency
 	private boolean seekBarProgress;
 	
@@ -49,6 +48,7 @@ public class StatisticsActivity extends Activity {
 		
 		setContentView(R.layout.skier_statistics);
 		mContext = getApplicationContext();
+		mStatisticsActivity = this;
 		
 		//Setups buttons
 		setupClearStatsButton();
@@ -212,7 +212,7 @@ public class StatisticsActivity extends Activity {
 				if(seekBarProgress){
 					if(seekBar.getProgress() >= 85 && seekBar.getProgress() <= 100){
 						//llamar emergencia
-						EmergencyThread et = new EmergencyThread(skierActivity.skierActivity, getApplicationContext());
+						EmergencyThread et = new EmergencyThread(mStatisticsActivity, getApplicationContext());
 						et.execute();
 					}
 				}

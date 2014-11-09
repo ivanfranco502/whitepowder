@@ -27,8 +27,7 @@ public class MapActivity extends Activity {
 	
 	private GoogleMap mMap=null;
 	private MapActivity mContext;
-	
-	static public SkierActivity skierActivity;
+
 	//SeekBar emergency
 	private boolean seekBarProgress;
 	
@@ -167,7 +166,7 @@ public class MapActivity extends Activity {
 				if(seekBarProgress){
 					if(seekBar.getProgress() >= 85 && seekBar.getProgress() <= 100){
 						//llamar emergencia
-						EmergencyThread et = new EmergencyThread(skierActivity.skierActivity, getApplicationContext());
+						EmergencyThread et = new EmergencyThread(mContext, getApplicationContext());
 						et.execute();
 					}
 				}
