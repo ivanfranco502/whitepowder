@@ -81,7 +81,7 @@ public class SkierActivity extends Activity {
 	private boolean seekBarProgress;
 	
 	//Peripheral
-	private MediaButtonIntentReceiver r;
+	private MediaButtonIntentReceiver mediaButtonIntentReceiver;
 	static public SkierActivity skierActivity;
 	
 	@Override
@@ -156,14 +156,13 @@ public class SkierActivity extends Activity {
 		
 		stopSkierMode();
 		
-		synchronized (this) {
-	        if(r != null){
-	            try{
-	            	unregisterReceiver(r);
-	            }
-	            catch(IllegalArgumentException e){	            	
-	            }
-	        }
+		if(mediaButtonIntentReceiver != null){
+			try{
+				unregisterReceiver(mediaButtonIntentReceiver);
+			}
+			catch(Exception e){
+				//nothing to do
+			}
 	    }
 		
 	};
@@ -338,8 +337,8 @@ public class SkierActivity extends Activity {
 
 		IntentFilter filter = new IntentFilter(Intent.ACTION_MEDIA_BUTTON); //"android.intent.action.MEDIA_BUTTON"
 	    filter.setPriority(IntentFilter.SYSTEM_HIGH_PRIORITY + 1);
-		r = new MediaButtonIntentReceiver();
-	    registerReceiver(r, filter);
+		mediaButtonIntentReceiver = new MediaButtonIntentReceiver();
+	    registerReceiver(mediaButtonIntentReceiver, filter);
 	    
 	    ((AudioManager)getSystemService(AUDIO_SERVICE)).registerMediaButtonEventReceiver(new ComponentName(
                 this, MediaButtonIntentReceiver.class));
@@ -578,27 +577,6 @@ public class SkierActivity extends Activity {
 		
 	};
 
-	@Override
-	public void onPause(){
-		super.onPause();
-		synchronized (this) {
-	        if(r != null){
-	            try{
-	            	unregisterReceiver(r);
-	            	r=null;
-	            }
-	            catch(IllegalArgumentException e){	            	
-	            }
-	        }
-	    }
-	}
-	
-	@Override
-	public void onResume(){
-		super.onResume();
-		//TODO requiere revisión
-		//setupPeripheralIntegratorMasterManager();
-	}
 	
 	@Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
