@@ -585,6 +585,7 @@ public class SkierActivity extends Activity {
 	        if(r != null){
 	            try{
 	            	unregisterReceiver(r);
+	            	r=null;
 	            }
 	            catch(IllegalArgumentException e){	            	
 	            }
@@ -595,7 +596,8 @@ public class SkierActivity extends Activity {
 	@Override
 	public void onResume(){
 		super.onResume();
-		setupPeripheralIntegratorMasterManager();
+		//TODO requiere revisión
+		//setupPeripheralIntegratorMasterManager();
 	}
 	
 	@Override
