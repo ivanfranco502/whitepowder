@@ -106,6 +106,7 @@ public class SkierActivity extends Activity {
 		
 		setContentView(R.layout.skier_activity_main);
 		mContext = this;
+		skierActivity = this;
 		loadButtons();	
 		
 		//Enables GCM
@@ -334,7 +335,7 @@ public class SkierActivity extends Activity {
 	}
 	
 	private void setupPeripheralIntegratorMasterManager(){
-
+		
 		IntentFilter filter = new IntentFilter(Intent.ACTION_MEDIA_BUTTON); //"android.intent.action.MEDIA_BUTTON"
 	    filter.setPriority(IntentFilter.SYSTEM_HIGH_PRIORITY + 1);
 		mediaButtonIntentReceiver = new MediaButtonIntentReceiver();
