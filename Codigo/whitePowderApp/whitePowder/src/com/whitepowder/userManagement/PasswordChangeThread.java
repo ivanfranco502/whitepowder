@@ -146,24 +146,31 @@ public class PasswordChangeThread extends AsyncTask<String, Void, Void> {
 		
 	private void parseResponse(String response){
 		try {
-			JSONObject jsonObject = new JSONObject(response);
 			
-			//Gets code from json response
-	        int code = jsonObject.getInt("code");
-
-	        if(code!=200){
-	        	switch(code){
-	        		case 110:
-	        			mError = new ApplicationError(408,"Error","Token inválido en módulo de cambio de contraseña");
-	        			break;
-	        		case 113:
-	        			mError = new ApplicationError(409,"Error","Contraseña actual inválida en módulo de cambio de contraseña");
-	        			break;
-        			case 114:
-	        			mError = new ApplicationError(411,"Error","No se pudo cambiar la contraseña. Vuelva a intentarlo más tarde.");
-	        			break;
-	        	}
-	        };		
+			if(response!=null){
+			
+				JSONObject jsonObject = new JSONObject(response);
+				
+				//Gets code from json response
+		        int code = jsonObject.getInt("code");
+	
+		        if(code!=200){
+		        	switch(code){
+		        		case 110:
+		        			mError = new ApplicationError(408,"Error","Token inválido en módulo de cambio de contraseña");
+		        			break;
+		        		case 113:
+		        			mError = new ApplicationError(409,"Error","Contraseña actual inválida en módulo de cambio de contraseña");
+		        			break;
+	        			case 114:
+		        			mError = new ApplicationError(411,"Error","No se pudo cambiar la contraseña. Vuelva a intentarlo más tarde.");
+		        			break;
+		        	}
+		        };
+			}
+			else{
+				mError = new ApplicationError(407,"Error","Respuesta inesperada en response en módulo de cambio de contraseña");
+			};
 		} 
 		
 		catch (JSONException e) {
