@@ -99,28 +99,35 @@ public class PasswordResetThread extends AsyncTask<String, Void, Void>  {
 	
 	private void parseResetResponse(String response){
 		try {
-			JSONObject jsonObject = new JSONObject(response);
 			
-			//Gets code from json response
-	        int code = jsonObject.getInt("code");
-
-	        if(code!=200){
-	        	switch (code) {
-	        	case 107:
-					mError = new ApplicationError(107,"Error","El email no se encuentra registrado.");
-					break;
-				case 108:
-					mError = new ApplicationError(108,"Error","No se pudo cambiar la contraseña. Vuela a intentar.");
-					break;
-				case 109:
-					mError = new ApplicationError(109,"Error","No se pudo enviar el mail con la nueva contraseña. Vuelva a intentar.");
-					break;
-				}
-	        };		
+			if(response!=null){
+			
+				JSONObject jsonObject = new JSONObject(response);
+				
+				//Gets code from json response
+		        int code = jsonObject.getInt("code");
+	
+		        if(code!=200){
+		        	switch (code) {
+		        	case 107:
+						mError = new ApplicationError(107,"Error","El email no se encuentra registrado.");
+						break;
+					case 108:
+						mError = new ApplicationError(108,"Error","No se pudo cambiar la contraseña. Vuela a intentar.");
+						break;
+					case 109:
+						mError = new ApplicationError(109,"Error","No se pudo enviar el mail con la nueva contraseña. Vuelva a intentar.");
+						break;
+					}
+		        };	
+			}
+			else{
+				mError = new ApplicationError(104,"Error","Respuesta inesperada en response en módulo de reseteo de contraseña.");
+			};
 		} 
 		
 		catch (JSONException e) {
-			mError = new ApplicationError(104,"Error","Respuesta inesperada en response en módulo de login");
+			mError = new ApplicationError(104,"Error","Respuesta inesperada en response en módulo de reseteo de contraseña.");
 		};
 	}
 	
