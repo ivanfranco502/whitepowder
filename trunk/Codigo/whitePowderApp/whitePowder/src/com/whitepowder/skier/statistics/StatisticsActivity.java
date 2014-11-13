@@ -17,6 +17,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -25,6 +26,10 @@ import android.os.Environment;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
+import android.view.animation.Animation.AnimationListener;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.SeekBar;
@@ -215,6 +220,9 @@ public class StatisticsActivity extends Activity {
 						EmergencyThread et = new EmergencyThread(mStatisticsActivity, getApplicationContext());
 						et.execute();
 					}
+					else{
+						animateSkier();
+					}
 				}
 				seekBar.setProgress(0);
 		    }
@@ -232,6 +240,38 @@ public class StatisticsActivity extends Activity {
 			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {}
 			});
     
+	}
+	
+	private void animateSkier() {
+		final ImageView emergencyImage = (ImageView) findViewById(R.id.emergencyAnimation);
+		final ImageView progressBar1 = (ImageView) findViewById(R.id.progressBar1);
+		final ImageView progressBar2 = (ImageView) findViewById(R.id.progressBar2);
+		final TextView help = (TextView) findViewById(R.id.help);
+		
+		Point size = new Point();
+		getWindowManager().getDefaultDisplay().getSize(size);
+		TranslateAnimation moveLeftToRight = new TranslateAnimation(0, size.x, 0, 0);
+    	moveLeftToRight.setDuration(2000);
+    	moveLeftToRight.setRepeatCount(2);
+    	moveLeftToRight.setAnimationListener(new AnimationListener(){
+    	    public void onAnimationStart(Animation a){
+    	    	emergencyImage.setVisibility(View.VISIBLE);
+    	    	progressBar1.setVisibility(View.INVISIBLE);
+    	    	progressBar2.setVisibility(View.INVISIBLE);
+    	    	help.setVisibility(View.INVISIBLE);
+    	    }
+    	    public void onAnimationRepeat(Animation a){}
+    	    public void onAnimationEnd(Animation a){
+    	    	emergencyImage.setVisibility(View.INVISIBLE);
+    	    	progressBar1.setVisibility(View.VISIBLE);
+    	    	progressBar2.setVisibility(View.VISIBLE);
+    	    	help.setVisibility(View.VISIBLE);
+    	    }
+    	});
+    	
+    
+    	emergencyImage.startAnimation(moveLeftToRight);
+		
 	}	
 	
 	public Bitmap getBitmapFromView(View view, int totalHeight, int totalWidth) {
