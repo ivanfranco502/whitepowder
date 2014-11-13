@@ -99,4 +99,20 @@
         <item name="android:drawablePadding">20dp</item>
     </style>
     
+    <style name="RescuerMapTheme" parent="AppBaseTheme">
+        <item name="android:actionBarStyle">@style/RescuerMapActionBar</item>
+        <item name="android:titleTextStyle">@style/RescuerMapTextAppearance</item>
+    </style>
+
+    <style name="RescuerMapActionBar" parent="Widget.AppCompat.Light.ActionBar.Solid.Inverse">
+        <item name="android:background">#038abe</item>
+    </style>
+    
+        <style name="RescuerMapTextAppearance" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:drawablePadding">20dp</item>
+    </style>        
+    
 </resources>

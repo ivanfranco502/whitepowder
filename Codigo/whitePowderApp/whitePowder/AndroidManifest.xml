@@ -92,7 +92,10 @@
         <activity
             android:name="com.whitepowder.slopeRecognizer.MapDisplayActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+			android:icon="@drawable/ic_logowp"
+            android:label="Vista Previa"
+			android:theme="@style/RescuerMapTheme" />
         <activity
             android:name="com.whitepowder.skier.SkierActivity"
             android:configChanges="orientation"

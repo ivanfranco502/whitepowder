@@ -1,23 +1,17 @@
 package com.whitepowder.skier.basicInformation;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
+import android.view.animation.TranslateAnimation;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -27,11 +21,9 @@ import android.widget.TextView;
 
 import com.example.whitepowder.R;
 import com.google.gson.Gson;
-import com.whitepowder.skier.SkierActivity;
 import com.whitepowder.skier.emergency.EmergencyPeripheral;
 import com.whitepowder.skier.emergency.EmergencyThread;
 import com.whitepowder.storage.StorageConstants;
-import com.whitepowder.utils.ApplicationError;
 
 public class BasicInformationActivity extends Activity {
 	
@@ -183,6 +175,9 @@ public class BasicInformationActivity extends Activity {
 						EmergencyThread et = new EmergencyThread(mContext, getApplicationContext());
 						et.execute();
 					}
+					else{
+						animateSkier();
+					}
 				}
 				seekBar.setProgress(0);
 		    }
@@ -201,5 +196,37 @@ public class BasicInformationActivity extends Activity {
 			});
     
 	}
+	
+	private void animateSkier() {
+		final ImageView emergencyImage = (ImageView) findViewById(R.id.emergencyAnimation);
+		final ImageView progressBar1 = (ImageView) findViewById(R.id.progressBar1);
+		final ImageView progressBar2 = (ImageView) findViewById(R.id.progressBar2);
+		final TextView help = (TextView) findViewById(R.id.help);
+		
+		Point size = new Point();
+		getWindowManager().getDefaultDisplay().getSize(size);
+		TranslateAnimation moveLeftToRight = new TranslateAnimation(0, size.x, 0, 0);
+    	moveLeftToRight.setDuration(2000);
+    	moveLeftToRight.setRepeatCount(2);
+    	moveLeftToRight.setAnimationListener(new AnimationListener(){
+    	    public void onAnimationStart(Animation a){
+    	    	emergencyImage.setVisibility(View.VISIBLE);
+    	    	progressBar1.setVisibility(View.INVISIBLE);
+    	    	progressBar2.setVisibility(View.INVISIBLE);
+    	    	help.setVisibility(View.INVISIBLE);
+    	    }
+    	    public void onAnimationRepeat(Animation a){}
+    	    public void onAnimationEnd(Animation a){
+    	    	emergencyImage.setVisibility(View.INVISIBLE);
+    	    	progressBar1.setVisibility(View.VISIBLE);
+    	    	progressBar2.setVisibility(View.VISIBLE);
+    	    	help.setVisibility(View.VISIBLE);
+    	    }
+    	});
+    	
+    
+    	emergencyImage.startAnimation(moveLeftToRight);
+		
+	}	
 	
 }
