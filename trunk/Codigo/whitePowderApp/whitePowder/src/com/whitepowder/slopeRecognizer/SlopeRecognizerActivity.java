@@ -104,7 +104,9 @@ public class SlopeRecognizerActivity extends Activity{
 			for(SimplifiedSlope ss : mSlopes.payload){
 				mContext.getAdapter().add(ss);			
 			};
-		};	
+		};
+		
+		adapter.notifyDataSetChanged();
 		
 		// Acquire reference to the LocationManager
 		if (null == (mLocationManager = (LocationManager) getSystemService(LOCATION_SERVICE))){
@@ -279,6 +281,9 @@ public class SlopeRecognizerActivity extends Activity{
 		btnStop.setClickable(true);
 		btnStop.setVisibility(RelativeLayout.VISIBLE);
 		
+		//Locks options button		
+		butSubmenuSlope.setClickable(false);
+		
 		//Locks spinner
 		spinner.setEnabled(false);
 		
@@ -298,6 +303,9 @@ public class SlopeRecognizerActivity extends Activity{
 		//Sets flag
 		activeFlag = false;
 		
+		//Locks options button		
+		butSubmenuSlope.setClickable(true);
+				
 		//Changes UI
 		
 		RelativeLayout btnStart = (RelativeLayout)mContext.findViewById(R.id.slope_recognition_start_button_container);
@@ -485,7 +493,35 @@ private void setupPopupMenu(){
 	public void onSyncFinished(boolean success){
 		if (success){			
 			//Closes dialog			
-			progressDialogSync.dismiss();			
+			progressDialogSync.dismiss();
+			if(adapter!=null){
+				SimplifiedSlopeContainer mSlopes=null;
+				
+				//Clear all slopes in adapter
+				adapter.clear();
+				
+				//Load new slopes in adapter
+				SimplifiedSlope pista = new SimplifiedSlope();
+				pista.setSlope_id(0);
+				pista.setSlope_description("Seleccione una pista");
+				
+				adapter.add(pista);
+				
+				SharedPreferences prefs = mContext.getSharedPreferences(StorageConstants.GENERAL_STORAGE_SHARED_PREFS, Context.MODE_PRIVATE);
+				String slopesText = prefs.getString(StorageConstants.SIMPLIFIED_SLOPES_KEY, null);
+				
+				Gson gson = new Gson();
+				mSlopes = gson.fromJson(slopesText,SimplifiedSlopeContainer.class);
+				
+				if(mSlopes!=null){
+					for(SimplifiedSlope ss : mSlopes.payload){
+						mContext.getAdapter().add(ss);			
+					};
+				};
+				adapter.notifyDataSetChanged();
+				
+				
+			};
 		}
 		else{	
 			progressDialogSync.dismiss();
