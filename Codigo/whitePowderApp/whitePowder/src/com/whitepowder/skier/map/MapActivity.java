@@ -1,6 +1,8 @@
 package com.whitepowder.skier.map;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Bundle;
@@ -13,7 +15,6 @@ import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.SeekBar.OnSeekBarChangeListener;
-
 import com.example.whitepowder.R;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -24,7 +25,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.gson.Gson;
 import com.whitepowder.skier.Coordinate;
-import com.whitepowder.skier.SkierActivity;
+import com.whitepowder.skier.basicInformation.BasicInformationResponse;
 import com.whitepowder.skier.emergency.EmergencyPeripheral;
 import com.whitepowder.skier.emergency.EmergencyThread;
 import com.whitepowder.storage.StorageConstants;
@@ -123,33 +124,14 @@ public class MapActivity extends Activity {
 	}
 	
 	private LatLng determineCenter(DrawableSlopeContainer dsc){
-		double sumatoriaX=0;
-		double sumatoriaY=0;
-		int count=0;
+		Gson gson = new Gson();
 		
-		if(dsc!=null){	
-			if(dsc.code==200){		
-				for(DrawableSlope ds: dsc.payload){
-					if(ds.getSlope_coordinates()!=null){		
-						if(ds.getSlope_coordinates().size() > 0){
-							sumatoriaX += ds.getSlope_coordinates().get(0).x;
-							sumatoriaY += ds.getSlope_coordinates().get(0).y;
-							count ++;
-						}
-					};
-				};
-				
-				if(count ==0){
-					return new LatLng(0, 0);
-				};
-				
-				return new LatLng(sumatoriaX/count, sumatoriaY/count);
-				
-			}
-			
-		};
-		return new LatLng(0, 0);
+		SharedPreferences sharedPrefs = this.getSharedPreferences(StorageConstants.GENERAL_STORAGE_SHARED_PREFS, Context.MODE_MULTI_PROCESS);;
+		String basicInformationValue = sharedPrefs.getString(StorageConstants.BASIC_INFORMATION_KEY,null);
 
+		BasicInformationResponse basicInfoRespose = gson.fromJson(basicInformationValue, BasicInformationResponse.class);
+		return new LatLng (basicInfoRespose.getBasicInformation().getX(),basicInfoRespose.getBasicInformation().getY());
+		
 	}
 	
 	@Override
