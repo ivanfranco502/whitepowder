@@ -215,7 +215,7 @@ public class StatisticsActivity extends Activity {
 			@Override
 		    public void onStopTrackingTouch(SeekBar seekBar) {
 				if(seekBarProgress){
-					if(seekBar.getProgress() >= 85 && seekBar.getProgress() <= 100){
+					if(seekBar.getProgress() >= 99 && seekBar.getProgress() <= 100){
 						//llamar emergencia
 						EmergencyThread et = new EmergencyThread(mStatisticsActivity, getApplicationContext());
 						et.execute();
