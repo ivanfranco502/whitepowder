@@ -30,7 +30,7 @@
     <string name="profile_pwd_change">Cambiar contraseña</string>
     <string name="profile_logout">Cerrar sesión</string>
     <string name="forecast_see_extended"><u>Ver pronóstico extendido</u></string>
-    <string name="title_activity_basic_information_forecast">BasicInformationForecastActivity</string>
+    <string name="title_activity_basic_information_forecast">Pronóstico Extendido</string>
     <string name="submenu_change_password">Cambiar contraseña</string>
     <string name="submenu_logout">Cerrar sesión</string>
      <string name="submenu_update_inbox">Actualizar accidentes</string>
@@ -90,6 +90,7 @@
     <string name="slope_recognition_stop_text">DETENER</string>
     <string name="slope_recognition_ok">ENVIAR</string>
     <string name="slope_recognition_cancel">DESCARTAR</string>
+    <string name="slope_recognition_cant_sync_msj">No se puede sincronizar la aplicación mientras se reconoce una pista.</string>
 
     <!-- Sección de strings de las normas y señales de seguridad -->
     <string name="title_activity_nas">Normas y señales de seguridad</string>

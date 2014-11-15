@@ -13,6 +13,7 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.whitepowder.skier.Coordinate;
+import com.whitepowder.skier.basicInformation.BasicInformationResponse;
 import com.whitepowder.skier.map.DrawableSlope;
 import com.whitepowder.skier.map.DrawableSlopeContainer;
 import com.whitepowder.storage.StorageConstants;
@@ -22,6 +23,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -86,7 +88,7 @@ public class RescuerMap extends Activity {
 			
 			//Setups zoom and center
 	        
-	        CameraUpdate cam = CameraUpdateFactory.newLatLngZoom(determineCenter(dsc),13);
+	        CameraUpdate cam = CameraUpdateFactory.newLatLngZoom(determineCenter(),13);
 	        mMap.moveCamera(cam);
 		};
 	
@@ -132,33 +134,23 @@ public class RescuerMap extends Activity {
 		};
 	};
 	
-	private LatLng determineCenter(DrawableSlopeContainer dsc){
+	private LatLng determineCenter(){
 				
 		if(accidents.size()==1){
 			//Si estoy mostrando un solo accidente, el centro es el accidente.
 			return new LatLng(accidents.get(0).getX(), accidents.get(0).getY());
 		}
 		else{
-			//Si estoy mostrando varios accidentes me centro en el promedio del centro de esqui
-			double sumatoriaX=0;
-			double sumatoriaY=0;
-			int count=0;
+			//Si estoy mostrando varios accidentes me centro en el centro de esqui
+			Gson gson = new Gson();
 			
-			if(dsc.getCode()==200){
-				for(DrawableSlope ds: dsc.getPayload()){
-					if(ds.getSlope_coordinates()!=null && ds.getSlope_coordinates().size() > 0){					
-						sumatoriaX += ds.getSlope_coordinates().get(0).x;
-						sumatoriaY += ds.getSlope_coordinates().get(0).y;
-						count ++;
-					};
-				};
-				return new LatLng(sumatoriaX/count, sumatoriaY/count);
-			}
-			else{
-				return new LatLng(0, 0);
-			}
-		}
+			SharedPreferences sharedPrefs = this.getSharedPreferences(StorageConstants.GENERAL_STORAGE_SHARED_PREFS, Context.MODE_MULTI_PROCESS);;
+			String basicInformationValue = sharedPrefs.getString(StorageConstants.BASIC_INFORMATION_KEY,null);
+
+			BasicInformationResponse basicInfoRespose = gson.fromJson(basicInformationValue, BasicInformationResponse.class);
+			return new LatLng (basicInfoRespose.getBasicInformation().getX(),basicInfoRespose.getBasicInformation().getY());
 		
+		}		
 
 	};
 	
