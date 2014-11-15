@@ -70,7 +70,7 @@ public class MapActivity extends Activity {
 			
 			//Setups zoom and center
 	        
-	        CameraUpdate cam = CameraUpdateFactory.newLatLngZoom(determineCenter(dsc),13);
+	        CameraUpdate cam = CameraUpdateFactory.newLatLngZoom(determineCenter(),13);
 	        mMap.moveCamera(cam);
 		};
 	
@@ -123,7 +123,7 @@ public class MapActivity extends Activity {
 		
 	}
 	
-	private LatLng determineCenter(DrawableSlopeContainer dsc){
+	private LatLng determineCenter(){
 		Gson gson = new Gson();
 		
 		SharedPreferences sharedPrefs = this.getSharedPreferences(StorageConstants.GENERAL_STORAGE_SHARED_PREFS, Context.MODE_MULTI_PROCESS);;

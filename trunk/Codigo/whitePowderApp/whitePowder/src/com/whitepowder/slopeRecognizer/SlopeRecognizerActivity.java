@@ -281,9 +281,6 @@ public class SlopeRecognizerActivity extends Activity{
 		btnStop.setClickable(true);
 		btnStop.setVisibility(RelativeLayout.VISIBLE);
 		
-		//Locks options button		
-		butSubmenuSlope.setClickable(false);
-		
 		//Locks spinner
 		spinner.setEnabled(false);
 		
@@ -302,9 +299,6 @@ public class SlopeRecognizerActivity extends Activity{
 		
 		//Sets flag
 		activeFlag = false;
-		
-		//Locks options button		
-		butSubmenuSlope.setClickable(true);
 				
 		//Changes UI
 		
@@ -434,19 +428,26 @@ private void setupPopupMenu(){
 							
 						case R.id.submenu_sync:
 		         			
-							//Stats sync dialog
-							progressDialogSync = new ProgressDialog(mContext);
-							progressDialogSync.setMessage(getResources().getString(R.string.sync_dialog_message));
-							progressDialogSync.setCancelable(false);
-							progressDialogSync.setIndeterminate(true);
-							progressDialogSync.show();
-							
-							//Starts sync task
-							sth = new SyncThread();
-							setupOnSyncFinishedListener();
-							sth.execute(mContext);
-							
-							break;
+							//Can only sync when not recognizing
+							if(activeFlag){
+								Toast.makeText(mContext, getResources().getString(R.string.slope_recognition_cant_sync_msj), Toast.LENGTH_SHORT).show();
+							}
+							else{
+								//Stats sync dialog
+								progressDialogSync = new ProgressDialog(mContext);
+								progressDialogSync.setMessage(getResources().getString(R.string.sync_dialog_message));
+								progressDialogSync.setCancelable(false);
+								progressDialogSync.setIndeterminate(true);
+								progressDialogSync.show();
+								
+								//Starts sync task
+								sth = new SyncThread();
+								setupOnSyncFinishedListener();
+								sth.execute(mContext);
+								
+								break;
+							};
+
 	         			 
 						default:
 							break;

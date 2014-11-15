@@ -103,9 +103,7 @@ public class SetAccidentAsAttendedThread extends Thread {
 		try {
 			if(response!=null){
 				JSONObject msj = new JSONObject(response);	
-				if(msj.getInt("code")==200){
-				}
-				else if(msj.getInt("code")==110){
+				if(msj.getInt("code")==110){
 					Logout.logout(mContext, false);
 				};
 				success=true;
