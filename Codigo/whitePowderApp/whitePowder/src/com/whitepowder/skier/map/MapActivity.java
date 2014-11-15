@@ -70,7 +70,7 @@ public class MapActivity extends Activity {
 			
 			//Setups zoom and center
 	        
-	        CameraUpdate cam = CameraUpdateFactory.newLatLngZoom(determineCenter(),13);
+	        CameraUpdate cam = CameraUpdateFactory.newLatLngZoom(determineCenter(),12);
 	        mMap.moveCamera(cam);
 		};
 	
