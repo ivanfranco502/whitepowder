@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import com.example.whitepowder.R;
 import com.google.gson.Gson;
-import com.whitepowder.gcmModule.AlertDisplayActivity;
 import com.whitepowder.gcmModule.GCM;
 import com.whitepowder.skier.SkierModeService;
 import com.whitepowder.skier.SkierModeStopperThread;
@@ -127,7 +126,6 @@ public class RescuerActivity extends Activity {
 		mVibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 		
 		//Register for GCM alerts
-        registerAlertBroadcastReceiver();
         registerAccidentBroadcastReceiver();
                
 	}
@@ -328,24 +326,6 @@ public class RescuerActivity extends Activity {
 			unregisterReceiver(mAccidentReceiver);
 		};
 	}
-	
-	private void registerAlertBroadcastReceiver(){
-		mAlertReceiver = new BroadcastReceiver() {
-			@Override
-			public void onReceive(Context context, Intent intent) {
-				if (isOrderedBroadcast()) {
-					setResultCode(RESULT_OK);
-					
-					//Starts Alert display activity		
-					Intent alertDisplay = new Intent(mContext,AlertDisplayActivity.class);
-					alertDisplay.putExtras(intent.getExtras());
-					startActivity(alertDisplay);
-				};
-			}
-		};
-		
-		registerReceiver(mAlertReceiver, new IntentFilter(RescuerActivity.GCM_ALERT_INTENT_ACTION));
-	};
 	
 	private void registerAccidentBroadcastReceiver(){
 		mAccidentReceiver = new BroadcastReceiver() {

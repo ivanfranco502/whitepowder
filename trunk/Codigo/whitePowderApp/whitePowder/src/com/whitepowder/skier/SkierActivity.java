@@ -32,7 +32,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.whitepowder.skier.MediaButtonIntentReceiver;
 import com.example.whitepowder.R;
-import com.whitepowder.gcmModule.AlertDisplayActivity;
 import com.whitepowder.gcmModule.GCM;
 import com.whitepowder.skier.basicInformation.BasicInformationActivity;
 import com.whitepowder.skier.basicInformation.BasicInformationForecastActivity;
@@ -119,9 +118,6 @@ public class SkierActivity extends Activity {
 
         //Create service connection
         createServiceConnectionAndRegisterForBroadcast();
-		
-        //Register for GCM alerts
-        registerAlertBroadcastReciever();
         
 		//Setups buttons
 		
@@ -173,32 +169,6 @@ public class SkierActivity extends Activity {
 		super.onSaveInstanceState(outState);
 		outState.putBoolean("skierModeFlag", butSkiermode.isSelected());
 	}
-
-	private void registerAlertBroadcastReciever(){
-
-		mAlertReceiver = new BroadcastReceiver() {
-			@Override
-			public void onReceive(Context context, Intent intent) {
-
-				if (isOrderedBroadcast()) {
-					setResultCode(RESULT_OK);
-					
-					//Starts Alert display activity
-					
-					Intent alertDisplay = new Intent(mContext,AlertDisplayActivity.class);
-					alertDisplay.putExtras(intent.getExtras());
-					alertDisplay.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-					startActivity(alertDisplay);
-
-				};
-			}
-		};
-		
-		registerReceiver(mAlertReceiver, new IntentFilter(SkierActivity.GCM_ALERT_INTENT_ACTION));
-		
-		
-	};
-	
 	
 	private void createServiceConnectionAndRegisterForBroadcast(){
 		
