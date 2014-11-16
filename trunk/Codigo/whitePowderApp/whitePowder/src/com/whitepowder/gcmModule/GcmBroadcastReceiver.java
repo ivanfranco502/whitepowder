@@ -53,8 +53,8 @@ public class GcmBroadcastReceiver extends BroadcastReceiver {
 	
 	private void processAccident(Context context, Intent intent){
 		int code = Integer.parseInt(intent.getStringExtra("id"));
-		
 		Intent notifyAppIntent = new Intent(RescuerActivity.GCM_ACCIDENT_INTENT_ACTION);
+		notifyAppIntent.addCategory(Intent.CATEGORY_LAUNCHER);
 		notifyAppIntent.putExtra("title", intent.getStringExtra("title"));
 		notifyAppIntent.putExtra("body", intent.getStringExtra("body"));
 		
@@ -99,6 +99,7 @@ public class GcmBroadcastReceiver extends BroadcastReceiver {
 	private void procesAlert(Context context, Intent intent){
 		final int code = Integer.parseInt(intent.getStringExtra("id"));
 		Intent notifyAppIntent = new Intent(SkierActivity.GCM_ALERT_INTENT_ACTION);
+		notifyAppIntent.addCategory(Intent.CATEGORY_LAUNCHER);
 		notifyAppIntent.putExtra("title", intent.getStringExtra("title"));
 		notifyAppIntent.putExtra("body", intent.getStringExtra("body"));
 		notifyAppIntent.putExtra("id",code);
