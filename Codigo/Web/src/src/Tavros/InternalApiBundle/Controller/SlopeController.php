@@ -225,28 +225,31 @@ class SlopeController extends Controller {
             $response->setContent($serializer->serialize($apiResponse, 'json'));
             return $response;
         }
-
+        
         $minSlopes = Array();
         /* @var $slope \Tavros\DomainBundle\Entity\Slope */
         foreach ($slopes as $slope) {
-            $minSlope = Array();
-            $minSlope['slope_id'] = $slope->getSlopId();
-            $minSlope['slope_description'] = $slope->getSlopDescription();
-            $minSlope['slope_length'] = $slope->getSlopLength();
-            $minSlope['slope_difficulty_color'] = $slope->getSlopDificulty()->getSldiColor()->getColoHexaCode();
-            $minSlope['slope_difficulty_description'] = $slope->getSlopDificulty()->getSldiDescription();
-//            $minSlope['slope_difficulty_color'] = '#008000';
+            
+            if($slope->getSlopGeneralInformation()){
+                $minSlope = Array();
+                $minSlope['slope_id'] = $slope->getSlopId();
+                $minSlope['slope_description'] = $slope->getSlopDescription();
+                $minSlope['slope_length'] = $slope->getSlopLength();
+                $minSlope['slope_difficulty_color'] = $slope->getSlopDificulty()->getSldiColor()->getColoHexaCode();
+                $minSlope['slope_difficulty_description'] = $slope->getSlopDificulty()->getSldiDescription();
+    //            $minSlope['slope_difficulty_color'] = '#008000';
 
-            /* @var $coord \Tavros\DomainBundle\Entity\Coordinates */
-            $minSlope['slope_coordinates'] = Array();
-            foreach ($slope->getCoordinates() as $coord) {
                 /* @var $coord \Tavros\DomainBundle\Entity\Coordinates */
-                $minCoordinates = Array();
-                $minCoordinates['x'] = $coord->getSlcoCoordinate()->getCoorX();
-                $minCoordinates['y'] = $coord->getSlcoCoordinate()->getCoorY();
-                $minSlope['slope_coordinates'][] = $minCoordinates;
+                $minSlope['slope_coordinates'] = Array();
+                foreach ($slope->getCoordinates() as $coord) {
+                    /* @var $coord \Tavros\DomainBundle\Entity\Coordinates */
+                    $minCoordinates = Array();
+                    $minCoordinates['x'] = $coord->getSlcoCoordinate()->getCoorX();
+                    $minCoordinates['y'] = $coord->getSlcoCoordinate()->getCoorY();
+                    $minSlope['slope_coordinates'][] = $minCoordinates;
+                }
+                $minSlopes[] = $minSlope;                
             }
-            $minSlopes[] = $minSlope;
         }
 
         $apiResponse->setCode(200);

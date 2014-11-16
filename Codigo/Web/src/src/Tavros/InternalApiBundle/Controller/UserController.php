@@ -251,7 +251,7 @@ class UserController extends Controller {
             return $response;
         }
         
-        $user = $extData->getExdaUser;
+        $user = $extData->getExdaUser();
         
         if (!$this->checkUserPassword($user, $current_password)) {
             $apiResponse->setCode(113);

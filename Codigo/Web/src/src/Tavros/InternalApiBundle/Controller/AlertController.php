@@ -259,7 +259,9 @@ class AlertController extends Controller {
 
             if ($role == 'ROLE_RESCU') {
                 $user_externals = $em->getRepository('TavrosDomainBundle:ExternalData')->findOneByExdaUser($user);
-                $registration_ids[] = $user_externals->getExdaRegistrationCode();
+                if ($user_externals) {
+                    $registration_ids[] = $user_externals->getExdaRegistrationCode();
+                }
             }
         }
 

@@ -15,6 +15,6 @@ tavros_internalApi_alert_allUnread:
     defaults: { _controller: TavrosInternalApiBundle:Alert:allUnread }
 
 tavros_internalApi_alert_read:
-    pattern:  /read/all
+    pattern:  /readAll
     defaults: { _controller: TavrosInternalApiBundle:Alert:readAll }
 

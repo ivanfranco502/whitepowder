@@ -40,7 +40,7 @@ function markRead(id) {
 
 function markAllRead() {
     $.ajax({
-        url: BASE_URL +  "/internalApi/alert/read/all",
+        url: BASE_URL +  "/internalApi/alert/readAll",
         dataType: "json",
         type: "POST",
         data: {
