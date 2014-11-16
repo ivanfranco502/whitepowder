@@ -78,6 +78,11 @@ body {
     border-color: #3c9a5f;
     color: #ffffff;
 }
+.alert-sonata_flash_error{
+    background-color: #f04124;
+    border-color: #f04124;
+    color: #ffffff;
+}
 .alert-purple{
     background-color: #9743AC;
     border-color: #9743AC;
@@ -91,5 +96,6 @@ body {
 .register input{
     text-align: right;
 }
+
 
 
