@@ -151,9 +151,11 @@
             android:screenOrientation="portrait"
             android:theme="@style/SecurityTheme" >
         </activity>
+        
         <activity
             android:name="com.whitepowder.gcmModule.AlertDisplayActivity"
             android:screenOrientation="portrait" >
+            
         </activity>
 
         <receiver android:name=".MediaButtonIntentReceiver" >
