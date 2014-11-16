@@ -50,7 +50,7 @@ public class SkierActivity extends Activity {
 	SkierActivity mContext;
 	
 	final int REGISTER_REQUEST_CODE = 1;
-	public final int PWD_CHANGE_REQUEST_CODE = 1;
+	public final int PWD_CHANGE_REQUEST_CODE = 2;
 	public static String GCM_ALERT_INTENT_ACTION = "GCM_ALERT_INTENT_ACTION";
 	
 	//Location and communication with thread
@@ -427,8 +427,7 @@ public class SkierActivity extends Activity {
 	         				
 						case R.id.submenu_change_password:
 	         			  
-							Intent intent = new Intent(mContext, PasswordChangeActivity.class);
-							startActivity(intent);
+							startActivityForResult(PWD_CHANGE_REQUEST_CODE);
 							break;
 							
 						case R.id.submenu_sync:
