@@ -32,7 +32,9 @@ public class BasicInformationActivity extends Activity {
 	private TextView ski_center_minimum_height;
 	private TextView ski_center_maximum_height;
 	private TextView ski_center_season_since;
+	private TextView ski_center_season_since_num;
 	private TextView ski_center_season_upto;
+	private TextView ski_center_season_upto_num;
 	private ListView ski_center_schedule;
 	private TextView ski_center_details;
 	
@@ -66,7 +68,9 @@ public class BasicInformationActivity extends Activity {
 			ski_center_minimum_height = (TextView) findViewById(R.id.ski_center_minimum_height);
 			ski_center_maximum_height = (TextView) findViewById(R.id.ski_center_maximum_height);
 			ski_center_season_since = (TextView) findViewById(R.id.ski_center_season_since);
+			ski_center_season_since_num = (TextView) findViewById(R.id.ski_center_season_since_num);
 			ski_center_season_upto = (TextView) findViewById(R.id.ski_center_season_upto);
+			ski_center_season_upto_num = (TextView) findViewById(R.id.ski_center_season_upto_num);
 			ski_center_schedule = (ListView) findViewById(R.id.ski_center_schedule);
 			ski_center_details = (TextView) findViewById(R.id.ski_center_details);
 			
@@ -115,15 +119,25 @@ public class BasicInformationActivity extends Activity {
 				ski_center_maximum_height.setText(skiCenterMaximumHeight);
 			}
 			
-			String skiCenterSeasonSince = basicInformationResponse.getBasicInformation().getSeasonSince();
+			String skiCenterSeasonSince = basicInformationResponse.getBasicInformation().getSeasonSinceMonth();
 			if(skiCenterSeasonSince != null){
 				ski_center_season_since.setText(skiCenterSeasonSince);
 			}
 			
-			String skiCenterSeasonUpto = basicInformationResponse.getBasicInformation().getSeasonTill();
+			String skiCenterSeasonSinceNum = basicInformationResponse.getBasicInformation().getSeasonSinceDay();
+			if(skiCenterSeasonSinceNum != null){
+				ski_center_season_since_num.setText(skiCenterSeasonSinceNum);
+			}
+			
+			String skiCenterSeasonUpto = basicInformationResponse.getBasicInformation().getSeasonTillMonth();
 			if(skiCenterSeasonUpto != null){
 				ski_center_season_upto.setText(skiCenterSeasonUpto);
-			}			
+			}
+			
+			String skiCenterSeasonUptoNum = basicInformationResponse.getBasicInformation().getSeasonTillDay();
+			if(skiCenterSeasonUptoNum != null){
+				ski_center_season_upto_num.setText(skiCenterSeasonUptoNum);
+			}		
 			
 			
 			// Create The Adapter with passing ArrayList as 3rd parameter
