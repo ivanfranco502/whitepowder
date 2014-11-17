@@ -367,6 +367,7 @@ public class RescuerActivity extends Activity {
 						for (Victim vict : accidents) {
 							if(vict.getId()==id){
 								removeFromList(vict);
+								break;
 							};
 						};
 						
