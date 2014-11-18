@@ -120,9 +120,6 @@ public class AlertDisplayActivity extends Activity {
 					case 2:
 						mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.avalanche);
 						break;
-					case 3:
-						mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.clown);
-						break;
 					}
 					if(mediaPlayer != null){
 						mediaPlayer.start(); // no need to call prepare(); create() does that for you
