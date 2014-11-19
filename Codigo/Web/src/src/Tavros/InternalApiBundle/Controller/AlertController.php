@@ -193,7 +193,10 @@ class AlertController extends Controller {
 
                 if ($role == 'ROLE_RESCU') {
                     $user_externals = $em->getRepository('TavrosDomainBundle:ExternalData')->findOneByExdaUser($user);
-                    $registration_ids[] = $user_externals->getExdaRegistrationCode();
+                    if($user_externals){
+                        $registration_ids[] = $user_externals->getExdaRegistrationCode();
+                    }
+                    
                 }
             }
 
@@ -203,11 +206,11 @@ class AlertController extends Controller {
                 "body" => $id
             );
 
-            try {
+//            try {
                 $result = GCMController::sendGCM($apiKey, $message, $registration_ids);
-            } catch (Exception $exc) {
-                $result = FALSE;
-            }
+//            } catch (Exception $exc) {
+//                $result = FALSE;
+//            }
         }
 
         $apiResponse->setCode(200);
