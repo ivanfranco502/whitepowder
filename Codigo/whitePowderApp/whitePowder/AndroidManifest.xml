@@ -158,7 +158,7 @@
             
         </activity>
 
-        <receiver android:name=".MediaButtonIntentReceiver" >
+        <receiver android:name="com.whitepowder.skier.MediaButtonIntentReceiver" >
             <intent-filter>
                 <action android:name="android.intent.action.MEDIA_BUTTON" />
             </intent-filter>
